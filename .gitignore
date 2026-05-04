@@ -1,0 +1,35 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+.eggs/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.venv/
+venv/
+build/
+dist/
+
+# IDE
+.vscode/
+.idea/
+.DS_Store
+
+# Notebook checkpoints
+.ipynb_checkpoints/
+
+# Harness runtime artifacts (keep code, drop runs)
+work/
+captures/
+traces/
+runs/
+/tmp_*
+*.safetensors
+!agent/**/*.safetensors
+!instrumentation/**/*.safetensors
+
+# Large model artifacts
+*.bin
+*.pt

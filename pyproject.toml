@@ -1,0 +1,31 @@
+[project]
+name = "openinterp-swebench-harness"
+version = "0.1.0"
+description = "Instrumented agent harness for SAE feature capture during SWE-bench Pro traces on Qwen3.6-27B"
+authors = [{ name = "Caio Vicentino", email = "caio@openinterp.org" }]
+license = { text = "Apache-2.0" }
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "torch>=2.4",
+    "transformers>=5.0",
+    "datasets>=3.0",
+    "safetensors>=0.4",
+    "pexpect>=4.9",
+    "huggingface-hub>=0.25",
+]
+
+[project.optional-dependencies]
+flash = ["flash-attn>=2.6"]
+dev = ["pytest>=8.0", "ruff>=0.6"]
+
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+include = ["agent*", "sandbox*", "instrumentation*"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
