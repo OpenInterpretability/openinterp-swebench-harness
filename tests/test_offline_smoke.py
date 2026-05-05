@@ -57,6 +57,59 @@ def test_parser_two_tool_calls():
     assert msg.tool_calls[1].name == "finish"
 
 
+def test_parser_hermes_xml_format():
+    """Qwen3.6 emits this Hermes-style XML format by default."""
+    from agent.parser import parse_assistant_message
+    raw = (
+        "Let me explore.\n"
+        "</think>\n\n"
+        "<tool_call>\n"
+        "<function=bash>\n"
+        "<parameter=command>\n"
+        "find . -name '*.py' | head\n"
+        "</parameter>\n"
+        "<parameter=timeout>30</parameter>\n"
+        "</function>\n"
+        "</tool_call>"
+    )
+    msg = parse_assistant_message(raw)
+    assert msg.thinking is not None
+    assert "Let me explore" in msg.thinking
+    assert len(msg.tool_calls) == 1
+    tc = msg.tool_calls[0]
+    assert tc.name == "bash"
+    assert tc.arguments["command"] == "find . -name '*.py' | head"
+    assert tc.arguments["timeout"] == 30
+
+
+def test_parser_hermes_finish():
+    from agent.parser import parse_assistant_message
+    raw = (
+        '<tool_call>\n'
+        '<function=finish>\n'
+        '<parameter=summary>Fixed the bug by updating handler.py</parameter>\n'
+        '</function>\n'
+        '</tool_call>'
+    )
+    msg = parse_assistant_message(raw)
+    assert len(msg.tool_calls) == 1
+    assert msg.tool_calls[0].name == "finish"
+    assert msg.tool_calls[0].arguments["summary"] == "Fixed the bug by updating handler.py"
+
+
+def test_parser_hermes_two_calls():
+    from agent.parser import parse_assistant_message
+    raw = (
+        '<tool_call>\n<function=bash>\n<parameter=command>pwd</parameter>\n</function>\n</tool_call>\n'
+        '<tool_call>\n<function=str_replace_editor>\n<parameter=command>view</parameter>\n<parameter=path>/tmp/x</parameter>\n</function>\n</tool_call>'
+    )
+    msg = parse_assistant_message(raw)
+    assert len(msg.tool_calls) == 2
+    assert msg.tool_calls[0].name == "bash"
+    assert msg.tool_calls[1].name == "str_replace_editor"
+    assert msg.tool_calls[1].arguments == {"command": "view", "path": "/tmp/x"}
+
+
 def test_editor_create_view_replace(tmp_path):
     from agent.tools import dispatch_tool
     p = tmp_path / "hello.txt"
