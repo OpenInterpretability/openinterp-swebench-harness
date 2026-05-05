@@ -7,7 +7,7 @@ from typing import Any
 import torch
 
 from .tools import TOOLS, dispatch_tool, TOOL_NAMES
-from .parser import parse_assistant_message
+from .parser import parse_assistant_message, _strip_think
 from .prompts import SYSTEM_PROMPT
 
 
@@ -220,17 +220,12 @@ class AgentLoop:
             tool_calls_log: list[dict] = []
             tool_results_log: list[dict] = []
 
-            assistant_msg: dict[str, Any] = {"role": "assistant", "content": parsed.content}
-            if parsed.tool_calls:
-                assistant_msg["tool_calls"] = [
-                    {
-                        "id": tc.id,
-                        "type": "function",
-                        "function": {"name": tc.name, "arguments": json.dumps(tc.arguments)},
-                    }
-                    for tc in parsed.tool_calls
-                ]
-            messages.append(assistant_msg)
+            # Embed the assistant body as raw text (with <tool_call> blocks intact). Qwen3.6's
+            # chat template chokes on structured tool_calls field with stringified arguments
+            # ("Can only get item pairs from a mapping"); replaying the model's own tokens
+            # avoids re-rendering and preserves Hermes format the model emitted.
+            _, body_with_tools = _strip_think(raw_response)
+            messages.append({"role": "assistant", "content": body_with_tools})
 
             if not parsed.tool_calls:
                 turn_log = TurnLog(
@@ -277,7 +272,6 @@ class AgentLoop:
                     payload = payload[:32_000] + "...[truncated]"
                 messages.append({
                     "role": "tool",
-                    "tool_call_id": tc.id,
                     "content": payload,
                 })
 
