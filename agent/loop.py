@@ -136,13 +136,24 @@ class AgentLoop:
         return log
 
     def _build_input_ids(self, messages: list[dict]) -> torch.Tensor:
-        return self.tok.apply_chat_template(
+        # transformers 5.x returns a BatchEncoding (dict-like) when tools= is set,
+        # even with return_tensors="pt" — extract input_ids defensively.
+        out = self.tok.apply_chat_template(
             messages,
             tools=TOOLS,
             add_generation_prompt=True,
             return_tensors="pt",
             enable_thinking=self.cfg.thinking_mode,
         )
+        if torch.is_tensor(out):
+            return out
+        if hasattr(out, "data") and isinstance(out.data, dict) and "input_ids" in out.data:
+            return out["input_ids"]
+        if isinstance(out, dict) and "input_ids" in out:
+            return out["input_ids"]
+        if isinstance(out, list):
+            return torch.tensor([out], dtype=torch.long)
+        raise RuntimeError(f"unexpected apply_chat_template return type: {type(out)}")
 
     def run(self, problem_message: str) -> AgentResult:
         result = AgentResult(instance_id=self.instance_id, finished=False, finish_reason="error")
