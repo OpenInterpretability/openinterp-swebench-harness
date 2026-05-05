@@ -121,7 +121,7 @@ from datasets import load_dataset
 import random
 
 ds = load_dataset('ScaleAI/SWE-bench_Pro', split='test')
-py = ds.filter(lambda x: x.get('repo_language') == 'Python')
+py = ds.filter(lambda x: x.get('repo_language') == 'python')  # SWE-bench Pro uses lowercase
 print(f'Python instances: {len(py)} / {len(ds)} total')
 
 # Stratify by problem_statement length: 3 buckets (short, medium, long)
