@@ -13,10 +13,10 @@ class HarnessConfig:
     top_p: float = 0.95
 
     max_context: int = 200_000
-    max_turns: int = 50
+    max_turns: int = 30
     max_invalid_tools_in_row: int = 3
     bash_timeout_default: int = 120
-    bash_max_output_bytes: int = 64_000
+    bash_max_output_bytes: int = 32_000
 
     thinking_mode: bool = True
 
