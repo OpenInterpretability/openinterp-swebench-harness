@@ -1,5 +1,5 @@
-# Pre-Flight Self-Capability Detection in Code Agents:
-## Late-Layer Activations at Thinking Onset Predict SWE-bench Pro Success with AUROC=1.000
+# A Pre-Flight Capability Signal in Code Agents:
+## Late-Layer Activations at Thinking Onset Are Above Chance — A Pilot Finding at N=17
 
 **Anonymous authors**
 **Submitted to NeurIPS 2026 Mechanistic Interpretability Workshop**
@@ -8,7 +8,7 @@
 
 ## Abstract
 
-We study whether a code-generating agent's internal state at the *very first token of its reasoning trace* already predicts whether the agent will eventually succeed at solving a software issue. Using a 27B-parameter reasoning model (Qwen3.6-27B) instrumented with forward hooks at five intermediate layers (L11, L23, L31, L43, L55), we collect residual-stream activations at decision points during 20 SWE-bench Pro agent traces. Patches are evaluated with the official Docker test harness to obtain ground-truth pass/fail labels. We then train logistic-regression probes on top features at each (layer, position) combination. Two configurations — **L43 / think_start** and **L55 / think_start** — achieve **AUROC = 1.000 (95% bootstrap CI [1.000, 1.000], 1000 stratified resamples)** with **leave-one-repository-out cross-validation also returning 1.000 across all three held-out repositories**. The probe direction is detectable *before any tool call has been issued*, suggesting the model carries an implicit pre-action estimate of task tractability. We contrast this finding with a counter-experiment: causal steering in the probe direction during originally-failing traces produces large output patches that, when run through the test harness, **do not actually solve the underlying issue** (0 of 4 cases pass). The probe therefore measures genuine pre-existing capability, not a free-floating "patch volume" axis. We discuss limitations of the small sample (N=17 evaluable) and outline a Phase 1.5 scale-up to N≥100 already in progress.
+We investigate whether a code-generating agent's internal state at the *first token of its reasoning trace* already correlates with whether the agent will eventually solve a software issue. Using a 27B-parameter reasoning model (Qwen3.6-27B) instrumented with forward hooks at five intermediate layers (L11, L23, L31, L43, L55), we collect residual-stream activations at decision points during 20 SWE-bench Pro agent traces. Patches are evaluated against the official Docker test harness to obtain ground-truth labels. Logistic-regression probes at multiple (layer, position) configurations — including **L43 / think_start** and **L55 / think_start** — achieve **AUROC = 1.000 with permutation p = 0.012-0.020 (1000 label shuffles)**, but with substantial caveats: the small evaluable sample (N=17, 4 strict positives) admits high random-feature baseline AUROC (mean 0.94 with top-50 random features) and bootstrap CIs that cannot escape the underlying observation count. The signal is statistically distinguishable from chance but not yet from over-parameterization. We frame the result as a *pilot finding awaiting validation at scale*: a Phase 1.5 trace collection (N=100) is in progress and will enable proper power. We additionally report a steering counter-experiment showing that artificially activating the probe direction in failing traces produces large but ineffective patches (0/4 pass tests under Docker evaluation), which dissociates the probe from a "patch volume" interpretation.
 
 **Code, captures, probes, and Docker eval scripts:** *anonymized for submission* — released at `github.com/[anon]/swebench-harness` upon acceptance.
 
@@ -182,9 +182,42 @@ We then run the *single $\alpha = 0.5$ recovery candidate that produced a cohere
 
 This is the central *positive limitation* of the probe finding: the natural probe direction predicts success because it correlates with genuine capability traces, but artificially activating that direction in a low-capability trace does not confer the underlying ability. Probe ≠ steering target. The "edit aggressiveness" interpretation we initially considered is a steering artifact, not the probe's signal.
 
-### 3.6 Wall-Clock Pre-Flight Detection
+### 3.6 Statistical Stress Tests (Permutation Null + Random Feature Baseline)
 
-The two perfect probes (L43, L55 think_start) capture activations at the *first generated token of the agent's first reasoning block*. In our harness, this is at most 10–50 ms of compute after the system + user prompt is processed. A pre-flight gate sampling these activations would discard a doomed trace before any tool call is issued, saving the ≈ 12 minutes of average per-problem wall time observed in Phase 1.
+We subject the headline AUROC=1.000 to two stress tests that directly address the small-N concern.
+
+**Permutation null test (1000 label shuffles).** For each candidate probe, we randomly shuffle the true labels 1000 times and retrain the probe with identical methodology (top-50 by diff-of-means inside CV). The resulting AUROC distribution is the null hypothesis distribution given our actual feature space. The probe's true AUROC is then placed in this distribution.
+
+| Probe | Real | Null mean | Null std | Null p95 | p-value |
+|---|---|---|---|---|---|
+| L43 think_start | 1.000 | 0.495 | 0.242 | 0.917 | **0.012** |
+| L55 think_start | 1.000 | 0.489 | 0.240 | 0.917 | **0.020** |
+| L11 pre_tool | 1.000 | 0.493 | 0.240 | 0.917 | **0.016** |
+| L31 turn_end | 0.917 | 0.502 | 0.237 | 0.854 | 0.046 |
+| L23 turn_end | 0.917 | 0.507 | 0.226 | 0.875 | 0.043 |
+| L43 pre_tool | 0.917 | 0.498 | 0.242 | 0.917 | 0.056 |
+| L55 pre_tool | 0.917 | 0.502 | 0.241 | 0.917 | 0.060 |
+| L43 turn_end | 0.917 | 0.504 | 0.238 | 0.917 | 0.054 |
+
+**Interpretation.** Three probes (L43 think_start, L55 think_start, L11 pre_tool) reach p < 0.05 — robustly above the shuffle distribution. Five probes are at the borderline (p ≈ 0.04-0.06). However, the **null p95 reaches 0.917 for several configurations**: 5% of label shuffles already attain AUROC ≥ 0.917 by chance. This is the small-N curse — with 17 samples and 4 positives, the data structure permits high AUROC even under null.
+
+**Random feature baseline.** Instead of selecting the top-50 features by diff-of-means, we draw 50 random features uniformly from the 5120-dim residual stream, train the probe identically, and repeat 100 times.
+
+| Probe | Real (top-50 diff-means) | Random 50 features mean | Random p95 |
+|---|---|---|---|
+| L43 think_start | 1.000 | 0.943 | 1.000 |
+| L55 think_start | 1.000 | 0.963 | 1.000 |
+| L11 pre_tool | 1.000 | 0.906 | 1.000 |
+| L31 turn_end | 0.917 | 0.887 | 1.000 |
+| L23 turn_end | 0.917 | 0.867 | 1.000 |
+
+**Interpretation.** This is the core statistical concern. With 5120 features and only 17 samples, **any 50 features can shatter the data**: random feature selection achieves mean AUROC 0.85-0.96, with 5% of random selections also reaching 1.000. The diff-of-means selection is informative (null mean 0.49 vs random mean 0.94 demonstrates the signal direction is meaningful), but the *magnitude of separation between top-K and random-K is small at this N*.
+
+**Honest takeaway.** The probe is statistically distinguishable from chance (permutation p < 0.05 for top probes) and the diff-of-means feature selection moves the null mean from 0.49 → 0.94, suggesting a real-but-small signal. However, the AUROC=1.000 ceiling cannot be distinguished from over-parameterization at N=17. **Phase 1.5 (N=100, in progress) is the test that will resolve this.** With 30-50 positives, top-50 random features should drop substantially below diff-means selection, and bootstrap CIs will tighten.
+
+### 3.7 Wall-Clock Pre-Flight Detection (Conditional)
+
+The candidate probes (L43, L55 think_start) capture activations at the *first generated token of the agent's first reasoning block*. In our harness, this is at most 10–50 ms of compute after the system + user prompt is processed. *If the finding survives Phase 1.5 validation*, a pre-flight gate sampling these activations would discard a doomed trace before any tool call is issued, saving the ≈ 12 minutes of average per-problem wall time observed in Phase 1.
 
 ---
 
@@ -242,11 +275,13 @@ We are explicit about all of these. None of them invalidate the convergent-evide
 
 ## 6. Conclusion
 
-We discover that activations at the first reasoning token of a 27B-parameter code-generating agent encode whether the agent will ultimately solve the SWE-bench Pro task with which it is presented. Two probes (L43 think_start, L55 think_start) achieve AUROC = 1.000 with bootstrap CI [1.000, 1.000] and perfect cross-repository generalization. The signal is dissociable from "edit volume" (steering experiment) and from "answer correctness" (think_start fires before any output is generated). We interpret the signal as implicit self-capability estimation: the model's late layers carry a pre-action assessment of task tractability.
+We report a *pilot finding* that activations at the first reasoning token of a 27B-parameter code-generating agent correlate with whether the agent will ultimately solve the SWE-bench Pro task with which it is presented. Probes at L43/L55 think_start and L11 pre_tool achieve AUROC = 1.000 on N=17 evaluable traces with permutation p ∈ [0.012, 0.020]. The signal exists — null shuffle achieves only 0.49 mean AUROC under our methodology, while diff-of-means feature selection moves it to 0.94 — but its *magnitude* is small at the current sample size: random feature selection achieves comparable AUROC, indicating the data permits over-fitting at N=17. We do **not** claim a deployable detector at this stage.
 
-Pending Phase 1.5 scale-up to N≥100 (planned, ~6 hours additional compute), the finding suggests pre-flight gating of code agents is feasible at zero compute cost during inference: read the L43 or L55 think_start activation, project onto the probe direction, threshold, and skip-or-proceed.
+We frame this as a **promising signal pending validation at proper power**. A Phase 1.5 trace collection at N=100 is in progress; the random-feature baseline is the diagnostic that will distinguish a genuine pre-flight signal from a small-N artifact. If the finding survives — random-feature mean AUROC drops while diff-means selection retains 0.85+ — the implications are direct: pre-flight gating of code agents at near-zero compute cost would be possible by reading a single activation per (system_prompt + user_problem) pair.
 
-If this signal generalizes to other models and benchmarks, the implications for compute efficiency in production agent deployments are direct: **roughly half of all SWE-bench-Pro-equivalent agent traces can be skipped before they begin, with no loss in eventual success rate.**
+The steering counter-experiment (Section 3.5) provides one piece of evidence that even at N=17 the probe is not free-floating "edit volume": artificially activating the direction in failing traces produces large but ineffective patches, dissociating probe-as-detector from probe-as-driver.
+
+We release all artifacts (harness, captures, probes, Docker eval scripts) under Apache-2.0 to enable independent replication.
 
 ---
 

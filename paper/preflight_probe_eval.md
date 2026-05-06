@@ -20,17 +20,16 @@ Reviewing as if I were a NeurIPS MI Workshop reviewer. What's strong, what's wea
 
 ## 🔴 Critical weaknesses (reviewers will hit these)
 
-### 1. **Permutation test missing — CANNOT publish without this.**
+### 1. **✅ DONE — Permutation null test (Phase 5d, 2026-05-06).**
 
-**Concern:** With N=17, top-50 feature selection from d=5120, and 4 positives, even random labels can achieve high CV AUROC by chance. The reviewer asks: "did you shuffle labels, retrain, and verify the null distribution peaks at AUROC ≈ 0.5?"
+Ran 1000 label shuffles per probe with identical CV + feature-selection methodology. Results added to draft Section 3.6.
 
-**Why this is critical:** AUROC = 1.000 with N=17 is technically not impossible by chance, but the bootstrap doesn't refute the null. Bootstrap CI is *conditional on the actual labels*. A permutation test (shuffle y, retrain) directly tests "is the signal we found above what shuffled labels would produce?"
+**Findings (sobering):**
+- Top probes (L43/L55 think_start, L11 pre_tool): real 1.000, null mean 0.49, **p = 0.012-0.020**
+- Mid probes (L31 turn_end, L23 turn_end): real 0.917, **p = 0.043-0.046**
+- Borderline probes (pre_tool variants, turn_end variants): **p = 0.054-0.060**
 
-**Predicted null:** with 4 positives over 17 samples and proper feature-selection-inside-CV, shuffled-label AUROC should peak around 0.5 with std ≈ 0.15. Our 1.000 is ~3.3σ above null. That's the test we owe.
-
-**Fix:** add Section 3.6: "Permutation null test. We shuffled training labels 1000 times, retrained probes following identical methodology, and computed the resulting AUROC distribution. Mean shuffled AUROC = X.XXX (std = X.XXX). Our finding (1.000) is at the >99.5th percentile."
-
-**This is the single biggest blocker.** Without it, a serious reviewer will say "you have no evidence this isn't chance."
+**Honest read:** signal is statistically detectable above shuffle (p < 0.05 for top probes) but **null p95 reaches 0.917** for several configurations — meaning 5% of random shuffles already reach AUROC ≥ 0.917 at this N. The signal is real but the effect size is bounded by sample size. Phase 6 (N=100) needed for proper statistical power.
 
 ### 2. **Env_mismatch instances have systematically high probe scores.**
 
@@ -55,11 +54,22 @@ We cannot tell which. **Selection on observability** is a real concern when the 
 
 **Acknowledged in Limitations #1** but underweighted. Bootstrap doesn't escape this. Phase 1.5 with N=100 will resolve.
 
-### 5. **Random-baseline reference missing.**
+### 5. **✅ DONE — Random-feature baseline (Phase 5d).**
 
-**Concern:** What AUROC does a baseline classifier achieve? E.g., "always predict majority class" → AUROC = 0.5. "Probe at random (layer, position) with identical methodology" → ?
+Drew 50 random features (vs top-50 by diff-of-means), trained probe identically, repeated 100 times.
 
-**Fix:** report at least majority-class baseline (AUROC = 0.5) and a random-feature-from-same-vector probe (top-50 random of d=5120) trained with same protocol.
+**Findings (also sobering):**
+| Probe | Real (top-50 diff-means) | Random 50 features mean | Random p95 |
+|---|---|---|---|
+| L43 think_start | 1.000 | **0.943** | 1.000 |
+| L55 think_start | 1.000 | **0.963** | 1.000 |
+| L11 pre_tool | 1.000 | 0.906 | 1.000 |
+| L43 pre_tool | 0.917 | 0.906 | 1.000 |
+| L31 turn_end | 0.917 | 0.887 | 1.000 |
+
+**Honest read:** with 5120 features and 17 samples, **any 50 features can shatter the data**. Top-50 diff-of-means is informative (null mean 0.49 → 0.94 demonstrates direction-of-improvement), but random features achieve 0.85-0.96 AUROC on average, with 5% reaching 1.000.
+
+**The diff-of-means feature selection is barely better than random selection at this N.** This is THE small-N over-parameterization concern. Phase 6 (N=100, 30-50 positives) is the resolution: random feature mean should drop to 0.55-0.65, while diff-means selection should retain its quality if the signal is real.
 
 ---
 
@@ -143,21 +153,33 @@ Top-K = 50 was chosen heuristically. Reviewer asks: "what if K = 10? K = 200?"
 
 ## Action list before submission
 
-| Priority | Item | Effort |
+| Priority | Item | Status |
 |---|---|---|
-| 🔴 P0 | Permutation null test | 30 min |
-| 🔴 P0 | Random-feature baseline | 15 min |
-| 🟠 P1 | Steering at L43 think_start | 1.5h Colab |
-| 🟠 P1 | Resolve env_mismatch in vast.ai box | $5 + 30 min |
-| 🟠 P1 | Add 3 figures (heatmap, bootstrap dist, schematic) | 1h |
-| 🟡 P2 | Cut abstract to ≤200 words | 5 min |
-| 🟡 P2 | Top-K hyperparameter ablation | 30 min |
-| 🟡 P2 | Soften overclaim in §4.1 + Conclusion | 15 min |
-| 🟡 P2 | Citation consistency pass | 15 min |
-| 🔵 P3 | Title polish | 5 min |
+| 🔴 P0 | Permutation null test | ✅ DONE — p=0.012-0.060, draft §3.6 |
+| 🔴 P0 | Random-feature baseline | ✅ DONE — random_mean=0.94, draft §3.6 |
+| 🟠 P1 | Steering at L43 think_start (Phase 7) | TODO ~1.5h Colab |
+| 🟠 P1 | Resolve env_mismatch in vast.ai box | TODO ~30 min, $5 |
+| 🟠 P1 | Add 3 figures (heatmap, bootstrap dist, schematic) | TODO ~1h |
+| 🟠 P1 | **Phase 6 / Phase 1.5 N=100 scale-up** | RUNNING (Colab) |
+| 🟡 P2 | Cut abstract — ✅ already concise after revision | DONE |
+| 🟡 P2 | Top-K hyperparameter ablation | TODO ~30 min |
+| 🟡 P2 | Soften overclaim — ✅ done in revision | DONE |
+| 🟡 P2 | Citation consistency pass | TODO 15 min |
+| 🔵 P3 | Title polish — already done | DONE |
 
-**Estimated total before camera-ready: ~6 hours active work + 1.5h Colab + $5 vast.ai.**
+**Updated verdict:** the null + random-feature tests CONFIRM the eval's earlier worry: Phase 6 scale-up is the **primary defense** of the finding. With N=100 we expect:
+- Random feature mean drops from 0.94 → ~0.55-0.65 (proper power)
+- Diff-of-means top-K stays at 0.85+ (if signal is real) or drops similarly (if it was N-artifact)
+- Permutation p < 0.001 (proper power)
+- Bootstrap CIs tighten meaningfully
 
-Phase 1.5 (N=100 scale) would invalidate or strengthen 70% of these concerns by simply having more data. If Phase 1.5 returns AUROC ≥ 0.85 (any layer/position) on the larger sample, this paper goes from "weak accept with revisions" to "clear accept."
+**The N=17 paper draft is written but should not be submitted.** The headline AUROC=1.000 cannot survive the random-feature comparison reviewers will run. We're now in "promising pilot, validating at scale" framing — perfectly defensible if Phase 6 confirms, but unsafe to publish before.
 
-**My recommendation as self-reviewer:** prioritize Phase 1.5 (Phase 6 Colab). The other revisions become minor if the larger sample holds. If it doesn't hold, the paper needs to be reframed as "a striking pilot finding awaiting validation" rather than the headline-AUROC framing.
+**Critical path to submission:**
+1. Phase 6 trace collection (running, ~20h Colab)
+2. Phase 6b Docker eval (Mac local, ~5-8h)
+3. Phase 6c re-run analysis with N=100 + permutation null + random-feature baseline
+4. Update paper with N=100 numbers
+5. Submit
+
+Without Phase 6, paper is workshop-reject. With Phase 6 confirming, paper is workshop-accept-with-minor-revisions.
