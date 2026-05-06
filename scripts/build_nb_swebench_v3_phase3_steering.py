@@ -254,7 +254,7 @@ ds = load_dataset('ScaleAI/SWE-bench_Pro', split='test')
 ds_by_iid = {x['instance_id']: dict(x) for x in ds}
 
 # Sort fail iids by Phase 1 wall time descending — pick the ones the agent worked hardest on
-fail_with_walls = [(iid, results[iid].get('wall_seconds', 0)) for iid in fail_iids]
+fail_with_walls = [(iid, results[iid].get('wall_min', 0)) for iid in fail_iids]
 fail_with_walls.sort(key=lambda x: -x[1])
 PICK = [iid for iid, _ in fail_with_walls[:5]]
 fail_instances = []
@@ -266,7 +266,9 @@ for iid in PICK:
 print(f'Picked {len(fail_instances)} fail traces:')
 for inst in fail_instances:
     p1 = results[inst['instance_id']]
-    print(f"  {inst['instance_id'][:60]:60s}  wall={p1[\"wall_seconds\"]/60:.1f}min  turns={p1[\"n_turns\"]}")
+    wall_min = p1.get('wall_min', 0)
+    n_turns = p1.get('n_turns', 0)
+    print(f"  {inst['instance_id'][:60]:60s}  wall={wall_min:.1f}min  turns={n_turns}")
 """),
     code("""
 # 9) Run alpha sweep on each fail trace
