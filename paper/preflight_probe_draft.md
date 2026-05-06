@@ -25,17 +25,17 @@ Several prior works train probes on residual-stream activations to predict model
 
 A natural extension is *pre-action probing*: can we read the model's internal state at the very first token of reasoning to predict the eventual outcome? This question has both engineering value (compute gating) and interpretability value (does the model have implicit self-knowledge of capability?).
 
-We answer affirmatively. **Two probes — one at layer 43, one at layer 55, both at the very first token of the agent's `<think>` block — achieve AUROC = 1.000 on a Docker-validated set of 17 SWE-bench Pro traces, with 95% bootstrap confidence interval [1.000, 1.000] over 1000 stratified resamples and leave-one-repository-out cross-validation also returning 1.000 across all three held-out codebases.**
+We report a *pilot finding* in this direction: probes at L43/L55 think_start and L11 pre_tool achieve AUROC = 1.000 on a Docker-validated set of 17 SWE-bench Pro traces, with permutation null p ∈ [0.012, 0.020] (1000 label shuffles, top-50 features by diff-of-means). The signal is statistically distinguishable from chance, but the small evaluable sample (N=17, 4 strict positives) admits a high random-feature baseline (mean AUROC 0.94 with top-50 *random* features), indicating the data permits over-parameterization. We therefore do not claim a deployable detector.
 
 Our contributions:
 
 1. **Method.** A custom agent harness (transformers direct, decision-point activation capture at five layers × five trace positions) producing 12k bf16 capture vectors over 20 SWE-bench Pro problems.
 2. **Ground-truth labels.** Docker evaluation against the official `jefzda/sweap-images` harness, distinguishing genuine fixes from coherent-looking but ineffective patches.
-3. **Pre-flight probe finding.** Multiple converging (layer, position) configurations achieve AUROC = 1.000 with tight bootstrap CI and perfect cross-repository generalization.
-4. **Steering counterexample.** Causal intervention along the probe direction in failing traces *induces output patches but not correct fixes*, demonstrating the probe captures a pre-existing capability axis rather than a free-floating "edit volume" feature.
-5. **Honest small-N caveat.** N=17 evaluable instances (4 strict positives, 5 with partials). We frame the finding as a high-confidence pilot pending Phase 1.5 scale-up to N≥100.
+3. **Pilot probe finding.** Multiple (layer, position) configurations exceed permutation null at p < 0.05; diff-of-means feature selection moves null mean from 0.49 to 0.94 — a real but small effect under N=17 over-parameterization regime.
+4. **Steering counterexample.** Causal intervention along an L31 turn_end direction in failing traces *induces output patches but not correct fixes* (0/4 pass under Docker eval), dissociating probe-as-detector from probe-as-driver.
+5. **Honest small-N framing.** N=17 evaluable instances (4 strict positives). A Phase 1.5 trace collection at N=100 is in progress — the random-feature baseline is the diagnostic that will distinguish a genuine pre-flight signal from a small-N artifact.
 
-The work is the first published pre-flight detection of agent task capability via internal-state probes on a near-frontier open-weights reasoning model.
+The contribution is methodological (an end-to-end pipeline for pre-flight probe testing on Docker-validated agent labels) and a starting point for scaled investigation, not a settled empirical claim.
 
 ---
 
