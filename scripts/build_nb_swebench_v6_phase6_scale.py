@@ -50,11 +50,31 @@ proper statistical power. Expected outcome:
 batches of 25 problems over 2-3 days.
 """),
     code("""
-# 1) Install — same stack as Phase 1
+# 0) GPU pre-flight — ABORT if not RTX 6000 / ≥48GB
+import subprocess, sys
+out = subprocess.run(['nvidia-smi', '--query-gpu=name,memory.total,driver_version', '--format=csv,noheader'],
+                     capture_output=True, text=True).stdout.strip()
+print(f'GPU: {out}')
+mem_mib = int(out.split(',')[1].strip().split()[0])
+mem_gb = mem_mib / 1024
+print(f'VRAM: {mem_gb:.1f} GB')
+assert mem_gb >= 47, f'Need ≥48GB. Got {mem_gb:.1f}GB. Switch runtime to RTX 6000 / A100-80 / L40S.'
+"""),
+    code("""
+# 1) Install — fla MUST be present BEFORE model load (else GDN fallback = 10× slower)
 !pip install -q -U transformers
 !pip install -q datasets safetensors pexpect huggingface-hub
 !pip install -q flash-linear-attention causal-conv1d --no-build-isolation 2>&1 | tail -3
 !pip install -q flash-attn --no-build-isolation 2>/dev/null && echo 'flash-attn ok' || echo 'flash-attn unavailable, will use sdpa'
+
+# Sanity check: fla import must succeed BEFORE we load the model
+import importlib
+for pkg in ['fla', 'causal_conv1d']:
+    try:
+        importlib.import_module(pkg)
+        print(f'  {pkg}: OK')
+    except ImportError as e:
+        raise SystemExit(f'BLOCKING: {pkg} not importable — {e}. Restart runtime + rerun this cell BEFORE model load.')
 """),
     code("""
 # 2) Drive mount
@@ -95,7 +115,7 @@ print(f'max_turns={cfg.max_turns}  bash_max_output={cfg.bash_max_output_bytes}')
 print(f'capture_layers={cfg.capture_layers}')
 """),
     code("""
-# 5) Load Qwen3.6-27B (same as Phase 1)
+# 5) Load Qwen3.6-27B — single GPU, NO offload (key fix vs prior run)
 import torch
 from transformers import AutoModelForCausalLM, AutoTokenizer
 
@@ -111,14 +131,25 @@ try:
     import fla, causal_conv1d  # noqa
     print('GDN fast path: AVAILABLE')
 except ImportError as e:
-    print(f'WARN GDN fast path missing: {e}')
+    raise SystemExit(f'BLOCKING: fla/causal_conv1d missing — {e}. Re-run cell 1 + restart runtime.')
 
+# device_map={'':0} forces ALL params onto cuda:0. NEVER use 'auto' (creates meta/CPU offload
+# that kills throughput — first attempt hit 1h30 per problem from CPU↔GPU swap).
 model = AutoModelForCausalLM.from_pretrained(
     MODEL, dtype=torch.bfloat16, attn_implementation=attn_impl,
-    device_map='auto', trust_remote_code=True,
+    device_map={'': 0}, trust_remote_code=True,
 )
 model.eval()
+
+# Verify NO param on meta/CPU (catches silent offload before loop wastes wall-time)
+bad = [(n, str(p.device)) for n, p in model.named_parameters() if p.device.type != 'cuda']
+if bad:
+    print(f'BAD: {len(bad)} params not on cuda. First 5:')
+    for n, d in bad[:5]: print(f'  {n}: {d}')
+    raise SystemExit('Aborting — would cause CPU-offload slowdown.')
+print(f'OK: all {sum(1 for _ in model.parameters())} params on cuda')
 print(f'Model: {sum(p.numel() for p in model.parameters())/1e9:.2f}B params')
+print(f'VRAM used: {torch.cuda.memory_allocated()/1024**3:.1f} GB')
 """),
     code("""
 # 6) Stratified sample of 100 Python problems (excluding Phase 1's 20 to avoid double-count)
