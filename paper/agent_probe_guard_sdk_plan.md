@@ -2,7 +2,7 @@
 
 Drop-in pre-flight gate for code agents. Reads internal activations at the first reasoning token, predicts whether the agent's trace will succeed, returns a verdict before any tool call is spent.
 
-**Status**: pending Phase 6 N=99 validation. **v4 update (2026-05-07)**: lead probe pivots to **L43 pre_tool with K=10 features** (gap +0.269 above random at N=42, methodology sweep). Original "L43 think_start K=50" was N-artifact — see eval v4. Latency profile changes accordingly: ~5-30s gate at reasoning→action boundary, NOT ~200ms pre-flight gate. Ship gate now AUROC ≥ 0.70 with random-feature gap ≥ 0.15 at N=99.
+**Status**: pending Phase 6 N=99 validation. **v5 update (2026-05-07)**: probe is **detection-only, confirmed non-causal via three convergent experiments** (log-prob proxy, single-shot behavioral steering, continuous behavioral steering — see eval v5). v0.1 ships WITHOUT "boost mode"; only skip/escalate/proceed gating based on probe score. README copy: "reads the model's mid-reasoning capability assessment; does not modify behavior". Lead probe: **L43 pre_tool, K=10 features**. Latency ~5-30s. Ship gate: AUROC ≥ 0.70, random-feature gap ≥ 0.15 at N=99.
 
 ---
 
