@@ -143,41 +143,48 @@ def select_test_traces(verdicts, scores, n_fails=5, n_solves=3):
     return [iid for iid, _ in fails[:n_fails]] + [iid for iid, _ in solves[:n_solves]]
 
 
-def reconstruct_prompt_up_to_pre_tool(trace_path, tokenizer):
-    """Replay the trace JSON to get the prompt token IDs ending at pre_tool position
-    of the FIRST tool call in the FIRST turn. Returns input_ids (1, T) tensor."""
+def reconstruct_input_ids_at_pre_tool(trace_path, instance, tokenizer, system_prompt):
+    """Rebuild the chat-template input_ids ending exactly at the first <tool_call>
+    of turn 0. Uses the harness's render_problem to match runner.py exactly.
+
+    Returns torch.LongTensor of shape (1, T) or None if no tool_call found.
+    """
     with open(trace_path) as f:
         d = json.load(f)
     if not d.get('turns'):
-        return None, None
+        return None
     turn0 = d['turns'][0]
-    # The captured prompt_tokens for turn 0 represents what the model saw
-    # before generating turn 0. Add the model's thinking + the start of first
-    # tool call to get up to pre_tool position.
-    prompt_tokens = turn0.get('prompt_tokens', 0)
     raw = turn0.get('raw_response', '')
-    # Use raw response up to first <tool_call> to define pre_tool position
-    if '<tool_call>' in raw:
-        prefix = raw.split('<tool_call>')[0] + '<tool_call>'
-    else:
-        return None, None
-    # We need the tokenizer to actually rebuild the prompt; for the pilot we use
-    # the captured input_ids if available; otherwise rebuild via decode/encode.
-    # Simplification: re-encode the prefix.
-    # NOTE: this assumes the trace's raw_response is decodable cleanly.
-    full_text_at_pre_tool = raw[:raw.index('<tool_call>') + len('<tool_call>')]
-    # We rebuild a chat-template string up to that point. For Qwen3.6 chat template
-    # we need the system+user portion (lost in the trace JSON, must be rebuilt
-    # from instance metadata). For pilot we approximate by treating the whole
-    # raw_response prefix as the assistant content.
-    return full_text_at_pre_tool, len(full_text_at_pre_tool)
+    if '<tool_call>' not in raw:
+        return None
+    assistant_prefix = raw[:raw.index('<tool_call>') + len('<tool_call>')]
+
+    # Match agent/loop.py and agent/prompts.py
+    repo = instance.get('repo', '<unknown>')
+    issue_title = instance.get('issue_title') or instance.get('problem_statement_title') or ''
+    problem = instance.get('problem_statement', '')
+    base_commit = instance.get('base_commit', '<unknown>')
+    problem_message = (
+        f"# Repository\n{repo} @ {base_commit}\n\n"
+        f"# Working directory\n/workspace\n\n"
+        f"# Issue\n{issue_title}\n\n{problem}\n\n"
+        f"Resolve the issue. The repository is already cloned and checked out at the working directory."
+    )
+    messages = [
+        {'role': 'system', 'content': system_prompt},
+        {'role': 'user', 'content': problem_message},
+    ]
+    base_text = tokenizer.apply_chat_template(messages, tokenize=False, add_generation_prompt=True)
+    full_text = base_text + assistant_prefix
+    ids = tokenizer(full_text, return_tensors='pt', add_special_tokens=False).input_ids
+    return ids
 
 
-def measure_logprob_shift(model, tokenizer, prompt_text, direction_t, alphas, device):
-    """For a single prompt, measure log-prob of finish vs other tool tokens
-    under different α modifications at L43 pre_tool position."""
-    # Simplistic version: feed prompt + measure next-token log-prob distributions
-    inputs = tokenizer(prompt_text, return_tensors='pt').to(device)
+def measure_logprob_shift(model, input_ids, direction_t, alphas, device, tokenizer):
+    """For a single input_ids (built by reconstruct_input_ids_at_pre_tool),
+    measure log-prob of finish vs other tool tokens under different α modifications
+    at L43 pre_tool position (= last token of input_ids)."""
+    inputs = {'input_ids': input_ids.to(device), 'attention_mask': torch.ones_like(input_ids).to(device)}
     target_token_strs = ['finish', 'search', 'execute', 'write', 'read', 'wait']
     target_token_ids = []
     for s in target_token_strs:
@@ -259,6 +266,20 @@ def main():
     direction_t = torch.from_numpy(direction_np).to(device).to(torch.bfloat16)
     print(f'Model loaded: {sum(p.numel() for p in model.parameters())/1e9:.2f}B params')
 
+    # Load dataset for prompt reconstruction
+    print('\nLoading SWE-bench Pro dataset...')
+    from datasets import load_dataset
+    ds = load_dataset('ScaleAI/SWE-bench_Pro', split='test')
+    ds_by_iid = {x['instance_id']: x for x in ds}
+
+    # Need system prompt
+    sys.path.insert(0, '/content/openinterp-swebench-harness')
+    try:
+        from agent.prompts import SYSTEM_PROMPT
+    except ImportError:
+        sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+        from agent.prompts import SYSTEM_PROMPT
+
     # Measure log-prob shifts
     all_results = {}
     for iid in test_iids:
@@ -272,14 +293,19 @@ def main():
             continue
         trace_path = trace_glob[0]
 
-        prompt_text, _ = reconstruct_prompt_up_to_pre_tool(trace_path, tok)
-        if prompt_text is None:
+        instance = ds_by_iid.get(iid)
+        if instance is None:
+            print(f'  INSTANCE NOT IN DATASET: {iid[:60]}')
+            continue
+
+        input_ids = reconstruct_input_ids_at_pre_tool(trace_path, instance, tok, SYSTEM_PROMPT)
+        if input_ids is None:
             print(f'  NO TOOL CALL FOUND: {iid[:60]}')
             continue
 
-        print(f'\n--- {iid[:60]} ({verdicts[iid]}) ---')
+        print(f'\n--- {iid[:60]} ({verdicts[iid]}) input_ids shape={input_ids.shape} ---')
         try:
-            results = measure_logprob_shift(model, tok, prompt_text, direction_t, args.alphas, device)
+            results = measure_logprob_shift(model, input_ids, direction_t, args.alphas, device, tok)
             all_results[iid] = {
                 'verdict': verdicts[iid],
                 'probe_score': iid_to_score.get(iid),
