@@ -193,15 +193,25 @@ def measure_logprob_shift(model, input_ids, direction_t, alphas, device, tokeniz
         if ids:
             target_token_ids.append((s, ids[0]))
 
-    # Hook the L43 output, capture for α=0, then add α * direction at last position
-    captured = {}
+    # Hook the L43 output, add α * direction at last position
     def make_hook(alpha):
         def hook(module, inp, out):
-            # out is tuple from transformer block; out[0] is hidden states (B, T, D)
-            h = out[0]
-            modified = h.clone()
-            modified[:, -1, :] = h[:, -1, :] + alpha * direction_t
-            return (modified,) + out[1:]
+            # out can be tensor or tuple. Hidden states shape (B,T,D) or (T,D).
+            if isinstance(out, tuple):
+                h = out[0]
+                modified = h.clone()
+                if modified.dim() == 3:
+                    modified[:, -1, :] = h[:, -1, :] + alpha * direction_t
+                else:  # 2D
+                    modified[-1, :] = h[-1, :] + alpha * direction_t
+                return (modified,) + out[1:]
+            else:
+                modified = out.clone()
+                if modified.dim() == 3:
+                    modified[:, -1, :] = out[:, -1, :] + alpha * direction_t
+                else:  # 2D
+                    modified[-1, :] = out[-1, :] + alpha * direction_t
+                return modified
         return hook
 
     results_per_alpha = {}
@@ -284,15 +294,18 @@ def main():
     # Measure log-prob shifts
     all_results = {}
     for iid in test_iids:
-        # Find the trace file
-        trace_root = P6 / 'traces'
-        if not trace_root.exists():
-            trace_root = P1 / 'traces'
-        trace_glob = list(trace_root.glob(f'{iid}*.json'))
-        if not trace_glob:
+        # Find trace file in either Phase 6 or Phase 1
+        trace_path = None
+        for trace_root in [P6 / 'traces', P1 / 'traces']:
+            if not trace_root.exists():
+                continue
+            trace_glob = list(trace_root.glob(f'{iid}*.json'))
+            if trace_glob:
+                trace_path = trace_glob[0]
+                break
+        if trace_path is None:
             print(f'  TRACE MISSING: {iid[:60]}')
             continue
-        trace_path = trace_glob[0]
 
         instance = ds_by_iid.get(iid)
         if instance is None:
