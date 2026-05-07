@@ -21,6 +21,8 @@ from sklearn.metrics import roc_auc_score
 from sklearn.preprocessing import StandardScaler
 
 DRIVE = Path('/Users/caiovicentino/Library/CloudStorage/GoogleDrive-caiosanford@gmail.com/Meu Drive/openinterp_runs')
+P1 = DRIVE / 'swebench_v1_phase1'
+P5 = DRIVE / 'swebench_v5_phase5'
 P6 = DRIVE / 'swebench_v6_phase6'
 P6B = P6 / 'phase6b'
 OUT = P6 / 'phase6c_preview.json'
@@ -62,22 +64,32 @@ def true_y(verdict: str, loose: bool = False) -> int | None:
     return 0
 
 
-def load_pos_mean(iid: str, layer: int, position: str) -> np.ndarray | None:
-    captures = P6 / 'captures'
-    meta_glob = list(captures.glob(f'{iid}*.meta.json'))
-    if not meta_glob:
-        return None
-    meta_path = meta_glob[0]
-    weights = meta_path.with_suffix('').with_suffix('.safetensors')
-    if not weights.exists():
-        return None
-    m = json.loads(meta_path.read_text())
-    t = load_file(str(weights))
-    vecs = [t[r['activation_key']].to(torch.float32).numpy()
-            for r in m['records']
-            if r['layer'] == layer and r['position_label'] == position
-            and r['activation_key'] in t]
-    return np.mean(np.stack(vecs, axis=0), axis=0) if vecs else None
+def load_pos_mean(iid: str, layer: int, position: str, captures_root: Path | None = None) -> np.ndarray | None:
+    """Load mean activation for (iid, layer, position) from captures/ dir.
+
+    Searches Phase 6 by default, falls back to Phase 1 if not found, so a single
+    iid lookup transparently spans both datasets.
+    """
+    roots = [captures_root] if captures_root else [P6 / 'captures', P1 / 'captures']
+    for root in roots:
+        if not root.exists():
+            continue
+        meta_glob = list(root.glob(f'{iid}*.meta.json'))
+        if not meta_glob:
+            continue
+        meta_path = meta_glob[0]
+        weights = meta_path.with_suffix('').with_suffix('.safetensors')
+        if not weights.exists():
+            continue
+        m = json.loads(meta_path.read_text())
+        t = load_file(str(weights))
+        vecs = [t[r['activation_key']].to(torch.float32).numpy()
+                for r in m['records']
+                if r['layer'] == layer and r['position_label'] == position
+                and r['activation_key'] in t]
+        if vecs:
+            return np.mean(np.stack(vecs, axis=0), axis=0)
+    return None
 
 
 def cv_auroc(X: np.ndarray, y: np.ndarray, top_k: int = 50, n_splits: int = 4, seed: int = 42) -> float:
@@ -121,6 +133,13 @@ def bootstrap_auroc(X: np.ndarray, y: np.ndarray, n_iter: int = 1000, seed: int 
 
 
 def main() -> None:
+    import argparse
+    ap = argparse.ArgumentParser()
+    ap.add_argument('--merge-phase1', action='store_true',
+                    help='Merge Phase 1 (N=20) verdicts with Phase 6 (in-progress) — '
+                         'gives larger N for preview AUROC while Phase 6 finishes.')
+    args = ap.parse_args()
+
     p6_results_path = P6 / 'phase6_results.json'
     p6b_results_path = P6B / 'phase6b_results.json'
 
@@ -133,6 +152,21 @@ def main() -> None:
     p6b = json.loads(p6b_results_path.read_text())
 
     verdicts = {iid: classify(r) for iid, r in p6b.items()}
+
+    # Optionally merge Phase 1 verdicts (different captures dir but same iid/layer/position protocol)
+    if args.merge_phase1:
+        phase5a_path = P5 / 'phase5a_results.json'
+        if phase5a_path.exists():
+            p5a = json.loads(phase5a_path.read_text())
+            p1_verdicts = {iid: classify(r) for iid, r in p5a.items()}
+            n_added = 0
+            for iid, v in p1_verdicts.items():
+                if iid not in verdicts:
+                    verdicts[iid] = v
+                    n_added += 1
+            print(f'Merged Phase 1: added {n_added} more labeled instances (Phase 1 N={len(p1_verdicts)})')
+        else:
+            print(f'WARN --merge-phase1 requested but {phase5a_path} not found')
     from collections import Counter
     dist = Counter(verdicts.values())
     print(f'\n=== Phase 6c PREVIEW (N={len(p6b)} labeled, Phase 6 progress: {len(p6)}) ===')
