@@ -179,7 +179,8 @@ print(f'RG keys: {list(rg_bundle.keys())}')
 
 # Extract probe direction in raw residual space
 def extract_direction(bundle):
-    clf = bundle.get('clf') or bundle.get('classifier') or bundle.get('model')
+    clf = (bundle.get('probe') or bundle.get('clf')
+           or bundle.get('classifier') or bundle.get('model'))
     coef = clf.coef_.ravel().astype(np.float32)
     sc = bundle.get('scaler') or bundle.get('sc')
     if sc is not None:
