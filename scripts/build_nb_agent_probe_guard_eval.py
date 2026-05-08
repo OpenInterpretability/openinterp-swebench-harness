@@ -64,9 +64,9 @@ import os; os.makedirs(DRIVE_ROOT, exist_ok=True)
 """),
 
     code("""
-# 1) Install openinterp v0.3.0 from PyPI + Qwen3.6 deps
+# 1) Install openinterp v0.3.0 + transformers from source (Qwen3.6 needs unreleased qwen3_5 architecture)
 !pip install -q --upgrade "openinterp[full]"
-!pip install -q transformers safetensors
+!pip install -q --upgrade git+https://github.com/huggingface/transformers.git safetensors 2>&1 | tail -3
 
 # Qwen3.6 GDN/standard hybrid attention deps (skip if already installed)
 import importlib
@@ -75,6 +75,10 @@ try:
     print('fla already installed')
 except ImportError:
     !pip install -q flash-linear-attention causal-conv1d --no-build-isolation 2>&1 | tail -3
+
+# IMPORTANT: restart runtime if transformers was just upgraded so the new version is picked up
+import transformers
+print(f'transformers v{transformers.__version__}')
 
 import openinterp
 print(f'openinterp v{openinterp.__version__}')
