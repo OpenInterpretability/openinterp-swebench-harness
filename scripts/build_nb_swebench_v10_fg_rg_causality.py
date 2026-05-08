@@ -193,10 +193,18 @@ rg_direction = extract_direction(rg_bundle)
 print(f'FG direction shape: {fg_direction.shape}, norm: {np.linalg.norm(fg_direction):.4f}')
 print(f'RG direction shape: {rg_direction.shape}, norm: {np.linalg.norm(rg_direction):.4f}')
 
-# Probe metadata for verdict context
-fg_layer = fg_bundle.get('layer', 31)
+# Probe metadata for verdict context — coerce 'L31' / 'layer_31' / 31 → int
+def coerce_layer(val, default):
+    if isinstance(val, int):
+        return val
+    if isinstance(val, str):
+        digits = ''.join(c for c in val if c.isdigit())
+        return int(digits) if digits else default
+    return default
+
+fg_layer = coerce_layer(fg_bundle.get('layer'), 31)
 fg_position = fg_bundle.get('position', 'end_of_think')
-rg_layer = rg_bundle.get('layer', 55)
+rg_layer = coerce_layer(rg_bundle.get('layer'), 55)
 rg_position = rg_bundle.get('position', 'mid_think')
 print(f'FG: L{fg_layer} {fg_position}')
 print(f'RG: L{rg_layer} {rg_position}')
