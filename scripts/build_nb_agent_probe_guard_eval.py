@@ -64,28 +64,32 @@ import os; os.makedirs(DRIVE_ROOT, exist_ok=True)
 """),
 
     code("""
-# 1) Install openinterp v0.3.0 + transformers latest (Qwen3.6 needs >=5.0 for qwen3_5 architecture)
-import importlib, sys
+# 1) Install transformers from git+source (Qwen3.6 model_type=qwen3_5 not yet in PyPI stable)
+# Then auto-restart runtime so the new version loads cleanly.
+import os, sys, importlib
 
-# Force purge cached transformers if any was already imported (otherwise old version sticks around)
-for mod in list(sys.modules):
-    if mod.startswith('transformers') or mod.startswith('openinterp'):
-        del sys.modules[mod]
+# Detect whether we already have qwen3_5 support — skip restart if so
+try:
+    from transformers.models.auto.configuration_auto import CONFIG_MAPPING_NAMES
+    has_qwen35 = 'qwen3_5' in CONFIG_MAPPING_NAMES
+except Exception:
+    has_qwen35 = False
 
-!pip install -q --upgrade "openinterp[full]" 2>&1 | tail -3
-!pip install -q --upgrade transformers safetensors 2>&1 | tail -3
-
-# Verify version meets Qwen3.6 requirements
-import transformers
-ver = tuple(int(x) for x in transformers.__version__.split('.')[:2])
-print(f'transformers v{transformers.__version__}')
-if ver < (5, 0):
-    print('WARNING: transformers <5.0 may not recognize qwen3_5. Trying git+source as fallback.')
+if not has_qwen35:
+    print('Installing transformers from git+source (qwen3_5 not in current CONFIG_MAPPING)...')
     !pip install -q --upgrade git+https://github.com/huggingface/transformers.git 2>&1 | tail -3
-    # Force kernel restart to pick up new version
-    print('\\n⚠️  RESTARTING RUNTIME so new transformers loads. Re-run all cells from top after restart.')
-    import os
+    !pip install -q --upgrade "openinterp[full]" safetensors 2>&1 | tail -3
+    print('\\n' + '='*60)
+    print('⚠️  RESTARTING RUNTIME (auto). After restart: re-run cells from top.')
+    print('   You will see "Your session crashed" — that is expected.')
+    print('='*60)
     os.kill(os.getpid(), 9)
+
+# We get here only if qwen3_5 was already supported
+print(f'qwen3_5 supported in CONFIG_MAPPING ✓')
+
+import transformers
+print(f'transformers v{transformers.__version__}')
 
 # Qwen3.6 GDN/standard hybrid attention deps
 try:
