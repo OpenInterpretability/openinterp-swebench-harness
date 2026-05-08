@@ -435,7 +435,51 @@ future probe-causality work.
 
 For reference, a single Docker SWE-bench Pro eval on 100 traces is ~$15.
 
-## Appendix C. Threats to validity
+## Appendix C. Cross-environment probe transfer
+
+A v0.1 SDK eval on a fresh Colab session (Qwen3.6-27B without `flash-attn`
+or `flash-linear-attention` available) revealed that probe weights are
+**coupled to the inference environment** they were captured in. Concretely:
+
+| Layer | nb47b residual ‖·‖ (L2) | fresh-Colab residual ‖·‖ | cosine(nb47b, fresh) |
+|---|---|---|---|
+| L43 last-position | 98.2 | 81.5 | 0.79 |
+| L55 last-position | 165.4 | 161.1 | **0.35** |
+
+For the same prompt and same released model checkpoint, the L55 last-position
+residual differs in *direction* between environments (cosine 0.35), with
+similar L2 norm. The L43 residual is closer (cosine 0.79) but still
+significantly off. This is consistent with how Qwen3.6's hybrid attention
+implementation falls back to a torch reference path when fla / flash kernels
+are missing — producing numerically different but semantically equivalent
+forward passes.
+
+Concrete impact on shipped probes:
+
+| Probe | nb47b env AUROC | fresh-Colab env AUROC | Drop |
+|---|---|---|---|
+| L55 thinking | 0.848 | **0.559** (loaded weights) / **0.791** (refit) | -28.9pp / -5.7pp |
+| L43 capability | 0.830 | **0.759** (loaded weights) / **0.806** (refit) | -7.1pp / -2.4pp |
+
+Loading the original probe weights and running them on fresh-Colab residuals
+collapses the L55 AUROC to 0.56 (essentially random). However, **re-fitting
+the same top-K diff-of-means probe on 240 fresh-Colab captures recovers the
+signal**: thinking 0.79, capability 0.81, both above the +0.10 paper-grade
+threshold against random K-matched baselines.
+
+**Conclusion**: the underlying signal is real and transferable across
+environments; the *coordinate-level weights* are not. We document this as a
+caveat for any deployed probe SDK and ship `AgentProbeGuard.refit(prompts,
+labels)` (PyPI ≥ 0.3.1) as a one-call remediation that captures fresh
+activations on the user's own model and re-fits both top-K probes.
+
+This matches the broader observation that linear probes can transfer across
+fine-tuning checkpoints (Belrose et al.) but require recalibration when the
+forward pass numerics change — even at the same model identity.
+
+---
+
+## Appendix D. Threats to validity
 
 **Selection effects in N=54**: Phase 1 stratification was over Python repos,
 not over solve-difficulty. The probe may track repo-specific features rather
