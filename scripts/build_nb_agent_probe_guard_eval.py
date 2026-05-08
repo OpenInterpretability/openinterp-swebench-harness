@@ -64,21 +64,35 @@ import os; os.makedirs(DRIVE_ROOT, exist_ok=True)
 """),
 
     code("""
-# 1) Install openinterp v0.3.0 + transformers from source (Qwen3.6 needs unreleased qwen3_5 architecture)
-!pip install -q --upgrade "openinterp[full]"
-!pip install -q --upgrade git+https://github.com/huggingface/transformers.git safetensors 2>&1 | tail -3
+# 1) Install openinterp v0.3.0 + transformers latest (Qwen3.6 needs >=5.0 for qwen3_5 architecture)
+import importlib, sys
 
-# Qwen3.6 GDN/standard hybrid attention deps (skip if already installed)
-import importlib
+# Force purge cached transformers if any was already imported (otherwise old version sticks around)
+for mod in list(sys.modules):
+    if mod.startswith('transformers') or mod.startswith('openinterp'):
+        del sys.modules[mod]
+
+!pip install -q --upgrade "openinterp[full]" 2>&1 | tail -3
+!pip install -q --upgrade transformers safetensors 2>&1 | tail -3
+
+# Verify version meets Qwen3.6 requirements
+import transformers
+ver = tuple(int(x) for x in transformers.__version__.split('.')[:2])
+print(f'transformers v{transformers.__version__}')
+if ver < (5, 0):
+    print('WARNING: transformers <5.0 may not recognize qwen3_5. Trying git+source as fallback.')
+    !pip install -q --upgrade git+https://github.com/huggingface/transformers.git 2>&1 | tail -3
+    # Force kernel restart to pick up new version
+    print('\\n⚠️  RESTARTING RUNTIME so new transformers loads. Re-run all cells from top after restart.')
+    import os
+    os.kill(os.getpid(), 9)
+
+# Qwen3.6 GDN/standard hybrid attention deps
 try:
     importlib.import_module('fla')
     print('fla already installed')
 except ImportError:
     !pip install -q flash-linear-attention causal-conv1d --no-build-isolation 2>&1 | tail -3
-
-# IMPORTANT: restart runtime if transformers was just upgraded so the new version is picked up
-import transformers
-print(f'transformers v{transformers.__version__}')
 
 import openinterp
 print(f'openinterp v{openinterp.__version__}')
