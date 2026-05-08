@@ -427,7 +427,7 @@ for i, pr in enumerate(fg_prompts[:SMOKE_N]):
                 'target_logprob': target_lp,
                 'control_mean_logprob': ctrl_mean_lp,
                 'control_logprobs': ctrl_lps,
-                'flipped_vs_baseline': r['new_text'] != base_res['new_text'],
+                'flipped_vs_baseline': r['new_text'].strip() != base_res['new_text'].strip(),
             })
     fg_results.append(prompt_results)
     print(f'  FG [{i+1}/{SMOKE_N}] {pr[\"question\"][:60]!r}... target=\"{target_token_str}\"  elapsed {(time.time()-t0)/60:.1f}min')
@@ -534,7 +534,7 @@ for i, pr in enumerate(rg_prompts[:SMOKE_N]):
                 'new_text': r['new_text'],
                 'target_logprob': target_lp,
                 'control_mean_logprob': ctrl_mean_lp,
-                'flipped_vs_baseline': r['new_text'] != base_res['new_text'],
+                'flipped_vs_baseline': r['new_text'].strip() != base_res['new_text'].strip(),
             })
     rg_results.append(prompt_results)
     print(f'  RG [{i+1}/{SMOKE_N}] {pr[\"question\"][:60]!r}... target=\"{target_token_str}\"  elapsed {(time.time()-t0)/60:.1f}min')
@@ -595,7 +595,7 @@ if RUN_FULL:
                     'new_text': r['new_text'][:200],
                     'target_logprob': target_lp,
                     'control_mean_logprob': ctrl_mean_lp,
-                    'flipped_vs_baseline': r['new_text'] != base_res['new_text'],
+                    'flipped_vs_baseline': r['new_text'].strip() != base_res['new_text'].strip(),
                 })
         fg_full.append(prompt_results)
         if (i + 1) % 10 == 0:
@@ -644,7 +644,7 @@ if RUN_FULL:
                     'new_text': r['new_text'][:200],
                     'target_logprob': target_lp,
                     'control_mean_logprob': ctrl_mean_lp,
-                    'flipped_vs_baseline': r['new_text'] != base_res['new_text'],
+                    'flipped_vs_baseline': r['new_text'].strip() != base_res['new_text'].strip(),
                 })
         rg_full.append(prompt_results)
         if (i + 1) % 10 == 0:
