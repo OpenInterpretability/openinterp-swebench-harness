@@ -1,0 +1,65 @@
+{
+  "name": "agent-probe-guard-qwen36-27b",
+  "version": "0.1.0",
+  "license": "apache-2.0",
+  "model": "Qwen/Qwen3.6-27B",
+  "created_at": "2026-05-08T03:12:59.835940+00:00",
+  "thinking": {
+    "layer": 55,
+    "position": "last_prompt_token",
+    "capacity_K": 5,
+    "method": "top-K diff-of-means + LogisticRegression",
+    "dims": [
+      3994,
+      4303,
+      310,
+      5050,
+      2560
+    ],
+    "cv_auroc": 0.8479027327066542,
+    "n": 240,
+    "random_K_baseline": 0.701,
+    "gap_vs_random": 0.1469,
+    "source": "Phase 8 redux random-K-matched (eval v6 \u00a7D.5)"
+  },
+  "capability": {
+    "layer": 43,
+    "position": "pre_tool",
+    "capacity_K": 10,
+    "method": "top-K diff-of-means + LogisticRegression",
+    "dims": [
+      3994,
+      310,
+      1599,
+      2077,
+      1150,
+      1546,
+      1149,
+      1890,
+      4781,
+      2862
+    ],
+    "cv_auroc": 0.829860952409972,
+    "n": 240,
+    "random_K_baseline": 0.749,
+    "gap_vs_random": 0.0809,
+    "source": "Phase 6c methodology sweep (eval v4)",
+    "note": null
+  },
+  "thresholds": {
+    "skip_below": 0.2,
+    "escalate_below": 0.5,
+    "thinking_low": 0.3
+  },
+  "sanity_checks": [
+    "random-feature baseline at small N (paper \u00a73.1)",
+    "control-token normalization for steering (paper \u00a73.2)",
+    "structural-rigidity \u03b1-sweep diagnostic (paper \u00a73.3)"
+  ],
+  "causal_status": "detect-only \u2014 confirmed across 3 intervention experiments (Phase 7 + Phase 8 + Phase 8 redux)",
+  "reproduction": {
+    "harness_repo": "https://github.com/OpenInterpretability/openinterp-swebench-harness",
+    "sdk_repo": "https://github.com/OpenInterpretability/cli",
+    "paper": "paper/two_forms_epiphenomenal_probes_neurips_mi_2026.md"
+  }
+}
