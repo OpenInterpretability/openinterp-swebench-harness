@@ -160,7 +160,69 @@ Crosscoder shared | L13 cosine 0.965 | per-feat varies | LOCUS DECOUPLED ✓
 
 ---
 
-## G. Compute estimate (paper-5 core experiments)
+## G+. Phase 10 results (2026-05-08) — FG/RG causality test, N=50
+
+Updated empirical inventory after running causality protocol on FG (L31 end_of_think) and RG (L55 mid_think). Both probes were used as the DPO reward signal in paper-2. First time tested causally.
+
+### G+.1 RG L55 mid_think — first lever finding (weak threshold)
+
+| α | probe flip% (N=50) | random flip% (N=50) | gap |
+|---|---|---|---|
+| -200 | 2% | 4% | -2 |
+| -100..0..+100 | 0-2% | 0-2% | 0 |
+| **+200** | **32%** (16/50) | **2%** (1/50) | **+30pp** |
+
+Properties:
+- **Direction-specific**: random control flat (0-4%) across all α including +200. Probe flip at α=+200 is 16× random.
+- **Asymmetric**: pushup only (α=+200=32%); pushdown null (α=-200=2%).
+- **Sharp threshold**: 0% at α=+100, jump to 32% at α=+200. No gradient.
+- **Partial**: 32% means probe direction levers 1/3 of prompts. Other 2/3 unchanged.
+- **Statistical**: binomial 16/50 vs 1/50 → p ≪ 1e-5.
+
+Verdict: **first lever in our portfolio**, but weak (32% not 80-100%) and only at high α. Not a clean causal direction; partial intersection with the actual causal axis.
+
+### G+.2 FG L31 end_of_think — pure epiphenomenal (4th confirmed)
+
+| α | probe flip% | random flip% | gap |
+|---|---|---|---|
+| -200 | 46% | 38% | +8 |
+| -100 | 36% | 38% | -2 |
+| ±5..±20 | 4-12% | 4-12% | ~0 |
+| +200 | 44% | **58%** | **-14** |
+
+Probe direction's behavioral effect statistically indistinguishable from random direction. At α=+200, random actually exceeds probe. L31 layer is "fragile" (any direction perturbs it equally at α≥±50). Joins L43 capability and L55 thinking last_prompt as 4th confirmed epiphenomenal probe.
+
+### G+.3 Refined paper-5 taxonomy (3 empirical classes, 4/4 probes mapped)
+
+| Class | Examples (this paper) | Mechanism |
+|---|---|---|
+| 1. Surface softmax-temp | L43 capability (Phase 7) | uniform shift; Δrel ≈ 0 |
+| 2. Template-lock categorical | L55 thinking last_prompt (Phase 8) + FG L31 end_of_think (Phase 10) | decision in input/template; OR probe direction = random in behavior |
+| 3. Weak threshold continuous-quality lever | RG L55 mid_think (Phase 10) | direction-specific lever at α >> ‖h‖, only pushup, only partial population |
+
+### G+.4 Conjecture: behavior-class determines probe causal authority
+
+The four probes split cleanly along **categorical-vs-continuous**:
+
+- **Categorical** (FG hallucinate/not, L55 thinking emit/not, L43 patch-success-or-not): all three are pure epiphenomenal. Causal locus is upstream — input tokens or template (Phase 8 confirmed for thinking).
+- **Continuous** (RG GSM8K reasoning quality, gradation of correctness): the only probe with *any* causal authority. Locus accessible via residual at high α.
+
+**Match with prior art**:
+- Anthropic Persona Vectors (continuous gradient: helpful↔villain) → mid-layer steering works (lever).
+- Phase 7 + 8 + FG (categorical decisions) → epiphenomenal at residual.
+- RG (continuous quality) → weak lever at high α, asymmetric.
+
+**Falsifier candidate**: persona-switch on Qwen3.6-27B with our protocol. If predicted continuous-class lever holds (similar 30-50% flip vs near-zero random), the conjecture survives. If persona-switch is also epiphenomenal in our model, the categorical-vs-continuous frame breaks and we need a different organizing axis.
+
+### G+.5 Methodology save: whitespace-stripped flip metric (paper-3 §3 4th check)
+
+The naive flip metric `r['new_text'] != base['new_text']` reported RG α=+200 = 96%. Stripped comparison `r['new_text'].strip() != base['new_text'].strip()` revealed 32%. The 64pp inflation was leading-space tokenization artifact under OOD perturbation — semantic content identical, single whitespace token difference at start of generation.
+
+Caught at smoke-time via `repr()` inspection of generations. Without this check we would have shipped a 3× inflated "RG is a 96% lever" claim. Adding to paper-3 sanity-check stack as 4th rule (alongside random K-matched, control-token normalization, structural-rigidity α-sweep).
+
+---
+
+## H. Compute estimate (paper-5 core experiments)
 
 Assuming we test 4 new behaviors (refusal, output-format, persona, agent-action) on top of the 2 already done (thinking, capability):
 

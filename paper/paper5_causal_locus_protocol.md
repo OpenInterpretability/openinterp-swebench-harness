@@ -84,6 +84,7 @@ Each guard is a 1-call diagnostic that previously caught a confident-but-wrong c
 | **Random K-matched probe baseline** at all sites | paper-3 §3.1 | ~5 min | Over-parameterized AUROC at small N (Phase 5d K=50 N=17 → 1.000 false signal) |
 | **Control-token normalization** for any α-induced log-prob shift on target | paper-3 §3.2 | ~30s/site | Uniform softmax-temperature shifts pretending to be target-specific (Phase 7) |
 | **Structural-rigidity α-sweep** at α ∈ {+50, +100, +200} on probe AND random direction | paper-3 §3.3 | ~60s/site | Distinguishes amplitude-null from structural-null (Phase 8) |
+| **Whitespace-stripped flip metric** for any behavioral comparison | paper-3 §3.4 (Phase 10) | 0 (compute-free) | Catches leading-space tokenization artifacts at high α (Phase 10 RG α=+200: raw 96% → stripped 32%, 64pp inflation) |
 | **Bidirectional balance** — both pushup AND pushdown tested at each candidate locus | this protocol | doubles compute | Catches direction asymmetry (e.g., probe levers up but not down — likely artifact) |
 | **Cross-prompt set robustness** — locus identified on prompt-set A reproduces on held-out set B | this protocol | 2× capture | Catches prompt-set-specific direction ("locus" that depends on prompt distribution) |
 
