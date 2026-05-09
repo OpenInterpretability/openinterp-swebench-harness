@@ -1,6 +1,10 @@
 # openinterp-swebench-harness
 
-Instrumented agent harness for capturing SAE feature trajectories during SWE-bench Pro traces on Qwen3.6-27B. Built to support **mechanistic anatomy of agent reasoning failure** research (project_swebench_pro_failure_anatomy).
+Instrumented agent harness for capturing residual-stream activation trajectories during SWE-bench Pro traces on Qwen3.6-27B. Powers the **paper-5 saturation-direction lever** series — a 12-phase mechanistic study of probe causality on a 27B reasoning agent.
+
+> **Paper-5 published 2026-05-09** — *Saturation-Direction Lever: A Five-Class Taxonomy of Probe Causality in Qwen3.6-27B* — [openinterp.org/research/papers/saturation-direction-probe-levers](https://openinterp.org/research/papers/saturation-direction-probe-levers)
+>
+> Headline: **α=−100 robustness theorem** — L31 pre_tool capability probe produces +33-40pp probe-vs-random pushdown gap across code distributions spanning Qwen pass-rate ~7-89%, validated through two pre-registered falsification cycles.
 
 ## Why a custom harness
 
@@ -11,19 +15,36 @@ OpenHands abstracts `model.generate()` behind multiple layers; vLLM doesn't expo
 
 This harness is intentionally minimal: `transformers` direct, persistent bash via `pexpect`, str_replace_editor reimplemented, single chat loop in `agent/loop.py`.
 
-## Status
+## Status — paper-5 published 2026-05-09
 
-V1 — Phase 0 SMOKE GREEN (2026-05-05). Phase 1 (20 stratified Python problems) ready to run.
+V1 complete through **Phase 11e** (multi-site α=−100 robustness on Codeforces). 12-phase causal-locus study on Qwen3.6-27B.
 
-| Gate | Description | Phase 0 | Phase 1 |
-|---|---|---|---|
-| G1 | End-to-end agent run + captures + patch | 🟢 PASS (46 turns, 1155 caps, 1333 B patch) | re-check at scale |
-| G2 | Determinism: same seed → first 5 turns byte-equal | deferred | rerun cell |
-| G3 | Soft pass-rate ∈ [30%, 60%] on 20 stratified | deferred | aggregate |
-| G4 | Capture audit: shapes/labels match trace log | 🟢 PASS (1155/1155, d_model=5120) | per-problem |
-| G5 | Resource ceiling | 🔴 INFO (40min/77GB — fla missing) | scaled targets |
+### Phase ladder
 
-Notebooks: `nb_swebench_v0_smoke.ipynb` (Phase 0, reproducibility reference) + `nb_swebench_v1_phase1.ipynb` (Phase 1, 20 problems with G2/G3 + resume-on-disconnect).
+| Phase | What | Outcome |
+|---|---|---|
+| 0 — Smoke | 1 problem, full agent loop + 1155 captures + patch | 🟢 G1+G4 PASS |
+| 1 — N=20 stratified | 20 Python problems, 12k captures, 55% patch-gen rate | 🟢 G4 GREEN, data CLEAN |
+| 2 — Differential probes | 25 probes × 5 positions, AUROC up to 0.958 single, 0.958 LORO | 🟢 STRONG_SIGNAL |
+| 5d/6/6c — N=99 + methodology sweep | random-feature baseline + capacity sweep mandatory at N<100 | L43 pre_tool gap +0.269; Phase 5d AUROC=1.000 was over-param |
+| 7 — Causality (L43 pre_tool) | log-prob proxy + control-token norm + behavioral steering | 🔵 epiphenomenal (softmax-temp artifact) |
+| 8 — CoT-Integrity causality | bidirectional α-sweep ±200 + structural-rigidity diagnostic | 🔵 L55 thinking template-locked |
+| 10 — FG/RG causality | RG L55 mid_think shows asymmetric pushup at α=+200 | 🟢 First lever (continuous-quality probe) |
+| 11/11b — Capability locus | 4/4 capability sites at decision-bottleneck positions show pushdown-asymmetric lever | 🟢 +30-60pp gaps |
+| 12 — Persona falsifier | predicted pushup-asymmetric (continuous), observed pushdown | 🅑 Falsifier #1 → motivates saturation-direction theory |
+| 11c — Cross-distribution (BCB) | BCB +33pp at α=−100 (vs +40pp HE+MBPP) | 🟡 Initially proposed saturation-magnitude corollary |
+| 11d — Codeforces (lowest saturation) | CF +40pp at α=−100, no pushup emergence | 🅑 Falsifier #2 → corollary dropped, **α=−100 robustness theorem** |
+| 11e — Multi-site CF | 4 capability sites × Codeforces ≥2000 | running 2026-05-09 |
+
+### Paper-5 thesis (current)
+
+> **α=−100 robustness theorem**: the L31 pre_tool capability probe direction produces a +33-40pp probe-vs-random pushdown gap across code distributions spanning Qwen3.6-27B pass-rate ~7-89%. The α=−100 locus is **saturation-independent** at moderate amplitude.
+
+Two pre-registered falsification cycles documented (Phase 12 persona + Phase 11d corollary). 8 probes mapped across 5 empirical classes. Saturation-direction principle survives both falsifications as the unifying mechanism.
+
+### Notebooks
+
+`notebooks/nb_swebench_v{0,1,2,3,...,11,11b,11c,11d,11e,12}_*.ipynb` — one standalone Colab per phase. All build scripts in `scripts/build_nb_swebench_v*.py` for reproducibility.
 
 ## Architecture
 
@@ -42,8 +63,10 @@ openinterp-swebench-harness/
 │   └── capture.py         decision-point save into safetensors
 ├── sandbox/
 │   └── exec.py            persistent bash session via pexpect
-└── notebooks/
-    └── nb_swebench_v0_smoke.ipynb
+├── notebooks/                ~13 standalone Colab notebooks, one per phase
+├── scripts/                  build_nb_swebench_v*.py — regenerates each notebook
+├── paper/                    paper-5 protocol + meta-analysis + sub-papers
+└── artifacts/                agent-probe-guard probe weights for HF
 ```
 
 ## Tool definitions (final)

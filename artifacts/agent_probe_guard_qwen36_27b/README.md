@@ -45,20 +45,37 @@ art = joblib.load("probe_L55_thinking.joblib")
 art["probe"], art["scaler"], art["dims"], art["layer"]
 ```
 
-## ⚠️ Detect-only, by evidence
+## ⚠️ Detect-only at these sites; lever exists at others
 
-The probe directions DO NOT lever model behavior. We confirmed this across
-three intervention experiments (paper §5.1, §5.2, §5.3). Specifically:
+The two probes shipped here (L43 pre_tool, L55 thinking) DO NOT lever model
+behavior. We confirmed this across three intervention experiments (paper §5.1,
+§5.2, §5.3):
 
-- L43 pre_tool: probe direction adds a uniform softmax-temperature shift, not
+- **L43 pre_tool**: probe direction adds a uniform softmax-temperature shift, not
   a target-specific bias. Δrel after control-token normalization ≈ 0.
-- L55 thinking: residual at last-prompt is structurally downstream of the
+- **L55 thinking**: residual at last-prompt is structurally downstream of the
   chat template's auto-injected `<think></think>` tokens. Even at α=+200
   (perturbation 86% above ‖residual‖) on the K=5 paper-grade direction, output
   does not change.
 
 If you want to use these for steering, expect null results. If you want to
 use them for routing decisions (skip / escalate / proceed), they work.
+
+### But other capability sites DO lever — see paper-5
+
+Subsequent experiments (Phase 11/11b/11d on the same Qwen3.6-27B + same Phase 6
+N=99 capture corpus) found that L23 pre_tool, L31 pre_tool, L43 turn_end, and
+L55 pre_tool produce **+30 to +60pp probe-vs-random pushdown gaps** at α=−100.
+The L31 pre_tool gap (+33-40pp) is **saturation-independent** across code
+distributions spanning Qwen pass-rate ~7-89% (HumanEval+MBPP, BigCodeBench,
+Codeforces ≥2000). This is the **α=−100 robustness theorem** of paper-5.
+
+The L43 pre_tool probe shipped here was the locus selected from Phase 6c
+(N=42 methodology sweep) before we ran Phase 11+11b on the full N=99 corpus.
+The N=99 verdict found L43 pre_tool below paper-grade and L31 pre_tool / L43
+turn_end as the strongest pushdown levers — see paper-5 §5 for the corrected
+locus map. v0.2 of this artifact will swap L43 pre_tool for L31 pre_tool +
+add cross-distribution validation metadata.
 
 ## 🔬 Quick start
 
@@ -107,6 +124,8 @@ Each check caught a confident-but-wrong claim during the work.
 
 ## 📜 Citation
 
+Primary paper for these two probes (epiphenomenal regime):
+
 ```bibtex
 @inproceedings{vicentino2026twoforms,
   title={Two Forms of Epiphenomenal Probes in Code Agents:
@@ -115,6 +134,20 @@ Each check caught a confident-but-wrong claim during the work.
   booktitle={NeurIPS 2026 Mechanistic Interpretability Workshop},
   year={2026},
   url={https://github.com/OpenInterpretability/openinterp-swebench-harness}
+}
+```
+
+For the broader 5-class probe-causality taxonomy + saturation-direction lever
+(paper-5, includes the α=−100 robustness theorem):
+
+```bibtex
+@article{vicentino2026saturation,
+  title={Saturation-Direction Lever: A Five-Class Taxonomy of Probe Causality
+         in Qwen3.6-27B},
+  author={Vicentino, Caio},
+  journal={openinterp.org/research},
+  year={2026},
+  url={https://openinterp.org/research/papers/saturation-direction-probe-levers}
 }
 ```
 
