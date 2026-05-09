@@ -312,6 +312,78 @@ The asymmetric lever direction depends on **where the baseline residual sits alo
 
 8 probes mapped across 5 classes in single model (Qwen3.6-27B). All asymmetric levers (4a + 4b) explained by saturation-direction principle.
 
+### G++.7 Phase 11c — cross-distribution validation (2026-05-09)
+
+Tests if Phase 11 L31 pre_tool +40pp pushdown gap holds on a different code
+distribution: BigCodeBench instead of HumanEval+MBPP. Same probe direction;
+only test prompts change.
+
+| α | BCB gap | P11 gap | Δ |
+|---|---|---|---|
+| -200 | +13.3pp | +33pp | -20pp shrink |
+| **-100** | **+33.3pp** | **+40pp** | **-7pp (HOLDS)** |
+| -50 | +10pp | +27pp | -17pp shrink |
+| -20 | -10pp | +16pp | reversed (random vence em BCB) |
+| ±5..±2 | flat | flat | flat |
+| +20 | **+26.7pp** | 0pp | **NEW pushup signal in BCB** |
+| +50 | +3.3pp | +3pp | flat |
+| +100 | -16.7pp | -3pp | random vence |
+| +200 | **+23.3pp** | -14pp | **NEW pushup signal in BCB** |
+
+**Auto-classified ROBUST** (max BCB gap +33pp ≥ paper-grade threshold). But
+the nuanced read shifts the theoretical picture meaningfully.
+
+**Distribution-shift insight**: HumanEval+MBPP is *easy* code (Qwen succeeds
+89/99 = strongly-saturated toward y=1). BigCodeBench is *harder* (longer
+realistic prompts, lower predicted success rate, less ceiling-saturated). The
+result:
+- α=-100 pushdown gap **holds** at +33pp (saturation-axis probe leverage at
+  moderate amplitude is distribution-robust)
+- Other α values **diverge**: α=-50/-200 shrink, α=-20 reverses
+- **New pushup signal appears at α=+20 (+26.7pp) and α=+200 (+23.3pp)** — BCB
+  has pushup headroom that HumanEval/MBPP didn't because the model isn't at
+  success ceiling on harder tasks.
+
+### G++.8 Saturation-magnitude corollary
+
+The Phase 11c result yields a corollary to the saturation-direction principle:
+
+> **The asymmetric lever magnitude is proportional to the degree of baseline
+> saturation along the probe axis.** In strongly-saturated test distributions
+> (HumanEval+MBPP, model at success ceiling), the lever is unidirectional and
+> clean. In weakly-saturated distributions (BigCodeBench, harder tasks with
+> bidirectional headroom), lever appears bidirectionally with reduced magnitude.
+
+This explains the empirical pattern across the 4 capability sites + 2
+distributions:
+
+- α=-100 (moderate amplitude, probe-axis specificity): **robust** across
+  distributions because moderate-α probe leverage doesn't depend strongly on
+  saturation degree.
+- α=±200 (extreme amplitude, OOD breakdown): shifts substantially because
+  OOD effects become more random-direction-specific or
+  saturation-degree-specific.
+- α=±20 (low amplitude, near-baseline): requires strong saturation for probe
+  specificity — reverts to noise floor when saturation weak.
+- α=+20 emergence in BCB: previously-ceilinged pushup direction now has
+  headroom to flip generations under probe-direction perturbation.
+
+### G++.9 Practical safety implication of the corollary
+
+For deploying probe-derived steering as a safety mechanism: the corollary
+predicts that capability-probe interventions will work CLEANLY only on tasks
+where the model has strong success/failure saturation. On harder tasks where
+the model has bidirectional headroom, probe-direction interventions will be:
+
+1. **Weaker** (gap shrinks)
+2. **Bidirectional** (both push and pull have some effect)
+3. **Less specific** (low-α reverts to noise vs random)
+
+This complicates "selective capability revocation" use cases: a probe that
+cleanly disables capability on easy tasks may not disable cleanly on hard
+tasks where the model genuinely struggles. The probe is most useful exactly
+where the model needs the least intervention.
+
 ---
 
 ## H. Compute estimate (paper-5 core experiments)
