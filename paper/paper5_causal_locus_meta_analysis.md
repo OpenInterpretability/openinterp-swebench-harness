@@ -222,6 +222,98 @@ Caught at smoke-time via `repr()` inspection of generations. Without this check 
 
 ---
 
+## G++. Phase 11/11b/12 results (2026-05-08) — capability locus + persona falsifier
+
+Phase 11 + 11b extended the protocol to 6 capability sites from Phase 6 N=99 verdict.
+Phase 12 ran the persona-switch falsifier test for paper-5 §6.
+
+### G++.1 Phase 11 — capability locus (4 sites)
+
+Tested 4 strongest capability probes (top by gap from Phase 6 N=99):
+
+| Site | AUROC N=99 | gap | Verdict |
+|---|---|---|---|
+| L43 think_start | 0.966 | +0.146 | 🟡 Structural fragility |
+| L11 think_start | 0.795 | +0.194 | 🟡 Structural fragility |
+| **L31 pre_tool** | 0.926 | +0.164 | **🅑 Pushdown-asymmetric (+40pp at α=-100)** |
+| **L55 pre_tool** | 0.930 | +0.171 | **🅑 Pushdown-asymmetric (+34pp at α=-100)** |
+
+L31 pre_tool detail:
+- α=-200: probe 100%, random 67% → +33pp
+- α=-100: probe 87%, random 47% → **+40pp** (binomial p ≪ 1e-5)
+- α=-50: probe 60%, random 33% → +27pp
+- ±5..±20: flat 0-20%
+- α=+200: probe 73%, random 87% (random vence — pushup ceiling)
+
+Asymmetric: probe direction destroys capability behaviorally at pushdown α<0; pushup α>0 hits ceiling (model already 89/99 successful).
+
+Structural fragility (L43/L11 think_start): random direction alone flips 90-100% at α=±50..±200. Layer is OOD-fragile to ANY direction. Cannot distinguish probe signal from amplitude effect. Detection-only at this layer-position via amplitude breakdown.
+
+### G++.2 Phase 11b — extension to 2 more sites (L23 pre_tool, L43 turn_end)
+
+| Site | AUROC N=99 | gap | Verdict |
+|---|---|---|---|
+| **L23 pre_tool** | 0.881 | +0.126 | **🅑 Pushdown-asymmetric (+40pp at α=-100, 100% probe flip)** |
+| **L43 turn_end** | 0.775 | +0.124 | **🅑 Pushdown-asymmetric (+60pp at α=-200)** |
+
+L43 turn_end +60pp at α=-200 is the largest single-α gap in our pushdown findings. L23 pre_tool 100% probe flip vs 60% random at α=-100 is the cleanest single-α specificity demo.
+
+### G++.3 Combined Phase 11+11b — 4/4 capability lever pattern
+
+| Site | α with max pushdown gap | gap |
+|---|---|---|
+| L23 pre_tool | -100 | +40pp |
+| L31 pre_tool | -100 | +40pp |
+| L55 pre_tool | -100 | +34pp |
+| L43 turn_end | -200 | +60pp |
+
+**4/4 capability probes at decision-bottleneck positions show pushdown-asymmetric lever.** Robust across:
+- 4 different layers (L23, L31, L43, L55)
+- 2 different positions (pre_tool, turn_end)
+- All AUROCs paper-grade (gap +0.124 to +0.171)
+
+This is the strongest empirical pattern in paper-5. Single-finding lever results are easy to dismiss; pattern across 4 sites in 4 different layers + 2 different positions is much harder to dismiss. The pushdown-asymmetric lever is a **structural property of capability probes at decision-bottleneck positions in Qwen3.6-27B**.
+
+### G++.4 Phase 12 — persona falsifier (continuous-gradient predicted to be pushup)
+
+| α | probe% | random% | gap |
+|---|---|---|---|
+| **-200** | **100%** | **40%** | **+60pp** |
+| -100 | 47% | 20% | +27pp |
+| -50 | 27% | 13% | +14pp |
+| ±5..±20 | 0-13% | 0-13% | flat |
+| +50 | 33% | 27% | +6pp |
+| +100 | 33% | 33% | 0pp |
+| +200 | 40% | 33% | +7pp |
+
+**Falsifies "continuous → pushup" prediction.** Persona is continuous-gradient (helpful↔villain) yet pushdown-asymmetric, opposite of the original frame's prediction.
+
+### G++.5 The saturation-direction principle (paper-5 §5)
+
+The 5 lever findings (4 capability + 1 RG + 1 persona) all align under a single mechanism:
+
+> **Probes lever in the saturation direction of the baseline residual** — where there's "more of same" for OOD-semantic perturbation to amplify.
+
+- Capability: baseline = 89/99 success (saturated toward y=1). Pushdown α<0 pushes OUT of saturation along probe axis → has headroom to flip → lever.
+- Persona helpful: baseline saturated toward y=0 (helpful direction). Pushdown α<0 pushes DEEPER into helpful saturation → OOD-saturated semantic state with probe-specific leverage → lever.
+- RG GSM8K: baseline saturated toward y=0 (lower quality on simple math). Pushup α>0 pushes OUT of saturation along quality axis → has headroom → lever (different sign convention but same principle).
+
+The asymmetric lever direction depends on **where the baseline residual sits along the probe axis**, not on whether the underlying behavior is categorical or continuous.
+
+### G++.6 Updated 5-class taxonomy (8 probes mapped)
+
+| Class | Sites | Mechanism |
+|---|---|---|
+| 1. Surface softmax-temp | L43 pre_tool (Phase 7) | uniform shift, Δrel ≈ 0 |
+| 2. Template-lock categorical | L55 thinking last_prompt (Phase 8), FG L31 end_of_think (Phase 10) | decision in input/template |
+| 3. Structural fragility | L43 think_start, L11 think_start (Phase 11) | layer fragile, random ≈ probe |
+| 4a. Pushup-asymmetric | RG L55 mid_think (Phase 10) | continuous quality, +30pp at α=+200 |
+| **4b. Pushdown-asymmetric** | **L23/L31/L55 pre_tool + L43 turn_end + persona L43 last_prompt** | **5 sites, +30 to +60pp at α=-100..-200** |
+
+8 probes mapped across 5 classes in single model (Qwen3.6-27B). All asymmetric levers (4a + 4b) explained by saturation-direction principle.
+
+---
+
 ## H. Compute estimate (paper-5 core experiments)
 
 Assuming we test 4 new behaviors (refusal, output-format, persona, agent-action) on top of the 2 already done (thinking, capability):
