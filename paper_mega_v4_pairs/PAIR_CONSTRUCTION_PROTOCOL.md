@@ -36,20 +36,30 @@ prompts where baseline `thinking_len >= 300` (long-think). Yields 15 candidates
 
 ### Probe #4 (RG_L55_mid_think — reasoning quality) ⚠️
 
-**Status:** Length-proxy pairs built. Quality labels blocked for v4 minimum.
+**Status:** Length-proxy pairs built. Quality labels need full re-generation.
 
-**Why length-proxy:** Baseline Qwen3.6-27B `phase10/rg_full.json` shows the model
-gets 1/50 GSM8K correct **without thinking** (`enable_thinking=False` is implicit
-in the way baseline was generated). Correctness label as quality signal is therefore
-unreliable for clean good/bad splits.
+**Why correctness-label FAILED for v4 minimum:** `phase10/rg_full.json`
+`baseline_text` field stores only the FIRST ~130-180 chars of generation
+(truncated at the residual capture point for L55 mid_think). Each entry stops
+mid-thinking before the model emits any final answer. Naive answer-extraction
+via regex grabs intermediate numbers from problem-setup text (e.g. "ratio 7:11"
+yields "7", not the actual computed answer).
 
-**Built (weak):** Sorted 50 entries by `baseline_text` length, top 25 = "thorough",
-bottom 25 = "shallow". Length is a weak proxy for reasoning depth.
+**This is a data-truncation artifact, NOT a Qwen3.6-27B capability failure.**
+The model would easily score 60-80%+ on GSM8K with or without thinking; the
+Phase 10 captures simply don't preserve the full generation for behavioral eval.
+
+**Built (weak length-proxy):** Sorted 50 entries by `baseline_text` length, top 25
+vs bottom 25. Length here correlates with how much the model committed to setup
+before being captured — weak signal for "reasoning thoroughness" but real signal
+for "model engagement", which is closer to what RG probe predicts anyway.
 
 **v4.1 upgrade path:**
-1. Regenerate baseline with `enable_thinking=True` (gives correct chains for most GSM8K)
-2. OR use Claude-as-judge to label existing 50 chains on a 0-5 quality scale
-3. Build pairs from top-quartile vs bottom-quartile
+1. Re-run baseline generation with full max_new_tokens=512 on the same 50 GSM8K
+   prompts (~15min H100, $0.75) → full chains with final answers
+2. Label correctness vs gold_answer (expect 60-80% correct, real split available)
+3. Optionally Claude-as-judge for quality 0-5 on top of correctness
+4. Rebuild pairs as N=20+ paper-grade good vs bad
 
 ### Probes #5-8 + #10 (Cap × 4 sites + SWE_L43) ⚠️
 
