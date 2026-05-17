@@ -4,7 +4,7 @@
   "n_pairs": 25,
   "abstracted_variable": "reasoning_quality (length proxy; v4 placeholder)",
   "pair_construction": "phase10 rg_full.json sorted by baseline_text length; top 25 vs bottom 25",
-  "blocker_v4_1": "Real quality labels \u2014 baseline Qwen3.6 without thinking gets 1/50 correct, so correctness label fails. Need: (a) regenerate baseline with enable_thinking=True for higher accuracy, or (b) Claude-as-judge on existing chains.",
+  "blocker_v4_1": "Source data truncation \u2014 phase10/rg_full.json baseline_text only contains first ~130-180 chars (cut at L55 residual capture point), not full generation. Naive correctness regex extracted intermediate numbers and falsely showed 1/50 correct. Qwen3.6-27B actually gets 60-80%+ on GSM8K; we just don't have full-output captures here. Fix: re-run baseline generation with max_new_tokens=512 on same 50 prompts (~15min H100, $0.75) to get real correctness labels.",
   "pairs": [
     {
       "pair_id": 0,
