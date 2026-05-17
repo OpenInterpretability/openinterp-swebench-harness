@@ -139,6 +139,93 @@ def main():
         p7 = json.load(f)
     tally(check("naive fails Δ finish α=+2 = 0.4792", 0.4792, p7["aggregate"]["fails_mean_shift_finish_alpha2"], tol=0.001))
 
+    # ----- Phase 7 Δrel control-token normalized -----
+    section("Phase 7 SWE_L43_pre_tool Δrel control-token at α=+2 (paper §3.2 + §6.4)")
+    import statistics
+    controls = ["search", "execute", "write", "read", "wait"]
+    deltas_rel = []
+    for iid, run in p7["results"].items():
+        if run["verdict"] != "fails":
+            continue
+        lp = run["logprobs_per_alpha"]
+        if "2.0" in lp and "0.0" in lp:
+            df = lp["2.0"]["finish"] - lp["0.0"]["finish"]
+            dc = sum(lp["2.0"][c] - lp["0.0"][c] for c in controls) / len(controls)
+            deltas_rel.append(df - dc)
+    delta_rel_mean = statistics.mean(deltas_rel) if deltas_rel else float("nan")
+    tally(check("Δrel mean at α=+2 = -0.046", -0.046, delta_rel_mean, tol=0.01))
+
+    # ----- Phase 11e Codeforces direction-flip (Cap_L55_pre_tool) -----
+    section("Phase 11e CF Cap_L55_pre_tool direction-flip (paper §3.4)")
+    with open(f"{path}/phase11e_multisite_cf/partial_L55_pre_tool.json") as f:
+        p11e_L55 = json.load(f)
+    agg = defaultdict(list)
+    for entry in p11e_L55:
+        for cond in ("probe", "random"):
+            for run in entry.get("sweeps", {}).get(cond, []):
+                a = run.get("alpha")
+                f_v = run.get("flipped_vs_baseline")
+                if a is not None and f_v is not None:
+                    agg[(cond, a)].append(1 if f_v else 0)
+    p_n100 = sum(agg[("probe", -100.0)]) / len(agg[("probe", -100.0)])
+    r_n100 = sum(agg[("random", -100.0)]) / len(agg[("random", -100.0)])
+    gap_n100 = (p_n100 - r_n100) * 100
+    tally(check("L55_pre_tool CF α=-100 gap ≈ -3pp (pushdown null)", -3, gap_n100, tol=2))
+    p_p200 = sum(agg[("probe", 200.0)]) / len(agg[("probe", 200.0)])
+    r_p200 = sum(agg[("random", 200.0)]) / len(agg[("random", 200.0)])
+    gap_p200 = (p_p200 - r_p200) * 100
+    tally(check("L55_pre_tool CF α=+200 gap = +40pp (pushup flip)", 40, gap_p200, tol=1))
+
+    # ----- Phase 11e Cap_L43_turn_end CF collapse -----
+    section("Phase 11e CF Cap_L43_turn_end +7pp (paper §3.4)")
+    with open(f"{path}/phase11e_multisite_cf/partial_L43_turn_end.json") as f:
+        p11e_L43 = json.load(f)
+    agg = defaultdict(list)
+    for entry in p11e_L43:
+        for cond in ("probe", "random"):
+            for run in entry.get("sweeps", {}).get(cond, []):
+                a = run.get("alpha")
+                f_v = run.get("flipped_vs_baseline")
+                if a is not None and f_v is not None:
+                    agg[(cond, a)].append(1 if f_v else 0)
+    p_n100 = sum(agg[("probe", -100.0)]) / len(agg[("probe", -100.0)])
+    r_n100 = sum(agg[("random", -100.0)]) / len(agg[("random", -100.0)])
+    gap_n100 = (p_n100 - r_n100) * 100
+    tally(check("L43_turn_end CF α=-100 gap ≈ +7pp", 7, gap_n100, tol=1))
+
+    # ----- Phase 11e other capability sites on CF -----
+    section("Phase 11e CF Cap_L23 +43pp, Cap_L31 +37pp (paper §3.4)")
+    for site, exp_gap in [("L23_pre_tool", 43), ("L31_pre_tool", 37)]:
+        with open(f"{path}/phase11e_multisite_cf/partial_{site}.json") as f:
+            data = json.load(f)
+        agg = defaultdict(list)
+        for entry in data:
+            for cond in ("probe", "random"):
+                for run in entry.get("sweeps", {}).get(cond, []):
+                    a = run.get("alpha")
+                    f_v = run.get("flipped_vs_baseline")
+                    if a is not None and f_v is not None:
+                        agg[(cond, a)].append(1 if f_v else 0)
+        p_flips = agg[("probe", -100.0)]
+        r_flips = agg[("random", -100.0)]
+        gap = (sum(p_flips)/len(p_flips) - sum(r_flips)/len(r_flips)) * 100
+        tally(check(f"{site} CF α=-100 gap = +{exp_gap}pp", exp_gap, gap, tol=1))
+
+    # ----- Phase 2C α-sweep null at L55 -----
+    section("Phase 2C L55 α-sweep null up to +500 (paper §3.1)")
+    with open(f"{path}/subjective_time_phase2c/alpha_calibration.json") as f:
+        p2c = json.load(f)
+    n_l55_inert = 0
+    n_l55_total = 0
+    for entry in p2c:
+        l55 = entry.get("by_layer", {}).get("55", {})
+        for alpha_key, run in l55.items():
+            n_l55_total += 1
+            if not run.get("term", True):
+                n_l55_inert += 1
+    tally(check(f"L55 inert at all α up to +500: {n_l55_inert}/{n_l55_total}",
+                n_l55_total, n_l55_inert))
+
     # ----- Summary -----
     print(f"\n=========== {passes} PASS, {fails} FAIL ===========")
     return 0 if fails == 0 else 1
