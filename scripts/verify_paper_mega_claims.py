@@ -1,5 +1,5 @@
 """
-Paper-MEGA "Conditionally-Causal Probes" — verify all numerical claims
+"Conditionally-Causal Probes" — verify all numerical claims
 against raw run artifacts from HF dataset.
 
 Downloads:
