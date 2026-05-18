@@ -1,20 +1,22 @@
-"""Generate notebooks/nb_tool_doubt_phase1b_position_sweep.ipynb — diagnostic.
+"""Generate notebooks/nb_tool_doubt_phase1b_position_sweep.ipynb — STANDALONE diagnostic.
 
-Phase 1 verdict 2026-05-18: best layer L11 AUROC 0.575, gap +0.065 → 2/4 gates,
-substantively RED. Top-5 INSPECT-RAW showed ALL error_fake (lexical surface
-features only); truncate ranked BELOW clean (probe blind to silent corruption).
+Phase 1 verdict 2026-05-18: best L11 AUROC 0.575, gap +0.065 → 2/4 gates,
+substantively RED. Top-5 INSPECT-RAW all error_fake = lexical leak via
+"ok": false / "Error:" strings. Truncate ranked BELOW clean = blind to silent
+corruption.
 
-Hypothesis to falsify before walk-back: position [-1] (start of next assistant
-turn) was wrong; doubt might live in residual WHILE reading tool content
-(end_of_tool_content) or AT tool message boundary (end_of_tool_msg).
+Hypothesis to falsify before walk-back: turn_end position (start of next
+assistant) was wrong. Doubt might live at other positions.
 
-This notebook re-captures the SAME 60 pairs from Phase 1 at 4 positions x 10
-layers, trains probes per (L, pos), reports heatmap. If ANY combo gap > 0.15 →
-resgata. Otherwise → lock walk-back.
+This notebook rebuilds everything from scratch (model, pairs, captures) since
+Colab kernel was reset. Single notebook end-to-end.
 
-Re-uses model in current Colab session (skip Cells 1-3 if already loaded).
+Sweep: 10 layers × 4 positions × 60 pairs (same seed-42 pairs as Phase 1).
 
-Compute: ~5min Colab if model loaded, ~10min if fresh kernel.
+Decision: any (L, pos) gap > 0.15 → resgata. Else lock walk-back.
+
+Compute: ~15-20 min Colab RTX 6000 (3min download + 5min model load + 5min
+sweep capture + 30s train). ~R$2.
 """
 from __future__ import annotations
 import json
@@ -33,119 +35,206 @@ def md(src: str) -> dict:
 
 cells: list[dict] = [
     md("""
-# Tool-Doubt Phase 1b — Position Sweep Diagnostic
+# Tool-Doubt Phase 1b — Position Sweep (Standalone)
 
-Phase 1 (2026-05-18) verdict: 2/4 gates, materially RED. Top-5 INSPECT-RAW
-showed 100% error_fake → lexical leak via `"ok": false` / `"Error:"` strings.
-Truncate ranked BELOW clean → probe blind to silent corruption.
+Phase 1 verdict 2/4 gates, lexical leak via `"ok": false` / `"Error:"` strings.
+This is the LAST diagnostic before walk-back.
 
-This is the **last diagnostic before walk-back.** Tests whether position
-choice (turn_end = start of next assistant) was wrong.
+## What it tests
+4 positions × 10 layers per (clean, truncate, error_fake) pair:
 
-## Positions tested
-- `start_of_tool_msg` — first token of the JSON tool message (right after `<|im_start|>tool\\n`)
-- `mid_tool` — midpoint of the tool message
-- `end_of_tool_msg` — `<|im_end|>` of the tool message
-- `start_of_next_assistant` — current Phase 1 position (last token, `<|im_start|>assistant\\n`)
+**Positions:**
+- `start_of_tool_msg` — first token of JSON tool block
+- `mid_tool` — midpoint of tool message
+- `end_of_tool_msg` — `<|im_end|>` of tool message
+- `start_of_next_assistant` — what Phase 1 captured (last token of input)
 
-## Layers tested
-10 layers: L7, L11, L15, L19, L23, L31, L35, L43, L47, L55
+**Layers:** L7, L11, L15, L19, L23, L31, L35, L43, L47, L55
 
 ## Decision
-- ANY (L, pos) combo with **gap > 0.15** → resgata Phase 1; reframe to that position
-- ALL gaps < 0.15 → lock walk-back; pivot to Inner-Outer (Week 2)
+- ANY (L, pos) with gap > 0.15 → 🟢 RESGATA Phase 1 with this position
+- ZERO combos pass → 🔴 LOCK walk-back, pivot to Inner-Outer Week 2
 
-## Reuses Phase 1 captures path + model in memory (if running in same Colab session)
+## Standalone — runs from scratch
+~15-20min total: install + model download (~3min, 55GB) + model load + sweep capture + train.
 """),
 
     code("""
-# 1) Verify model + pairs + paths already loaded (re-use Phase 1 session)
-# If running fresh, must run nb_tool_doubt_phase1.ipynb Cells 1-5 first.
-import os, json, torch
+# 1) Install + transformers commit hash (ls-remote fallback)
+!pip install -q git+https://github.com/huggingface/transformers.git
+!pip install -q accelerate scipy safetensors huggingface_hub datasets scikit-learn
+!pip install -q flash-linear-attention causal-conv1d --no-build-isolation 2>&1 | tail -3 || true
+
+import importlib, subprocess, os
+TRANSFORMERS_COMMIT = ''
+for pkg in ['transformers', 'sklearn', 'scipy', 'datasets']:
+    try:
+        m = importlib.import_module(pkg)
+        print(f'  {pkg}: {getattr(m, \"__version__\", \"?\")}')
+    except ImportError:
+        print(f'  {pkg}: MISSING')
+
+# ls-remote fallback (pip wheel strips .git/)
 try:
-    _ = model.config.hidden_size
-    _ = tok.eos_token_id
-    _ = LAYERS[0]
-    _ = pairs[0]
-    _ = DIRS['captures']
-    _ = TOOLS
-    _ = SYSTEM_PROMPT
-    print(f'✅ Model + helpers reused. d={D_MODEL}, n_layers={N_LAYERS}, pairs={len(pairs)}')
-except NameError as e:
-    raise RuntimeError(f'Missing: {e}. Run nb_tool_doubt_phase1 Cells 1-5 first.')
+    res = subprocess.run(
+        ['git', 'ls-remote', 'https://github.com/huggingface/transformers.git', 'HEAD'],
+        capture_output=True, text=True
+    )
+    if res.returncode == 0 and res.stdout:
+        TRANSFORMERS_COMMIT = res.stdout.split()[0]
+except Exception as e:
+    print(f'  ls-remote failed: {e}')
+print(f'\\n🔒 transformers commit: {TRANSFORMERS_COMMIT or \"unknown\"}')
+print('\\nRESTART RUNTIME if transformers upgraded.')
 """),
 
     code("""
-# 2) Helpers — position resolver + multi-position capture
+# 2) GPU + Drive + Phase 6 traces + SWE-bench Pro dataset
+import subprocess, os, json, glob
+out = subprocess.run(['nvidia-smi', '--query-gpu=name,memory.total', '--format=csv,noheader'],
+                     capture_output=True, text=True).stdout.strip()
+print(f'GPU: {out}')
+
+try:
+    from google.colab import drive
+    drive.mount('/content/drive')
+    DRIVE_ROOT = '/content/drive/MyDrive/openinterp_runs'
+except ImportError:
+    DRIVE_ROOT = os.path.expanduser('~/openinterp_runs')
+
+PHASE6_TRACES_DIR = os.path.join(DRIVE_ROOT, 'swebench_v6_phase6', 'traces')
+assert os.path.isdir(PHASE6_TRACES_DIR), f'Not found: {PHASE6_TRACES_DIR}'
+trace_files = sorted(glob.glob(os.path.join(PHASE6_TRACES_DIR, 'instance_*.json')))
+print(f'Phase 6 traces: {len(trace_files)}')
+
+from datasets import load_dataset
+ds = load_dataset('ScaleAI/SWE-bench_Pro', split='test')
+ds_by_id = {row['instance_id']: row for row in ds}
+print(f'SWE-bench Pro instances: {len(ds_by_id)}')
+
+OUT_DIR = os.path.join(DRIVE_ROOT, 'tool_doubt_phase1b_sweep')
+DIRS = {k: os.path.join(OUT_DIR, k) for k in ['captures', 'results']}
+for d in DIRS.values():
+    os.makedirs(d, exist_ok=True)
+print(f'Output: {OUT_DIR}')
+"""),
+
+    code("""
+# 3) Load Qwen3.6-27B + clone harness
+import torch
+from transformers import AutoModelForCausalLM, AutoTokenizer
+
+MODEL_ID = 'Qwen/Qwen3.6-27B'
+tok = AutoTokenizer.from_pretrained(MODEL_ID, trust_remote_code=True)
+model = AutoModelForCausalLM.from_pretrained(
+    MODEL_ID, dtype=torch.bfloat16, device_map='auto', trust_remote_code=True,
+)
+model.eval()
+LAYERS = model.model.layers if hasattr(model.model, 'layers') else model.model.language_model.layers
+D_MODEL = model.config.hidden_size
+N_LAYERS = len(LAYERS)
+print(f'Model: d_model={D_MODEL}, n_layers={N_LAYERS}')
+
+if not os.path.exists('/content/openinterp-swebench-harness'):
+    !git clone -q https://github.com/OpenInterpretability/openinterp-swebench-harness.git /content/openinterp-swebench-harness
+import sys
+sys.path.insert(0, '/content/openinterp-swebench-harness')
+from agent.prompts import SYSTEM_PROMPT, render_problem
+from agent.parser import _strip_think
+from agent.tools import TOOLS
+print(f'Harness loaded. SYSTEM_PROMPT len={len(SYSTEM_PROMPT)}, tools={[t[\"function\"][\"name\"] for t in TOOLS]}')
+"""),
+
+    code("""
+# 4) Helpers — same as Phase 1 + position resolver + multi-position capture
 import torch, numpy as np, json
 
 PROBE_LAYERS_SWEEP = [7, 11, 15, 19, 23, 31, 35, 43, 47, 55]
 POSITIONS = ['start_of_tool_msg', 'mid_tool', 'end_of_tool_msg', 'start_of_next_assistant']
 
 
+def corrupt_truncate(real_result_dict, n_chars=50):
+    r = json.loads(json.dumps(real_result_dict))
+    if isinstance(r.get('result'), dict) and 'content' in r['result']:
+        c = r['result']['content']
+        if isinstance(c, str):
+            r['result']['content'] = c[:n_chars] + '...[truncated]'
+    return r
+
+def corrupt_error_fake(real_result_dict):
+    return {'id': real_result_dict['id'], 'result': {'ok': False, 'error': 'File not found or permission denied.'}}
+
+CORRUPTION_STRATEGIES = {'truncate': corrupt_truncate, 'error_fake': corrupt_error_fake}
+
+
+def extract_turn0_replay(trace_path, ds_by_id):
+    with open(trace_path) as f:
+        trace = json.load(f)
+    instance_id = trace['instance_id']
+    if instance_id not in ds_by_id:
+        return None
+    instance = dict(ds_by_id[instance_id])
+    instance['__workdir__'] = f'/content/work_p6/{instance_id}'
+    user_msg = render_problem(instance)
+    turn0 = trace['turns'][0]
+    if not turn0.get('tool_calls') or not turn0.get('tool_results'):
+        return None
+    _, body_with_tools = _strip_think(turn0['raw_response'])
+    messages = [
+        {'role': 'system', 'content': SYSTEM_PROMPT},
+        {'role': 'user', 'content': user_msg},
+        {'role': 'assistant', 'content': body_with_tools},
+    ]
+    return messages, turn0['tool_results'][0], instance_id
+
+
+def _len_ids(out):
+    if hasattr(out, 'data') and isinstance(out.data, dict) and 'input_ids' in out.data:
+        return int(out['input_ids'].shape[-1])
+    if torch.is_tensor(out):
+        return int(out.shape[-1])
+    if isinstance(out, list):
+        return len(out[0]) if out and isinstance(out[0], list) else len(out)
+    return 0
+
+
+def _ids_tensor(out):
+    if hasattr(out, 'data') and isinstance(out.data, dict) and 'input_ids' in out.data:
+        return out['input_ids']
+    if torch.is_tensor(out):
+        return out
+    return torch.tensor([out] if isinstance(out, list) and not isinstance(out[0], list) else out, dtype=torch.long)
+
+
 def resolve_positions(messages_pre, tool_result_dict):
-    '''
-    Tokenize step-by-step to compute named token positions.
-    Returns dict: position_name -> token index in full input_ids.
-    '''
     messages_with_tool = list(messages_pre) + [
         {'role': 'tool', 'content': json.dumps(tool_result_dict, ensure_ascii=False)[:32000]},
     ]
-
-    # Full prompt with generation prompt (matches what model sees)
-    out_full = tok.apply_chat_template(
-        messages_with_tool, tools=TOOLS, add_generation_prompt=True,
-        return_tensors='pt', enable_thinking=True,
-    )
-    if hasattr(out_full, 'data') and isinstance(out_full.data, dict):
-        ids_full = out_full['input_ids']
-    elif torch.is_tensor(out_full):
-        ids_full = out_full
-    else:
-        ids_full = torch.tensor([out_full], dtype=torch.long)
+    out_full = tok.apply_chat_template(messages_with_tool, tools=TOOLS, add_generation_prompt=True, return_tensors='pt', enable_thinking=True)
+    ids_full = _ids_tensor(out_full)
     full_len = int(ids_full.shape[-1])
 
-    # Without generation prompt: ends at end of tool message
-    out_no_gen = tok.apply_chat_template(
-        messages_with_tool, tools=TOOLS, add_generation_prompt=False,
-        return_tensors='pt', enable_thinking=True,
-    )
-    if hasattr(out_no_gen, 'data') and isinstance(out_no_gen.data, dict):
-        no_gen_len = int(out_no_gen['input_ids'].shape[-1])
-    elif torch.is_tensor(out_no_gen):
-        no_gen_len = int(out_no_gen.shape[-1])
-    else:
-        no_gen_len = len(out_no_gen[0]) if isinstance(out_no_gen, list) else full_len
+    out_no_gen = tok.apply_chat_template(messages_with_tool, tools=TOOLS, add_generation_prompt=False, return_tensors='pt', enable_thinking=True)
+    no_gen_len = _len_ids(out_no_gen)
 
-    # Without tool message: ends at end of assistant message (pre-tool context)
-    out_no_tool = tok.apply_chat_template(
-        list(messages_pre), tools=TOOLS, add_generation_prompt=False,
-        return_tensors='pt', enable_thinking=True,
-    )
-    if hasattr(out_no_tool, 'data') and isinstance(out_no_tool.data, dict):
-        no_tool_len = int(out_no_tool['input_ids'].shape[-1])
-    elif torch.is_tensor(out_no_tool):
-        no_tool_len = int(out_no_tool.shape[-1])
-    else:
-        no_tool_len = len(out_no_tool[0]) if isinstance(out_no_tool, list) else full_len
+    out_no_tool = tok.apply_chat_template(list(messages_pre), tools=TOOLS, add_generation_prompt=False, return_tensors='pt', enable_thinking=True)
+    no_tool_len = _len_ids(out_no_tool)
 
     return ids_full, {
-        'start_of_tool_msg': no_tool_len,                        # first token of tool block
-        'end_of_tool_msg': no_gen_len - 1,                       # last token before assistant prompt
-        'mid_tool': (no_tool_len + no_gen_len - 1) // 2,         # midpoint of tool content
-        'start_of_next_assistant': full_len - 1,                 # current Phase 1 position
+        'start_of_tool_msg': no_tool_len,
+        'end_of_tool_msg': no_gen_len - 1,
+        'mid_tool': (no_tool_len + no_gen_len - 1) // 2,
+        'start_of_next_assistant': full_len - 1,
     }
 
 
 @torch.no_grad()
 def capture_at_positions(messages_pre, tool_result, probe_layers=PROBE_LAYERS_SWEEP):
-    '''Forward pass; hook captures residual at each target position per layer.'''
     ids, positions = resolve_positions(messages_pre, tool_result)
     ids = ids.to(model.device)
     attn = torch.ones_like(ids)
 
     captures = {L: {pos_name: None for pos_name in POSITIONS} for L in probe_layers}
-
     def make_hook(L):
         def hook(module, inp, out):
             h = out[0] if isinstance(out, tuple) else out
@@ -163,21 +252,48 @@ def capture_at_positions(messages_pre, tool_result, probe_layers=PROBE_LAYERS_SW
     return captures, positions, int(ids.shape[-1])
 
 
-print(f'Helpers defined. Layers: {PROBE_LAYERS_SWEEP}, Positions: {POSITIONS}')
+print(f'Helpers OK. Layers: {PROBE_LAYERS_SWEEP}, Positions: {POSITIONS}')
 """),
 
     code("""
-# 3) Re-capture all 60 pairs across 10 layers × 4 positions
+# 5) Rebuild same 60 pairs as Phase 1 (deterministic seed=42)
+import random
+random.seed(42)
+N_TRACES = 20
+
+pairs = []
+checked = 0
+for tf in trace_files:
+    if len(pairs) >= N_TRACES * (1 + len(CORRUPTION_STRATEGIES)):
+        break
+    checked += 1
+    ext = extract_turn0_replay(tf, ds_by_id)
+    if ext is None:
+        continue
+    messages_pre, real_tool, instance_id = ext
+
+    pairs.append({'trace_file': tf, 'instance_id': instance_id, 'messages_pre': messages_pre,
+                  'tool_result': real_tool, 'label': 0, 'corruption': 'none'})
+    for strat_name, strat_fn in CORRUPTION_STRATEGIES.items():
+        pairs.append({'trace_file': tf, 'instance_id': instance_id, 'messages_pre': messages_pre,
+                      'tool_result': strat_fn(real_tool), 'label': 1, 'corruption': strat_name})
+
+print(f'Built {len(pairs)} pairs from {len(pairs)//3} traces (checked {checked})')
+print(f'  Clean: {sum(1 for p in pairs if p[\"label\"]==0)}')
+print(f'  Truncate: {sum(1 for p in pairs if p[\"corruption\"]==\"truncate\")}')
+print(f'  Error_fake: {sum(1 for p in pairs if p[\"corruption\"]==\"error_fake\")}')
+"""),
+
+    code("""
+# 6) Capture sweep — 60 pairs × 10 layers × 4 positions
 import os, json, time, numpy as np
 
-SWEEP_DIR = os.path.join(DIRS['captures'].replace('captures', 'sweep_captures'))
-os.makedirs(SWEEP_DIR, exist_ok=True)
-CAPTURES_FILE = os.path.join(SWEEP_DIR, 'sweep_residuals.npz')
-META_FILE = os.path.join(SWEEP_DIR, 'sweep_meta.json')
+CAPTURES_FILE = os.path.join(DIRS['captures'], 'sweep_residuals.npz')
+META_FILE = os.path.join(DIRS['captures'], 'sweep_meta.json')
 
-if os.path.exists(CAPTURES_FILE):
+if os.path.exists(CAPTURES_FILE) and os.path.exists(META_FILE):
     data = np.load(CAPTURES_FILE)
-    sweep_arr = {f'L{L}_{pos}': list(data[f'L{L}_{pos}']) for L in PROBE_LAYERS_SWEEP for pos in POSITIONS if f'L{L}_{pos}' in data}
+    sweep_arr = {k: list(data[k]) for k in data.files}
     with open(META_FILE) as f:
         meta = json.load(f)
     print(f'Resumed: {len(meta)} captured')
@@ -196,25 +312,14 @@ for i, p in enumerate(pairs):
             for pos_name in POSITIONS:
                 if caps[L][pos_name] is not None:
                     sweep_arr[f'L{L}_{pos_name}'].append(caps[L][pos_name])
-        meta.append({
-            'trace_file': p['trace_file'],
-            'instance_id': p['instance_id'],
-            'corruption': p['corruption'],
-            'label': p['label'],
-            'n_tokens': n_tok,
-            'positions': positions,
-            'has_capture': True,
-        })
+        meta.append({'trace_file': p['trace_file'], 'instance_id': p['instance_id'],
+                     'corruption': p['corruption'], 'label': p['label'], 'n_tokens': n_tok,
+                     'positions': positions, 'has_capture': True})
     except Exception as e:
         print(f'  [{i}] FAILED: {type(e).__name__}: {e}')
-        meta.append({
-            'trace_file': p['trace_file'],
-            'instance_id': p['instance_id'],
-            'corruption': p['corruption'],
-            'label': p['label'],
-            'has_capture': False,
-            'error': f'{type(e).__name__}: {e}',
-        })
+        meta.append({'trace_file': p['trace_file'], 'instance_id': p['instance_id'],
+                     'corruption': p['corruption'], 'label': p['label'], 'has_capture': False,
+                     'error': f'{type(e).__name__}: {e}'})
 
     if (i + 1) % 10 == 0 or (i + 1) == len(pairs):
         np.savez(CAPTURES_FILE, **{k: np.stack(v) for k, v in sweep_arr.items() if v})
@@ -231,7 +336,7 @@ print(f'\\nDONE. {sum(1 for m in meta if m[\"has_capture\"])}/{len(meta)} valid,
 """),
 
     code("""
-# 4) Train probe per (L, pos) + D1 random baseline; 3 seeds
+# 7) Train probe per (L, pos) + D1 random baseline, 3 seeds
 import numpy as np
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import roc_auc_score
@@ -242,7 +347,7 @@ with open(META_FILE) as f:
 valid_meta = [m for m in meta if m['has_capture']]
 data = np.load(CAPTURES_FILE)
 y = np.array([m['label'] for m in valid_meta], dtype=int)
-print(f'N valid: {len(valid_meta)}, balance: {100*y.mean():.0f}% positive')
+print(f'N valid: {len(valid_meta)}, balance: {100*y.mean():.0f}%')
 
 SEEDS = [42, 7, 1337]
 sweep_results = {}
@@ -277,23 +382,22 @@ for L in PROBE_LAYERS_SWEEP:
             'rand': float(np.mean(rand_seeds)),
             'gap': float(np.mean(real_seeds) - np.mean(rand_seeds)),
         }
-
 print(f'\\nTrained {len(sweep_results)} (L, pos) probes.')
 """),
 
     code("""
-# 5) Heatmap printout — AUROC and GAP per (L, pos)
+# 8) Heatmap printout
 print('\\n=== REAL AUROC ===')
-print(f'{\"Layer\":<6} ' + ' '.join(f'{p[:14]:>14s}' for p in POSITIONS))
+print(f'{\"Layer\":<6} ' + ' '.join(f'{p[:18]:>18s}' for p in POSITIONS))
 for L in PROBE_LAYERS_SWEEP:
     row = f'L{L:<5d} '
     for pos in POSITIONS:
         r = sweep_results.get((L, pos))
-        row += f' {r[\"real\"]:>13.3f}' if r else '             —'
+        row += f' {r[\"real\"]:>17.3f}' if r else '                  —'
     print(row)
 
 print('\\n=== GAP (real − random) ===')
-print(f'{\"Layer\":<6} ' + ' '.join(f'{p[:14]:>14s}' for p in POSITIONS))
+print(f'{\"Layer\":<6} ' + ' '.join(f'{p[:18]:>18s}' for p in POSITIONS))
 for L in PROBE_LAYERS_SWEEP:
     row = f'L{L:<5d} '
     for pos in POSITIONS:
@@ -301,12 +405,11 @@ for L in PROBE_LAYERS_SWEEP:
         if r:
             gap = r['gap']
             flag = '🟢' if gap > 0.15 else ('🟡' if gap > 0.10 else ' ')
-            row += f' {gap:>+12.3f}{flag}'
+            row += f' {gap:>+15.3f}{flag} '
         else:
-            row += '             —'
+            row += '                  —'
     print(row)
 
-# Best combo
 if sweep_results:
     best_key = max(sweep_results, key=lambda k: sweep_results[k]['gap'])
     best = sweep_results[best_key]
@@ -315,9 +418,8 @@ if sweep_results:
 """),
 
     code("""
-# 6) Decision — resgata or walk-back
+# 9) Decision — resgata or walk-back
 GAP_THRESHOLD = 0.15
-
 passed = [(k, v) for k, v in sweep_results.items() if v['gap'] > GAP_THRESHOLD]
 print(f'\\n=== {len(passed)} (L, pos) combos with gap > {GAP_THRESHOLD} ===')
 
@@ -326,27 +428,24 @@ if passed:
     for k, v in sorted(passed, key=lambda x: -x[1]['gap'])[:5]:
         print(f'  L{k[0]} {k[1]}: REAL {v[\"real\"]:.3f}  gap {v[\"gap\"]:+.3f}')
     print('\\nNEXT: re-frame Phase 1 probe to this position. Re-run inspect-raw to confirm not lexical leak.')
-    print('Save best probe + advance to Phase 2 (causality test).')
 else:
     print('\\n🔴 LOCK WALK-BACK — no (L, pos) combo recovers signal.')
     print('Phase 1 hypothesis FALSIFIED across full position × layer sweep.')
-    print('\\nFinding: Qwen3.6-27B encodes EXPLICIT errors (ok=false strings)')
-    print('but is BLIND to silent corruption (truncated tool results) at all')
-    print('tested layers and positions in pre-generation residual.')
-    print('\\nNEXT: walk-back memory + pivot to Inner-Outer divergence probe (Week 2 sprint).')
+    print('\\nSubstantive finding: Qwen3.6-27B encodes EXPLICIT errors (ok=false strings)')
+    print('but is BLIND to silent corruption (truncated tool results) at all tested')
+    print('layers and positions in pre-generation residual.')
+    print('\\nNEXT: walk-back memory + pivot to Inner-Outer divergence probe (Week 2).')
 
-# Save
 import os
-RESULTS_FILE = os.path.join(SWEEP_DIR, 'sweep_aurocs.json')
+RESULTS_FILE = os.path.join(DIRS['results'], 'sweep_aurocs.json')
 with open(RESULTS_FILE, 'w') as f:
     json.dump({
         'per_combo': {f'L{k[0]}_{k[1]}': v for k, v in sweep_results.items()},
-        'n_total': int(len(y)),
-        'n_positive': int(y.sum()),
-        'seeds': SEEDS,
-        'gap_threshold': GAP_THRESHOLD,
+        'n_total': int(len(y)), 'n_positive': int(y.sum()),
+        'seeds': SEEDS, 'gap_threshold': GAP_THRESHOLD,
         'n_passed': len(passed),
         'verdict': 'RESGATE' if passed else 'WALK_BACK',
+        'transformers_commit': TRANSFORMERS_COMMIT,
     }, f, indent=2)
 print(f'\\nSaved: {RESULTS_FILE}')
 """),
