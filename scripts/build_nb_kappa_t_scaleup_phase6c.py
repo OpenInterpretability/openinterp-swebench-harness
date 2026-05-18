@@ -190,11 +190,14 @@ with open(os.path.join(PHASE6C_DIR, 'selected_iids.json'), 'w') as f:
     json.dump([x['instance_id'] for x in selected], f, indent=2)
 """),
 
-    # Cell 4: Load model
+    # Cell 4: Load model + HarnessConfig + Runner
     code("""
-# A.4) Load Qwen3.6-27B
+# A.4) Load Qwen3.6-27B + HarnessConfig pointing at PHASE6C_DIR + Runner
 import torch
 from transformers import AutoModelForCausalLM, AutoTokenizer
+from pathlib import Path
+from config import HarnessConfig
+from runner import Runner
 
 MODEL_ID = 'Qwen/Qwen3.6-27B'
 tok = AutoTokenizer.from_pretrained(MODEL_ID, trust_remote_code=True)
@@ -203,108 +206,81 @@ model = AutoModelForCausalLM.from_pretrained(
 )
 model.eval()
 print(f'Loaded. d_model={model.config.hidden_size}, n_layers={len(model.model.layers)}')
+
+cfg = HarnessConfig(
+    work_root=Path(PHASE6C_DIR) / 'work',
+    capture_root=Path(PHASE6C_DIR) / 'captures',
+    trace_root=Path(PHASE6C_DIR) / 'traces',
+)
+print(f'Config: model={cfg.model}, layers={cfg.capture_layers}, max_turns={cfg.max_turns}')
+print(f'  work_root: {cfg.work_root}')
+print(f'  capture_root: {cfg.capture_root}')
+print(f'  trace_root: {cfg.trace_root}')
+
+runner = Runner(model=model, tokenizer=tok, config=cfg)
+print('Runner ready.')
 """),
 
-    # Cell 5: Run agent loop on selected instances
+    # Cell 5: prep_workdir + run_one loop with resume
     code("""
-# A.5) Run agent loop on 100 instances. Uses harness AgentLoop + Tap + Capture.
-# Saves to PHASE6C_DIR/traces + captures/ (same format as Phase 6).
-# Resume-safe: skip already-done instances.
+# A.5) Run 100 instances via Runner.run_one with prep_workdir + resume + audit + checkpoint.
+# Same pattern as Phase 6 builder (scripts/build_nb_swebench_v6_phase6_scale.py).
 
-import time, json
+import subprocess, json, time, torch
 from pathlib import Path
-from agent.loop import AgentLoop, AgentResult
-from agent.prompts import render_problem
-from instrumentation.tap import ResidualTap
-from instrumentation.capture import CaptureBuffer
-from sandbox.exec import BashSession
+from instrumentation.capture import audit_captures
 
-CONFIG = type('Cfg', (), {
-    'model': 'Qwen/Qwen3.6-27B',
-    'temperature': 1.0,
-    'top_p': 0.95,
-    'thinking_mode': True,
-    'capture_layers': [11, 23, 31, 43, 55],
-    'max_turns': 30,
-    'max_context': 32768,
-    'max_invalid_tools_in_row': 5,
-})()
+def prep_workdir(instance, workdir):
+    workdir = Path(workdir)
+    if (workdir / '.git').exists():
+        return
+    repo, base = instance['repo'], instance['base_commit']
+    workdir.mkdir(parents=True, exist_ok=True)
+    subprocess.run(['git', 'clone', '--quiet', f'https://github.com/{repo}', str(workdir)], check=True)
+    subprocess.run(['git', '-c', 'advice.detachedHead=false', 'checkout', '--quiet', base], cwd=str(workdir), check=True)
+    test_patch = instance.get('test_patch')
+    if test_patch:
+        subprocess.run(['git', 'apply', '--allow-empty', '-'], input=test_patch, text=True, cwd=str(workdir))
+    subprocess.run(['git', 'add', '-A'], cwd=str(workdir), check=False)
+    subprocess.run(['git', 'commit', '--quiet', '--no-verify', '-m', 'baseline', '--allow-empty'], cwd=str(workdir), check=False)
 
-TRACES_DIR = os.path.join(PHASE6C_DIR, 'traces')
-CAPTURES_DIR = os.path.join(PHASE6C_DIR, 'captures')
-RESULTS_FILE = os.path.join(PHASE6C_DIR, 'phase6c_results.json')
 
-# Resume support
-results = {}
-if os.path.exists(RESULTS_FILE):
-    with open(RESULTS_FILE) as f:
-        results = json.load(f)
-    print(f'Resumed: {len(results)} done')
-
-# Filter to remaining
-remaining = [r for r in selected if r['instance_id'] not in results]
-print(f'Running {len(remaining)} new instances')
+CHECKPOINT = Path(PHASE6C_DIR) / 'phase6c_results.json'
+results: dict = {}
+if CHECKPOINT.exists():
+    results = json.loads(CHECKPOINT.read_text())
+    print(f'Resuming — {len(results)} already done')
 
 t_start = time.time()
-for i, instance in enumerate(remaining):
-    iid = instance['instance_id']
+for i, inst in enumerate(selected):
+    iid = inst['instance_id']
+    if iid in results and results[iid].get('finished') is not None:
+        continue
+    print(f'[{i+1:3d}/{len(selected)}] RUN  {iid[:60]} | {inst[\"repo\"]}')
+    torch.cuda.empty_cache()
+    torch.cuda.reset_peak_memory_stats()
     try:
-        instance['__workdir__'] = f'/content/work_p6c/{iid}'
-        os.makedirs(instance['__workdir__'], exist_ok=True)
-        bash = BashSession(cwd=instance['__workdir__'])
-        tap = ResidualTap(model, capture_layers=CONFIG.capture_layers)
-        cap = CaptureBuffer()
-        loop = AgentLoop(model=model, tokenizer=tok, config=CONFIG,
-                         bash_session=bash, tap=tap, capture_buffer=cap,
-                         instance_id=iid, seed=42)
-        problem_msg = render_problem(instance)
-        result = loop.run(problem_msg)
-
-        # Save trace JSON
-        trace_path = os.path.join(TRACES_DIR, f'{iid}.json')
-        with open(trace_path, 'w') as f:
-            json.dump({
-                'instance_id': iid,
-                'seed': 42,
-                'config': {'model': CONFIG.model, 'temperature': CONFIG.temperature,
-                           'top_p': CONFIG.top_p, 'thinking_mode': CONFIG.thinking_mode,
-                           'capture_layers': CONFIG.capture_layers},
-                'finished': result.finished,
-                'finish_reason': result.finish_reason,
-                'n_turns': len(result.turns),
-                'n_captures': sum(t.n_capture_steps for t in result.turns),
-                'wall_seconds': time.time() - t_start,
-                'error': result.error,
-                'turns': [t.__dict__ for t in result.turns],
-            }, f, indent=1)
-
-        # Save captures
-        cap_path = os.path.join(CAPTURES_DIR, f'{iid}.safetensors')
-        meta_path = os.path.join(CAPTURES_DIR, f'{iid}.meta.json')
-        cap.save(cap_path, meta_path, instance_id=iid)
-
-        # Record result
-        results[iid] = {
-            'instance_id': iid,
-            'finished': result.finished,
-            'finish_reason': result.finish_reason,
-            'n_turns': len(result.turns),
-            'wall_seconds': time.time() - t_start,
+        out = runner.run_one(inst, prepare_workdir_fn=prep_workdir)
+        audit = audit_captures(out['captures_meta'])
+        out['audit_ok'] = audit['ok']
+        out['vram_peak_gb'] = round(torch.cuda.max_memory_allocated() / (1024**3), 1)
+        out['transformers_commit'] = TRANSFORMERS_COMMIT
+    except Exception as e:
+        out = {
+            'instance_id': iid, 'finished': False, 'finish_reason': 'error',
+            'error': f'{type(e).__name__}: {e}', 'wall_seconds': 0.0,
+            'n_turns': 0, 'n_captures': 0, 'audit_ok': False, 'vram_peak_gb': 0.0,
             'transformers_commit': TRANSFORMERS_COMMIT,
         }
-        with open(RESULTS_FILE, 'w') as f:
-            json.dump(results, f, indent=2)
+        print(f'  ERROR: {out[\"error\"]}')
+    results[iid] = out
+    CHECKPOINT.write_text(json.dumps(results, indent=2))
+    elapsed_min = (time.time() - t_start) / 60
+    avg_min = elapsed_min / max(1, len([r for r in results.values() if r.get('wall_seconds', 0) > 0]))
+    eta_min = avg_min * (len(selected) - len(results))
+    print(f'  wall={out[\"wall_seconds\"]/60:.1f}min  turns={out[\"n_turns\"]:2d}  caps={out[\"n_captures\"]}  vram={out.get(\"vram_peak_gb\", 0):.1f}GB  patch={out.get(\"patch_n_bytes\", 0)}B | elapsed {elapsed_min:.0f}m ETA {eta_min:.0f}m')
 
-        elapsed = (time.time() - t_start) / 60
-        print(f'  [{i+1}/{len(remaining)}] {iid[:50]} | turns={len(result.turns)} | {elapsed:.1f}min total')
-
-    except Exception as e:
-        print(f'  [{i+1}] FAILED {iid[:50]}: {type(e).__name__}: {e}')
-        results[iid] = {'error': f'{type(e).__name__}: {e}'}
-        with open(RESULTS_FILE, 'w') as f:
-            json.dump(results, f, indent=2)
-
-print(f'\\nDONE. {len(results)} instances total, {(time.time()-t_start)/60:.1f}min')
+print(f'\\n=== Phase 6c COMPLETE: {len(results)}/{len(selected)} ===')
 """),
 
     # ===================== STAGE B — Local analysis instructions =====================
