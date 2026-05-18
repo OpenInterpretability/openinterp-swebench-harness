@@ -88,15 +88,30 @@ for pkg in ['transformers', 'sklearn', 'scipy', 'datasets']:
     except ImportError:
         print(f'  {pkg}: MISSING')
 
+# Try local .git first (works if installed from git clone), else fall back to ls-remote.
+# pip wheel install strips .git/ so ls-remote is the realistic path on Colab.
 try:
     import transformers
     tfm_path = os.path.dirname(transformers.__file__)
-    TRANSFORMERS_COMMIT = subprocess.run(['git', 'rev-parse', 'HEAD'], cwd=tfm_path,
-                                          capture_output=True, text=True).stdout.strip()
+    res = subprocess.run(['git', 'rev-parse', 'HEAD'], cwd=tfm_path, capture_output=True, text=True)
+    if res.returncode == 0 and res.stdout.strip():
+        TRANSFORMERS_COMMIT = res.stdout.strip()
+except Exception:
+    pass
+if not TRANSFORMERS_COMMIT:
+    try:
+        res = subprocess.run(['git', 'ls-remote', 'https://github.com/huggingface/transformers.git', 'HEAD'],
+                             capture_output=True, text=True)
+        if res.returncode == 0 and res.stdout:
+            TRANSFORMERS_COMMIT = res.stdout.split()[0]
+    except Exception as e:
+        print(f'  ls-remote failed: {e}')
+
+if TRANSFORMERS_COMMIT:
     print(f'\\n🔒 transformers commit: {TRANSFORMERS_COMMIT}')
     print(f'   Pin via: !pip install -q git+https://github.com/huggingface/transformers.git@{TRANSFORMERS_COMMIT}')
-except Exception as e:
-    print(f'  Could not get commit: {e}')
+else:
+    print('\\n⚠️  Could not resolve transformers commit hash.')
 print('\\nRESTART RUNTIME if transformers upgraded.')
 """),
 

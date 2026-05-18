@@ -66,15 +66,26 @@ for pkg in ['transformers', 'datasets', 'fla']:
     except ImportError as e:
         print(f'  {pkg}: MISSING — {e}')
 
-# Print transformers commit hash for reproducibility
+# pip wheel install strips .git/ — use ls-remote as fallback
+import os
+git_hash = ''
 try:
-    import transformers, os
+    import transformers
     tfm_path = os.path.dirname(transformers.__file__)
-    git_hash = subprocess.run(['git', 'rev-parse', 'HEAD'], cwd=tfm_path,
-                              capture_output=True, text=True).stdout.strip()
-    print(f'\\ntransformers git commit: {git_hash}')
-except Exception as e:
-    print(f'  Could not get git commit: {e}')
+    res = subprocess.run(['git', 'rev-parse', 'HEAD'], cwd=tfm_path, capture_output=True, text=True)
+    if res.returncode == 0 and res.stdout.strip():
+        git_hash = res.stdout.strip()
+except Exception:
+    pass
+if not git_hash:
+    try:
+        res = subprocess.run(['git', 'ls-remote', 'https://github.com/huggingface/transformers.git', 'HEAD'],
+                             capture_output=True, text=True)
+        if res.returncode == 0 and res.stdout:
+            git_hash = res.stdout.split()[0]
+    except Exception as e:
+        print(f'  ls-remote failed: {e}')
+print(f'\\ntransformers git commit: {git_hash or \"unknown\"}')
 
 print('\\nRESTART RUNTIME if transformers was upgraded, then re-run from Cell 2.')
 """),
