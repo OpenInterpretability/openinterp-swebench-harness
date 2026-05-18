@@ -123,6 +123,22 @@ Same structural pattern (cross-channel correlation as health proxy) but **opposi
 - D1 random-feature baseline at κ_t-shuffled level
 - Effective 3-4 independent axes (B-D and A-D collinearities checked)
 
+### 3.6 Internal replication v3 (9 axes)
+
+Same-day re-test with expanded probe set: added 4 axes (response_long, early_trace, late_trace, slow_turn) to original 5. Total 9 axes on same residuals.
+
+| Metric | v2 (5 axes) | v3 (9 axes) |
+|---|---|---|
+| κ_t AUROC | 0.677 | **0.697** |
+| Gap vs shuffled | +0.176 | **+0.194** |
+| Mann-Whitney p | 0.003 | **0.0009** |
+| Slope p | 0.0003 | 0.0033 |
+| Success slope | +0.00368 | +0.00251 |
+| Failed slope | +0.00029 | +0.00016 |
+| Effect ratio (succ/fail) | 12.7× | **15.7×** |
+
+**Pattern replicates. Trace-level discrimination strengthens; slope p weakens (more variance) but effect ratio grows. Coherence buildup is not axis-set-dependent.**
+
 ---
 
 ## 4. Discussion
