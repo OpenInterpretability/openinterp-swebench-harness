@@ -1,0 +1,68 @@
+# Zenodo deposit metadata for κ_t coherence buildup paper
+# Upload PDF (compiled from kappa_t_coherence_buildup.md via pandoc)
+# + figures/ + scripts/run_kappa_t_v2.py + scripts/run_kappa_t_v3.py + scripts/run_kappa_t_controls.py
+
+title: "Explore-Consolidate Dynamics in Cross-Probe Coherence Separate Successful and Failed LLM Agent Trajectories"
+upload_type: publication
+publication_type: workingpaper
+description: |
+  We propose cross-probe coherence κ_t — the mean absolute pairwise correlation
+  of N concurrent per-turn behavioral probes within a moving window of agent
+  turns — as a meta-signal for LLM agent monitoring. On 99 SWE-bench Pro
+  trajectories from Qwen3.6-27B we report two findings. (1) Per-trace mean κ̄
+  separates success from failure at AUROC 0.677 (Mann-Whitney p=0.0009).
+  (2) κ_t exhibits a U-shape over each trajectory: it falls through an early
+  exploration phase and rises through a late consolidation phase, and the
+  AMPLITUDE of the U is markedly larger in successful traces (early-half
+  slope p=0.0002, late-half slope p=0.00004). The pattern is the inverse of
+  cardiac uncoupling: in ICU literature, cross-vital decorrelation anticipates
+  decompensation; in LLM agents, the cross-probe trajectory OSCILLATES during
+  successful reasoning and stays flat during failure. A pre-registered
+  robustness control caught a substantial trace-length confound in an earlier
+  monolithic-slope version of the headline; the U-shape decomposition is the
+  post-control rescue and is length-normalized by construction. Five pre-
+  registered single-probe candidates were walked back before this finding
+  emerged; we document this walk-back-and-rescue trajectory explicitly as the
+  source of methodological credibility.
+
+creators:
+  - name: "Vicentino, Caio"
+    affiliation: "OpenInterpretability"
+    orcid: "0009-0003-4331-6259"
+
+keywords:
+  - mechanistic interpretability
+  - large language models
+  - agent monitoring
+  - probing
+  - LLM safety
+  - SWE-bench
+  - Qwen
+  - cross-probe correlation
+  - behavioral probes
+  - explore-exploit
+  - temporal dynamics
+  - pre-registration
+
+communities:
+  - identifier: openinterp
+
+license: "cc-by-4.0"
+
+access_right: open
+
+related_identifiers:
+  - identifier: "https://github.com/OpenInterpretability/openinterp-swebench-harness"
+    relation: "isSupplementTo"
+    resource_type: software
+  - identifier: "https://huggingface.co/datasets/openinterp/kappa-t-coherence-buildup"
+    relation: "isSupplementedBy"
+    resource_type: dataset
+
+notes: |
+  Compute: total marginal compute after Phase 6 capture is R$0 (CPU only). All
+  scripts (Apache-2.0) and data (CC-BY-4.0) are published. Phase 6 capture
+  artifacts (~900 MB) are available at the linked Hugging Face dataset.
+  Reproducibility: re-running run_kappa_t_v2.py on the published residuals
+  should produce results within 1e-4 of those reported in the paper (verified
+  on Mac M2 and Ubuntu 22.04).
