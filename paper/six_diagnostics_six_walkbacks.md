@@ -664,7 +664,7 @@ The formalization in §2.6 of the present paper is the citable form. After publi
 - Vicentino, C. (2026c). *Marginal-Fit Pathology in Predictive Sparse Autoencoders.* openinterp.org/research/papers/marginal-fit-pathology-psae.
 - Vicentino, C. (2026d). *Saturation-Direction Probe Levers: A Five-Class Taxonomy in Qwen3.6-27B.* openinterp.org/research/papers/saturation-direction-probe-levers. And *Two Forms of Epiphenomenal Probes in Code Agents.* openinterp.org/research/papers/two-forms-epiphenomenal-probes.
 - Vicentino, C. (2026e). *Explore-Consolidate Dynamics in Cross-Probe Coherence Separate Successful and Failed LLM Agent Trajectories.* Zenodo DOI 10.5281/zenodo.20278983.
-- Vicentino, C. (2026f). *Conditionally-Causal Probes: Five Operational Constraints on Linear-Probe Causality in Qwen3.6-27B.* Hugging Face dataset: caiovicentino1/openinterp-paper-mega-conditionally-causal (draft, in preparation).
+- Vicentino, C. (2026f). *Conditionally-Causal Probes: Five Operational Constraints on Linear-Probe Causality in Qwen3.6-27B.* openinterp.org/research/papers/conditionally-causal-probes.
 
 ---
 
