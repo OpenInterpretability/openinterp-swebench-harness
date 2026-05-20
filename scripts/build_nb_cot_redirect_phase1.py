@@ -45,7 +45,7 @@ import subprocess
 TRANSFORMERS_COMMIT = '73d9159'  # match Path 4 / Phase 6 / Phase 0
 subprocess.run(['pip', '-q', 'uninstall', '-y', 'transformers'], check=False)
 subprocess.run(['pip', '-q', 'install', f'git+https://github.com/huggingface/transformers.git@{TRANSFORMERS_COMMIT}'], check=True)
-subprocess.run(['pip', '-q', 'install', 'safetensors', 'datasets', 'anthropic', 'scipy'], check=True)
+subprocess.run(['pip', '-q', 'install', 'safetensors', 'datasets', 'openai', 'scipy'], check=True)
 print('Setup done. RESTART RUNTIME, then continue from the next cell.')
 print('flash-attn skipped — sdpa fallback (no residual capture in this experiment).')''')
 
@@ -65,13 +65,13 @@ import transformers
 print(f'transformers {transformers.__version__} | torch {torch.__version__} | CUDA {torch.cuda.is_available()}')
 print(f'GPU: {torch.cuda.get_device_name(0) if torch.cuda.is_available() else "none"}')
 
-# Anthropic key for the LLM sabotage-judge trigger — add as a Colab secret.
+# OpenRouter key for the LLM sabotage-judge trigger — add as a Colab secret.
 from google.colab import userdata
 try:
-    os.environ['ANTHROPIC_API_KEY'] = userdata.get('ANTHROPIC_API_KEY')
-    print('ANTHROPIC_API_KEY loaded from Colab secrets.')
+    os.environ['OPENROUTER_API_KEY'] = userdata.get('OPENROUTER_API_KEY')
+    print('OPENROUTER_API_KEY loaded from Colab secrets.')
 except Exception as e:
-    print(f'WARNING: ANTHROPIC_API_KEY not set ({e}).')
+    print(f'WARNING: OPENROUTER_API_KEY not set ({e}).')
     print('The LLM trigger will fall back to the regex. Add the secret for the intended design.')
 
 DRIVE_ROOT = '/content/drive/MyDrive/openinterp_runs'
