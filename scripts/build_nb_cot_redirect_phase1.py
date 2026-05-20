@@ -43,9 +43,13 @@ drive.mount('/content/drive')
 
 import subprocess
 TRANSFORMERS_COMMIT = '73d9159'  # match Path 4 / Phase 6 / Phase 0
-subprocess.run(['pip', '-q', 'uninstall', '-y', 'transformers'], check=False)
-subprocess.run(['pip', '-q', 'install', f'git+https://github.com/huggingface/transformers.git@{TRANSFORMERS_COMMIT}'], check=True)
-subprocess.run(['pip', '-q', 'install', 'safetensors', 'datasets', 'openai', 'scipy'], check=True)
+# transformers from the commit ARCHIVE ZIP — no full-repo git clone, far faster than
+# `git+...`. No -q: progress streams so a slow install is not mistaken for a hang.
+subprocess.run(['pip', 'uninstall', '-y', 'transformers'], check=False)
+subprocess.run(['pip', 'install',
+                f'https://github.com/huggingface/transformers/archive/{TRANSFORMERS_COMMIT}.zip'],
+               check=True)
+subprocess.run(['pip', 'install', 'safetensors', 'datasets', 'openai', 'scipy'], check=True)
 print('Setup done. RESTART RUNTIME, then continue from the next cell.')
 print('flash-attn skipped — sdpa fallback (no residual capture in this experiment).')''')
 
