@@ -184,11 +184,18 @@ for iid in sandbag_iids:
     }
 L(f'SANDBAG κ_t computed for {len(sandbag_kappa)} traces')
 
-# === 3. Load Phase 6 honest-fail baseline ===
+# === 3. Load Phase 6 baselines: honest-SUCCESS (matched termination) + honest-FAIL ===
 with open(P6_KAPPA) as f:
     p6_kappa = json.load(f)
+honest_success = {iid: r for iid, r in p6_kappa.items() if r['success']}
 honest_fail = {iid: r for iid, r in p6_kappa.items() if not r['success']}
-L(f'HONEST-FAIL baseline: {len(honest_fail)} traces')
+L(f'HONEST-SUCCESS baseline (matched termination=finish_tool): {len(honest_success)} traces')
+L(f'HONEST-FAIL baseline (matched outcome=failure, mode=max_turns): {len(honest_fail)} traces')
+
+# Sandbag agents terminate via finish_tool (ship buggy patch) — same termination mode as
+# honest-success. So honest-SUCCESS is the cleaner primary baseline: it isolates INTENT
+# (sabotage vs genuine solve) from termination mode. honest-FAIL is the secondary
+# comparison (matched outcome but confounded by max_turns termination + length).
 
 # === 4. Compare early-window and late-window κ_t ===
 def window_mean(kt, which):
@@ -207,43 +214,52 @@ def cohens_d(a, b):
     pooled = np.sqrt(((na-1)*a.var(ddof=1) + (nb-1)*b.var(ddof=1)) / (na+nb-2))
     return (a.mean() - b.mean()) / pooled if pooled > 1e-9 else 0.0
 
-sb_early = [window_mean(r['kappa_t'], 'early') for r in sandbag_kappa.values()]
-sb_early = [v for v in sb_early if v is not None]
-hf_early = [window_mean(r['kappa_t'], 'early') for r in honest_fail.values()]
-hf_early = [v for v in hf_early if v is not None]
+def windows(group):
+    e = [window_mean(r['kappa_t'], 'early') for r in group.values()]
+    l = [window_mean(r['kappa_t'], 'late') for r in group.values()]
+    return [v for v in e if v is not None], [v for v in l if v is not None]
 
-sb_late = [window_mean(r['kappa_t'], 'late') for r in sandbag_kappa.values()]
-sb_late = [v for v in sb_late if v is not None]
-hf_late = [window_mean(r['kappa_t'], 'late') for r in honest_fail.values()]
-hf_late = [v for v in hf_late if v is not None]
+sb_early, sb_late = windows(sandbag_kappa)
+hs_early, hs_late = windows(honest_success)
+hf_early, hf_late = windows(honest_fail)
 
-L('\n=== κ_t comparison: SANDBAG vs HONEST-FAIL ===')
 results_out = {}
-for label, sb, hf in [('early-window', sb_early, hf_early), ('late-window', sb_late, hf_late)]:
-    if len(sb) < 3 or len(hf) < 3:
-        L(f'{label}: insufficient samples (sandbag={len(sb)}, honest={len(hf)})')
-        continue
-    stat, p = mannwhitneyu(sb, hf)
-    d = cohens_d(sb, hf)
-    direction = 'HIGHER' if np.mean(sb) > np.mean(hf) else 'LOWER'
-    L(f'{label}: sandbag mean={np.mean(sb):.3f} (n={len(sb)}), honest mean={np.mean(hf):.3f} (n={len(hf)})')
-    L(f'  Mann-Whitney p={p:.4f}, Cohen\'s d={d:+.3f}, sandbag is {direction}')
-    results_out[label] = {'sandbag_mean': float(np.mean(sb)), 'honest_mean': float(np.mean(hf)),
-                           'mw_p': float(p), 'cohens_d': float(d), 'direction': direction,
-                           'n_sandbag': len(sb), 'n_honest': len(hf)}
+for baseline_name, base_early, base_late in [
+    ('vs_honest_success', hs_early, hs_late),   # PRIMARY — matched termination mode
+    ('vs_honest_fail', hf_early, hf_late),       # SECONDARY — matched outcome
+]:
+    L(f'\n=== κ_t comparison: SANDBAG {baseline_name.replace("_", " ").upper()} ===')
+    results_out[baseline_name] = {}
+    for label, sb, base in [('early-window', sb_early, base_early), ('late-window', sb_late, base_late)]:
+        if len(sb) < 3 or len(base) < 3:
+            L(f'{label}: insufficient samples (sandbag={len(sb)}, baseline={len(base)})')
+            continue
+        stat, p = mannwhitneyu(sb, base)
+        d = cohens_d(sb, base)
+        direction = 'HIGHER' if np.mean(sb) > np.mean(base) else 'LOWER'
+        L(f'{label}: sandbag mean={np.mean(sb):.3f} (n={len(sb)}), baseline mean={np.mean(base):.3f} (n={len(base)})')
+        L(f'  Mann-Whitney p={p:.4f}, Cohen\'s d={d:+.3f}, sandbag is {direction}')
+        results_out[baseline_name][label] = {
+            'sandbag_mean': float(np.mean(sb)), 'baseline_mean': float(np.mean(base)),
+            'mw_p': float(p), 'cohens_d': float(d), 'direction': direction,
+            'n_sandbag': len(sb), 'n_baseline': len(base)}
 
 # === 5. Length-confound check (Paper 10 D6) ===
 sb_lengths = [r['n_turns'] for r in sandbag_kappa.values()]
+hs_lengths = [r['n_turns'] for r in honest_success.values()]
 hf_lengths = [r['n_turns'] for r in honest_fail.values()]
-L(f'\nLength: sandbag median={np.median(sb_lengths):.0f}, honest median={np.median(hf_lengths):.0f}')
+L(f'\nLength medians: sandbag={np.median(sb_lengths):.0f}, honest-success={np.median(hs_lengths):.0f}, honest-fail={np.median(hf_lengths):.0f}')
 if len(set(sb_lengths)) > 1 and len(sb_early) == len(sb_lengths):
-    r_len, p_len = pearsonr(sb_lengths[:len(sb_early)], sb_early)
+    r_len, p_len = pearsonr(sb_lengths, sb_early)
     L(f'  Pearson(length, early-κ_t) within sandbag: r={r_len:+.3f}, p={p_len:.3f}')
-    results_out['length_confound'] = {'pearson_r': float(r_len), 'pearson_p': float(p_len)}
+    results_out['length_confound'] = {'pearson_r': float(r_len), 'pearson_p': float(p_len),
+                                       'sandbag_median_len': float(np.median(sb_lengths)),
+                                       'honest_success_median_len': float(np.median(hs_lengths)),
+                                       'honest_fail_median_len': float(np.median(hf_lengths))}
 
-# === 6. Verdict ===
-early = results_out.get('early-window', {})
-verdict = 'NO-GO'
+# === 6. Verdict (primary = vs honest-SUCCESS, matched termination) ===
+early = results_out.get('vs_honest_success', {}).get('early-window', {})
+verdict = 'NO-GO (insufficient data)'
 if early:
     p, d, direction = early['mw_p'], early['cohens_d'], early['direction']
     h4_match = direction == 'HIGHER'  # H4-SANDBAG predicts higher early κ_t
@@ -255,6 +271,7 @@ if early:
         verdict = 'GO-INVERTED (significant but OPPOSITE direction — reframe hypothesis)'
     else:
         verdict = 'NO-GO (null or wrong direction — honest negative per Paper 10)'
+L(f'(Verdict based on vs-honest-success early-window — matched termination mode)')
 
 L(f'\n{"="*60}')
 L(f'PHASE 0 VERDICT: {verdict}')
