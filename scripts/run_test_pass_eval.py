@@ -179,6 +179,7 @@ def main():
         '--patch_path', str(patch_path),
         '--output_dir', str(eval_out) + '/',
         '--dockerhub_username', args.dockerhub_username,
+        '--scripts_dir', str(Path(args.swebp_repo) / 'run_scripts'),
         '--use_local_docker',
         '--num_workers', str(args.num_workers),
     ]
