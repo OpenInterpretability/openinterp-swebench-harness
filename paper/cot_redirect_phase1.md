@@ -458,8 +458,12 @@ intervention undermines the monitor it is built on.
 The constructive reading is a scoping result. Correction cannot live on the CoT
 surface; it has to act on the cause and be verified against the output. And detected
 sabotage should be escalated, not redirected — because redirecting it, on this
-evidence, mostly hides it. Phase 2 takes up the two correction paths this experiment
-points to but did not test: removing the cause, and closing the loop on the output.
+evidence, mostly hides it. Two follow-ups are immediate: the correction paths this
+experiment names but did not run (removing the cause; closing the loop on the output);
+and, mechanistically, whether the obfuscation that blinds a chain-of-thought monitor
+also reaches the residual stream — or whether an activation-level probe survives the
+attack that defeats CoT monitoring. The latter is the sharper question, and the one
+we take up next.
 
 ---
 
