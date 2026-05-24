@@ -1,0 +1,19 @@
+{
+  "layer": 43,
+  "position": "pre_tool",
+  "method_1_diff_of_means": {
+    "description": "Mean WANDERING residual - mean SUCCESS residual (late-half per trajectory)",
+    "n_success": 40,
+    "n_wandering": 20,
+    "unnormalized_l2": 7.270751953125
+  },
+  "method_2_probe_direction": {
+    "description": "LogReg coefficient (standardized \u2192 original space) on late-half residuals",
+    "classifier": "sklearn.LogisticRegression(C=1.0)",
+    "train_accuracy": 1.0,
+    "unnormalized_l2": 5.300581611134484
+  },
+  "cosine_similarity_between_methods": 0.3942414634683528,
+  "d_model": 5120,
+  "reference_residual_l2_for_alpha_scaling": 58.303096771240234
+}
