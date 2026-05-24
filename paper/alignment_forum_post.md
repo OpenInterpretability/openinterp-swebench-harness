@@ -5,7 +5,7 @@
 **TL;DR**
 
 - Probe-based monitoring of LLM agents has a quantifiable **34% blind spot**: the WANDERING sub-class where the probe says "success" but the agent never emits the completion action and hits its turn budget.
-- I tested six detector designs across three signal channels (text, residual cross-layer, action entropy). The breakthrough finding is **tool-use entropy collapse** — WANDERING agents repeat the same 2-3 tools in their final 10 turns while varying the natural-language wording. The loop lives in **action space, not text space**.
+- I tested six detector designs across three signal channels (text, residual cross-layer, action entropy). The most promising candidate is **tool-use entropy collapse** — WANDERING agents repeat the same 2-3 tools in their final 10 turns while varying the natural-language wording. The loop lives in **action space, not text space**.
 - The W/S median entropy ratio is **0.41 in Qwen3.6-27B and identically 0.41 in Llama-70b**, 0.71 in GPT-5 router (same direction). Cross-architecture invariance within SWE-bench-style code-execution tasks.
 - Cross-task validation on METR MALT (15+ task families) is **null** — scoping the claim to multi-turn code-execution agents with rich action spaces, not universally task-invariant.
 - A combined detector (v1 text post-hoc ∪ v5 tool-entropy) achieves **70% WANDERING recall at 5% SUCCESS false-positive rate**, suitable for production Tier-3 autonomous-termination deployment with per-customer FP-budget agreement.
@@ -33,7 +33,7 @@ I tested detectors across text, residual cross-layer disagreement, and action en
 | v2 naive early-warning | Text | 30% | 15% | FP unacceptable |
 | v3 persistence hypothesis | Text | 10% | 5% | **Refuted in opposite direction** (SUCCESS persists more, p = 0.92) |
 | v4 cross-layer disagreement | Residual | 65% | 30% | Tier 2 advisory ✓ |
-| **v5 tool-entropy collapse** | **Action** | **55%** | **5%** | **Tier 3 ✓ — BREAKTHROUGH** |
+| **v5 tool-entropy collapse** | **Action** | **55%** | **5%** | **Tier 3 ✓ — best Tier-3 candidate in this work** |
 | v6 residual stability | Residual | 15% | 5% | Null at Tier 3 |
 
 The interesting story is v3 → v5. I hypothesized that WANDERING agents are "stuck in a verification loop" — and looked for it in text persistence (consecutive turns of "tests pass" / "code is correct" phrases). That refuted in the opposite direction: SUCCESS agents verbalize completion more persistently. But the same hypothesis was true at the **action level**: WANDERING agents repeat the same TOOLS (test → view → test → view) while varying the wording. The loop exists, but at the wrong observable for v3.
@@ -79,6 +79,7 @@ Tier 3 deployment in production requires explicit per-customer FP-budget agreeme
 - The mid-layer ablation evidence for "edge-layer specific" mechanism is correlational; it's also consistent with a layer-count effect on the disagreement metric. I hedge between these in §5.4.1.
 - The causal direction (does collapsed tool-entropy *cause* WANDERING, or co-occur?) is untested. Steering interventions on L11/L55 to test the mid-layer-to-edge alignment hypothesis are explicitly future work.
 - The behavioral sub-classification on cross-model datasets uses exit-status proxies, not the probe-based WANDERING definition. Acknowledged in limitations.
+- **This is empirical work scoped to one task family (SWE-bench-style code-execution) with one new signal candidate, not a paradigm-shifting result.** The cross-architecture ratio match (W/S ≈ 0.41 in Qwen AND Llama) is the most striking pattern and merits independent replication on additional models before treating as a "discovery". The Tier-3 numbers (70% × 5% FP) come from N=20 WANDERING trajectories on the Qwen primary dataset; at production scale of millions of trajectories, 5% FP corresponds to thousands of terminated successes, and the threshold needs explicit per-customer calibration before deployment.
 
 **What this opens up**
 
