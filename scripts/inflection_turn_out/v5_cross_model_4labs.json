@@ -1,0 +1,50 @@
+{
+  "qwen_27b": {
+    "w_med": 0.469,
+    "s_med": 1.157,
+    "p": 4e-05,
+    "ratio": 0.41
+  },
+  "llama_70b": {
+    "w_med": 1.0,
+    "s_med": 2.522,
+    "p": "<1e-15",
+    "ratio": 0.41
+  },
+  "claude_3_7_sonnet": {
+    "model": "Claude 3.7 Sonnet",
+    "n_success": 1813,
+    "n_locked": 331,
+    "n_wandering": 1116,
+    "median_entropy": {
+      "success": 1.7609640474436812,
+      "locked": 1.7609640474436812,
+      "wandering": 1.7609640474436812
+    },
+    "mean_entropy": {
+      "success": 1.7514820608887909,
+      "locked": 1.7421747025492365,
+      "wandering": 1.7349423617863011
+    },
+    "p_w_vs_s": 0.16066977856578757,
+    "ratio_w_over_s": 1.0
+  },
+  "gpt_5_router": {
+    "model": "GPT-5 router",
+    "n_success": 664,
+    "n_locked": 591,
+    "n_wandering": 137,
+    "median_entropy": {
+      "success": 2.2217217057555723,
+      "locked": 2.058813890331201,
+      "wandering": 1.570950594454669
+    },
+    "mean_entropy": {
+      "success": 2.139873076598526,
+      "locked": 1.912803954044211,
+      "wandering": 1.5307964026287175
+    },
+    "p_w_vs_s": 8.913155541218961e-35,
+    "ratio_w_over_s": 0.7070870264196359
+  }
+}
