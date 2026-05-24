@@ -1,0 +1,223 @@
+{
+  "aggregate_counts": {
+    "READ_ONLY": 405,
+    "DANGEROUS": 174,
+    "EDIT": 77,
+    "OTHER:sed": 100,
+    "WRITE": 220,
+    "OTHER:export": 6,
+    "OTHER:DISPLAY=:99": 2,
+    "OTHER:PYTHONPATH=/content/work_p6/instance_ansible__ansible-5d253a13807e884b7ce0b6b57a963a45e2f0322c-v1055803c3a812189a1133297f7f5468579283f86/lib:/content/work_p6/instance_ansible__ansible-5d253a13807e884b7ce0b6b57a963a45e2f0322c-v1055803c3a812189a1133297f7f5468579283f86/test": 7,
+    "OTHER:PYTHONPATH=/content/work_p6/instance_ansible__ansible-3db08adbb1cc6aa9941be5e0fc810132c6e1fa4b-vba6da65a0f3baefda7a058ebbd0a8dcafb8512f5/lib": 1,
+    "OTHER:PYTHONPATH=/content/work_p6/instance_ansible__ansible-de01db08d00c8d2438e1ba5989c313ba16a145b0-vba6da65a0f3baefda7a058ebbd0a8dcafb8512f5/lib": 1,
+    "OTHER:hexdump": 1
+  },
+  "feasible_count": 5,
+  "total_trajectories": 20,
+  "feasibility_rate": 0.25,
+  "per_traj": [
+    {
+      "iid": "instance_qutebrowser__qutebrowser-2dd8966fdcf11972062c540b7a787e4d0de8d372-v363c8a7e5ccdf6968fc7ab84a2053ac78036691d",
+      "counts": {
+        "READ_ONLY": 24,
+        "DANGEROUS": 6,
+        "EDIT": 2,
+        "OTHER:sed": 5,
+        "WRITE": 12
+      }
+    },
+    {
+      "iid": "instance_qutebrowser__qutebrowser-9b71c1ea67a9e7eb70dd83214d881c2031db6541-v363c8a7e5ccdf6968fc7ab84a2053ac78036691d",
+      "counts": {
+        "READ_ONLY": 20,
+        "DANGEROUS": 16,
+        "WRITE": 9,
+        "EDIT": 5
+      }
+    },
+    {
+      "iid": "instance_internetarchive__openlibrary-5de7de19211e71b29b2f2ba3b1dff2fe065d660f-v08d8e8889ec945ab821fb156c04c7d2e2810debb",
+      "counts": {
+        "WRITE": 21,
+        "READ_ONLY": 9,
+        "OTHER:sed": 7,
+        "DANGEROUS": 11,
+        "EDIT": 2
+      }
+    },
+    {
+      "iid": "instance_internetarchive__openlibrary-7f6b722a10f822171501d027cad60afe53337732-ve8c8d62a2b60610a3c4631f5f23ed866bada9818",
+      "counts": {
+        "WRITE": 20,
+        "READ_ONLY": 10,
+        "DANGEROUS": 14,
+        "EDIT": 2,
+        "OTHER:sed": 4
+      }
+    },
+    {
+      "iid": "instance_qutebrowser__qutebrowser-0d2afd58f3d0e34af21cee7d8a3fc9d855594e9f-vnan",
+      "counts": {
+        "READ_ONLY": 30,
+        "DANGEROUS": 3,
+        "EDIT": 5,
+        "OTHER:sed": 1,
+        "WRITE": 7,
+        "OTHER:export": 2,
+        "OTHER:DISPLAY=:99": 2
+      }
+    },
+    {
+      "iid": "instance_ansible__ansible-5d253a13807e884b7ce0b6b57a963a45e2f0322c-v1055803c3a812189a1133297f7f5468579283f86",
+      "counts": {
+        "READ_ONLY": 17,
+        "DANGEROUS": 15,
+        "WRITE": 8,
+        "OTHER:PYTHONPATH=/content/work_p6/instance_ansible__ansible-5d253a13807e884b7ce0b6b57a963a45e2f0322c-v1055803c3a812189a1133297f7f5468579283f86/lib:/content/work_p6/instance_ansible__ansible-5d253a13807e884b7ce0b6b57a963a45e2f0322c-v1055803c3a812189a1133297f7f5468579283f86/test": 7,
+        "OTHER:sed": 1
+      }
+    },
+    {
+      "iid": "instance_ansible__ansible-502270c804c33d3bc963930dc85e0f4ca359674d-v7eee2454f617569fd6889f2211f75bc02a35f9f8",
+      "counts": {
+        "WRITE": 19,
+        "READ_ONLY": 9,
+        "DANGEROUS": 19,
+        "EDIT": 2
+      }
+    },
+    {
+      "iid": "instance_internetarchive__openlibrary-09865f5fb549694d969f0a8e49b9d204ef1853ca-ve8c8d62a2b60610a3c4631f5f23ed866bada9818",
+      "counts": {
+        "WRITE": 8,
+        "READ_ONLY": 9,
+        "DANGEROUS": 29,
+        "EDIT": 4
+      }
+    },
+    {
+      "iid": "instance_internetarchive__openlibrary-c05ccf2cd8baa81609434e0e35c4a63bc0da5a25-v0f5aece3601a5b4419f7ccec1dbda2071be28ee4",
+      "counts": {
+        "WRITE": 18,
+        "READ_ONLY": 19,
+        "OTHER:sed": 8,
+        "DANGEROUS": 3,
+        "EDIT": 2
+      }
+    },
+    {
+      "iid": "instance_internetarchive__openlibrary-5c6c22f3d2edf2f1b10f5dc335e32cb6a5f40341-v76304ecdb3a5954fcf13feb710e8c40fcf24b73c",
+      "counts": {
+        "READ_ONLY": 23,
+        "WRITE": 14,
+        "DANGEROUS": 5,
+        "EDIT": 6,
+        "OTHER:sed": 2
+      }
+    },
+    {
+      "iid": "instance_internetarchive__openlibrary-bb152d23c004f3d68986877143bb0f83531fe401-ve8c8d62a2b60610a3c4631f5f23ed866bada9818",
+      "counts": {
+        "READ_ONLY": 20,
+        "WRITE": 5,
+        "DANGEROUS": 17,
+        "EDIT": 5,
+        "OTHER:sed": 3
+      }
+    },
+    {
+      "iid": "instance_ansible__ansible-a26c325bd8f6e2822d9d7e62f77a424c1db4fbf6-v0f01c69f1e2528b935359cfe578530722bca2c59",
+      "counts": {
+        "WRITE": 8,
+        "READ_ONLY": 15,
+        "OTHER:sed": 15,
+        "EDIT": 10,
+        "DANGEROUS": 2
+      }
+    },
+    {
+      "iid": "instance_ansible__ansible-3db08adbb1cc6aa9941be5e0fc810132c6e1fa4b-vba6da65a0f3baefda7a058ebbd0a8dcafb8512f5",
+      "counts": {
+        "WRITE": 8,
+        "READ_ONLY": 15,
+        "DANGEROUS": 18,
+        "EDIT": 6,
+        "OTHER:export": 1,
+        "OTHER:PYTHONPATH=/content/work_p6/instance_ansible__ansible-3db08adbb1cc6aa9941be5e0fc810132c6e1fa4b-vba6da65a0f3baefda7a058ebbd0a8dcafb8512f5/lib": 1,
+        "OTHER:sed": 1
+      }
+    },
+    {
+      "iid": "instance_ansible__ansible-de01db08d00c8d2438e1ba5989c313ba16a145b0-vba6da65a0f3baefda7a058ebbd0a8dcafb8512f5",
+      "counts": {
+        "READ_ONLY": 18,
+        "OTHER:sed": 10,
+        "WRITE": 9,
+        "EDIT": 10,
+        "OTHER:PYTHONPATH=/content/work_p6/instance_ansible__ansible-de01db08d00c8d2438e1ba5989c313ba16a145b0-vba6da65a0f3baefda7a058ebbd0a8dcafb8512f5/lib": 1,
+        "DANGEROUS": 1
+      }
+    },
+    {
+      "iid": "instance_ansible__ansible-cd9c4eb5a6b2bfaf4a6709f001ce3d0c92c1eed2-v0f01c69f1e2528b935359cfe578530722bca2c59",
+      "counts": {
+        "READ_ONLY": 21,
+        "OTHER:sed": 9,
+        "WRITE": 18,
+        "DANGEROUS": 2
+      }
+    },
+    {
+      "iid": "instance_ansible__ansible-4c5ce5a1a9e79a845aff4978cfeb72a0d4ecf7d6-v1055803c3a812189a1133297f7f5468579283f86",
+      "counts": {
+        "READ_ONLY": 31,
+        "OTHER:sed": 9,
+        "WRITE": 5,
+        "EDIT": 4,
+        "DANGEROUS": 1
+      }
+    },
+    {
+      "iid": "instance_qutebrowser__qutebrowser-99029144b5109bb1b2a53964a7c129e009980cd9-va0fd88aac89cde702ec1ba84877234da33adce8a",
+      "counts": {
+        "READ_ONLY": 25,
+        "WRITE": 9,
+        "OTHER:sed": 8,
+        "DANGEROUS": 2,
+        "EDIT": 5,
+        "OTHER:export": 1
+      }
+    },
+    {
+      "iid": "instance_qutebrowser__qutebrowser-85b867fe8d4378c8e371f055c70452f546055854-v2ef375ac784985212b1805e1d0431dc8f1b3c171",
+      "counts": {
+        "READ_ONLY": 43,
+        "DANGEROUS": 1,
+        "OTHER:sed": 4,
+        "WRITE": 2
+      }
+    },
+    {
+      "iid": "instance_qutebrowser__qutebrowser-cf06f4e3708f886032d4d2a30108c2fddb042d81-v2ef375ac784985212b1805e1d0431dc8f1b3c171",
+      "counts": {
+        "WRITE": 12,
+        "READ_ONLY": 16,
+        "OTHER:export": 2,
+        "DANGEROUS": 6,
+        "OTHER:sed": 10,
+        "EDIT": 2,
+        "OTHER:hexdump": 1
+      }
+    },
+    {
+      "iid": "instance_qutebrowser__qutebrowser-0fc6d1109d041c69a68a896db87cf1b8c194cef7-v2ef375ac784985212b1805e1d0431dc8f1b3c171",
+      "counts": {
+        "READ_ONLY": 31,
+        "OTHER:sed": 3,
+        "EDIT": 5,
+        "WRITE": 8,
+        "DANGEROUS": 3
+      }
+    }
+  ]
+}

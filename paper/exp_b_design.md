@@ -5,7 +5,35 @@
 **Status (2026-05-24)**:
 - LayerPatch class implemented (`instrumentation/layerpatch.py`)
 - Design doc + skeleton complete
+- **Determinism check FAILED** — only 5/20 trajectories ≥80% replayable (`scripts/exp_b_determinism_check.py`)
+- **PIVOT to Plan B** (always-on hook from turn 0) — see §"Updated execution plan" below
 - Awaits: Phase 6b Docker eval completion (running in background) + compute environment setup
+
+## Updated execution plan (Plan B post-determinism check)
+
+After analytical audit of WANDERING tool_calls (`scripts/exp_b_determinism_check.py`), confirmed
+17.5% are DANGEROUS commands (pip, pytest, python, git, etc.) with potential non-determinism risks.
+Only 25% of trajectories cross ≥80% replayable threshold. **Plan A (surgical replay + patch at T)
+is engineering-heavy with substantial determinism risk.**
+
+**Plan B (always-on hook from turn 0)**:
+1. Capture mean L55 pre_tool residual from matched SUCCESS donors (offline, no model run)
+2. Install LayerPatch on L55 with SUCCESS-derived residual, `mode='replace'`
+3. Run FRESH agent inference for WANDERING instance with hook attached throughout
+4. Observe outcome: did `finish_tool` emit within max_turns?
+
+**Causal claim tested by Plan B**: "Persistent injection of SUCCESS-derived L55 direction biases
+WANDERING agents toward `finish_tool` emission." (Slightly different from Plan A's "patching at
+lock-in turn flips outcome" but equally publishable as causal evidence for edge-layer alignment.)
+
+Controls updated for Plan B:
+- **C1 random direction** (unchanged) — tests if ANY persistent perturbation flips
+- **C2 LOCKED donor** (unchanged) — tests SUCCESS-specificity
+- **C3 L43 mid-layer** (unchanged) — tests edge-layer-specificity
+- **C4 amplitude sweep** (replaces C4 "pre-lock turn" from Plan A) — sweep α at L55 in `mode='add'`
+  to test if magnitude matters
+
+No determinism risk in Plan B since each run is fresh and deterministic given seed.
 
 ## Causal hypothesis
 
