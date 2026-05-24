@@ -187,9 +187,9 @@ Restricting to L23/L31/L43 (mid-layers, all AUROC $\geq 0.928$) collapses the si
 This refines the mechanism: WANDERING agents have consolidated a mid-layer verdict (model ``knows'' it's done), but edge circuits that translate verdict $\rightarrow$ \texttt{finish\_tool} action haven't aligned. Decision-to-action circuit desynchronized.
 
 \subsubsection{Complementarity with v1}
-\begin{table}[h]
+\begin{table}[ht]
 \centering
-\caption{Detector orthogonality on WANDERING captures.}
+\caption{Detector orthogonality on WANDERING captures (v1 $\cup$ v4).}\label{tab:venn}
 \begin{tabular}{lcc}
 \toprule
 Captures & v1 & v4 \\
@@ -291,9 +291,19 @@ Four candidate explanations: (1) MALT \texttt{gives\_up} is manually-assigned la
 
 \textbf{Scoped claim}: tool-entropy collapse is a robust WANDERING signature for \emph{multi-turn code-execution agent tasks with rich action spaces} (validated cross-architecture on SWE-bench across Qwen, Llama, GPT). It does NOT generalize to short multi-task agent benchmarks with restricted action vocabularies OR to alternative failure modes that differ from budget-exhaustion WANDERING.
 
-\section{Deployment guidance}\label{sec:deployment}\label{sec:deployment-revised}
+\section{Deployment guidance}\label{sec:deployment}
 
-\begin{table}[h]
+Different operational scenarios require different precision/recall trade-offs. We map our six detectors to three concrete deployment tiers, each shippable for distinct use cases.
+
+\paragraph{Tier 1 — Forensics / log analysis.} Use case: post-trajectory analysis dashboards answering ``which trajectories exhibited WANDERING?'' Detector: v1 post-hoc text alone. Recall: 35\% of WANDERING. False-positive rate: 0\%. Operates only on completed trajectories. Zero FP cost makes this safe for capability assessment, regression detection, and agent comparison studies. Shippable now.
+
+\paragraph{Tier 2 — Advisory escalation.} Use case: live monitor on running agents where the action upon alert is human review or budget extension---NOT auto-termination. Detector: v1 $\cup$ v4 combined. Recall: 80\% of WANDERING. SUCCESS FP rate: 30\% (false escalations). Lead time: 15 turns before budget end. Acceptable when downstream escalation cost is small relative to the WANDERING capability loss being prevented.
+
+\paragraph{Tier 3 — Autonomous termination.} Use case: kill agent on alert to free compute. Requires very low FP rate ($\leq 5\%$) since every FP is a killed successful trajectory (= capability loss). \textbf{The breakthrough finding is that v5 tool-entropy combined with v1 closes 70\% of the WANDERING blind spot at exactly 5\% FP.} Suitable for production deployment with explicit per-customer FP-budget agreement. v5 alone (without v1) at \texttt{tool\_entropy<0.45} gives 50\% recall at 2.5\% FP for stricter precision requirements.
+
+The full deployment map and detector landscape:
+
+\begin{table}[ht]
 \centering
 \caption{Three-tier deployment map. All three tiers shippable.}
 \begin{tabular}{lllccc}
@@ -307,12 +317,14 @@ Tier & Use case & Detector & Recall & FP & Lead \\
 \end{tabular}
 \end{table}
 
-\begin{figure}[h]
+\begin{figure}[ht]
 \centering
 \includegraphics[width=0.85\textwidth]{figures/fig3_detector_comparison.png}
-\caption{Detector comparison: 6 designs across 3 signal channels. Shaded regions show deployment tier admissibility (FP-bounded). Combined detectors $v1 \cup v4$ (Tier 2) and $v1 \cup v5$ (Tier 3) are starred.}
+\caption{Detector comparison: 6 designs across 3 signal channels (text, residual cross-layer, action entropy). Shaded regions show deployment tier admissibility (FP-bounded). Combined detectors $v1 \cup v4$ (Tier 2) and $v1 \cup v5$ (Tier 3) are starred.}
 \label{fig:detectors}
 \end{figure}
+
+\paragraph{What the deployment map does NOT solve.} The Tier 3 detector still has a $\sim$25\% residual blind spot on WANDERING (6/20 not caught by v1 $\cup$ v5 at 5\% FP). The orthogonality analysis (Table~\ref{tab:venn}) suggests these residual missed trajectories may yield to a fourth signal channel beyond text, residual, and action---possibly KV-cache attention pattern shifts or MoE expert routing instability, neither testable from current Phase 6 captures.
 
 \section{Limitations and future work}
 

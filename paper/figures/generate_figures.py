@@ -141,33 +141,32 @@ def fig2_disagreement_trajectory():
 # Fig 3: Detector comparison — 6 detectors with 3-tier regions
 # ============================================================
 def fig3_detector_comparison():
+    # (name, recall, FP, tier, color, marker, label_dx, label_dy)
     detectors = [
-        # (name, recall, FP, tier, color, marker)
-        ("v1 post-hoc text", 0.35, 0.0, 1, "#1f77b4", "o"),
-        ("v2 naive early-warning", 0.30, 0.15, None, "#7f7f7f", "x"),
-        ("v3 persistence (refuted)", 0.10, 0.05, None, "#7f7f7f", "x"),
-        ("v4 cross-layer", 0.65, 0.30, 2, "#9467bd", "s"),
-        ("v5 tool-entropy", 0.55, 0.05, 3, "#d62728", "D"),
-        ("v6 residual stability", 0.15, 0.05, None, "#7f7f7f", "x"),
-        ("v1 ∪ v4 (Tier 2)", 0.80, 0.30, 2, "#9467bd", "*"),
-        ("v1 ∪ v5 (Tier 3)", 0.70, 0.05, 3, "#d62728", "*"),
+        ("v1 post-hoc text",        0.35, 0.00, 1,    "#1f77b4", "o",   8, -12),
+        ("v2 naive early-warning",  0.30, 0.15, None, "#7f7f7f", "X",   8,   8),
+        ("v3 persistence (refuted)",0.10, 0.05, None, "#7f7f7f", "X",   8,  12),
+        ("v4 cross-layer",          0.65, 0.30, 2,    "#9467bd", "s",   8,   8),
+        ("v5 tool-entropy",         0.55, 0.05, 3,    "#d62728", "D",   8,  -4),
+        ("v6 residual stability",   0.15, 0.05, None, "#7f7f7f", "X",   8,  -16),
+        ("v1 ∪ v4 (Tier 2)",        0.80, 0.30, 2,    "#9467bd", "*",  10,  -12),
+        ("v1 ∪ v5 (Tier 3)",        0.70, 0.05, 3,    "#d62728", "*",  10,  12),
     ]
 
-    fig, ax = plt.subplots(figsize=(7.5, 4.5))
+    fig, ax = plt.subplots(figsize=(8.5, 5))
     # Shade tier regions
-    ax.axhspan(0, 0.05, xmin=0, xmax=1, color="#d62728", alpha=0.06)
-    ax.axhspan(0.05, 0.30, xmin=0, xmax=1, color="#9467bd", alpha=0.06)
-    ax.text(0.85, 0.025, "Tier 3 region (FP ≤ 5%)", fontsize=8, color="#a01010", style="italic")
-    ax.text(0.85, 0.17, "Tier 2 region", fontsize=8, color="#5a3a7a", style="italic")
-    ax.text(0.05, 0.005, "Tier 1 (only at FP=0)", fontsize=8, color="#1f77b4", style="italic")
+    ax.axhspan(0, 0.05, xmin=0, xmax=1, color="#d62728", alpha=0.07)
+    ax.axhspan(0.05, 0.30, xmin=0, xmax=1, color="#9467bd", alpha=0.07)
+    ax.text(0.02, 0.027, "Tier 3 region (FP ≤ 5%)", fontsize=8.5, color="#a01010", style="italic")
+    ax.text(0.02, 0.175, "Tier 2 region (FP ≤ 30%)", fontsize=8.5, color="#5a3a7a", style="italic")
+    ax.text(0.02, 0.305, "Outside admissible tiers", fontsize=8.5, color="#7f7f7f", style="italic")
 
-    for name, recall, fp, tier, color, marker in detectors:
-        ax.scatter(recall, fp, c=color, marker=marker, s=140, edgecolor="black",
-                   linewidth=0.5, zorder=5, label=None)
-        # Label positions tuned
-        offset_y = -0.018 if "∪" in name else 0.015
-        ax.annotate(name, (recall, fp), xytext=(8, offset_y * 200), textcoords="offset points",
-                    fontsize=8)
+    for name, recall, fp, tier, color, marker, dx, dy in detectors:
+        ax.scatter(recall, fp, c=color, marker=marker, s=180, edgecolor="black",
+                   linewidth=0.6, zorder=5)
+        ax.annotate(name, (recall, fp), xytext=(dx, dy), textcoords="offset points",
+                    fontsize=8.5, ha="left",
+                    bbox=dict(boxstyle="round,pad=0.2", fc="white", ec="none", alpha=0.7))
 
     ax.set_xlabel("WANDERING recall")
     ax.set_ylabel("SUCCESS false-positive rate")
