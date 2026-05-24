@@ -179,7 +179,7 @@ cells.append(code(
 cells.append(code(
     "# 6) Load Phase 6 instance metadata (need repo / base_commit / problem_statement to re-run agent)",
     "from datasets import load_dataset",
-    "ds = load_dataset('ScalingIntelligence/swe-bench-pro', split='test')",
+    "ds = load_dataset('ScaleAI/SWE-bench_Pro', split='test')",
     "by_iid = {ex['instance_id']: ex for ex in ds}",
     "print(f'SWE-bench Pro loaded: {len(by_iid)} instances')",
     "",
