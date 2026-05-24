@@ -1,11 +1,11 @@
 {
   "class_results": {
     "success": {
-      "pass": 2,
-      "fail": 25,
+      "pass": 6,
+      "fail": 33,
       "error": 0,
       "other": 0,
-      "total": 27,
+      "total": 39,
       "instances": [
         [
           "instance_qutebrowser__qutebrowser-e57b6e0eeeb656eb2c84d6547d5a0a7333ecee85-v2ef375ac784985212b1805e1d0431dc8f1b3c171",
@@ -114,15 +114,63 @@
         [
           "instance_internetarchive__openlibrary-910b08570210509f3bcfebf35c093a48243fe754-v0f5aece3601a5b4419f7ccec1dbda2071be28ee4",
           "FAIL"
+        ],
+        [
+          "instance_ansible__ansible-3b823d908e8a5d17674f8c26d337d3114b7493b1-v0f01c69f1e2528b935359cfe578530722bca2c59",
+          "FAIL"
+        ],
+        [
+          "instance_ansible__ansible-e64c6c1ca50d7d26a8e7747d8eb87642e767cd74-v0f01c69f1e2528b935359cfe578530722bca2c59",
+          "FAIL"
+        ],
+        [
+          "instance_ansible__ansible-a1569ea4ca6af5480cf0b7b3135f5e12add28a44-v0f01c69f1e2528b935359cfe578530722bca2c59",
+          "FAIL"
+        ],
+        [
+          "instance_ansible__ansible-415e08c2970757472314e515cb63a51ad825c45e-v7eee2454f617569fd6889f2211f75bc02a35f9f8",
+          "FAIL"
+        ],
+        [
+          "instance_ansible__ansible-f327e65d11bb905ed9f15996024f857a95592629-vba6da65a0f3baefda7a058ebbd0a8dcafb8512f5",
+          "FAIL"
+        ],
+        [
+          "instance_ansible__ansible-e0c91af45fa9af575d10fd3e724ebc59d2b2d6ac-v30a923fb5c164d6cd18280c02422f75e611e8fb2",
+          "PASS"
+        ],
+        [
+          "instance_ansible__ansible-709484969c8a4ffd74b839a673431a8c5caa6457-vba6da65a0f3baefda7a058ebbd0a8dcafb8512f5",
+          "FAIL"
+        ],
+        [
+          "instance_ansible__ansible-942424e10b2095a173dbd78e7128f52f7995849b-v30a923fb5c164d6cd18280c02422f75e611e8fb2",
+          "PASS"
+        ],
+        [
+          "instance_qutebrowser__qutebrowser-7b603dd6bf195e3e723ce08ff64a82b406e3f6b6-v9f8e9d96c85c85a605e382f1510bd08563afc566",
+          "PASS"
+        ],
+        [
+          "instance_qutebrowser__qutebrowser-0b621cb0ce2b54d3f93d8d41d8ff4257888a87e5-v2ef375ac784985212b1805e1d0431dc8f1b3c171",
+          "FAIL"
+        ],
+        [
+          "instance_qutebrowser__qutebrowser-21b426b6a20ec1cc5ecad770730641750699757b-v363c8a7e5ccdf6968fc7ab84a2053ac78036691d",
+          "FAIL"
+        ],
+        [
+          "instance_qutebrowser__qutebrowser-479aa075ac79dc975e2e949e188a328e95bf78ff-vc2f56a753b62a190ddb23cd330c257b9cf560d12",
+          "PASS"
         ]
       ]
     },
     "wandering": {
-      "pass": 3,
-      "fail": 7,
+      "pass": 4,
+      "fail": 15,
       "error": 0,
       "other": 0,
-      "total": 10,
+      "total": 19,
       "instances": [
         [
           "instance_qutebrowser__qutebrowser-2dd8966fdcf11972062c540b7a787e4d0de8d372-v363c8a7e5ccdf6968fc7ab84a2053ac78036691d",
@@ -163,15 +211,51 @@
         [
           "instance_internetarchive__openlibrary-bb152d23c004f3d68986877143bb0f83531fe401-ve8c8d62a2b60610a3c4631f5f23ed866bada9818",
           "FAIL"
+        ],
+        [
+          "instance_ansible__ansible-a26c325bd8f6e2822d9d7e62f77a424c1db4fbf6-v0f01c69f1e2528b935359cfe578530722bca2c59",
+          "PASS"
+        ],
+        [
+          "instance_ansible__ansible-3db08adbb1cc6aa9941be5e0fc810132c6e1fa4b-vba6da65a0f3baefda7a058ebbd0a8dcafb8512f5",
+          "FAIL"
+        ],
+        [
+          "instance_ansible__ansible-de01db08d00c8d2438e1ba5989c313ba16a145b0-vba6da65a0f3baefda7a058ebbd0a8dcafb8512f5",
+          "FAIL"
+        ],
+        [
+          "instance_ansible__ansible-cd9c4eb5a6b2bfaf4a6709f001ce3d0c92c1eed2-v0f01c69f1e2528b935359cfe578530722bca2c59",
+          "FAIL"
+        ],
+        [
+          "instance_ansible__ansible-4c5ce5a1a9e79a845aff4978cfeb72a0d4ecf7d6-v1055803c3a812189a1133297f7f5468579283f86",
+          "FAIL"
+        ],
+        [
+          "instance_qutebrowser__qutebrowser-99029144b5109bb1b2a53964a7c129e009980cd9-va0fd88aac89cde702ec1ba84877234da33adce8a",
+          "FAIL"
+        ],
+        [
+          "instance_qutebrowser__qutebrowser-85b867fe8d4378c8e371f055c70452f546055854-v2ef375ac784985212b1805e1d0431dc8f1b3c171",
+          "FAIL"
+        ],
+        [
+          "instance_qutebrowser__qutebrowser-cf06f4e3708f886032d4d2a30108c2fddb042d81-v2ef375ac784985212b1805e1d0431dc8f1b3c171",
+          "FAIL"
+        ],
+        [
+          "instance_qutebrowser__qutebrowser-0fc6d1109d041c69a68a896db87cf1b8c194cef7-v2ef375ac784985212b1805e1d0431dc8f1b3c171",
+          "FAIL"
         ]
       ]
     },
     "locked": {
-      "pass": 1,
-      "fail": 24,
+      "pass": 2,
+      "fail": 29,
       "error": 0,
       "other": 0,
-      "total": 25,
+      "total": 31,
       "instances": [
         [
           "instance_qutebrowser__qutebrowser-f631cd4422744160d9dcf7a0455da532ce973315-v35616345bb8052ea303186706cec663146f0f184",
@@ -272,13 +356,37 @@
         [
           "instance_ansible__ansible-6cc97447aac5816745278f3735af128afb255c81-v0f01c69f1e2528b935359cfe578530722bca2c59",
           "FAIL"
+        ],
+        [
+          "instance_ansible__ansible-be59caa59bf47ca78a4760eb7ff38568372a8260-v1055803c3a812189a1133297f7f5468579283f86",
+          "FAIL"
+        ],
+        [
+          "instance_ansible__ansible-a02e22e902a69aeb465f16bf03f7f5a91b2cb828-vba6da65a0f3baefda7a058ebbd0a8dcafb8512f5",
+          "FAIL"
+        ],
+        [
+          "instance_ansible__ansible-83fb24b923064d3576d473747ebbe62e4535c9e3-vba6da65a0f3baefda7a058ebbd0a8dcafb8512f5",
+          "FAIL"
+        ],
+        [
+          "instance_qutebrowser__qutebrowser-01d1d1494411380d97cac14614a829d3a69cecaf-v2ef375ac784985212b1805e1d0431dc8f1b3c171",
+          "FAIL"
+        ],
+        [
+          "instance_qutebrowser__qutebrowser-fcfa069a06ade76d91bac38127f3235c13d78eb1-v5fc38aaf22415ab0b70567368332beee7955b367",
+          "FAIL"
+        ],
+        [
+          "instance_qutebrowser__qutebrowser-fd6790fe8c02b144ab2464f1fc8ab3d02ce3c476-v2ef375ac784985212b1805e1d0431dc8f1b3c171",
+          "PASS"
         ]
       ]
     }
   },
-  "fisher_p_two_sided": 0.11021411021411018,
-  "wandering_pass_rate": 30.0,
-  "success_pass_rate": 7.407407407407407,
-  "ratio": 4.05,
-  "n_eval_data": 62
+  "fisher_p_two_sided": 0.7143680373906233,
+  "wandering_pass_rate": 21.05263157894737,
+  "success_pass_rate": 15.384615384615385,
+  "ratio": 1.3684210526315788,
+  "n_eval_data": 89
 }
