@@ -562,6 +562,47 @@ To strengthen the universality claim we ran v5 on 3 additional model families us
 
 **Updated universal claim**: tool-entropy collapse is a robust agent WANDERING signature across at least 3 model architectures from 3 independent labs, when the underlying data includes real budget-exhaustion failures (not curated SFT trajectories).
 
+### 11.8 Cross-task validation on METR MALT — HONEST NEGATIVE
+
+To test if the signal generalizes beyond SWE-bench (code-repair) to OTHER task families, we ran v5 on METR's MALT dataset (`metr-evals/malt-public`, gated), which contains 7,000+ agent trajectories across 15+ task families (password_check, wordle, hackthebox, pico_ctf, gaia, hypothesis_testing, ai_rd_*, local_research, advent_of_code, etc.) labeled with `normal` (success-equivalent) and `gives_up` (WANDERING analog) by METR's manual reviewers.
+
+Setup:
+- Tested 25 of 42 shards (4,275 trajectories total)
+- After tool-extraction filter (`n_turns ≥ 3`): 1,209 trajectories with usable per-turn tool data
+- Sub-classes: 1,200 `normal`, **only 9 `gives_up`** (the label is rare — ~5% prevalence)
+- Models in this subset: claude-3-5-sonnet (1,155), gpt-4-32k (53), claude-3-5-haiku (1)
+- Tool extraction: bash subcommand (`bash:ls`, `bash:cat`, `bash:grep`, ...) + `python_exec` + `submit`. Median unique tools/trajectory = 4 (vs 17 in Llama SWE-agent — restricted scaffold)
+
+**Result**: signal does NOT discriminate WANDERING from SUCCESS in MALT.
+
+| Filter | n_W | n_S | W median | S median | p | W/S ratio |
+|---|---|---|---|---|---|---|
+| All trajectories | 9 | 1200 | 1.459 | 1.449 | 0.81 | **1.007** |
+| n_unique_tools ≥ 3 | 9 | 969 | 1.459 | 1.585 | 0.35 | 0.921 |
+| Per-family `local_research` | 4 | 28 | 1.419 | 1.379 | 0.40 | 1.029 (✗ opposite) |
+| Per-family `local_research_tex` | 5 | 51 | 1.571 | 1.842 | 0.16 | 0.853 (✓ direction n.s.) |
+
+The ratio (1.007 overall) is essentially indistinguishable from 1.0 — compared to Qwen/Llama 0.41 and GPT-5 0.71 on SWE-bench, the effect is absent.
+
+**Four candidate explanations for the MALT non-result:**
+
+1. **Different failure mode than WANDERING**: MALT's `gives_up` label is manually-assigned by METR reviewers for trajectories where the agent EXPLICITLY states it's giving up. Our WANDERING is BEHAVIORALLY defined (probe-high + no `finish_tool` + max_turns + patch). These are semantically distinct failure modes — `gives_up` is "agent honestly admits defeat", WANDERING is "agent thinks it succeeded but didn't act".
+
+2. **Low N for `gives_up`**: only 9 trajectories with extractable tool data have the label, limiting statistical power. Even at n_unique_tools ≥ 3 (filtering to multi-tool trajectories), N stays at 9 — direction trends right (ratio 0.92) but p=0.35.
+
+3. **Short trajectories**: MALT trajectories have median 4 unique tools vs Llama-70b SWE-agent's 17. Tool-loop collapse may require LONG trajectories with rich action space to emerge as a stable statistical signature.
+
+4. **Restricted scaffold**: MALT's XML-tag interface (`<bash>`, `<python>`, `<submit>`) constrains the action space more than open-shell SWE-agent setups. Less surface for diversity → less surface for collapse-vs-diversity discrimination.
+
+**Scoped claim** (revised in light of MALT result):
+
+> Tool-entropy collapse is a robust WANDERING signature for **multi-turn code-execution agent tasks with rich action spaces** (validated cross-architecture on SWE-bench across Qwen, Llama, GPT). It does NOT generalize to **short multi-task agent benchmarks like MALT with restricted action vocabularies**, OR to alternative failure modes (e.g., MALT's `gives_up` = explicit admission of defeat) that differ from budget-exhaustion WANDERING.
+
+This is an HONEST SCOPING of the universal claim. The CORE finding (cross-architecture invariance within SWE-bench-style tasks) is intact. The OVERREACH (task-invariant universal mechanism) is corrected. Future work needs:
+- A benchmark with explicit WANDERING-equivalent labels (behavioral, not manual) on diverse task families
+- Larger N per failure mode (50+ per task family for cohesion testing)
+- Open-shell scaffold (like SWE-agent) on non-code tasks (e.g., GAIA with shell-tool agents)
+
 ## §12 — Limitations + future work
 
 1. **N=99 single model + task family** (Qwen3.6-27B + SWE-bench Pro). Cross-task validation needed before generalizing.

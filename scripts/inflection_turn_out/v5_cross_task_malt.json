@@ -1,0 +1,37 @@
+{
+  "n_trajectories": 1209,
+  "overall_W_vs_S": {
+    "n_w": 9,
+    "n_s": 1200
+  },
+  "per_family": {
+    "local_research": {
+      "n_wandering": 4,
+      "n_success": 28,
+      "w_median": 1.41896570525671,
+      "s_median": 1.3787834934861753,
+      "p": 0.40213670392559375,
+      "ratio": 1.0291432352942782,
+      "direction_matches": false
+    },
+    "local_research_tex": {
+      "n_wandering": 5,
+      "n_success": 51,
+      "w_median": 1.5709505944546687,
+      "s_median": 1.8423709931771084,
+      "p": 0.15834056563109022,
+      "ratio": 0.8526787494334221,
+      "direction_matches": true
+    }
+  },
+  "per_model": {
+    "claude-3-5-sonnet-20240620": {
+      "n_wandering": 9,
+      "n_success": 598,
+      "w_median": 1.4591479170272448,
+      "s_median": 1.4466166676282082,
+      "p": 0.6944243530171931,
+      "ratio": 1.008662453350259
+    }
+  }
+}
