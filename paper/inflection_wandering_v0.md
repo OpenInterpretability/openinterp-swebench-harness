@@ -6,15 +6,36 @@
 
 Probe-based safety monitoring of LLM agents typically assumes that a probe trained to predict trajectory success/failure provides a reliable signal at any turn. We test this on 99 trajectories of Qwen3.6-27B running SWE-bench Pro across 3 codebases and identify two mechanistically distinct sub-classes of agent failure: LOCKED (66%) and WANDERING (34%). Both are externally identical — they exhaust the turn budget without emitting `finish_tool` — but differ fundamentally in internal state. LOCKED agents are uncertain (probe collapses to <0.30 by mean fraction 0.92 of trajectory length, 21% never produce a patch). WANDERING agents are over-confident (probe stays >0.70 with median final score 1.000, 95% produce patches). The 34% probe-vs-outcome disagreement constitutes a quantified blind spot for probe-only monitoring schemes.
 
-We then test four detector designs to close this blind spot: (v1) a post-hoc text monitor reaches 35% WANDERING recall at 0% false-positive cost; (v2) a naive early-warning extension fails with 15% SUCCESS false positives because SUCCESS agents also verbalize completion-language; (v3) a persistence-based hypothesis is empirically refuted in the opposite direction (SUCCESS agents persist longer in completion verbalization, p = 0.92); (v4) cross-layer probe disagreement (range, std, sign-disagreement across L11/23/31/43/55) succeeds — late-half disagreement separates WANDERING from SUCCESS (p = 0.0028) at 65% recall × 30% FP × 15-turn lead. The combined v1 ∪ v4 detector closes 80% of the blind spot at advisory-tier deployment cost. Signal validates across all 3 codebases.
+We then test **six detector designs across three signal channels** (text, residual cross-layer, action entropy): (v1) post-hoc text monitor — 35% WANDERING recall, 0% false-positive cost; (v2) naive early-warning text extension — 15% SUCCESS FP, unacceptable; (v3) persistence hypothesis — **empirically refuted in opposite direction** (SUCCESS agents persist longer in completion verbalization, one-tail p = 0.92); (v4) cross-layer probe disagreement across L11/23/31/43/55 — succeeds (late-half range W vs S p = 0.0028, 65% recall × 30% FP × 15-turn lead); **(v5) tool-use entropy collapse — 55% recall × 5% FP, the BREAKTHROUGH signal** (W vs S Mann-Whitney p = 1.0×10⁻⁶, W/S median ratio 0.41); (v6) residual stability — marginal, dominated by v5. Combined v1 ∪ v4 closes 80% of the blind spot at advisory tier; **combined v1 ∪ v5 closes 70% at Tier-3 autonomous-termination precision (5% FP)**. Signal validates across all 3 SWE-bench codebases.
 
 Mid-layer ablation reveals the discrimination is **edge-layer-driven**: L23/L31/L43 agree with each other, but L11 (surface processing) and L55 (output planning) disagree with the mid-layer consensus more in WANDERING than in SUCCESS. We reframe WANDERING from "stuck-in-verification-loop" to "mid-layer-to-edge-layer alignment failure" — model has internally consolidated a verdict but the surface circuits that translate verdict into `finish_tool` action have not aligned.
 
-**Cross-architecture validation**: we test v5 on 2,315 Llama-70b SWE-bench trajectories (`nebius/SWE-agent-trajectories`). Same ordering (SUCCESS > LOCKED > WANDERING), same ratio (WANDERING entropy ≈ 0.41 × SUCCESS in both models), even stronger statistical signal (p < 10⁻¹⁵ on Llama vs 4×10⁻⁵ on Qwen). Tier 3 holds: 71% recall × 4.1% FP at calibrated threshold. **Tool-entropy collapse appears to be a universal agent-failure signature, not Qwen-specific.** Deployment guidance covers three operational tiers (forensics, advisory escalation, autonomous termination), all shippable.
+**Cross-architecture validation within SWE-bench**: we test v5 on Llama-70b (n=2,315 from `nebius/SWE-agent-trajectories`) and GPT-5 router (n=1,419 from `JetBrains-Research/agent-trajectories-swesmith-random-subset`). Same ordering (SUCCESS > LOCKED > WANDERING), same direction (W < S in median entropy), strongest possible statistical signal in larger N: Llama p < 10⁻¹⁵ (ratio 0.41 = Qwen), GPT-5 p = 8.9×10⁻³⁵ (ratio 0.71). Tier 3 holds on Llama: 71% recall × 4.1% FP at calibrated threshold. **Cross-task validation on METR MALT (15+ task families, n=9 `gives_up` ≠ behavioral WANDERING) is NULL (p=0.81), scoping the claim**: tool-entropy collapse is a robust signature for **multi-turn code-execution agent tasks with rich action spaces**, NOT universally task-invariant. Deployment guidance covers three operational tiers (forensics, advisory escalation, autonomous termination), all shippable.
 
 ## §1 — Problem
 
 Production safety pipelines for LLM agents rely on activation probes as monitoring signals. A common assumption is that probe = trustworthy outcome predictor at any turn. We test this on agent trajectories that fail.
+
+## §1.5 — Related work (and our position)
+
+**Probe-based agent monitoring**. Apollo Research [Goldowsky-Dill et al., 2025, arXiv:2502.03407] use linear probes on residual activations to detect strategic deception with AUROC 0.96–0.999. Anthropic's "Simple probes catch sleeper agents" [Hubinger et al., 2024] demonstrates defection probes work across middle layers. Lugoloobi et al. [2026, arXiv:2602.09924] predict policy-specific success from pre-generation activations on math/coding (ICLR 2026 LIT Workshop). Our work extends this paradigm with three differentiations: (a) we identify a 34% **blind spot** of probe-based monitoring (the WANDERING sub-class), (b) we use **cross-layer disagreement** (not single-layer probe), and (c) we propose **tool-entropy as a probe-free complementary signal**.
+
+**Cross-layer probe ensembling**. Linear Probe Accuracy paper [2026, arXiv:2604.13386] shows multi-layer ensembling improves accuracy and robustness — our §7 builds directly on this, applying it specifically to discriminate WANDERING from SUCCESS via late-half disagreement.
+
+**Tool-use entropy**. The closest prior art is "Rethinking the Role of Entropy in Optimizing Tool-Use Behaviors" [2026, arXiv:2602.02050], which uses entropy as a **reward signal for RL training** to shape tool-use policies (entropy reduction → 72% fewer tool calls, 22% performance gain). Our work uses tool-entropy as a **diagnostic signal for failure detection at inference time**, not for training. Same metric, orthogonal direction. Agentic Entropy-Balanced Policy Optimization [2025, arXiv:2510.14545] also uses entropy in agentic RL.
+
+**Agent failure mode taxonomies**. Mert Cemri et al.'s MAST taxonomy [2025, arXiv:2503.13657] identifies 14 multi-agent failure modes with 41–86.7% production failure rates. JetBrains' empirical study [2025, arXiv:2511.00197] (whose dataset we use in §11) shows failed SWE-agent trajectories are longer with higher variance — our WANDERING is a specific sub-type that survives turn-length stratification. METR's MALT dataset [Oct 2025, [metr.org blog](https://metr.org/blog/2025-10-14-malt-dataset-of-natural-and-prompted-behaviors/)] contains 32 "giving up" examples (which we test in §11.8) — semantically distinct from our behavioral WANDERING.
+
+**Trajectory-level failure mechanisms**. Lee [2026, arXiv:2602.19008] proposes Canonical Path Deviation as a causal mechanism of agent failure on Toolathlon (22 frontier models × 108 tasks). Liang et al. [2026, arXiv:2602.09598, ELPO] localize first-irrecoverable-step via binary-search rollouts. Our inflection-turn analysis (§3.5) provides a rollout-free analog: probe lock-in identifies "first stable-verdict step", which occurs **after** the irrecoverability point.
+
+**SWE-bench**. SWE-bench Pro [Scale AI, 2025, arXiv:2509.16941] is the benchmark we run on. SWE-agent [Yang et al., NeurIPS 2024, arXiv:2405.15793] is the scaffold framework. SWE-smith [Yang et al., NeurIPS 2025 Spotlight, arXiv:2504.21798] is the dataset corpus used by JetBrains and SWE-bench/SWE-smith-trajectories.
+
+**Our novel contributions**:
+1. Quantification of the 34% WANDERING blind spot (probe says success, behavior says fail) with bootstrap 95% CI [22.0%, 45.8%]
+2. Edge-layer-driven cross-layer disagreement as Tier 2 advisory signal (§7.5 mid-layer ablation)
+3. Tool-entropy collapse with ratio invariance (W/S = 0.41 in Qwen and Llama, 0.71 in GPT-5) as Tier 3 autonomous-termination signal (§9.1)
+4. 3-tier deployment framework integrating forensics + advisory + autonomous (§8, §10)
+5. Cross-architecture validation in SWE-bench (3 labs / 3 scaffolds) + honest scope limit via MALT null (§11.8)
 
 ## §2 — Setup
 
@@ -404,12 +425,12 @@ Per trajectory, compute Shannon entropy of tool selection in the last 10 turns:
 - `tool_repetition_last10`: max(p_i)
 - `bigram_repeat_rate`: fraction of 2-gram tool pairs that repeat
 
-| Metric | SUCCESS | LOCKED | WANDERING | W vs S p |
-|---|---|---|---|---|
-| `tool_entropy_last10` | 1.004 | 0.528 | **0.494** | **4.2×10⁻⁵** |
-| `tool_diversity_last10` | 0.280 | 0.167 | 0.175 | 5×10⁻⁵ |
-| `tool_repetition_last10` | 0.729 | 0.824 | 0.860 | 2×10⁻⁴ |
-| `bigram_repeat_rate` | 0.912 | 0.976 | 0.957 | 1×10⁻³ |
+| Metric (medians) | SUCCESS | LOCKED | WANDERING | W vs S p | W/S ratio |
+|---|---|---|---|---|---|
+| `tool_entropy_last10` | 1.157 | 0.722 | **0.469** | **1.0×10⁻⁶** | **0.41** |
+| `tool_diversity_last10` | 0.300 | 0.200 | 0.200 | 5×10⁻⁵ | 0.67 |
+| `tool_repetition_last10` | 0.700 | 0.800 | 0.900 | 2×10⁻⁴ | 1.29 |
+| `bigram_repeat_rate` | 0.935 | 1.000 | 0.947 | 1×10⁻³ | 1.01 |
 
 WANDERING agents collapse onto a small set of repeated tool calls (median entropy 0.469 vs SUCCESS 1.157). Qualitative trace inspection confirms the pattern: WANDERING-A agents repeat `bash(pytest)` → `str_replace_editor(view)` → `bash(pytest)` → `view` → ... in their final 10 turns. WANDERING-B agents have similar collapse: they keep calling the same 2–3 tools without exploring new actions.
 
@@ -481,7 +502,7 @@ For AgentGuard SaaS (the production deployment of this work):
 - v0.3 ships Tier 2 (advisory tier with human escalation)
 - v0.4 ships Tier 3 (auto-termination with explicit per-customer FP-budget agreement)
 
-## §11 — Cross-architecture validation: v5 generalizes to Llama-70b
+## §11 — Cross-architecture and cross-task validation
 
 We test whether the tool-entropy WANDERING signal is Qwen3.6-27B-specific or a universal property of agent failure across architectures. Using the publicly released `nebius/SWE-agent-trajectories` dataset (CC-BY-4.0) we extract 2,315 Llama-70b SWE-bench trajectories with success/failure labels and apply identical v5 methodology.
 
@@ -546,12 +567,12 @@ The implication for mechanism interpretation: the mid-layer-to-edge-layer alignm
 
 To strengthen the universality claim we ran v5 on 3 additional model families using public datasets.
 
-| Model | Lab | Dataset | n (W/S) | W entropy median | S entropy median | p(W vs S) | W/S ratio |
+| Model | Lab | Dataset | n (W / S) | W entropy median | S entropy median | p(W vs S) | W/S ratio |
 |---|---|---|---|---|---|---|---|
-| **Qwen3.6-27B** | Alibaba | OpenInterp Phase 6 | 20/40 | 0.469 | 1.157 | 4.0×10⁻⁵ | **0.41** |
-| **Llama-70b** | Meta | nebius/SWE-agent-trajectories | 1358/488 | 1.000 | 2.522 | <10⁻¹⁵ | **0.41** |
-| **GPT-5 router** | OpenAI | JetBrains-Research/agent-trajectories-swesmith | 169/675 | 1.571 | 2.222 | **8.9×10⁻³⁵** | **0.71** |
-| Claude 3.7 Sonnet | Anthropic | SWE-bench/SWE-smith-trajectories | (curated) | 1.761 | 1.761 | 0.16 | 1.00 |
+| **Qwen3.6-27B** | Alibaba | OpenInterp Phase 6 | 20 / 40 | 0.469 | 1.157 | 1.0×10⁻⁶ | **0.41** |
+| **Llama-70b** | Meta | `nebius/SWE-agent-trajectories` | 1,358 / 488 | 1.000 | 2.522 | < 10⁻¹⁵ | **0.41** |
+| **GPT-5 router** | OpenAI | `JetBrains-Research/agent-trajectories-swesmith-random-subset` | 137 / 664 | 1.571 | 2.222 | **8.9×10⁻³⁵** | **0.71** |
+| Claude 3.7 Sonnet | Anthropic | `SWE-bench/SWE-smith-trajectories` | 1,116 / 1,813 | 1.761 | 1.761 | 0.16 | NOT APPLICABLE (SFT-curated; identical sequences in both classes) |
 
 **Three out of four architectures** confirm the WANDERING entropy < SUCCESS entropy direction, with very strong statistical significance:
 - Qwen (4×10⁻⁵), Llama (<10⁻¹⁵), GPT-5 (8.9×10⁻³⁵). All same direction.
@@ -645,11 +666,40 @@ Signal generalizes across 3 codebases (ansible, openlibrary, qutebrowser). All t
 - Output: `scripts/inflection_turn_out/inflection_results.json`
 - Apache-2.0 throughout
 
-## Cited
+## References
 
-- Paper-MEGA / Vicentino 2026: "Conditionally-Causal Probes: Five Operational Constraints on Linear-Probe Causality in Qwen3.6-27B" (openinterp.org/research)
-- Paper 11 / Vicentino 2026: "Cleaning the Chain-of-Thought Is Not Correcting the Agent" (draft)
-- [arXiv 2602.09598] Error-Localized Policy Optimization (ELPO)
-- [arXiv 2602.09924] LLMs Encode Their Failures: Predicting Success from Pre-Generation Activations
-- [arXiv 2604.28129] Latent Adversarial Detection (adversarial restlessness)
-- [arXiv 2602.19008] Canonical Path Deviation as a Causal Mechanism of Agent Failure
+### Probe-based monitoring
+- Goldowsky-Dill, N., et al. (2025). "Detecting Strategic Deception Using Linear Probes." [arXiv:2502.03407](https://arxiv.org/abs/2502.03407) (Apollo Research).
+- Hubinger, E., et al. (2024). "Simple probes can catch sleeper agents." Anthropic. https://www.anthropic.com/research/probes-catch-sleeper-agents
+- Lugoloobi, W., Foster, T., Bankes, W., Russell, C. (2026). "LLMs Encode Their Failures: Predicting Success from Pre-Generation Activations." [arXiv:2602.09924](https://arxiv.org/abs/2602.09924) (ICLR 2026 LIT Workshop).
+- (2026). "Linear Probe Accuracy Scales with Model Size and Benefits from Multi-Layer Ensembling." [arXiv:2604.13386](https://arxiv.org/abs/2604.13386).
+- (2025). "ProbGuard: Probabilistic Runtime Monitoring for LLM Agent Safety." [arXiv:2508.00500](https://arxiv.org/abs/2508.00500).
+- (2026). "Why Safety Probes Catch Liars But Miss Fanatics." [arXiv:2603.25861](https://arxiv.org/abs/2603.25861).
+
+### Tool-use entropy + agent dynamics
+- (2026). "Rethinking the Role of Entropy in Optimizing Tool-Use Behaviors for Large Language Model Agents." [arXiv:2602.02050](https://arxiv.org/abs/2602.02050).
+- (2025). "Agentic Entropy-Balanced Policy Optimization." [arXiv:2510.14545](https://arxiv.org/abs/2510.14545).
+- (2026). "Spend Less, Reason Better: Budget-Aware Value Tree Search for LLM Agents." [arXiv:2603.12634](https://arxiv.org/abs/2603.12634).
+
+### Failure mode taxonomies
+- Cemri, M., Pan, M.Z., Yang, S., et al. (2025). "Why Do Multi-Agent LLM Systems Fail?" [arXiv:2503.13657](https://arxiv.org/abs/2503.13657).
+- (2025). "Failure Modes in LLM Systems: A System-Level Taxonomy for Reliable AI Applications." [arXiv:2511.19933](https://arxiv.org/abs/2511.19933).
+- JetBrains Research (2025). "Understanding Code Agent Behaviour: An Empirical Study of Success and Failure Trajectories." [arXiv:2511.00197](https://arxiv.org/abs/2511.00197). *(Dataset used in §11)*
+- (2025). "An Empirical Study on Failures in Automated Issue Solving." [arXiv:2509.13941](https://arxiv.org/abs/2509.13941).
+- (2026). "The Long-Horizon Task Mirage? Diagnosing Where and Why Agentic Systems Break." [arXiv:2604.11978](https://arxiv.org/abs/2604.11978).
+
+### Causal failure mechanisms
+- Lee, W.Y. (2026). "Capable but Unreliable: Canonical Path Deviation as a Causal Mechanism of Agent Failure in Long-Horizon Tasks." [arXiv:2602.19008](https://arxiv.org/abs/2602.19008).
+- Liang, Q., Zhu, Y., Ge, C., et al. (2026). "Learning from the Irrecoverable: Error-Localized Policy Optimization for Tool-Integrated LLM Reasoning." [arXiv:2602.09598](https://arxiv.org/abs/2602.09598) (ELPO).
+- (2026). "Latent Adversarial Detection: Adaptive Probing of LLM Activations for Multi-Turn Attack Detection." [arXiv:2604.28129](https://arxiv.org/abs/2604.28129).
+
+### Benchmarks + datasets used
+- Scale AI (2025). "SWE-Bench Pro: Can AI Agents Solve Long-Horizon Software Engineering Tasks?" [arXiv:2509.16941](https://arxiv.org/abs/2509.16941). *(Primary benchmark)*
+- Yang, J., et al. (NeurIPS 2024). "SWE-agent: Agent-Computer Interfaces Enable Automated Software Engineering." [arXiv:2405.15793](https://arxiv.org/abs/2405.15793). *(Scaffold framework)*
+- Yang, J., et al. (NeurIPS 2025 Spotlight). "SWE-smith: Scaling Data for Software Engineering Agents." [arXiv:2504.21798](https://arxiv.org/abs/2504.21798).
+- Nebius Research (2025). "SWE-agent-trajectories dataset." [huggingface.co/datasets/nebius/SWE-agent-trajectories](https://huggingface.co/datasets/nebius/SWE-agent-trajectories). License: CC-BY-4.0.
+- METR (2025). "MALT: A Dataset of Natural and Prompted Behaviors That Threaten Eval Integrity." [metr.org/blog/2025-10-14-malt-dataset](https://metr.org/blog/2025-10-14-malt-dataset-of-natural-and-prompted-behaviors/). Gated; access approved 2026-05-24.
+
+### Author's prior work
+- Vicentino, C. (2026). "Conditionally-Causal Probes: Five Operational Constraints on Linear-Probe Causality in Qwen3.6-27B." openinterp.org/research/papers/conditionally-causal-probes
+- Vicentino, C. (2026). "Cleaning the Chain-of-Thought Is Not Correcting the Agent." (draft, Paper 11)
