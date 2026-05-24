@@ -72,13 +72,13 @@ Datasets used:
   title = {Tool-Entropy Collapse: A Cross-Architecture Signature of Agent WANDERING Failure},
   author = {Vicentino, Caio},
   year = {2026},
-  publisher = {Zenodo / OpenInterpretability},
-  doi = {10.5281/zenodo.XXXXXXX},
-  url = {https://github.com/OpenInterpretability/openinterp-swebench-harness}
+  publisher = {Zenodo},
+  doi = {10.5281/zenodo.20368601},
+  url = {https://doi.org/10.5281/zenodo.20368601}
 }
 ```
 
-(DOI placeholder — update after Zenodo publish.)
+Published 2026-05-24 on Zenodo: https://zenodo.org/records/20368601
 
 ## Strategic positioning
 
