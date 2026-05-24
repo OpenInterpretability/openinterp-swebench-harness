@@ -189,10 +189,12 @@ sign\_dis\_late & 0.207 & 0.212 & \textbf{0.267} & \textbf{0.0017} \\
 
 Best operating point (\texttt{thresh}$=0.52$, $T_{\text{frac}}=0.7$): 65\% WANDERING recall $\times$ 30\% SUCCESS FP $\times$ 15-turn median lead.
 
-\subsubsection{Mid-layer ablation: signal is edge-driven}\label{sec:v4-midlayer}
-Restricting to L23/L31/L43 (mid-layers, all AUROC $\geq 0.928$) collapses the signal: range\_late W vs S $p = 0.07$ (was $0.003$). \textbf{Discrimination is driven by edge layers L11 (surface processing) and L55 (output planning) disagreeing with mid-layer consensus more in WANDERING than in SUCCESS.}
+\subsubsection{Mid-layer ablation: signal depends on edge-layer inclusion}\label{sec:v4-midlayer}
+Restricting to L23/L31/L43 (mid-layers only, all AUROC $\geq 0.928$) collapses the signal: range\_late W vs S $p = 0.07$ (was $0.003$ with all 5 layers). Removing the edge layers (L11 surface processing, L55 output planning) destroys the discrimination.
 
-This refines the mechanism: WANDERING agents have consolidated a mid-layer verdict (model ``knows'' it's done), but edge circuits that translate verdict $\rightarrow$ \texttt{finish\_tool} action haven't aligned. Decision-to-action circuit desynchronized.
+\textbf{Caveat on this ablation.} Reducing from 5 layers to 3 also reduces the mathematical range over which the \texttt{range\_late} metric is computed; we did not control for layer-count by testing all 4-layer subsets (5 combinations). The result is consistent with two interpretations: (a) \emph{edge-layer specificity}---L11 and L55 carry unique signal that mid-layers don't, or (b) \emph{layer-count effect}---the metric's discriminative power scales with number of layers regardless of which. Distinguishing these requires the full subset ablation; we defer to future work.
+
+Under interpretation (a), the mechanism would be: WANDERING agents consolidate a mid-layer verdict (model ``knows'' it's done), but edge circuits that translate verdict $\rightarrow$ \texttt{finish\_tool} action haven't aligned (decision-to-action circuit desynchronized). Under (b), the cross-layer signal is simply a robustness benefit of ensemble probing.
 
 \subsubsection{Complementarity with v1}
 \begin{table}[ht]
@@ -307,7 +309,7 @@ Different operational scenarios require different precision/recall trade-offs. W
 
 \paragraph{Tier 2 — Advisory escalation.} Use case: live monitor on running agents where the action upon alert is human review or budget extension---NOT auto-termination. Detector: v1 $\cup$ v4 combined. Recall: 80\% of WANDERING. SUCCESS FP rate: 30\% (false escalations). Lead time: 15 turns before budget end. Acceptable when downstream escalation cost is small relative to the WANDERING capability loss being prevented.
 
-\paragraph{Tier 3 — Autonomous termination.} Use case: kill agent on alert to free compute. Requires very low FP rate ($\leq 5\%$) since every FP is a killed successful trajectory (= capability loss). \textbf{The breakthrough finding is that v5 tool-entropy combined with v1 closes 70\% of the WANDERING blind spot at exactly 5\% FP.} Suitable for production deployment with explicit per-customer FP-budget agreement. v5 alone (without v1) at \texttt{tool\_entropy<0.45} gives 50\% recall at 2.5\% FP for stricter precision requirements.
+\paragraph{Tier 3 — Autonomous termination.} Use case: kill agent on alert to free compute. Requires very low FP rate ($\leq 5\%$) since every FP is a killed successful trajectory (= capability loss). \textbf{The breakthrough finding is that v5 tool-entropy combined with v1 closes 70\% of the WANDERING blind spot at exactly 5\% FP.} For production calibration the FP-recall trade-off matters: v5 alone at $\texttt{tool\_entropy}<0.45$ gives 50\% recall at 2.5\% FP for tighter precision; $<0.40$ drops to 25\% recall at 2.5\% FP. Caller must choose threshold based on per-customer cost-of-capability-loss vs cost-of-budget-overrun. At scale of millions of trajectories, a 5\% FP rate corresponds to thousands of terminated successes---deployment requires explicit per-customer FP-budget agreement, not blind acceptance of the 5\% number.
 
 The full deployment map and detector landscape:
 
@@ -351,7 +353,7 @@ We identify a 34\% WANDERING blind spot in probe-based agent failure monitoring 
 
 All scripts and per-trajectory output JSONs are available at \url{https://github.com/OpenInterpretability/openinterp-swebench-harness} under Apache-2.0. Datasets used:
 \begin{itemize}
-\item \texttt{OpenInterp Phase 6} (own)
+\item \texttt{OpenInterp Phase 6} (own; 99 Qwen3.6-27B SWE-bench Pro trajectories with per-turn residuals at L11/L23/L31/L43/L55 in bf16 safetensors; will be released at HuggingFace upon paper acceptance)
 \item \texttt{nebius/SWE-agent-trajectories} (CC-BY-4.0)
 \item \texttt{JetBrains-Research/}\allowbreak\texttt{agent-trajectories-swesmith-random-subset} (HF public)
 \item \texttt{SWE-bench/SWE-smith-trajectories} (HF public)
@@ -376,12 +378,15 @@ W.~Lugoloobi, T.~Foster, W.~Bankes, C.~Russell.
 ``LLMs Encode Their Failures: Predicting Success from Pre-Generation Activations.'' arXiv:2602.09924, ICLR 2026 LIT Workshop.
 
 \bibitem{multilayer_ensemble_2026}
+Anonymous Authors.
 ``Linear Probe Accuracy Scales with Model Size and Benefits from Multi-Layer Ensembling.'' arXiv:2604.13386, 2026.
 
 \bibitem{entropy_tool_use_2026}
+Anonymous Authors.
 ``Rethinking the Role of Entropy in Optimizing Tool-Use Behaviors for Large Language Model Agents.'' arXiv:2602.02050, 2026.
 
 \bibitem{aepo_2025}
+Anonymous Authors.
 ``Agentic Entropy-Balanced Policy Optimization.'' arXiv:2510.14545, 2025.
 
 \bibitem{mast_2025}
@@ -418,21 +423,27 @@ J.~Yang et al.
 ``SWE-smith: Scaling Data for Software Engineering Agents.'' arXiv:2504.21798, NeurIPS 2025 Spotlight.
 
 \bibitem{probguard_2025}
+Anonymous Authors.
 ``ProbGuard: Probabilistic Runtime Monitoring for LLM Agent Safety.'' arXiv:2508.00500, 2025.
 
 \bibitem{safety_probes_fanatics_2026}
+Anonymous Authors.
 ``Why Safety Probes Catch Liars But Miss Fanatics.'' arXiv:2603.25861, 2026.
 
 \bibitem{lad_2026}
+Anonymous Authors.
 ``Latent Adversarial Detection: Adaptive Probing of LLM Activations for Multi-Turn Attack Detection.'' arXiv:2604.28129, 2026.
 
 \bibitem{failure_modes_taxonomy_2025}
+Anonymous Authors.
 ``Failure Modes in LLM Systems: A System-Level Taxonomy for Reliable AI Applications.'' arXiv:2511.19933, 2025.
 
 \bibitem{issue_solving_failures_2025}
+Anonymous Authors.
 ``An Empirical Study on Failures in Automated Issue Solving.'' arXiv:2509.13941, 2025.
 
 \bibitem{long_horizon_mirage_2026}
+Anonymous Authors.
 ``The Long-Horizon Task Mirage? Diagnosing Where and Why Agentic Systems Break.'' arXiv:2604.11978, 2026.
 
 \bibitem{nebius_traj_2025}
