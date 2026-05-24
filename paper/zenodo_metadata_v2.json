@@ -1,0 +1,44 @@
+{
+  "metadata": {
+    "title": "Tool-Entropy Collapse: A Cross-Architecture Signature of Agent WANDERING Failure",
+    "version": "v0.9",
+    "upload_type": "publication",
+    "publication_type": "workingpaper",
+    "description": "<p><strong>v0.9 — calibration revision.</strong> Removed \"breakthrough\" language throughout (abstract, §9.1, §10, §13 conclusion) in favor of more measured phrasing (\"most promising candidate signal in this work\"). Conclusion now explicitly flags the W/S ≈ 0.41 ratio match between Qwen and Llama as the most suggestive pattern that merits independent replication on additional models before being treated as a discovery, and explicitly notes the N=20 sample size on the Qwen primary dataset and production-scale FP cost implications. Mid-layer ablation claim hedged between edge-layer specificity and layer-count effect interpretations. Same 6-detector arc, same numeric results, same scope (multi-turn code-execution agent tasks with rich action spaces). Original v1 PDF remains accessible at <a href='https://doi.org/10.5281/zenodo.20368601'>doi.org/10.5281/zenodo.20368601</a>.</p><p><strong>Paper summary</strong>: We identify a 34% blind spot in probe-based LLM agent failure monitoring on Qwen3.6-27B SWE-bench Pro: the WANDERING sub-class where probe says \"success\" but agent never emits <code>finish_tool</code>. We test <strong>six detector designs across three signal channels</strong> (text, residual cross-layer, action entropy). The most promising candidate is <strong>tool-use entropy collapse</strong>: WANDERING agents collapse onto a small set of repeated tool calls (W/S median ratio ≈ 0.41 in Qwen and Llama, 0.71 in GPT-5), enabling a Tier-3 autonomous-termination detector at 70% recall × 5% false-positive rate on the primary dataset.</p><p><strong>Cross-architecture validation</strong>: Llama-70b (n=2,315, p<10⁻¹⁵, ratio ≈0.41) and GPT-5 router (n=1,419, p=8.9×10⁻³⁵, ratio ≈0.71) confirm direction. <strong>Cross-task validation on METR MALT (15+ task families) is NULL (p=0.81)</strong>, scoping the claim to multi-turn code-execution agent tasks with rich action spaces.</p><p><strong>Reproducibility</strong>: all code, per-trajectory output JSONs, and figure-generation scripts at <a href='https://github.com/OpenInterpretability/openinterp-swebench-harness'>GitHub</a> under Apache-2.0. OpenInterp Phase 6 dataset (99 trajectories × per-turn residuals at L11/L23/L31/L43/L55 in bf16 safetensors) will be released at HuggingFace upon paper acceptance.</p>",
+    "creators": [
+      {
+        "name": "Vicentino, Caio",
+        "affiliation": "OpenInterpretability",
+        "orcid": "0009-0003-4331-6259"
+      }
+    ],
+    "keywords": [
+      "mechanistic interpretability",
+      "agent safety",
+      "LLM agents",
+      "linear probes",
+      "tool-use entropy",
+      "SWE-bench",
+      "Qwen3.6-27B",
+      "failure mode analysis",
+      "Tier-3 autonomous termination",
+      "AgentGuard"
+    ],
+    "license": "cc-by-4.0",
+    "access_right": "open",
+    "language": "eng",
+    "notes": "v0.9 (2026-05-24) — calibration revision of v0.8 (10.5281/zenodo.20368601). Same empirical results; replaces 'breakthrough' framing with 'most promising candidate'; adds explicit hedge on W/S 0.41 ratio match (merits independent replication); flags N=20 primary dataset sample size and production-scale FP cost in deployment guidance.",
+    "related_identifiers": [
+      {
+        "identifier": "https://github.com/OpenInterpretability/openinterp-swebench-harness",
+        "relation": "isSupplementTo",
+        "resource_type": "software"
+      },
+      {
+        "identifier": "10.5281/zenodo.20368601",
+        "relation": "isNewVersionOf",
+        "resource_type": "publication-workingpaper"
+      }
+    ]
+  }
+}

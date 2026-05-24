@@ -97,7 +97,7 @@ Open questions I'd value feedback on:
 
 **Links**
 
-- **Zenodo DOI**: [10.5281/zenodo.20368601](https://doi.org/10.5281/zenodo.20368601) (paper PDF + LaTeX source + 5 figures, CC-BY-4.0)
+- **Zenodo DOI**: [10.5281/zenodo.20368807](https://doi.org/10.5281/zenodo.20368807) (paper PDF + LaTeX source + 5 figures, CC-BY-4.0)
 - **GitHub**: [github.com/OpenInterpretability/openinterp-swebench-harness](https://github.com/OpenInterpretability/openinterp-swebench-harness) (all per-trajectory output JSONs, reproducibility scripts, Apache-2.0)
 - **GitHub Release**: [paper-v0.8](https://github.com/OpenInterpretability/openinterp-swebench-harness/releases/tag/paper-v0.8) (versioned PDF + figures)
 - Tool-entropy analysis scripts: `scripts/v5_tool_entropy.py`, `scripts/v5_cross_model_*.py`, `scripts/v5_cross_task_malt.py`
@@ -105,7 +105,7 @@ Open questions I'd value feedback on:
 **Citation**:
 ```
 Vicentino, C. (2026). Tool-Entropy Collapse: A Cross-Architecture Signature
-of Agent WANDERING Failure. Zenodo. https://doi.org/10.5281/zenodo.20368601
+of Agent WANDERING Failure. Zenodo. https://doi.org/10.5281/zenodo.20368807
 ```
 
 I'm Caio Vicentino, working independently on agent safety monitoring under the OpenInterpretability umbrella. Background: 7 years in DeFi/crypto, transitioned to mechanistic interpretability in 2026. ORCID 0009-0003-4331-6259. Comments and pushback welcome.

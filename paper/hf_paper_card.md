@@ -73,12 +73,12 @@ Datasets used:
   author = {Vicentino, Caio},
   year = {2026},
   publisher = {Zenodo},
-  doi = {10.5281/zenodo.20368601},
-  url = {https://doi.org/10.5281/zenodo.20368601}
+  doi = {10.5281/zenodo.20368807},
+  url = {https://doi.org/10.5281/zenodo.20368807}
 }
 ```
 
-Published 2026-05-24 on Zenodo: https://zenodo.org/records/20368601
+Published 2026-05-24 on Zenodo (v0.9 calibration revision): https://zenodo.org/records/20368807 — original v0.8 at https://zenodo.org/records/20368601 — concept DOI (umbrella): 10.5281/zenodo.20368600
 
 ## Strategic positioning
 
