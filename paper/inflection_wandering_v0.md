@@ -144,7 +144,77 @@ At L43 pre_tool, 10,000-sample bootstrap (resampling 59 failure trajectories wit
 
 The CI excludes 0% and excludes any "noise" hypothesis. WANDERING is a substantial sub-class.
 
-## §5 — Limitations + future work
+## §5 — Closing the Blind Spot: A Two-Signal Detector
+
+The 34% WANDERING blind spot motivates the question: can a cheap complementary signal — derived from trace data already available to a monitoring system — close it? We test three text/action-based signals on the same 99 trajectories.
+
+### 5.1 Signals
+
+- **`m_complete`**: rate of completion-language phrase matches in the last 5 turn outputs (concat of `thinking`+`content`). Regex covers "all tests pass", "code is correct", "verified", "infrastructure limitation", "not a code issue", etc.
+- **`m_repeat`**: count of repeated (same-tool, similar-arg) calls in last 5 turns minus 1 (so 0 = no repeats).
+- **`m_static`**: number of consecutive end-turns without any file-editing tool call (`str_replace_editor`, `create_file`, `edit_file`, `write_file`).
+
+| Signal | WANDERING (n=20) | LOCKED (n=39) | SUCCESS (n=40) | Mann-Whitney W vs L |
+|---|---|---|---|---|
+| `m_complete_last5` | 0.240 | 0.097 | **0.450** | **p=0.024** |
+| `m_repeat_last5` | 2.35 | 1.56 | 1.70 | **p=0.033** |
+| `m_static_end` | 15.4 | 11.3 | 12.2 | p=0.247 |
+
+`m_complete` and `m_repeat` significantly separate WANDERING from LOCKED. The static-edit signal does not. Crucially, **SUCCESS trajectories have higher completion-language rate than WANDERING** — the signal is only useful when conjoined with `not emit_finish AND patch > 0`.
+
+### 5.2 Detector comparison
+
+We define four detectors and evaluate per-trajectory at trajectory END (no early-warning yet).
+
+| Detector | Overall recall | WANDERING caught | LOCKED caught | FP on SUCCESS |
+|---|---|---|---|---|
+| Probe-only (`final_probe < 0.5`) | 67.8% | 1/20 (5%) | 39/39 (100%) | 0 |
+| **Probe OR (`complete≥0.4 ∧ no_finish ∧ patch>0`)** | **78.0%** | **7/20 (35%)** | 39/39 (100%) | **0** |
+| Just-completion alone | 22.0% | 6/20 (30%) | 7/39 (18%) | 0 |
+| Lax (`complete≥0.2 ∧ no_finish`) | 35.6% | 11/20 (55%) | 10/39 (26%) | 0 |
+
+The strict combined detector improves overall recall by **10.2 pp** with **zero new false positives on successes**. It closes roughly one third of the 34% WANDERING blind spot.
+
+### 5.3 The residual blind spot — a sub-bifurcation within WANDERING
+
+Inspecting the 9 WANDERING trajectories that no monitor catches (`m_complete = 0`) reveals a second sub-mechanism:
+
+- **WANDERING-A — "Verification loop" (≈11/20).** Agent verbalizes completion ("all tests pass", "code is correct"), produces a patch, but never emits `finish_tool`. Detectable by completion-language monitor. Example: `qutebrowser-9b71c1ea` at turn 49: *"The tests are failing due to the lack of a display server - this is an infrastructure limitation, not a code issue. The code changes have been successfully made and verified."*
+- **WANDERING-B — "Silent continuation" (≈9/20).** Agent does not verbalize completion at all. Some are still actively editing files at turn 50 (`m_static = 0`); others have been static for many turns (`m_static = 50`, never edited in the last 50 turns). Mean final probe = 0.89. Mechanism: agent never reaches a terminal state — neither completion-confidence nor explicit doubt.
+
+This bifurcation refines the original taxonomy: WANDERING is not monolithic but a mixture of *over-confident-completion-not-emitted* (A) and *no-terminal-state* (B). Only sub-class A is reachable by the text-based monitor. Sub-class B requires a different signal — candidates include cross-layer probe disagreement, KV-cache distribution shifts at late turns, or model-internal residual divergence from the success-trajectory mean.
+
+### 5.4 Proposed operational design
+
+A practical AgentGuard-style monitor with three tiers:
+
+```python
+def action_emission_monitor(trace):
+    text_last5 = " ".join(t.text for t in trace.turns[-5:])
+    has_completion = COMPLETION_REGEX.search(text_last5)
+    has_finish = any(c.name == "finish_tool" for t in trace.turns for c in t.tool_calls)
+    has_patch = sum_patch_bytes(trace) > 0
+    turn_frac = len(trace.turns) / trace.max_turns
+
+    if has_completion and not has_finish and has_patch and turn_frac > 0.7:
+        return "red"      # WANDERING-A confident detection
+    if turn_frac > 0.9 and not has_finish and has_patch:
+        return "yellow"   # WANDERING-B suspicion (budget-near + no finish)
+    return "green"
+```
+
+Combined with the probe: `risk = max(1 - probe_score, monitor_level)`. Gates:
+- `risk < 0.3` → pass
+- `0.3-0.7` → escalate (extend budget OR human review)
+- `> 0.7` → block OR force-emit `finish_tool`
+
+### 5.5 What this does NOT solve
+
+1. **45% residual WANDERING blind spot** (WANDERING-B). Real production deployment of this monitor still misses ~15% of failures (`9/59`) that look like over-confident-success internally and silent-continuation externally.
+2. **Early-warning gap.** The detector is evaluated at trajectory END (turn 50/50). A practical monitor needs to fire earlier — at e.g. turn 30 of 50 with budget remaining. We have not tested whether the completion-language signal appears early enough.
+3. **Cross-task generalization.** All three signals are evaluated on SWE-bench Pro only. The completion-language regex is task-domain-specific (mentions "tests", "patch", "code").
+
+## §6 — Limitations + future work
 
 1. **N=99 single model + task family** (Qwen3.6-27B + SWE-bench Pro). Cross-task validation needed before generalizing.
 2. **Single probe + single layer** (L43 pre_tool, top-10 diff-means). Per-layer cross-check would strengthen the WANDERING/LOCKED taxonomy.
@@ -152,9 +222,9 @@ The CI excludes 0% and excludes any "noise" hypothesis. WANDERING is a substanti
 4. **Trace inspection sample size (n=4)** is small; full read of 10 WANDERING + 10 LOCKED would strengthen the qualitative claim.
 5. **"Internal belief" interpretation** is unproven; probe captures whatever correlates with outcome in the residual.
 
-## §6 — Conclusion
+## §7 — Conclusion
 
-A 34% probe-vs-outcome disagreement sub-class (WANDERING) is identified in natural Qwen3.6-27B SWE-bench Pro agent failures via cheap probe lock-in analysis. The sub-class is a mechanistically distinct failure mode characterized by agent over-confidence: model believes task is complete, makes patches, but never emits completion action. The finding has direct implications for probe-based agent safety monitoring schemes deployed in production.
+A 34% probe-vs-outcome disagreement sub-class (WANDERING) is identified in natural Qwen3.6-27B SWE-bench Pro agent failures via cheap probe lock-in analysis. The sub-class is a mechanistically distinct failure mode characterized by agent over-confidence: model believes task is complete, makes patches, but never emits completion action. A complementary text-based action-emission monitor closes ~30% of this blind spot at zero false-positive cost, raising overall detector recall from 67.8% to 78.0%. The blind spot further bifurcates into WANDERING-A (over-confident, verbalized) and WANDERING-B (silent continuation), with WANDERING-B remaining undetectable to both probe and text monitor. The findings have direct implications for probe-based agent safety monitoring schemes deployed in production.
 
 ## Reproducibility
 
