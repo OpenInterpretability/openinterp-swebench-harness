@@ -1,0 +1,290 @@
+{
+  "sweep": [
+    {
+      "W": 5,
+      "B": 0.0,
+      "wander_caught": 12,
+      "wander_recall": 0.6,
+      "lead_median": 15.5,
+      "success_fp": 29,
+      "success_fp_rate": 0.725,
+      "locked_caught": 19,
+      "score": -0.85
+    },
+    {
+      "W": 5,
+      "B": 0.5,
+      "wander_caught": 12,
+      "wander_recall": 0.6,
+      "lead_median": 15.5,
+      "success_fp": 29,
+      "success_fp_rate": 0.725,
+      "locked_caught": 19,
+      "score": -0.85
+    },
+    {
+      "W": 5,
+      "B": 0.7,
+      "wander_caught": 12,
+      "wander_recall": 0.6,
+      "lead_median": 15.0,
+      "success_fp": 29,
+      "success_fp_rate": 0.725,
+      "locked_caught": 19,
+      "score": -0.85
+    },
+    {
+      "W": 5,
+      "B": 0.8,
+      "wander_caught": 12,
+      "wander_recall": 0.6,
+      "lead_median": 10.0,
+      "success_fp": 29,
+      "success_fp_rate": 0.725,
+      "locked_caught": 19,
+      "score": -0.85
+    },
+    {
+      "W": 5,
+      "B": 0.9,
+      "wander_caught": 12,
+      "wander_recall": 0.6,
+      "lead_median": 5.0,
+      "success_fp": 29,
+      "success_fp_rate": 0.725,
+      "locked_caught": 19,
+      "score": -0.85
+    },
+    {
+      "W": 10,
+      "B": 0.0,
+      "wander_caught": 9,
+      "wander_recall": 0.45,
+      "lead_median": 15.0,
+      "success_fp": 22,
+      "success_fp_rate": 0.55,
+      "locked_caught": 16,
+      "score": -0.6500000000000001
+    },
+    {
+      "W": 10,
+      "B": 0.5,
+      "wander_caught": 9,
+      "wander_recall": 0.45,
+      "lead_median": 15.0,
+      "success_fp": 22,
+      "success_fp_rate": 0.55,
+      "locked_caught": 16,
+      "score": -0.6500000000000001
+    },
+    {
+      "W": 10,
+      "B": 0.7,
+      "wander_caught": 9,
+      "wander_recall": 0.45,
+      "lead_median": 15.0,
+      "success_fp": 22,
+      "success_fp_rate": 0.55,
+      "locked_caught": 16,
+      "score": -0.6500000000000001
+    },
+    {
+      "W": 10,
+      "B": 0.8,
+      "wander_caught": 9,
+      "wander_recall": 0.45,
+      "lead_median": 10.0,
+      "success_fp": 22,
+      "success_fp_rate": 0.55,
+      "locked_caught": 16,
+      "score": -0.6500000000000001
+    },
+    {
+      "W": 10,
+      "B": 0.9,
+      "wander_caught": 9,
+      "wander_recall": 0.45,
+      "lead_median": 5.0,
+      "success_fp": 22,
+      "success_fp_rate": 0.55,
+      "locked_caught": 16,
+      "score": -0.6500000000000001
+    },
+    {
+      "W": 15,
+      "B": 0.0,
+      "wander_caught": 8,
+      "wander_recall": 0.4,
+      "lead_median": 12.5,
+      "success_fp": 11,
+      "success_fp_rate": 0.275,
+      "locked_caught": 13,
+      "score": -0.15000000000000002
+    },
+    {
+      "W": 15,
+      "B": 0.5,
+      "wander_caught": 8,
+      "wander_recall": 0.4,
+      "lead_median": 12.5,
+      "success_fp": 11,
+      "success_fp_rate": 0.275,
+      "locked_caught": 13,
+      "score": -0.15000000000000002
+    },
+    {
+      "W": 15,
+      "B": 0.7,
+      "wander_caught": 8,
+      "wander_recall": 0.4,
+      "lead_median": 12.5,
+      "success_fp": 11,
+      "success_fp_rate": 0.275,
+      "locked_caught": 13,
+      "score": -0.15000000000000002
+    },
+    {
+      "W": 15,
+      "B": 0.8,
+      "wander_caught": 8,
+      "wander_recall": 0.4,
+      "lead_median": 10.0,
+      "success_fp": 11,
+      "success_fp_rate": 0.275,
+      "locked_caught": 13,
+      "score": -0.15000000000000002
+    },
+    {
+      "W": 15,
+      "B": 0.9,
+      "wander_caught": 8,
+      "wander_recall": 0.4,
+      "lead_median": 5.0,
+      "success_fp": 11,
+      "success_fp_rate": 0.275,
+      "locked_caught": 13,
+      "score": -0.15000000000000002
+    },
+    {
+      "W": 20,
+      "B": 0.0,
+      "wander_caught": 6,
+      "wander_recall": 0.3,
+      "lead_median": 14.0,
+      "success_fp": 6,
+      "success_fp_rate": 0.15,
+      "locked_caught": 10,
+      "score": 0.0
+    },
+    {
+      "W": 20,
+      "B": 0.5,
+      "wander_caught": 6,
+      "wander_recall": 0.3,
+      "lead_median": 14.0,
+      "success_fp": 6,
+      "success_fp_rate": 0.15,
+      "locked_caught": 10,
+      "score": 0.0
+    },
+    {
+      "W": 20,
+      "B": 0.7,
+      "wander_caught": 6,
+      "wander_recall": 0.3,
+      "lead_median": 12.5,
+      "success_fp": 6,
+      "success_fp_rate": 0.15,
+      "locked_caught": 10,
+      "score": 0.0
+    },
+    {
+      "W": 20,
+      "B": 0.8,
+      "wander_caught": 6,
+      "wander_recall": 0.3,
+      "lead_median": 10.0,
+      "success_fp": 6,
+      "success_fp_rate": 0.15,
+      "locked_caught": 10,
+      "score": 0.0
+    },
+    {
+      "W": 20,
+      "B": 0.9,
+      "wander_caught": 6,
+      "wander_recall": 0.3,
+      "lead_median": 5.0,
+      "success_fp": 6,
+      "success_fp_rate": 0.15,
+      "locked_caught": 10,
+      "score": 0.0
+    },
+    {
+      "W": 25,
+      "B": 0.0,
+      "wander_caught": 4,
+      "wander_recall": 0.2,
+      "lead_median": 15.5,
+      "success_fp": 4,
+      "success_fp_rate": 0.1,
+      "locked_caught": 9,
+      "score": 0.0
+    },
+    {
+      "W": 25,
+      "B": 0.5,
+      "wander_caught": 4,
+      "wander_recall": 0.2,
+      "lead_median": 15.5,
+      "success_fp": 4,
+      "success_fp_rate": 0.1,
+      "locked_caught": 9,
+      "score": 0.0
+    },
+    {
+      "W": 25,
+      "B": 0.7,
+      "wander_caught": 4,
+      "wander_recall": 0.2,
+      "lead_median": 14.0,
+      "success_fp": 4,
+      "success_fp_rate": 0.1,
+      "locked_caught": 9,
+      "score": 0.0
+    },
+    {
+      "W": 25,
+      "B": 0.8,
+      "wander_caught": 4,
+      "wander_recall": 0.2,
+      "lead_median": 10.0,
+      "success_fp": 4,
+      "success_fp_rate": 0.1,
+      "locked_caught": 9,
+      "score": 0.0
+    },
+    {
+      "W": 25,
+      "B": 0.9,
+      "wander_caught": 4,
+      "wander_recall": 0.2,
+      "lead_median": 5.0,
+      "success_fp": 4,
+      "success_fp_rate": 0.1,
+      "locked_caught": 9,
+      "score": 0.0
+    }
+  ],
+  "best_op_point": {
+    "W": 20,
+    "B": 0.0,
+    "wander_caught": 6,
+    "wander_recall": 0.3,
+    "lead_median": 14.0,
+    "success_fp": 6,
+    "success_fp_rate": 0.15,
+    "locked_caught": 10,
+    "score": 0.0
+  }
+}
