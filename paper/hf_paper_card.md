@@ -78,7 +78,11 @@ Datasets used:
 }
 ```
 
-Published 2026-05-24 on Zenodo (v0.9 calibration revision): https://zenodo.org/records/20368807 — original v0.8 at https://zenodo.org/records/20368601 — concept DOI (umbrella): 10.5281/zenodo.20368600
+Published 2026-05-24:
+- Zenodo v0.9 (calibration revision): https://zenodo.org/records/20368807
+- Zenodo v0.8 (original): https://zenodo.org/records/20368601
+- Concept DOI (umbrella): 10.5281/zenodo.20368600
+- LessWrong post: https://www.lesswrong.com/posts/D23kWLmpcXhFAQ2RY/tool-entropy-collapse-a-cross-architecture-signature-of
 
 ## Strategic positioning
 
