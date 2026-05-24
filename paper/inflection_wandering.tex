@@ -8,8 +8,16 @@
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
 \usepackage{hyperref}
-\hypersetup{colorlinks=true, linkcolor=blue, citecolor=blue, urlcolor=blue}
-\usepackage{url}
+\hypersetup{colorlinks=true, linkcolor=blue, citecolor=blue, urlcolor=blue,
+  pdftitle={Tool-Entropy Collapse: A Cross-Architecture Signature of Agent WANDERING Failure},
+  pdfauthor={Caio Vicentino}}
+% Allow LaTeX to stretch underfull spacing more aggressively to avoid overfull boxes
+\emergencystretch=3em
+\sloppy
+% Allow line breaks inside \texttt within URL/path-like strings
+\hyphenpenalty=2000
+\exhyphenpenalty=0
+\hbadness=10000
 \usepackage{booktabs}
 \usepackage{amsfonts}
 \usepackage{nicefrac}
@@ -341,7 +349,14 @@ We identify a 34\% WANDERING blind spot in probe-based agent failure monitoring 
 
 \section*{Reproducibility}
 
-All scripts and per-trajectory output JSONs are available at \url{https://github.com/OpenInterpretability/openinterp-swebench-harness} under Apache-2.0. Datasets used: \texttt{OpenInterp Phase 6} (own), \texttt{nebius/SWE-agent-trajectories} (CC-BY-4.0), \texttt{JetBrains-Research/agent-trajectories-swesmith-random-subset} (HF public), \texttt{SWE-bench/SWE-smith-trajectories} (HF public), \texttt{metr-evals/malt-public} (HF gated, request approval).
+All scripts and per-trajectory output JSONs are available at \url{https://github.com/OpenInterpretability/openinterp-swebench-harness} under Apache-2.0. Datasets used:
+\begin{itemize}
+\item \texttt{OpenInterp Phase 6} (own)
+\item \texttt{nebius/SWE-agent-trajectories} (CC-BY-4.0)
+\item \texttt{JetBrains-Research/}\allowbreak\texttt{agent-trajectories-swesmith-random-subset} (HF public)
+\item \texttt{SWE-bench/SWE-smith-trajectories} (HF public)
+\item \texttt{metr-evals/malt-public} (HF gated, request approval)
+\end{itemize}
 
 \bibliographystyle{plainnat}
 
