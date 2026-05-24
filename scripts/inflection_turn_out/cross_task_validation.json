@@ -1,0 +1,49 @@
+{
+  "repo_distribution": {
+    "qutebrowser": {
+      "n": 33,
+      "success": 11,
+      "locked": 15,
+      "wandering": 7
+    },
+    "openlibrary": {
+      "n": 33,
+      "success": 16,
+      "locked": 11,
+      "wandering": 6
+    },
+    "ansible": {
+      "n": 33,
+      "success": 13,
+      "locked": 13,
+      "wandering": 7
+    }
+  },
+  "per_repo_range_late_W_vs_S": {
+    "ansible": {
+      "n_w": 7,
+      "n_s": 13,
+      "w_median": 0.542421548364956,
+      "s_median": 0.4147773844205125,
+      "p": 0.018601651186790504,
+      "direction": "W>S"
+    },
+    "openlibrary": {
+      "n_w": 6,
+      "n_s": 16,
+      "w_median": 0.5234987078629205,
+      "s_median": 0.43707091350628324,
+      "p": 0.3667725463391097,
+      "direction": "W>S"
+    },
+    "qutebrowser": {
+      "n_w": 7,
+      "n_s": 11,
+      "w_median": 0.5681899607141044,
+      "s_median": 0.44384632757159637,
+      "p": 0.03456510809451986,
+      "direction": "W>S"
+    }
+  },
+  "per_repo_v1_v4_op": {}
+}
