@@ -1,0 +1,44 @@
+{
+  "llama_70b_results": {
+    "n_success": 488,
+    "n_locked": 469,
+    "n_wandering": 1358,
+    "tool_entropy_medians": {
+      "success": 2.5219280948873624,
+      "locked": 1.6854752972273344,
+      "wandering": 1.0
+    },
+    "tier3_sweep": {
+      "thresh_0.5": {
+        "w_recall": 30,
+        "s_fp": 0.4
+      },
+      "thresh_1.0": {
+        "w_recall": 44,
+        "s_fp": 1.4
+      },
+      "thresh_1.2": {
+        "w_recall": 64,
+        "s_fp": 2.5
+      },
+      "thresh_1.5": {
+        "w_recall": 71,
+        "s_fp": 4.1
+      }
+    }
+  },
+  "qwen_27b_for_reference": {
+    "tool_entropy_medians": {
+      "success": 1.157,
+      "locked": 0.722,
+      "wandering": 0.469
+    },
+    "tier3_best": {
+      "thresh": 0.5,
+      "w_recall": 55,
+      "s_fp": 5.0
+    }
+  },
+  "direction_match": true,
+  "shared_ordering": "SUCCESS > LOCKED > WANDERING in entropy"
+}

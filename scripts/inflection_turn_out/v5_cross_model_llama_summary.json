@@ -1,0 +1,14 @@
+{
+  "model": "swe-agent-llama-70b",
+  "dataset": "nebius/SWE-agent-trajectories shard 0",
+  "n_total": 2315,
+  "n_success": 488,
+  "n_locked": 469,
+  "n_wandering": 1358,
+  "tool_entropy_last10": {
+    "success_median": 2.5219280948873624,
+    "success_mean": 2.467849521801875,
+    "wandering_median": 1.0,
+    "wandering_mean": 1.0084950776936588
+  }
+}

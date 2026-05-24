@@ -1,0 +1,2316 @@
+iid,sub_class,exit_status,n_turns,n_tools_last10,tool_entropy_last10,tool_diversity_last10,tool_repetition_last10
+AnalogJ__lexicon-336,wandering,submitted (exit_context),46,10,0.4689955935892812,0.2,0.9
+AnalogJ__lexicon-336,wandering,submitted (exit_context),25,10,0.0,0.1,1.0
+AnalogJ__lexicon-336,wandering,submitted (exit_context),29,10,0.9709505944546686,0.2,0.6
+AnalogJ__lexicon-336,wandering,submitted (exit_context),155,10,0.4689955935892812,0.2,0.9
+AnalogJ__lexicon-336,wandering,submitted (exit_context),41,10,1.6854752972273346,0.4,0.5
+Melevir__cognitive_complexity-15,wandering,submitted (exit_context),17,10,1.5219280948873621,0.3,0.4
+Melevir__cognitive_complexity-15,wandering,submitted (exit_context),58,10,0.0,0.1,1.0
+Melevir__cognitive_complexity-15,wandering,submitted (exit_context),31,10,1.5709505944546684,0.3,0.4
+Melevir__cognitive_complexity-15,wandering,submitted (exit_context),68,10,0.8812908992306927,0.2,0.7
+Melevir__cognitive_complexity-15,wandering,submitted (exit_context),35,10,0.0,0.1,1.0
+PyCQA__pyflakes-761,wandering,submitted (exit_context),44,10,1.5219280948873621,0.3,0.4
+PyCQA__pyflakes-761,wandering,submitted (exit_context),39,10,1.5709505944546684,0.3,0.4
+PyCQA__pyflakes-761,wandering,submitted (exit_context),38,10,0.0,0.1,1.0
+PyCQA__pyflakes-761,wandering,submitted (exit_context),47,10,2.8464393446710154,0.8,0.3
+PyCQA__pyflakes-761,wandering,submitted (exit_context),83,10,1.3709505944546687,0.3,0.6
+PyCQA__pyflakes-761,wandering,submitted (exit_context),50,10,1.3609640474436813,0.3,0.5
+PyCQA__pyflakes-761,wandering,submitted (exit_context),57,10,1.5709505944546684,0.3,0.4
+PyCQA__pyflakes-761,wandering,submitted (exit_context),40,10,2.2464393446710154,0.5,0.3
+ReproNim__reproman-518,wandering,submitted (exit_context),69,10,1.5709505944546684,0.3,0.4
+ShawHahnLab__igseq-2,wandering,submitted (exit_context),32,10,1.3709505944546687,0.3,0.6
+ShawHahnLab__igseq-2,wandering,submitted (exit_context),56,10,1.9609640474436814,0.5,0.5
+ShawHahnLab__igseq-2,wandering,submitted (exit_context),25,10,0.0,0.1,1.0
+ShawHahnLab__igseq-2,wandering,submitted (exit_context),26,10,0.8812908992306927,0.2,0.7
+ShawHahnLab__igseq-2,wandering,submitted (exit_context),29,10,1.5709505944546684,0.3,0.4
+TACC__agavepy-62,wandering,submitted (exit_context),23,10,0.0,0.1,1.0
+TACC__agavepy-62,wandering,submitted (exit_context),55,10,2.121928094887362,0.5,0.4
+TACC__agavepy-62,wandering,submitted (exit_context),58,10,0.0,0.1,1.0
+TACC__agavepy-62,wandering,submitted (exit_context),27,10,1.5709505944546684,0.3,0.4
+TACC__agavepy-62,wandering,submitted (exit_context),37,10,1.5709505944546684,0.3,0.4
+TACC__agavepy-62,wandering,submitted (exit_context),233,10,0.4689955935892812,0.2,0.9
+absent1706__sqlalchemy-mixins-108,wandering,submitted (exit_context),81,10,1.0,0.2,0.5
+absent1706__sqlalchemy-mixins-108,wandering,submitted (exit_context),96,10,0.8812908992306927,0.2,0.7
+absent1706__sqlalchemy-mixins-108,wandering,submitted (exit_context),72,10,1.0,0.2,0.5
+absent1706__sqlalchemy-mixins-108,wandering,submitted (exit_context),51,10,0.4689955935892812,0.2,0.9
+absent1706__sqlalchemy-mixins-108,wandering,submitted (exit_context),73,10,1.9709505944546688,0.4,0.3
+absent1706__sqlalchemy-mixins-108,wandering,submitted (exit_context),71,10,2.1219280948873624,0.5,0.4
+absent1706__sqlalchemy-mixins-108,wandering,submitted (exit_context),53,10,1.0,0.2,0.5
+ahawker__ulid-59,wandering,submitted (exit_context),22,10,0.9709505944546686,0.2,0.6
+ahawker__ulid-59,wandering,submitted (exit_context),26,10,1.0,0.2,0.5
+ahawker__ulid-59,wandering,submitted (exit_context),28,10,1.0,0.2,0.5
+airspeed-velocity__asv-702,wandering,submitted (exit_context),35,10,1.5709505944546684,0.3,0.4
+airspeed-velocity__asv-702,wandering,submitted (exit_context),14,10,1.8464393446710154,0.4,0.4
+airspeed-velocity__asv-702,wandering,submitted (exit_context),44,10,2.321928094887362,0.6,0.4
+airspeed-velocity__asv-702,wandering,submitted (exit_context),66,10,0.0,0.1,1.0
+airspeed-velocity__asv-702,wandering,submitted (exit_context),52,10,2.321928094887362,0.6,0.4
+asottile__pyupgrade-142,wandering,submitted (exit_context),9,9,1.4466166676282084,0.4444444444444444,0.6666666666666666
+asottile__pyupgrade-142,wandering,submitted (exit_context),49,10,0.0,0.1,1.0
+asottile__pyupgrade-142,wandering,submitted (exit_context),32,10,1.5709505944546684,0.3,0.4
+asottile__pyupgrade-142,wandering,submitted (exit_context),127,10,0.0,0.1,1.0
+asottile__pyupgrade-142,wandering,submitted (exit_context),32,10,1.9709505944546686,0.4,0.3
+asottile__pyupgrade-142,wandering,submitted (exit_context),21,10,1.0,0.2,0.5
+asottile__pyupgrade-142,wandering,submitted (exit_context),45,10,0.0,0.1,1.0
+asottile__pyupgrade-142,wandering,submitted (exit_context),38,10,1.5219280948873621,0.3,0.4
+asottile__pyupgrade-142,wandering,submitted (exit_context),13,10,2.3219280948873626,0.6,0.4
+asottile__pyupgrade-147,wandering,submitted (exit_context),71,10,1.0,0.2,0.5
+asottile__pyupgrade-147,wandering,submitted (exit_context),198,10,0.0,0.1,1.0
+asottile__pyupgrade-147,wandering,submitted (exit_context),33,10,0.0,0.1,1.0
+asottile__pyupgrade-147,wandering,submitted (exit_context),13,10,1.5709505944546684,0.3,0.4
+asottile__pyupgrade-347,wandering,submitted (exit_context),147,10,0.9709505944546686,0.2,0.6
+asottile__pyupgrade-347,wandering,submitted (exit_context),56,10,1.3709505944546687,0.3,0.6
+asottile__pyupgrade-347,wandering,submitted (exit_context),78,10,1.8464393446710154,0.4,0.4
+asottile__pyupgrade-545,wandering,submitted (exit_context),28,10,1.9219280948873623,0.4,0.4
+asottile__pyupgrade-545,wandering,submitted (exit_context),128,10,0.7219280948873623,0.2,0.8
+asottile__pyupgrade-545,wandering,submitted (exit_context),43,10,1.5709505944546684,0.3,0.4
+asottile__pyupgrade-545,wandering,submitted (exit_context),167,10,1.0,0.2,0.5
+asottile__pyupgrade-545,wandering,submitted (exit_context),114,10,0.9709505944546686,0.2,0.6
+asottile__pyupgrade-545,wandering,submitted (exit_context),33,10,1.9609640474436811,0.5,0.5
+asottile__pyupgrade-890,wandering,submitted (exit_context),55,10,0.8812908992306927,0.2,0.7
+auth0__auth0-python-477,wandering,submitted (exit_context),41,10,0.0,0.1,1.0
+auth0__auth0-python-477,wandering,submitted (exit_context),35,10,0.0,0.1,1.0
+auth0__auth0-python-477,wandering,submitted (exit_context),45,10,1.0,0.2,0.5
+aws-cloudformation__cloudformation-cli-python-plugin-236,wandering,submitted (exit_context),110,10,0.0,0.1,1.0
+aws-cloudformation__cloudformation-cli-python-plugin-236,wandering,submitted (exit_context),11,10,2.921928094887362,0.8,0.2
+aws-cloudformation__cloudformation-cli-python-plugin-236,wandering,submitted (exit_context),49,10,0.8812908992306927,0.2,0.7
+aws-cloudformation__cloudformation-cli-python-plugin-236,wandering,submitted (exit_context),24,10,1.4854752972273344,0.3,0.5
+aws-cloudformation__cloudformation-cli-python-plugin-236,wandering,submitted (exit_context),33,10,1.0,0.2,0.5
+aws-cloudformation__cloudformation-cli-python-plugin-236,wandering,submitted (exit_context),78,10,1.9219280948873623,0.4,0.4
+benjamincorcoran__sasdocs-41,wandering,submitted (exit_context),59,10,1.895461844238322,0.4,0.3
+benjamincorcoran__sasdocs-41,wandering,submitted (exit_context),54,10,2.121928094887362,0.5,0.4
+benjamincorcoran__sasdocs-41,wandering,submitted (exit_context),63,10,1.5709505944546684,0.3,0.4
+bihealth__biomedsheets-23,wandering,submitted (exit_context),55,10,1.0,0.2,0.5
+casbin__pycasbin-53,wandering,submitted (exit_context),21,10,1.9709505944546686,0.4,0.3
+cytomining__pycytominer-62,wandering,submitted (exit_context),21,10,0.0,0.1,1.0
+cytomining__pycytominer-62,wandering,submitted (exit_context),33,10,0.0,0.1,1.0
+cytomining__pycytominer-62,wandering,submitted (exit_context),21,10,0.4689955935892812,0.2,0.9
+delph-in__pydelphin-362,wandering,submitted (exit_context),57,10,1.0,0.2,0.5
+delph-in__pydelphin-362,wandering,submitted (exit_context),39,10,0.0,0.1,1.0
+delph-in__pydelphin-362,wandering,submitted (exit_context),42,10,0.8812908992306927,0.2,0.7
+delph-in__pydelphin-362,wandering,submitted (exit_context),37,10,2.321928094887362,0.6,0.4
+delph-in__pydelphin-362,wandering,submitted (exit_context),20,10,2.1709505944546685,0.5,0.3
+delph-in__pydelphin-362,wandering,submitted (exit_context),48,10,1.9609640474436814,0.5,0.5
+fairlearn__fairlearn-896,wandering,submitted (exit_context),16,10,1.7219280948873623,0.4,0.4
+fairlearn__fairlearn-896,wandering,submitted (exit_context),43,10,1.0,0.2,0.5
+google__latexify_py-67,wandering,submitted (exit_context),29,10,1.0,0.2,0.5
+google__latexify_py-67,wandering,submitted (exit_context),41,10,0.0,0.1,1.0
+google__latexify_py-67,wandering,submitted (exit_context),24,10,0.0,0.1,1.0
+google__latexify_py-67,wandering,submitted (exit_context),49,10,1.0,0.2,0.5
+google__latexify_py-67,wandering,submitted (exit_context),27,10,1.0,0.2,0.5
+google__mobly-472,wandering,submitted (exit_context),39,10,1.8464393446710154,0.4,0.4
+hugovk__pypistats-41,wandering,submitted (exit_context),35,10,1.0,0.2,0.5
+hugovk__pypistats-41,wandering,submitted (exit_context),37,10,1.0,0.2,0.5
+hugovk__pypistats-41,wandering,submitted (exit_context),41,10,1.0,0.2,0.5
+iris-hep__func_adl-116,wandering,submitted (exit_context),52,10,1.6854752972273346,0.4,0.5
+iris-hep__func_adl-116,wandering,submitted (exit_context),30,10,0.0,0.1,1.0
+iterative__dvc-3462,wandering,submitted (exit_context),42,10,0.0,0.1,1.0
+iterative__dvc-3462,wandering,submitted (exit_context),114,10,0.8812908992306927,0.2,0.7
+iterative__dvc-3462,wandering,submitted (exit_context),32,10,2.5219280948873624,0.6,0.2
+iterative__dvc-3462,wandering,submitted (exit_context),85,10,1.4854752972273344,0.3,0.5
+iterative__dvc-5785,wandering,submitted (exit_context),136,10,0.4689955935892812,0.2,0.9
+iterative__dvc-5785,wandering,submitted (exit_context),42,10,1.3567796494470394,0.4,0.7
+iterative__dvc-6303,wandering,submitted (exit_context),46,10,0.0,0.1,1.0
+iterative__dvc-6303,wandering,submitted (exit_context),59,10,1.5219280948873621,0.3,0.4
+iterative__dvc-6303,wandering,submitted (exit_context),53,10,0.0,0.1,1.0
+iterative__dvc-7205,wandering,submitted (exit_context),65,10,0.0,0.1,1.0
+iterative__dvc-7205,wandering,submitted (exit_context),61,10,0.0,0.1,1.0
+iterative__dvc-7205,wandering,submitted (exit_context),55,10,0.0,0.1,1.0
+iterative__dvc-7205,wandering,submitted (exit_context),31,10,0.0,0.1,1.0
+iterative__dvc-7205,wandering,submitted (exit_context),61,10,0.0,0.1,1.0
+iterative__dvc-7205,wandering,submitted (exit_context),44,10,0.0,0.1,1.0
+just-work__fffw-100,wandering,submitted (exit_context),11,10,2.8464393446710154,0.8,0.3
+just-work__fffw-100,wandering,submitted (exit_context),222,10,1.1567796494470395,0.3,0.7
+matchms__matchms-187,wandering,submitted (exit_context),48,10,1.3609640474436813,0.3,0.5
+matchms__matchms-187,wandering,submitted (exit_context),137,10,0.0,0.1,1.0
+matchms__matchms-187,wandering,submitted (exit_context),18,10,1.295461844238322,0.3,0.6
+meerk40t__svgelements-183,wandering,submitted (exit_context),48,10,1.3609640474436813,0.3,0.5
+meerk40t__svgelements-183,wandering,submitted (exit_context),35,10,1.0,0.2,0.5
+meerk40t__svgelements-183,wandering,submitted (exit_context),39,10,0.9219280948873623,0.3,0.8
+meerk40t__svgelements-183,wandering,submitted (exit_context),40,10,2.0464393446710156,0.5,0.4
+meerk40t__svgelements-183,wandering,submitted (exit_context),37,10,2.1219280948873624,0.5,0.4
+meerk40t__svgelements-183,wandering,submitted (exit_context),28,10,0.7219280948873623,0.2,0.8
+nipy__nipype-2597,wandering,submitted (exit_context),87,10,1.0,0.2,0.5
+nipy__nipype-2597,wandering,submitted (exit_context),57,10,1.9709505944546686,0.4,0.3
+nipy__nipype-2597,wandering,submitted (exit_context),46,10,0.7219280948873623,0.2,0.8
+nipy__nipype-2597,wandering,submitted (exit_context),23,10,0.8812908992306927,0.2,0.7
+nose-devs__nose2-472,wandering,submitted (exit_context),148,10,1.8464393446710154,0.4,0.4
+nose-devs__nose2-472,wandering,submitted (exit_context),31,10,0.0,0.1,1.0
+nose-devs__nose2-472,wandering,submitted (exit_context),58,10,1.9219280948873623,0.4,0.4
+nose-devs__nose2-472,wandering,submitted (exit_context),59,10,2.4464393446710155,0.6,0.3
+nose-devs__nose2-472,wandering,submitted (exit_context),33,10,1.5709505944546684,0.3,0.4
+nose-devs__nose2-472,wandering,submitted (exit_context),26,10,1.5709505944546684,0.3,0.4
+nose-devs__nose2-472,wandering,submitted (exit_context),24,10,0.0,0.1,1.0
+nose-devs__nose2-472,wandering,submitted (exit_context),45,10,2.1219280948873624,0.5,0.4
+nose-devs__nose2-472,wandering,submitted (exit_context),51,10,1.9219280948873623,0.4,0.4
+oasis-open__cti-python-stix2-74,wandering,submitted (exit_context),56,10,1.5219280948873621,0.3,0.4
+oasis-open__cti-python-stix2-74,wandering,submitted (exit_context),23,10,0.9709505944546686,0.2,0.6
+oasis-open__cti-python-stix2-74,wandering,submitted (exit_context),44,10,1.5709505944546684,0.3,0.4
+oasis-open__cti-python-stix2-74,wandering,submitted (exit_context),69,10,0.0,0.1,1.0
+oasis-open__cti-python-stix2-74,wandering,submitted (exit_context),54,10,0.0,0.1,1.0
+omni-us__jsonargparse-176,wandering,submitted (exit_context),31,10,0.0,0.1,1.0
+omni-us__jsonargparse-176,wandering,submitted (exit_context),38,10,2.4464393446710155,0.6,0.3
+omni-us__jsonargparse-176,wandering,submitted (exit_context),40,10,0.4689955935892812,0.2,0.9
+omni-us__jsonargparse-176,wandering,submitted (exit_context),48,10,1.9219280948873623,0.4,0.4
+omni-us__jsonargparse-176,wandering,submitted (exit_context),272,10,0.0,0.1,1.0
+omni-us__jsonargparse-176,wandering,submitted (exit_context),32,10,1.295461844238322,0.3,0.6
+pact-foundation__pact-python-94,wandering,submitted (exit_context),125,10,1.0,0.2,0.5
+pact-foundation__pact-python-94,wandering,submitted (exit_context),43,10,0.0,0.1,1.0
+peterbe__premailer-218,wandering,submitted (exit_context),48,10,0.0,0.1,1.0
+peterbe__premailer-218,wandering,submitted (exit_context),47,10,0.0,0.1,1.0
+peterbe__premailer-218,wandering,submitted (exit_context),34,10,0.0,0.1,1.0
+peterbe__premailer-218,wandering,submitted (exit_context),36,10,1.5709505944546684,0.3,0.4
+peterbe__premailer-218,wandering,submitted (exit_context),41,10,0.0,0.1,1.0
+planetlabs__planet-client-python-621,wandering,submitted (exit_context),27,10,0.0,0.1,1.0
+planetlabs__planet-client-python-621,wandering,submitted (exit_context),14,10,0.9219280948873623,0.3,0.8
+planetlabs__planet-client-python-621,wandering,submitted (exit_context),40,10,1.0,0.2,0.5
+ppizarror__pygame-menu-357,wandering,submitted (exit_context),44,10,1.8464393446710154,0.4,0.4
+ppizarror__pygame-menu-357,wandering,submitted (exit_context),44,10,0.9709505944546686,0.2,0.6
+ppizarror__pygame-menu-357,wandering,submitted (exit_context),91,10,0.9709505944546686,0.2,0.6
+ppizarror__pygame-menu-357,wandering,submitted (exit_context),66,10,0.0,0.1,1.0
+ppizarror__pygame-menu-357,wandering,submitted (exit_context),68,10,0.0,0.1,1.0
+ppizarror__pygame-menu-357,wandering,submitted (exit_context),64,10,0.8812908992306927,0.2,0.7
+pre-commit__pre-commit-1707,wandering,submitted (exit_context),33,10,1.295461844238322,0.3,0.6
+pvlib__pvlib-python-1296,wandering,submitted (exit_context),38,10,0.7219280948873623,0.2,0.8
+pydantic__pydantic-1989,wandering,submitted (exit_context),34,10,1.5709505944546684,0.3,0.4
+pydantic__pydantic-1989,wandering,submitted (exit_context),91,10,1.0,0.2,0.5
+pydantic__pydantic-4350,wandering,submitted (exit_context),11,10,2.721928094887362,0.7,0.2
+pydantic__pydantic-4350,wandering,submitted (exit_context),23,10,0.0,0.1,1.0
+python-visualization__folium-1633,wandering,submitted (exit_context),26,10,0.0,0.1,1.0
+python-visualization__folium-1633,wandering,submitted (exit_context),39,10,0.8812908992306927,0.2,0.7
+python-visualization__folium-1633,wandering,submitted (exit_context),34,10,0.9709505944546686,0.2,0.6
+python-visualization__folium-1633,wandering,submitted (exit_context),25,10,0.0,0.1,1.0
+python-visualization__folium-1633,wandering,submitted (exit_context),33,10,1.0,0.2,0.5
+pyvista__pyvista-432,wandering,submitted (exit_context),64,10,0.8812908992306927,0.2,0.7
+reata__sqllineage-17,wandering,submitted (exit_context),40,10,2.321928094887362,0.6,0.4
+reata__sqllineage-17,wandering,submitted (exit_context),27,10,0.8812908992306927,0.2,0.7
+reata__sqllineage-17,wandering,submitted (exit_context),32,10,1.0,0.2,0.5
+reata__sqllineage-17,wandering,submitted (exit_context),34,10,1.0,0.2,0.5
+reata__sqllineage-17,wandering,submitted (exit_context),26,10,1.5709505944546684,0.3,0.4
+reata__sqllineage-17,wandering,submitted (exit_context),21,10,0.0,0.1,1.0
+reata__sqllineage-17,wandering,submitted (exit_context),38,10,1.0,0.2,0.5
+reata__sqllineage-17,wandering,submitted (exit_context),37,10,0.0,0.1,1.0
+reata__sqllineage-17,wandering,submitted (exit_context),29,10,1.8464393446710154,0.4,0.4
+reata__sqllineage-17,wandering,submitted (exit_context),43,10,1.7219280948873623,0.4,0.4
+reata__sqllineage-17,wandering,submitted (exit_context),116,10,0.9219280948873623,0.3,0.8
+reata__sqllineage-17,wandering,submitted (exit_context),21,10,1.360964047443681,0.3,0.5
+reata__sqllineage-17,wandering,submitted (exit_context),39,10,1.5709505944546684,0.3,0.4
+reata__sqllineage-17,wandering,submitted (exit_context),42,10,0.8812908992306927,0.2,0.7
+reata__sqllineage-17,wandering,submitted (exit_context),39,10,1.0,0.2,0.5
+reata__sqllineage-17,wandering,submitted (exit_context),42,10,1.0,0.2,0.5
+reata__sqllineage-17,wandering,submitted (exit_context),29,10,1.0,0.2,0.5
+reata__sqllineage-17,wandering,submitted (exit_context),23,10,1.7709505944546688,0.5,0.6
+reata__sqllineage-17,wandering,submitted (exit_context),32,10,1.0,0.2,0.5
+reata__sqllineage-17,wandering,submitted (exit_context),170,10,1.0,0.2,0.5
+reata__sqllineage-17,wandering,submitted (exit_context),37,10,0.0,0.1,1.0
+reata__sqllineage-17,wandering,submitted (exit_context),36,10,0.0,0.1,1.0
+reata__sqllineage-17,wandering,submitted (exit_context),20,10,0.0,0.1,1.0
+reata__sqllineage-17,wandering,submitted (exit_context),55,10,2.321928094887362,0.6,0.4
+reata__sqllineage-17,wandering,submitted (exit_context),39,10,1.5709505944546684,0.3,0.4
+reata__sqllineage-17,wandering,submitted (exit_context),20,10,0.4689955935892812,0.2,0.9
+reata__sqllineage-17,wandering,submitted (exit_context),36,10,1.5219280948873621,0.3,0.4
+reata__sqllineage-17,wandering,submitted (exit_context),32,10,1.0,0.2,0.5
+reata__sqllineage-17,wandering,submitted (exit_context),51,10,0.0,0.1,1.0
+reata__sqllineage-17,wandering,submitted (exit_context),31,10,1.0,0.2,0.5
+reata__sqllineage-17,wandering,submitted (exit_context),27,10,0.0,0.1,1.0
+reata__sqllineage-17,wandering,submitted (exit_context),50,10,0.9709505944546686,0.2,0.6
+reata__sqllineage-17,wandering,submitted (exit_context),30,10,0.0,0.1,1.0
+reata__sqllineage-17,wandering,submitted (exit_context),33,10,1.0,0.2,0.5
+robotpy__robotpy-cppheaderparser-28,wandering,submitted (exit_context),158,10,0.0,0.1,1.0
+robotpy__robotpy-cppheaderparser-28,wandering,submitted (exit_context),49,10,1.7609640474436812,0.4,0.5
+robotpy__robotpy-cppheaderparser-28,wandering,submitted (exit_context),44,10,2.321928094887362,0.6,0.4
+robotpy__robotpy-cppheaderparser-28,wandering,submitted (exit_context),53,10,1.5709505944546684,0.3,0.4
+robotpy__robotpy-cppheaderparser-28,wandering,submitted (exit_context),132,10,0.0,0.1,1.0
+robotpy__robotpy-cppheaderparser-28,wandering,submitted (exit_context),71,10,2.4464393446710155,0.6,0.3
+robotpy__robotpy-cppheaderparser-28,wandering,submitted (exit_context),26,10,0.4689955935892812,0.2,0.9
+robotpy__robotpy-cppheaderparser-28,wandering,submitted (exit_context),19,10,2.6464393446710153,0.7,0.3
+robotpy__robotpy-cppheaderparser-28,wandering,submitted (exit_context),147,10,0.0,0.1,1.0
+scikit-hep__cabinetry-396,wandering,submitted (exit_context),42,10,0.8812908992306927,0.2,0.7
+scikit-hep__cabinetry-396,wandering,submitted (exit_context),44,10,0.8812908992306927,0.2,0.7
+scikit-hep__cabinetry-396,wandering,submitted (exit_context),53,10,0.4689955935892812,0.2,0.9
+scikit-hep__cabinetry-396,wandering,submitted (exit_context),45,10,0.8812908992306927,0.2,0.7
+scikit-hep__cabinetry-396,wandering,submitted (exit_context),49,10,1.0,0.2,0.5
+scrapy__itemadapter-18,wandering,submitted (exit_context),26,10,1.5709505944546684,0.3,0.4
+scrapy__itemadapter-18,wandering,submitted (exit_context),21,10,0.0,0.1,1.0
+scrapy__itemadapter-18,wandering,submitted (exit_context),38,10,1.3609640474436813,0.3,0.5
+serge-sans-paille__beniget-70,wandering,submitted (exit_context),40,10,0.8812908992306927,0.2,0.7
+serge-sans-paille__beniget-70,wandering,submitted (exit_context),95,10,0.8812908992306927,0.2,0.7
+serge-sans-paille__beniget-70,wandering,submitted (exit_context),30,10,0.0,0.1,1.0
+serge-sans-paille__beniget-70,wandering,submitted (exit_context),36,10,0.9709505944546686,0.2,0.6
+serge-sans-paille__beniget-70,wandering,submitted (exit_context),55,10,2.2464393446710154,0.5,0.3
+serge-sans-paille__beniget-70,wandering,submitted (exit_context),50,10,1.0,0.2,0.5
+serge-sans-paille__gast-59,wandering,submitted (exit_context),49,10,1.0,0.2,0.5
+serge-sans-paille__gast-59,wandering,submitted (exit_context),40,10,0.0,0.1,1.0
+serge-sans-paille__gast-59,wandering,submitted (exit_context),46,10,0.7219280948873623,0.2,0.8
+serge-sans-paille__gast-59,wandering,submitted (exit_context),130,10,1.8464393446710154,0.4,0.4
+serge-sans-paille__gast-59,wandering,submitted (exit_context),54,10,1.0,0.2,0.5
+serge-sans-paille__gast-59,wandering,submitted (exit_context),49,10,0.0,0.1,1.0
+serge-sans-paille__gast-59,wandering,submitted (exit_context),45,10,0.0,0.1,1.0
+serge-sans-paille__gast-59,wandering,submitted (exit_context),67,10,0.0,0.1,1.0
+serge-sans-paille__gast-59,wandering,submitted (exit_context),50,10,0.0,0.1,1.0
+serge-sans-paille__gast-59,wandering,submitted (exit_context),34,10,0.0,0.1,1.0
+serge-sans-paille__gast-59,wandering,submitted (exit_context),55,10,1.5219280948873621,0.3,0.4
+serge-sans-paille__gast-59,wandering,submitted (exit_context),28,10,2.6464393446710153,0.7,0.3
+serge-sans-paille__gast-59,wandering,submitted (exit_context),48,10,0.0,0.1,1.0
+serge-sans-paille__gast-59,wandering,submitted (exit_context),37,10,0.8812908992306927,0.2,0.7
+serge-sans-paille__gast-59,wandering,submitted (exit_context),38,10,0.0,0.1,1.0
+serge-sans-paille__gast-59,wandering,submitted (exit_context),56,10,0.0,0.1,1.0
+serge-sans-paille__gast-59,wandering,submitted (exit_context),29,10,0.4689955935892812,0.2,0.9
+serge-sans-paille__gast-59,wandering,submitted (exit_context),31,10,1.5709505944546684,0.3,0.4
+serge-sans-paille__gast-59,wandering,submitted (exit_context),40,10,1.0,0.2,0.5
+serge-sans-paille__gast-59,wandering,submitted (exit_context),24,10,0.0,0.1,1.0
+serge-sans-paille__gast-59,wandering,submitted (exit_context),62,10,0.0,0.1,1.0
+serge-sans-paille__gast-59,wandering,submitted (exit_context),23,10,0.4689955935892812,0.2,0.9
+serge-sans-paille__gast-59,wandering,submitted (exit_context),30,10,2.3709505944546687,0.6,0.3
+serge-sans-paille__gast-59,wandering,submitted (exit_context),38,10,0.0,0.1,1.0
+serge-sans-paille__gast-59,wandering,submitted (exit_context),39,10,1.5709505944546684,0.3,0.4
+sqlfluff__sqlfluff-3354,wandering,submitted (exit_context),56,10,0.8812908992306927,0.2,0.7
+tobymao__sqlglot-2582,wandering,submitted (exit_context),36,10,0.8812908992306927,0.2,0.7
+tobymao__sqlglot-2582,wandering,submitted (exit_context),36,10,1.6854752972273346,0.4,0.5
+tobymao__sqlglot-2582,wandering,submitted (exit_context),53,10,0.0,0.1,1.0
+tobymao__sqlglot-2582,wandering,submitted (exit_context),14,10,1.721928094887362,0.4,0.4
+tobymao__sqlglot-2582,wandering,submitted (exit_context),33,10,1.8464393446710154,0.4,0.4
+tobymao__sqlglot-2582,wandering,submitted (exit_context),62,10,0.0,0.1,1.0
+tobymao__sqlglot-2582,wandering,submitted (exit_context),167,10,0.9709505944546686,0.2,0.6
+tobymao__sqlglot-2582,wandering,submitted (exit_context),40,10,1.0,0.2,0.5
+tobymao__sqlglot-2591,wandering,submitted (exit_context),33,10,1.7219280948873623,0.4,0.4
+tobymao__sqlglot-2591,wandering,submitted (exit_context),91,10,1.5219280948873621,0.3,0.4
+tobymao__sqlglot-2591,wandering,submitted (exit_context),35,10,1.3709505944546687,0.3,0.6
+tobymao__sqlglot-2591,wandering,submitted (exit_context),36,10,0.4689955935892812,0.2,0.9
+tobymao__sqlglot-2591,wandering,submitted (exit_context),41,10,1.4854752972273344,0.3,0.5
+tobymao__sqlglot-2591,wandering,submitted (exit_context),36,10,0.8812908992306927,0.2,0.7
+tobymao__sqlglot-2591,wandering,submitted (exit_context),31,10,0.0,0.1,1.0
+Backblaze__B2_Command_Line_Tool-180,wandering,submitted (exit_context),23,10,1.5709505944546684,0.3,0.4
+Backblaze__B2_Command_Line_Tool-180,wandering,submitted (exit_context),6,6,2.2516291673878226,0.8333333333333334,0.3333333333333333
+Backblaze__B2_Command_Line_Tool-180,wandering,submitted (exit_context),177,10,0.0,0.1,1.0
+Backblaze__B2_Command_Line_Tool-180,wandering,submitted (exit_context),34,10,0.9219280948873623,0.3,0.8
+Backblaze__B2_Command_Line_Tool-180,wandering,submitted (exit_context),70,10,1.0,0.2,0.5
+Backblaze__B2_Command_Line_Tool-180,wandering,submitted (exit_context),7,7,1.5566567074628228,0.42857142857142855,0.42857142857142855
+Backblaze__B2_Command_Line_Tool-180,wandering,submitted (exit_context),91,10,1.0,0.2,0.5
+Backblaze__B2_Command_Line_Tool-180,wandering,submitted (exit_context),51,10,2.321928094887362,0.5,0.2
+DCC-Lab__RayTracing-196,wandering,submitted (exit_context),47,10,1.8464393446710154,0.4,0.4
+DCC-Lab__RayTracing-196,wandering,submitted (exit_context),36,10,0.7219280948873623,0.2,0.8
+DCC-Lab__RayTracing-196,wandering,submitted (exit_context),48,10,2.1219280948873624,0.5,0.4
+DCC-Lab__RayTracing-196,wandering,submitted (exit_context),48,10,0.4689955935892812,0.2,0.9
+DCC-Lab__RayTracing-196,wandering,submitted (exit_context),37,10,0.0,0.1,1.0
+DCC-Lab__RayTracing-196,wandering,submitted (exit_context),41,10,0.0,0.1,1.0
+DCC-Lab__RayTracing-273,wandering,submitted (exit_context),29,10,0.0,0.1,1.0
+DCC-Lab__RayTracing-273,wandering,submitted (exit_context),41,10,1.4854752972273344,0.3,0.5
+J-CPelletier__webcomix-7,wandering,submitted (exit_context),46,10,1.5709505944546684,0.3,0.4
+J-CPelletier__webcomix-7,wandering,submitted (exit_context),50,10,1.4854752972273344,0.3,0.5
+J-CPelletier__webcomix-7,wandering,submitted (exit_context),49,10,1.0,0.2,0.5
+J-CPelletier__webcomix-7,wandering,submitted (exit_context),52,10,2.1219280948873624,0.5,0.4
+J-CPelletier__webcomix-7,wandering,submitted (exit_context),31,10,0.0,0.1,1.0
+PyCQA__pyflakes-729,wandering,submitted (exit_context),27,10,0.0,0.1,1.0
+PyCQA__pyflakes-729,wandering,submitted (exit_context),29,10,2.5219280948873624,0.6,0.2
+PyCQA__pyflakes-729,wandering,submitted (exit_context),31,10,0.0,0.1,1.0
+Shoobx__mypy-zope-88,wandering,submitted (exit_context),173,10,0.8812908992306927,0.2,0.7
+Shoobx__mypy-zope-88,wandering,submitted (exit_context),45,10,1.5219280948873621,0.3,0.4
+ameily__cincoconfig-40,wandering,submitted (exit_context),25,10,1.3567796494470397,0.4,0.7
+ameily__cincoconfig-40,wandering,submitted (exit_context),46,10,0.9709505944546686,0.2,0.6
+ameily__cincoconfig-40,wandering,submitted (exit_context),23,10,0.0,0.1,1.0
+ameily__cincoconfig-40,wandering,submitted (exit_context),56,10,2.1709505944546685,0.5,0.3
+ameily__cincoconfig-40,wandering,submitted (exit_context),64,10,1.0,0.2,0.5
+andialbrecht__sqlparse-445,wandering,submitted (exit_context),49,10,1.5709505944546684,0.3,0.4
+andialbrecht__sqlparse-445,wandering,submitted (exit_context),166,10,1.5709505944546684,0.3,0.4
+andialbrecht__sqlparse-445,wandering,submitted (exit_context),46,10,1.295461844238322,0.3,0.6
+andialbrecht__sqlparse-445,wandering,submitted (exit_context),41,10,1.5709505944546684,0.3,0.4
+andialbrecht__sqlparse-445,wandering,submitted (exit_context),46,10,1.9219280948873623,0.4,0.4
+andialbrecht__sqlparse-445,wandering,submitted (exit_context),40,10,1.4854752972273344,0.3,0.5
+andialbrecht__sqlparse-445,wandering,submitted (exit_context),46,10,1.3709505944546687,0.3,0.6
+andialbrecht__sqlparse-445,wandering,submitted (exit_context),78,10,1.3709505944546687,0.3,0.6
+andialbrecht__sqlparse-445,wandering,submitted (exit_context),35,10,1.4854752972273344,0.3,0.5
+andialbrecht__sqlparse-445,wandering,submitted (exit_context),50,10,1.9709505944546686,0.4,0.3
+andialbrecht__sqlparse-445,wandering,submitted (exit_context),31,10,1.9219280948873623,0.4,0.4
+andialbrecht__sqlparse-445,wandering,submitted (exit_context),74,10,2.1709505944546685,0.5,0.3
+andialbrecht__sqlparse-445,wandering,submitted (exit_context),29,10,1.0,0.2,0.5
+andialbrecht__sqlparse-445,wandering,submitted (exit_context),37,10,1.0,0.2,0.5
+andialbrecht__sqlparse-445,wandering,submitted (exit_context),37,10,0.8812908992306927,0.2,0.7
+andialbrecht__sqlparse-445,wandering,submitted (exit_context),30,10,0.0,0.1,1.0
+andialbrecht__sqlparse-445,wandering,submitted (exit_context),38,10,0.0,0.1,1.0
+andialbrecht__sqlparse-445,wandering,submitted (exit_context),38,10,1.0,0.2,0.5
+andialbrecht__sqlparse-445,wandering,submitted (exit_context),150,10,1.7709505944546688,0.5,0.6
+andialbrecht__sqlparse-445,wandering,submitted (exit_context),33,10,1.5709505944546684,0.3,0.4
+andialbrecht__sqlparse-445,wandering,submitted (exit_context),37,10,0.0,0.1,1.0
+andialbrecht__sqlparse-445,wandering,submitted (exit_context),30,10,0.0,0.1,1.0
+andialbrecht__sqlparse-445,wandering,submitted (exit_context),37,10,0.8812908992306927,0.2,0.7
+andialbrecht__sqlparse-445,wandering,submitted (exit_context),127,10,0.7219280948873623,0.2,0.8
+andialbrecht__sqlparse-445,wandering,submitted (exit_context),38,10,1.0,0.2,0.5
+andialbrecht__sqlparse-445,wandering,submitted (exit_context),39,10,1.0,0.2,0.5
+andialbrecht__sqlparse-445,wandering,submitted (exit_context),37,10,1.0,0.2,0.5
+andialbrecht__sqlparse-445,wandering,submitted (exit_context),31,10,0.0,0.1,1.0
+andialbrecht__sqlparse-445,wandering,submitted (exit_context),72,10,1.3709505944546687,0.3,0.6
+andialbrecht__sqlparse-445,wandering,submitted (exit_context),104,10,0.0,0.1,1.0
+andialbrecht__sqlparse-445,wandering,submitted (exit_context),41,10,1.0,0.2,0.5
+andialbrecht__sqlparse-445,wandering,submitted (exit_context),69,10,1.5709505944546684,0.3,0.4
+andialbrecht__sqlparse-445,wandering,submitted (exit_context),91,10,1.8464393446710154,0.4,0.4
+andialbrecht__sqlparse-445,wandering,submitted (exit_context),33,10,1.0,0.2,0.5
+andialbrecht__sqlparse-445,wandering,submitted (exit_context),46,10,1.0,0.2,0.5
+andialbrecht__sqlparse-445,wandering,submitted (exit_context),45,10,2.1709505944546685,0.5,0.3
+andialbrecht__sqlparse-445,wandering,submitted (exit_context),74,10,1.7609640474436812,0.4,0.5
+andialbrecht__sqlparse-445,wandering,submitted (exit_context),39,10,1.0,0.2,0.5
+andialbrecht__sqlparse-445,wandering,submitted (exit_context),42,10,1.8954618442383218,0.4,0.3
+andialbrecht__sqlparse-445,wandering,submitted (exit_context),51,10,1.721928094887362,0.4,0.4
+andialbrecht__sqlparse-445,wandering,submitted (exit_context),106,10,1.0,0.2,0.5
+andialbrecht__sqlparse-445,wandering,submitted (exit_context),208,10,1.5219280948873621,0.3,0.4
+andialbrecht__sqlparse-445,wandering,submitted (exit_context),36,10,0.9709505944546686,0.2,0.6
+asottile__pyupgrade-208,wandering,submitted (exit_context),46,10,0.8812908992306927,0.2,0.7
+asottile__pyupgrade-208,wandering,submitted (exit_context),27,10,0.4689955935892812,0.2,0.9
+asottile__pyupgrade-208,wandering,submitted (exit_context),44,10,0.0,0.1,1.0
+asottile__pyupgrade-208,wandering,submitted (exit_context),46,10,2.2464393446710154,0.5,0.3
+asottile__pyupgrade-208,wandering,submitted (exit_context),30,10,0.0,0.1,1.0
+asottile__pyupgrade-208,wandering,submitted (exit_context),33,10,0.7219280948873623,0.2,0.8
+asottile__pyupgrade-208,wandering,submitted (exit_context),39,10,0.0,0.1,1.0
+asottile__pyupgrade-208,wandering,submitted (exit_context),36,10,0.8812908992306927,0.2,0.7
+asottile__pyupgrade-208,wandering,submitted (exit_context),33,10,0.4689955935892812,0.2,0.9
+asottile__pyupgrade-208,wandering,submitted (exit_context),30,10,1.0,0.2,0.5
+asottile__pyupgrade-208,wandering,submitted (exit_context),42,10,2.721928094887362,0.7,0.2
+asottile__pyupgrade-208,wandering,submitted (exit_context),59,10,0.9709505944546686,0.2,0.6
+asottile__pyupgrade-208,wandering,submitted (exit_context),41,10,1.0,0.2,0.5
+astarte-platform__astarte-device-sdk-python-98,wandering,submitted (exit_context),52,10,0.8812908992306927,0.2,0.7
+astarte-platform__astarte-device-sdk-python-98,wandering,submitted (exit_context),51,10,1.1567796494470395,0.3,0.7
+astarte-platform__astarte-device-sdk-python-98,wandering,submitted (exit_context),80,10,1.0,0.2,0.5
+betodealmeida__shillelagh-340,wandering,submitted (exit_context),36,10,0.0,0.1,1.0
+canonical__charmcraft-403,wandering,submitted (exit_context),62,10,1.0,0.2,0.5
+canonical__charmcraft-403,wandering,submitted (exit_context),48,10,0.4689955935892812,0.2,0.9
+canonical__charmcraft-530,wandering,submitted (exit_context),16,10,0.9219280948873623,0.3,0.8
+canonical__charmcraft-530,wandering,submitted (exit_context),24,10,0.0,0.1,1.0
+cekit__cekit-510,wandering,submitted (exit_context),6,6,1.9182958340544893,0.6666666666666666,0.3333333333333333
+cekit__cekit-510,wandering,submitted (exit_context),93,10,1.0,0.2,0.5
+cekit__cekit-510,wandering,submitted (exit_context),37,10,1.8464393446710154,0.4,0.4
+cekit__cekit-510,wandering,submitted (exit_context),31,10,0.8812908992306927,0.2,0.7
+cekit__cekit-510,wandering,submitted (exit_context),106,10,0.9709505944546686,0.2,0.6
+cekit__cekit-510,wandering,submitted (exit_context),101,10,0.0,0.1,1.0
+cookiecutter__cookiecutter-839,wandering,submitted (exit_context),14,10,1.9709505944546686,0.4,0.3
+cookiecutter__cookiecutter-839,wandering,submitted (exit_context),43,10,0.0,0.1,1.0
+cookiecutter__cookiecutter-839,wandering,submitted (exit_context),106,10,0.0,0.1,1.0
+dandi__dandi-cli-59,wandering,submitted (exit_context),125,10,1.0,0.2,0.5
+dandi__dandi-cli-59,wandering,submitted (exit_context),35,10,1.9709505944546686,0.4,0.3
+dandi__dandi-cli-59,wandering,submitted (exit_context),198,10,3.1219280948873624,0.9,0.2
+datosgobar__pydatajson-212,wandering,submitted (exit_context),20,10,0.0,0.1,1.0
+datosgobar__pydatajson-212,wandering,submitted (exit_context),33,10,0.7219280948873623,0.2,0.8
+datosgobar__pydatajson-212,wandering,submitted (exit_context),43,10,0.0,0.1,1.0
+docker__docker-py-822,wandering,submitted (exit_context),64,10,3.321928094887362,1.0,0.1
+docker__docker-py-822,wandering,submitted (exit_context),45,10,2.6464393446710153,0.7,0.3
+docker__docker-py-822,wandering,submitted (exit_context),59,10,1.0,0.2,0.5
+docker__docker-py-822,wandering,submitted (exit_context),60,10,1.7219280948873623,0.4,0.4
+docker__docker-py-822,wandering,submitted (exit_context),163,10,0.0,0.1,1.0
+docker__docker-py-822,wandering,submitted (exit_context),60,10,1.0,0.2,0.5
+eEcoLiDAR__laserchicken-135,wandering,submitted (exit_context),36,10,1.0,0.2,0.5
+eEcoLiDAR__laserchicken-135,wandering,submitted (exit_context),50,10,1.295461844238322,0.3,0.6
+eWaterCycle__grpc4bmi-133,wandering,submitted (exit_context),23,10,1.0,0.2,0.5
+ebroecker__canmatrix-470,wandering,submitted (exit_context),31,10,1.0,0.2,0.5
+ebroecker__canmatrix-470,wandering,submitted (exit_context),35,10,1.4854752972273344,0.3,0.5
+ebroecker__canmatrix-470,wandering,submitted (exit_context),29,10,1.0,0.2,0.5
+facelessuser__pymdown-extensions-2039,wandering,submitted (exit_context),50,10,1.5709505944546684,0.3,0.4
+facelessuser__pymdown-extensions-2039,wandering,submitted (exit_context),31,10,0.8812908992306927,0.2,0.7
+facelessuser__pymdown-extensions-2039,wandering,submitted (exit_context),136,10,1.3609640474436813,0.3,0.5
+facelessuser__pymdown-extensions-2039,wandering,submitted (exit_context),40,10,2.4464393446710155,0.6,0.3
+facelessuser__pymdown-extensions-2039,wandering,submitted (exit_context),38,10,0.9709505944546686,0.2,0.6
+facelessuser__pymdown-extensions-2039,wandering,submitted (exit_context),32,10,0.0,0.1,1.0
+fair-workflows__nanopub-140,wandering,submitted (exit_context),22,10,0.7219280948873623,0.2,0.8
+fair-workflows__nanopub-140,wandering,submitted (exit_context),29,10,0.4689955935892812,0.2,0.9
+fair-workflows__nanopub-140,wandering,submitted (exit_context),30,10,2.1709505944546685,0.5,0.3
+fair-workflows__nanopub-140,wandering,submitted (exit_context),56,10,1.9709505944546686,0.4,0.3
+fair-workflows__nanopub-140,wandering,submitted (exit_context),27,10,0.0,0.1,1.0
+fair-workflows__nanopub-140,wandering,submitted (exit_context),10,10,2.321928094887362,0.6,0.4
+fatiando__pooch-171,wandering,submitted (exit_context),36,10,1.4854752972273344,0.3,0.5
+fatiando__pooch-171,wandering,submitted (exit_context),14,10,0.0,0.1,1.0
+fatiando__pooch-171,wandering,submitted (exit_context),22,10,0.4689955935892812,0.2,0.9
+fatiando__pooch-171,wandering,submitted (exit_context),15,10,1.3567796494470397,0.4,0.7
+fatiando__pooch-171,wandering,submitted (exit_context),44,10,1.0,0.2,0.5
+gibsramen__evident-23,wandering,submitted (exit_context),45,10,1.5709505944546684,0.3,0.4
+glotzerlab__signac-323,wandering,submitted (exit_context),33,10,0.8812908992306927,0.2,0.7
+glotzerlab__signac-323,wandering,submitted (exit_context),43,10,1.9709505944546686,0.4,0.3
+glotzerlab__signac-323,wandering,submitted (exit_context),34,10,2.4464393446710155,0.6,0.3
+glotzerlab__signac-323,wandering,submitted (exit_context),35,10,1.0,0.2,0.5
+googleapis__python-api-core-546,wandering,submitted (exit_context),37,10,1.0,0.2,0.5
+iterative__dvc-2424,wandering,submitted (exit_context),65,10,0.0,0.1,1.0
+iterative__dvc-2424,wandering,submitted (exit_context),37,10,0.0,0.1,1.0
+iterative__dvc-2424,wandering,submitted (exit_context),50,10,1.8464393446710154,0.4,0.4
+iterative__dvc-2424,wandering,submitted (exit_context),47,10,2.2464393446710154,0.5,0.3
+iterative__dvc-2424,wandering,submitted (exit_context),44,10,0.0,0.1,1.0
+iterative__dvc-2424,wandering,submitted (exit_context),53,10,0.0,0.1,1.0
+iterative__dvc-2424,wandering,submitted (exit_context),52,10,0.0,0.1,1.0
+iterative__dvc-2424,wandering,submitted (exit_context),40,10,0.9709505944546686,0.2,0.6
+iterative__dvc-3349,wandering,submitted (exit_context),41,10,1.0,0.2,0.5
+iterative__dvc-3349,wandering,submitted (exit_context),42,10,0.0,0.1,1.0
+iterative__dvc-3349,wandering,submitted (exit_context),53,10,1.0,0.2,0.5
+iterative__dvc-3349,wandering,submitted (exit_context),49,10,0.0,0.1,1.0
+iterative__dvc-3349,wandering,submitted (exit_context),332,10,0.0,0.1,1.0
+iterative__dvc-3534,wandering,submitted (exit_context),46,10,1.3609640474436813,0.3,0.5
+iterative__dvc-3534,wandering,submitted (exit_context),292,10,0.0,0.1,1.0
+iterative__dvc-3534,wandering,submitted (exit_context),56,10,0.0,0.1,1.0
+iterative__dvc-3534,wandering,submitted (exit_context),43,10,1.0,0.2,0.5
+iterative__dvc-3534,wandering,submitted (exit_context),44,10,1.0,0.2,0.5
+iterative__dvc-3534,wandering,submitted (exit_context),48,10,1.0,0.2,0.5
+iterative__dvc-3726,wandering,submitted (exit_context),49,10,1.3567796494470397,0.4,0.7
+iterative__dvc-3726,wandering,submitted (exit_context),39,10,0.0,0.1,1.0
+iterative__dvc-3726,wandering,submitted (exit_context),26,10,0.4689955935892812,0.2,0.9
+iterative__dvc-3726,wandering,submitted (exit_context),51,27,1.3742527851322262,0.3,0.5185185185185185
+iterative__dvc-3726,wandering,submitted (exit_context),37,10,0.0,0.1,1.0
+iterative__dvc-3726,wandering,submitted (exit_context),65,10,1.5709505944546684,0.3,0.4
+iterative__dvc-3726,wandering,submitted (exit_context),17,10,0.0,0.1,1.0
+iterative__dvc-3726,wandering,submitted (exit_context),25,10,0.0,0.1,1.0
+iterative__dvc-8129,wandering,submitted (exit_context),46,10,0.0,0.1,1.0
+iterative__dvc-8129,wandering,submitted (exit_context),51,10,1.0,0.2,0.5
+iterative__dvc-8129,wandering,submitted (exit_context),41,10,0.0,0.1,1.0
+iterative__dvc-8129,wandering,submitted (exit_context),46,10,1.0,0.2,0.5
+iterative__dvc-8425,wandering,submitted (exit_context),53,10,0.0,0.1,1.0
+iterative__dvc-8425,wandering,submitted (exit_context),52,10,2.446439344671016,0.6,0.3
+iterative__dvc-8425,wandering,submitted (exit_context),74,10,0.7219280948873623,0.2,0.8
+iterative__dvc-9212,wandering,submitted (exit_context),52,10,1.0,0.2,0.5
+iterative__dvc-9212,wandering,submitted (exit_context),69,10,0.8812908992306927,0.2,0.7
+iterative__dvc-9212,wandering,submitted (exit_context),56,10,0.0,0.1,1.0
+iterative__dvc-9212,wandering,submitted (exit_context),69,10,1.0,0.2,0.5
+iterative__dvc-9212,wandering,submitted (exit_context),96,10,1.8464393446710154,0.4,0.4
+iterative__dvc-9212,wandering,submitted (exit_context),36,10,1.5709505944546684,0.3,0.4
+iterative__dvc-9212,wandering,submitted (exit_context),17,10,0.9709505944546686,0.2,0.6
+konradhalas__dacite-216,wandering,submitted (exit_context),46,10,2.1219280948873624,0.5,0.4
+konradhalas__dacite-216,wandering,submitted (exit_context),81,10,1.5709505944546684,0.3,0.4
+konradhalas__dacite-216,wandering,submitted (exit_context),36,10,0.0,0.1,1.0
+konradhalas__dacite-216,wandering,submitted (exit_context),46,10,2.321928094887362,0.5,0.2
+marshmallow-code__apispec-webframeworks-64,wandering,submitted (exit_context),62,10,0.9709505944546686,0.2,0.6
+multiply-org__multiply-ui-13,wandering,submitted (exit_context),49,10,1.0,0.2,0.5
+multiply-org__multiply-ui-13,wandering,submitted (exit_context),109,10,1.4854752972273344,0.3,0.5
+package-url__packageurl-python-29,wandering,submitted (exit_context),48,10,1.0,0.2,0.5
+package-url__packageurl-python-29,wandering,submitted (exit_context),39,10,0.9709505944546686,0.2,0.6
+package-url__packageurl-python-29,wandering,submitted (exit_context),46,10,0.0,0.1,1.0
+package-url__packageurl-python-29,wandering,submitted (exit_context),28,10,0.7219280948873623,0.2,0.8
+package-url__packageurl-python-29,wandering,submitted (exit_context),48,10,0.9219280948873623,0.3,0.8
+pydantic__pydantic-2167,wandering,submitted (exit_context),27,10,1.0,0.2,0.5
+pydantic__pydantic-2167,wandering,submitted (exit_context),36,10,0.9709505944546686,0.2,0.6
+pydantic__pydantic-2167,wandering,submitted (exit_context),37,10,2.2464393446710154,0.5,0.3
+pydantic__pydantic-2167,wandering,submitted (exit_context),41,10,1.5709505944546687,0.4,0.6
+pydantic__pydantic-2167,wandering,submitted (exit_context),49,10,1.0,0.2,0.5
+pydantic__pydantic-2167,wandering,submitted (exit_context),17,10,0.4689955935892812,0.2,0.9
+pydantic__pydantic-2167,wandering,submitted (exit_context),53,10,0.0,0.1,1.0
+pydantic__pydantic-2167,wandering,submitted (exit_context),35,10,1.570950594454669,0.4,0.6
+pydantic__pydantic-2167,wandering,submitted (exit_context),17,10,0.4689955935892812,0.2,0.9
+pydantic__pydantic-2167,wandering,submitted (exit_context),41,10,2.321928094887362,0.5,0.2
+pydantic__pydantic-2167,wandering,submitted (exit_context),42,10,0.0,0.1,1.0
+pydantic__pydantic-2167,wandering,submitted (exit_context),29,10,2.170950594454669,0.5,0.3
+pydantic__pydantic-2167,wandering,submitted (exit_context),31,10,0.8812908992306927,0.2,0.7
+pydantic__pydantic-2167,wandering,submitted (exit_context),29,10,1.5709505944546684,0.3,0.4
+pylint-dev__astroid-1092,wandering,submitted (exit_context),37,10,0.9709505944546686,0.2,0.6
+pylint-dev__astroid-984,wandering,submitted (exit_context),42,10,0.0,0.1,1.0
+ramonsaraiva__pubg-python-87,wandering,submitted (exit_context),65,10,1.4854752972273344,0.3,0.5
+repobee__repobee-feedback-24,wandering,submitted (exit_context),108,10,1.5709505944546684,0.3,0.4
+repobee__repobee-feedback-24,wandering,submitted (exit_context),34,10,1.0,0.2,0.5
+repobee__repobee-feedback-24,wandering,submitted (exit_context),37,10,1.3709505944546687,0.3,0.6
+rust-lang__highfive-249,wandering,submitted (exit_context),43,10,0.0,0.1,1.0
+rust-lang__highfive-249,wandering,submitted (exit_context),218,10,0.0,0.1,1.0
+rust-lang__highfive-249,wandering,submitted (exit_context),45,10,1.5709505944546684,0.3,0.4
+rust-lang__highfive-249,wandering,submitted (exit_context),32,10,0.0,0.1,1.0
+rust-lang__highfive-249,wandering,submitted (exit_context),35,10,0.0,0.1,1.0
+rust-lang__highfive-249,wandering,submitted (exit_context),33,10,0.0,0.1,1.0
+rust-lang__highfive-249,wandering,submitted (exit_context),34,10,0.0,0.1,1.0
+sqlfluff__sqlfluff-2625,wandering,submitted (exit_context),38,20,0.0,0.1,1.0
+sqlfluff__sqlfluff-2625,wandering,submitted (exit_context),8,8,1.5487949406953985,0.5,0.625
+sqlfluff__sqlfluff-3700,wandering,submitted (exit_context),25,15,1.584962500721156,0.3,0.3333333333333333
+sqlfluff__sqlfluff-3700,wandering,submitted (exit_context),67,10,2.4464393446710155,0.6,0.3
+tobymao__sqlglot-3092,wandering,submitted (exit_context),187,10,0.0,0.1,1.0
+tobymao__sqlglot-3092,wandering,submitted (exit_context),53,10,1.0,0.2,0.5
+tobymao__sqlglot-3092,wandering,submitted (exit_context),16,10,2.6464393446710153,0.7,0.3
+tobymao__sqlglot-3092,wandering,submitted (exit_context),97,10,1.5709505944546684,0.3,0.4
+tobymao__sqlglot-3092,wandering,submitted (exit_context),31,10,2.246439344671016,0.5,0.3
+tobymao__sqlglot-3092,wandering,submitted (exit_context),17,10,1.9609640474436814,0.5,0.5
+tobymao__sqlglot-3092,wandering,submitted (exit_context),9,9,2.725480556997868,0.7777777777777778,0.2222222222222222
+wireservice__agate-637,wandering,submitted (exit_context),65,10,0.0,0.1,1.0
+wireservice__agate-637,wandering,submitted (exit_context),110,10,1.0,0.2,0.5
+wireservice__agate-637,wandering,submitted (exit_context),50,10,1.1567796494470395,0.3,0.7
+wireservice__agate-637,wandering,submitted (exit_context),44,10,1.3567796494470394,0.4,0.7
+wireservice__agate-637,wandering,submitted (exit_context),71,10,1.1567796494470395,0.3,0.7
+wireservice__agate-637,wandering,submitted (exit_context),48,10,0.0,0.1,1.0
+wireservice__agate-637,wandering,submitted (exit_context),51,10,1.3709505944546687,0.3,0.6
+wireservice__agate-637,wandering,submitted (exit_context),78,10,1.0,0.2,0.5
+wireservice__agate-637,wandering,submitted (exit_context),56,10,1.9709505944546688,0.4,0.3
+wireservice__agate-637,wandering,submitted (exit_context),60,10,1.5709505944546684,0.3,0.4
+wireservice__agate-637,wandering,submitted (exit_context),61,10,1.5709505944546684,0.3,0.4
+wireservice__agate-637,wandering,submitted (exit_context),55,10,1.4854752972273344,0.3,0.5
+wireservice__agate-637,wandering,submitted (exit_context),126,10,1.0,0.2,0.5
+wireservice__agate-637,wandering,submitted (exit_context),40,10,2.121928094887362,0.5,0.4
+wireservice__agate-637,wandering,submitted (exit_context),85,10,0.9709505944546686,0.2,0.6
+wireservice__agate-637,wandering,submitted (exit_context),50,10,1.3709505944546687,0.3,0.6
+zalando-stups__senza-521,wandering,submitted (exit_context),39,10,1.5219280948873621,0.3,0.4
+zalando-stups__senza-521,wandering,submitted (exit_context),36,10,1.5219280948873621,0.3,0.4
+zalando-stups__senza-521,wandering,submitted (exit_context),36,10,0.7219280948873623,0.2,0.8
+zalando-stups__senza-521,wandering,submitted (exit_context),55,10,1.0,0.2,0.5
+RDFLib__rdflib-1309,wandering,submitted (exit_context),40,10,1.0,0.2,0.5
+ResearchObject__ro-crate-py-136,wandering,submitted (exit_context),51,10,1.7609640474436812,0.4,0.5
+ResearchObject__ro-crate-py-136,wandering,submitted (exit_context),56,10,1.0,0.2,0.5
+ResearchObject__ro-crate-py-136,wandering,submitted (exit_context),259,10,0.0,0.1,1.0
+ResearchObject__runcrate-69,wandering,submitted (exit_context),23,10,0.0,0.1,1.0
+TheUncleKai__bbutils-20,wandering,submitted (exit_context),38,10,1.9709505944546686,0.4,0.3
+TheUncleKai__bbutils-20,wandering,submitted (exit_context),60,10,1.0,0.2,0.5
+TheUncleKai__bbutils-20,wandering,submitted (exit_context),42,10,2.321928094887362,0.5,0.2
+adamchainz__ec2-metadata-350,wandering,submitted (exit_context),30,10,0.0,0.1,1.0
+adamchainz__ec2-metadata-350,wandering,submitted (exit_context),47,10,0.0,0.1,1.0
+adamchainz__ec2-metadata-350,wandering,submitted (exit_context),35,10,1.5709505944546684,0.3,0.4
+adbar__simplemma-114,wandering,submitted (exit_context),34,10,0.7219280948873623,0.2,0.8
+adbar__simplemma-114,wandering,submitted (exit_context),24,10,0.0,0.1,1.0
+agronholm__anyio-399,wandering,submitted (exit_context),45,10,1.9709505944546688,0.4,0.3
+agronholm__anyio-399,wandering,submitted (exit_context),114,10,1.0,0.2,0.5
+aio-libs__aioftp-97,wandering,submitted (exit_context),37,10,1.0,0.2,0.5
+aio-libs__aioftp-97,wandering,submitted (exit_context),40,10,2.2464393446710154,0.5,0.3
+alexander-akhmetov__python-telegram-168,wandering,submitted (exit_context),60,10,0.7219280948873623,0.2,0.8
+alexander-akhmetov__python-telegram-168,wandering,submitted (exit_context),45,10,1.0,0.2,0.5
+alexander-akhmetov__python-telegram-168,wandering,submitted (exit_context),38,10,0.0,0.1,1.0
+alexander-akhmetov__python-telegram-168,wandering,submitted (exit_context),36,10,1.0,0.2,0.5
+alexander-akhmetov__python-telegram-168,wandering,submitted (exit_context),62,10,2.3709505944546683,0.6,0.3
+alexander-akhmetov__python-telegram-168,wandering,submitted (exit_context),237,10,0.9709505944546686,0.2,0.6
+alexander-akhmetov__python-telegram-168,wandering,submitted (exit_context),47,10,0.0,0.1,1.0
+amplify-education__python-hcl2-73,wandering,submitted (exit_context),99,10,1.0,0.2,0.5
+amplify-education__python-hcl2-73,wandering,submitted (exit_context),36,10,1.5709505944546684,0.3,0.4
+amplify-education__python-hcl2-73,wandering,submitted (exit_context),30,10,1.8464393446710154,0.4,0.4
+amplify-education__python-hcl2-73,wandering,submitted (exit_context),57,10,1.0,0.2,0.5
+amplify-education__python-hcl2-73,wandering,submitted (exit_context),50,10,1.0,0.2,0.5
+astroML__astroML-237,wandering,submitted (exit_context),28,10,1.7219280948873623,0.4,0.4
+astroML__astroML-237,wandering,submitted (exit_context),21,10,0.0,0.1,1.0
+brettcannon__mousebender-70,wandering,submitted (exit_context),28,10,0.0,0.1,1.0
+brettcannon__mousebender-70,wandering,submitted (exit_context),21,10,0.8812908992306927,0.2,0.7
+canonical__operator-823,wandering,submitted (exit_context),59,10,1.4854752972273344,0.3,0.5
+canonical__operator-823,wandering,submitted (exit_context),77,10,0.7219280948873623,0.2,0.8
+canonical__operator-823,wandering,submitted (exit_context),76,10,1.0,0.2,0.5
+canonical__operator-823,wandering,submitted (exit_context),51,10,0.9709505944546686,0.2,0.6
+destag__at-date-17,wandering,submitted (exit_context),48,10,1.8464393446710154,0.4,0.4
+destag__at-date-17,wandering,submitted (exit_context),12,10,2.1709505944546685,0.5,0.3
+destag__at-date-17,wandering,submitted (exit_context),19,10,1.3709505944546687,0.3,0.6
+destag__at-date-17,wandering,submitted (exit_context),33,10,1.3609640474436813,0.3,0.5
+destag__at-date-17,wandering,submitted (exit_context),62,10,1.4854752972273344,0.3,0.5
+destag__at-date-17,wandering,submitted (exit_context),30,10,1.0,0.2,0.5
+destag__at-date-17,wandering,submitted (exit_context),28,10,0.9709505944546686,0.2,0.6
+devopshq__artifactory-439,wandering,submitted (exit_context),33,10,2.5219280948873624,0.6,0.2
+devopshq__artifactory-439,wandering,submitted (exit_context),28,10,0.0,0.1,1.0
+devopshq__artifactory-439,wandering,submitted (exit_context),30,10,1.5709505944546684,0.3,0.4
+devopshq__artifactory-439,wandering,submitted (exit_context),37,10,1.5219280948873621,0.3,0.4
+devopshq__artifactory-439,wandering,submitted (exit_context),29,10,1.0,0.2,0.5
+devopshq__artifactory-439,wandering,submitted (exit_context),26,10,0.0,0.1,1.0
+devopshq__artifactory-439,wandering,submitted (exit_context),38,10,1.8954618442383218,0.4,0.3
+devopshq__artifactory-439,wandering,submitted (exit_context),26,10,0.0,0.1,1.0
+devopshq__artifactory-439,wandering,submitted (exit_context),34,10,1.9709505944546686,0.4,0.3
+devopshq__artifactory-439,wandering,submitted (exit_context),37,10,2.321928094887362,0.6,0.4
+devopshq__artifactory-439,wandering,submitted (exit_context),37,10,2.321928094887362,0.6,0.4
+devopshq__artifactory-439,wandering,submitted (exit_context),36,10,0.0,0.1,1.0
+devopshq__artifactory-439,wandering,submitted (exit_context),96,10,0.8812908992306927,0.2,0.7
+devopshq__artifactory-439,wandering,submitted (exit_context),43,10,1.5219280948873621,0.3,0.4
+devopshq__artifactory-439,wandering,submitted (exit_context),54,10,1.0,0.2,0.5
+devopshq__artifactory-439,wandering,submitted (exit_context),24,10,0.0,0.1,1.0
+devopshq__artifactory-439,wandering,submitted (exit_context),43,10,0.8812908992306927,0.2,0.7
+devopshq__artifactory-439,wandering,submitted (exit_context),31,10,0.9709505944546686,0.2,0.6
+devopshq__artifactory-439,wandering,submitted (exit_context),36,10,1.9609640474436814,0.5,0.5
+devopshq__artifactory-439,wandering,submitted (exit_context),41,10,2.246439344671016,0.5,0.3
+devopshq__artifactory-439,wandering,submitted (exit_context),162,10,1.0,0.2,0.5
+devopshq__artifactory-439,wandering,submitted (exit_context),75,10,0.0,0.1,1.0
+devopshq__artifactory-439,wandering,submitted (exit_context),31,10,2.1709505944546685,0.5,0.3
+devopshq__artifactory-439,wandering,submitted (exit_context),23,10,0.9709505944546686,0.2,0.6
+devopshq__artifactory-439,wandering,submitted (exit_context),37,10,0.9709505944546686,0.2,0.6
+devopshq__artifactory-439,wandering,submitted (exit_context),29,10,2.521928094887362,0.6,0.2
+devopshq__artifactory-439,wandering,submitted (exit_context),27,10,1.0,0.2,0.5
+devopshq__artifactory-439,wandering,submitted (exit_context),30,10,1.5709505944546684,0.3,0.4
+devopshq__artifactory-439,wandering,submitted (exit_context),31,10,2.721928094887362,0.7,0.2
+devopshq__artifactory-439,wandering,submitted (exit_context),37,10,0.9709505944546686,0.2,0.6
+devopshq__artifactory-439,wandering,submitted (exit_context),27,10,0.0,0.1,1.0
+devopshq__artifactory-439,wandering,submitted (exit_context),39,10,1.0,0.2,0.5
+devopshq__artifactory-439,wandering,submitted (exit_context),27,10,0.0,0.1,1.0
+devopshq__artifactory-439,wandering,submitted (exit_context),26,10,0.0,0.1,1.0
+devopshq__artifactory-439,wandering,submitted (exit_context),31,10,1.5219280948873621,0.3,0.4
+devopshq__artifactory-439,wandering,submitted (exit_context),62,10,0.0,0.1,1.0
+fsspec__filesystem_spec-926,wandering,submitted (exit_context),41,10,1.0,0.2,0.5
+geopandas__geopandas-1609,wandering,submitted (exit_context),6,6,2.584962500721156,1.0,0.16666666666666666
+glue-viz__glue-astronomy-25,wandering,submitted (exit_context),58,10,0.0,0.1,1.0
+glue-viz__glue-astronomy-25,wandering,submitted (exit_context),12,10,2.3709505944546687,0.6,0.3
+glue-viz__glue-astronomy-25,wandering,submitted (exit_context),18,10,2.1709505944546685,0.5,0.3
+glue-viz__glue-astronomy-25,wandering,submitted (exit_context),27,10,1.0,0.2,0.5
+glue-viz__glue-astronomy-25,wandering,submitted (exit_context),106,10,1.5709505944546684,0.3,0.4
+google__docker-explorer-64,wandering,submitted (exit_context),17,10,1.3567796494470394,0.4,0.7
+google__docker-explorer-64,wandering,submitted (exit_context),36,10,0.4689955935892812,0.2,0.9
+google__docker-explorer-64,wandering,submitted (exit_context),152,10,2.6464393446710153,0.7,0.3
+google__docker-explorer-64,wandering,submitted (exit_context),131,10,1.5709505944546684,0.3,0.4
+google__docker-explorer-64,wandering,submitted (exit_context),20,10,1.3609640474436813,0.3,0.5
+google__docker-explorer-64,wandering,submitted (exit_context),67,10,1.1567796494470395,0.3,0.7
+google__docker-explorer-64,wandering,submitted (exit_context),29,10,0.0,0.1,1.0
+google__mobly-328,wandering,submitted (exit_context),58,10,1.0,0.2,0.5
+google__mobly-328,wandering,submitted (exit_context),45,10,1.295461844238322,0.3,0.6
+google__mobly-328,wandering,submitted (exit_context),49,10,1.0,0.2,0.5
+google__mobly-328,wandering,submitted (exit_context),50,10,1.0,0.2,0.5
+google__mobly-328,wandering,submitted (exit_context),107,10,0.0,0.1,1.0
+google__mobly-328,wandering,submitted (exit_context),38,10,2.5219280948873624,0.6,0.2
+iterative__dvc-2815,wandering,submitted (exit_context),16,10,2.121928094887362,0.5,0.4
+iterative__dvc-2815,wandering,submitted (exit_context),55,10,0.0,0.1,1.0
+iterative__dvc-2815,wandering,submitted (exit_context),17,10,1.7219280948873623,0.4,0.4
+iterative__dvc-2815,wandering,submitted (exit_context),28,10,2.1709505944546685,0.5,0.3
+iterative__dvc-2815,wandering,submitted (exit_context),31,10,0.0,0.1,1.0
+iterative__dvc-3405,wandering,submitted (exit_context),66,10,1.4854752972273344,0.3,0.5
+iterative__dvc-3405,wandering,submitted (exit_context),40,10,0.0,0.1,1.0
+iterative__dvc-3493,wandering,submitted (exit_context),55,10,1.5219280948873621,0.3,0.4
+iterative__dvc-3493,wandering,submitted (exit_context),38,10,0.0,0.1,1.0
+iterative__dvc-3493,wandering,submitted (exit_context),45,10,1.1567796494470395,0.3,0.7
+iterative__dvc-3493,wandering,submitted (exit_context),47,11,0.9940302114769565,0.2,0.5454545454545454
+iterative__dvc-5362,wandering,submitted (exit_context),16,10,1.9609640474436814,0.5,0.5
+iterative__dvc-7497,wandering,submitted (exit_context),350,10,0.0,0.1,1.0
+iterative__dvc-7497,wandering,submitted (exit_context),43,10,1.4854752972273344,0.3,0.5
+iterative__dvc-7497,wandering,submitted (exit_context),367,10,0.0,0.1,1.0
+iterative__dvc-7497,wandering,submitted (exit_context),94,10,1.0,0.2,0.5
+keras-team__keras-nlp-131,wandering,submitted (exit_context),23,10,0.9709505944546686,0.2,0.6
+keras-team__keras-nlp-131,wandering,submitted (exit_context),15,10,1.0,0.2,0.5
+keras-team__keras-nlp-131,wandering,submitted (exit_context),26,10,0.4689955935892812,0.2,0.9
+keras-team__keras-nlp-131,wandering,submitted (exit_context),6,6,2.584962500721156,1.0,0.16666666666666666
+keras-team__keras-nlp-131,wandering,submitted (exit_context),29,10,2.1709505944546685,0.5,0.3
+keras-team__keras-nlp-131,wandering,submitted (exit_context),27,10,0.4689955935892812,0.2,0.9
+keras-team__keras-nlp-131,wandering,submitted (exit_context),24,10,0.7219280948873623,0.2,0.8
+keras-team__keras-nlp-131,wandering,submitted (exit_context),57,10,0.4689955935892812,0.2,0.9
+keras-team__keras-nlp-131,wandering,submitted (exit_context),28,10,0.0,0.1,1.0
+keras-team__keras-nlp-131,wandering,submitted (exit_context),20,10,1.5709505944546684,0.3,0.4
+keras-team__keras-nlp-131,wandering,submitted (exit_context),23,10,1.0,0.2,0.5
+keras-team__keras-nlp-131,wandering,submitted (exit_context),21,10,0.0,0.1,1.0
+keras-team__keras-nlp-131,wandering,submitted (exit_context),22,10,0.8812908992306927,0.2,0.7
+keras-team__keras-nlp-131,wandering,submitted (exit_context),36,10,0.0,0.1,1.0
+keras-team__keras-nlp-131,wandering,submitted (exit_context),20,10,1.0,0.2,0.5
+keras-team__keras-nlp-131,wandering,submitted (exit_context),34,10,1.7219280948873623,0.4,0.4
+keras-team__keras-nlp-131,wandering,submitted (exit_context),42,10,2.6464393446710157,0.7,0.3
+keras-team__keras-nlp-131,wandering,submitted (exit_context),90,10,1.0,0.2,0.5
+keras-team__keras-nlp-131,wandering,submitted (exit_context),25,10,0.9219280948873623,0.3,0.8
+keras-team__keras-nlp-131,wandering,submitted (exit_context),23,10,0.9219280948873623,0.3,0.8
+keras-team__keras-nlp-131,wandering,submitted (exit_context),24,10,0.4689955935892812,0.2,0.9
+keras-team__keras-nlp-131,wandering,submitted (exit_context),30,10,2.1709505944546685,0.5,0.3
+keras-team__keras-nlp-131,wandering,submitted (exit_context),33,10,0.0,0.1,1.0
+keras-team__keras-nlp-131,wandering,submitted (exit_context),28,10,1.5709505944546687,0.4,0.6
+keras-team__keras-nlp-131,wandering,submitted (exit_context),28,10,1.0,0.2,0.5
+keras-team__keras-nlp-131,wandering,submitted (exit_context),30,10,0.8812908992306927,0.2,0.7
+keras-team__keras-nlp-131,wandering,submitted (exit_context),24,10,0.8812908992306927,0.2,0.7
+keras-team__keras-nlp-131,wandering,submitted (exit_context),51,10,2.246439344671016,0.5,0.3
+keras-team__keras-nlp-131,wandering,submitted (exit_context),27,10,0.4689955935892812,0.2,0.9
+keras-team__keras-nlp-131,wandering,submitted (exit_context),127,10,1.4854752972273344,0.3,0.5
+keras-team__keras-nlp-131,wandering,submitted (exit_context),23,10,1.3567796494470397,0.4,0.7
+lightkurve__lightkurve-1392,wandering,submitted (exit_context),21,10,0.0,0.1,1.0
+lightkurve__lightkurve-1392,wandering,submitted (exit_context),18,10,0.0,0.1,1.0
+marshmallow-code__flask-smorest-561,wandering,submitted (exit_context),50,10,0.0,0.1,1.0
+marshmallow-code__flask-smorest-561,wandering,submitted (exit_context),51,10,0.7219280948873623,0.2,0.8
+marshmallow-code__flask-smorest-561,wandering,submitted (exit_context),50,10,0.0,0.1,1.0
+oasis-open__cti-python-stix2-454,wandering,submitted (exit_context),22,10,0.0,0.1,1.0
+oasis-open__cti-python-stix2-454,wandering,submitted (exit_context),38,10,0.8812908992306927,0.2,0.7
+pimutils__todoman-170,wandering,submitted (exit_context),258,10,0.0,0.1,1.0
+pimutils__todoman-170,wandering,submitted (exit_context),126,10,1.0,0.2,0.5
+pimutils__todoman-170,wandering,submitted (exit_context),95,10,1.0,0.2,0.5
+pimutils__todoman-170,wandering,submitted (exit_context),66,10,0.0,0.1,1.0
+pimutils__todoman-170,wandering,submitted (exit_context),115,10,1.0,0.2,0.5
+pimutils__todoman-170,wandering,submitted (exit_context),44,10,0.0,0.1,1.0
+pimutils__todoman-170,wandering,submitted (exit_context),53,10,1.0,0.2,0.5
+pior__pyramid_useragent-3,wandering,submitted (exit_context),41,10,0.0,0.1,1.0
+pior__pyramid_useragent-3,wandering,submitted (exit_context),114,10,0.8812908992306927,0.2,0.7
+pvlib__pvlib-python-1218,wandering,submitted (exit_context),19,10,0.9219280948873623,0.3,0.8
+pvlib__pvlib-python-1448,wandering,submitted (exit_context),39,10,0.9709505944546686,0.2,0.6
+pydantic__pydantic-3975,wandering,submitted (exit_context),23,10,0.0,0.1,1.0
+pydantic__pydantic-3975,wandering,submitted (exit_context),49,10,0.0,0.1,1.0
+pydantic__pydantic-3975,wandering,submitted (exit_context),44,10,0.0,0.1,1.0
+pydantic__pydantic-3975,wandering,submitted (exit_context),113,10,0.0,0.1,1.0
+pydantic__pydantic-3975,wandering,submitted (exit_context),15,10,0.4689955935892812,0.2,0.9
+pydantic__pydantic-3975,wandering,submitted (exit_context),38,10,0.8812908992306927,0.2,0.7
+pydantic__pydantic-3975,wandering,submitted (exit_context),34,10,1.1567796494470395,0.3,0.7
+pydantic__pydantic-3975,wandering,submitted (exit_context),28,10,0.0,0.1,1.0
+reata__sqllineage-27,wandering,submitted (exit_context),32,10,1.0,0.2,0.5
+reata__sqllineage-27,wandering,submitted (exit_context),43,10,1.0,0.2,0.5
+reata__sqllineage-27,wandering,submitted (exit_context),37,10,1.5709505944546687,0.4,0.6
+reata__sqllineage-27,wandering,submitted (exit_context),80,10,1.0,0.2,0.5
+reata__sqllineage-27,wandering,submitted (exit_context),24,10,2.1219280948873624,0.5,0.4
+reata__sqllineage-27,wandering,submitted (exit_context),190,10,1.9709505944546686,0.4,0.3
+simpeg__simpeg-1334,wandering,submitted (exit_context),36,10,0.0,0.1,1.0
+simpeg__simpeg-1334,wandering,submitted (exit_context),43,10,1.0,0.2,0.5
+singingwolfboy__flask-dance-107,wandering,submitted (exit_context),67,10,0.8812908992306927,0.2,0.7
+singingwolfboy__flask-dance-107,wandering,submitted (exit_context),47,20,0.0,0.1,1.0
+singingwolfboy__flask-dance-107,wandering,submitted (exit_context),42,10,0.8812908992306927,0.2,0.7
+singingwolfboy__flask-dance-107,wandering,submitted (exit_context),22,10,1.9709505944546686,0.4,0.3
+spdx__tools-python-480,wandering,submitted (exit_context),37,10,2.721928094887362,0.7,0.2
+spdx__tools-python-480,wandering,submitted (exit_context),58,10,1.9219280948873623,0.4,0.4
+spdx__tools-python-480,wandering,submitted (exit_context),33,10,0.4689955935892812,0.2,0.9
+spdx__tools-python-480,wandering,submitted (exit_context),36,10,1.0,0.2,0.5
+spdx__tools-python-480,wandering,submitted (exit_context),44,10,1.4854752972273344,0.3,0.5
+spdx__tools-python-480,wandering,submitted (exit_context),77,10,1.3709505944546687,0.3,0.6
+spdx__tools-python-480,wandering,submitted (exit_context),70,10,1.4854752972273344,0.3,0.5
+sqlfluff__sqlfluff-4764,wandering,submitted (exit_context),17,11,1.789929075309999,0.4,0.45454545454545453
+stitchfix__nodebook-18,wandering,submitted (exit_context),33,10,0.0,0.1,1.0
+stitchfix__nodebook-18,wandering,submitted (exit_context),19,10,2.321928094887362,0.6,0.4
+stitchfix__nodebook-18,wandering,submitted (exit_context),101,10,1.0,0.2,0.5
+tech-teach__marshmallowjson-3,wandering,submitted (exit_context),49,10,1.0,0.2,0.5
+tech-teach__marshmallowjson-3,wandering,submitted (exit_context),45,10,1.0,0.2,0.5
+tech-teach__marshmallowjson-3,wandering,submitted (exit_context),93,10,0.0,0.1,1.0
+tech-teach__marshmallowjson-3,wandering,submitted (exit_context),63,10,1.0,0.2,0.5
+tobymao__sqlglot-1841,wandering,submitted (exit_context),129,10,1.0,0.2,0.5
+tobymao__sqlglot-1841,wandering,submitted (exit_context),192,10,1.7709505944546688,0.5,0.6
+tobymao__sqlglot-1841,wandering,submitted (exit_context),152,10,0.0,0.1,1.0
+tobymao__sqlglot-1841,wandering,submitted (exit_context),15,10,2.1709505944546685,0.5,0.3
+tobymao__sqlglot-1841,wandering,submitted (exit_context),28,10,0.9219280948873623,0.3,0.8
+tobymao__sqlglot-1841,wandering,submitted (exit_context),39,10,0.0,0.1,1.0
+tobymao__sqlglot-1841,wandering,submitted (exit_context),32,10,1.6854752972273346,0.4,0.5
+tobymao__sqlglot-1841,wandering,submitted (exit_context),43,10,1.6854752972273344,0.4,0.5
+tobymao__sqlglot-1841,wandering,submitted (exit_context),147,10,1.0,0.2,0.5
+tobymao__sqlglot-1841,wandering,submitted (exit_context),121,10,1.0,0.2,0.5
+treasure-data__td-client-python-44,wandering,submitted (exit_context),88,10,0.7219280948873623,0.2,0.8
+treasure-data__td-client-python-44,wandering,submitted (exit_context),75,10,1.5709505944546684,0.3,0.4
+treasure-data__td-client-python-44,wandering,submitted (exit_context),53,10,2.4464393446710155,0.6,0.3
+treasure-data__td-client-python-44,wandering,submitted (exit_context),48,10,1.9709505944546688,0.4,0.3
+treasure-data__td-client-python-44,wandering,submitted (exit_context),52,10,1.0,0.2,0.5
+treasure-data__td-client-python-44,wandering,submitted (exit_context),41,10,2.3709505944546687,0.6,0.3
+ttu__ruuvitag-sensor-41,wandering,submitted (exit_context),35,10,1.4854752972273344,0.3,0.5
+ttu__ruuvitag-sensor-41,wandering,submitted (exit_context),34,10,1.5219280948873621,0.3,0.4
+ttu__ruuvitag-sensor-41,wandering,submitted (exit_context),27,10,0.0,0.1,1.0
+valohai__valohai-cli-52,wandering,submitted (exit_context),53,10,1.3609640474436813,0.3,0.5
+valohai__valohai-cli-52,wandering,submitted (exit_context),54,10,1.721928094887362,0.4,0.4
+valohai__valohai-cli-52,wandering,submitted (exit_context),51,10,2.246439344671016,0.5,0.3
+valohai__valohai-cli-52,wandering,submitted (exit_context),63,10,1.0,0.2,0.5
+wireservice__csvkit-800,wandering,submitted (exit_context),97,10,1.0,0.2,0.5
+wireservice__csvkit-800,wandering,submitted (exit_context),52,10,0.7219280948873623,0.2,0.8
+wireservice__csvkit-800,wandering,submitted (exit_context),44,10,1.4854752972273344,0.3,0.5
+wireservice__csvkit-800,wandering,submitted (exit_context),37,10,2.1609640474436813,0.6,0.5
+wireservice__csvkit-800,wandering,submitted (exit_context),47,10,0.9709505944546686,0.2,0.6
+EdinburghGenomics__EGCG-Core-88,wandering,submitted (exit_context),39,10,0.0,0.1,1.0
+EdinburghGenomics__EGCG-Core-88,wandering,submitted (exit_context),52,10,1.9709505944546686,0.4,0.3
+ICB-DCM__pyPESTO-676,wandering,submitted (exit_context),33,10,0.0,0.1,1.0
+ICB-DCM__pyPESTO-676,wandering,submitted (exit_context),38,10,1.1567796494470395,0.3,0.7
+ICB-DCM__pyPESTO-676,wandering,submitted (exit_context),89,10,0.0,0.1,1.0
+ICB-DCM__pyPESTO-676,wandering,submitted (exit_context),100,10,1.0,0.2,0.5
+PyCQA__flake8-bugbear-284,wandering,submitted (exit_context),56,10,1.0,0.2,0.5
+PyCQA__flake8-bugbear-284,wandering,submitted (exit_context),33,10,0.0,0.1,1.0
+PyCQA__flake8-bugbear-284,wandering,submitted (exit_context),20,10,0.9219280948873623,0.3,0.8
+PyCQA__flake8-bugbear-284,wandering,submitted (exit_context),47,10,0.0,0.1,1.0
+Textualize__textual-3396,wandering,submitted (exit_context),30,10,0.0,0.1,1.0
+Textualize__textual-3396,wandering,submitted (exit_context),50,10,1.5709505944546684,0.3,0.4
+Textualize__textual-3396,wandering,submitted (exit_context),92,10,1.0,0.2,0.5
+Textualize__textual-3396,wandering,submitted (exit_context),155,10,1.5709505944546684,0.3,0.4
+asottile__pyupgrade-313,wandering,submitted (exit_context),5,5,2.321928094887362,1.0,0.2
+asottile__pyupgrade-313,wandering,submitted (exit_context),32,10,1.5709505944546684,0.3,0.4
+asottile__pyupgrade-313,wandering,submitted (exit_context),25,10,0.0,0.1,1.0
+asottile__pyupgrade-313,wandering,submitted (exit_context),25,10,0.0,0.1,1.0
+astropy__sphinx-automodapi-51,wandering,submitted (exit_context),26,10,0.0,0.1,1.0
+celery__billiard-372,wandering,submitted (exit_context),62,10,2.5219280948873624,0.6,0.2
+cunybpl__isdparser-4,wandering,submitted (exit_context),38,10,0.9709505944546686,0.2,0.6
+cunybpl__isdparser-4,wandering,submitted (exit_context),31,10,1.9709505944546686,0.4,0.3
+datalad__datalad-5749,wandering,submitted (exit_context),36,10,1.1567796494470395,0.3,0.7
+datalad__datalad-5749,wandering,submitted (exit_context),83,10,0.8812908992306927,0.2,0.7
+datalad__datalad-5749,wandering,submitted (exit_context),42,10,2.4464393446710155,0.6,0.3
+datalad__datalad-5749,wandering,submitted (exit_context),40,10,0.8812908992306927,0.2,0.7
+datalad__datalad-5749,wandering,submitted (exit_context),48,10,2.5219280948873624,0.6,0.2
+datalad__datalad-5749,wandering,submitted (exit_context),37,10,2.170950594454669,0.5,0.3
+datalad__datalad-5749,wandering,submitted (exit_context),32,10,0.0,0.1,1.0
+docker__docker-py-1167,wandering,submitted (exit_context),38,10,1.4854752972273344,0.3,0.5
+docker__docker-py-1167,wandering,submitted (exit_context),46,10,2.521928094887362,0.6,0.2
+docker__docker-py-1167,wandering,submitted (exit_context),35,10,0.9709505944546686,0.2,0.6
+docker__docker-py-1167,wandering,submitted (exit_context),45,10,1.0,0.2,0.5
+docker__docker-py-1167,wandering,submitted (exit_context),60,10,0.0,0.1,1.0
+docker__docker-py-1167,wandering,submitted (exit_context),47,10,2.321928094887362,0.5,0.2
+encode__starlette-563,wandering,submitted (exit_context),43,10,0.0,0.1,1.0
+geopandas__geopandas-1336,wandering,submitted (exit_context),41,10,0.0,0.1,1.0
+geopandas__geopandas-1336,wandering,submitted (exit_context),30,10,0.0,0.1,1.0
+geopandas__geopandas-1336,wandering,submitted (exit_context),29,10,0.0,0.1,1.0
+geopandas__geopandas-1336,wandering,submitted (exit_context),22,10,0.0,0.1,1.0
+geopandas__geopandas-1336,wandering,submitted (exit_context),44,10,2.121928094887362,0.5,0.4
+geopandas__geopandas-1336,wandering,submitted (exit_context),32,10,1.9709505944546686,0.4,0.3
+geopandas__geopandas-1336,wandering,submitted (exit_context),25,10,0.0,0.1,1.0
+geopandas__geopandas-1336,wandering,submitted (exit_context),49,10,0.0,0.1,1.0
+geopandas__geopandas-1336,wandering,submitted (exit_context),40,10,1.0,0.2,0.5
+geopandas__geopandas-1336,wandering,submitted (exit_context),36,10,1.0,0.2,0.5
+google__mobly-311,wandering,submitted (exit_context),77,10,1.4854752972273344,0.3,0.5
+google__mobly-311,wandering,submitted (exit_context),48,10,2.446439344671015,0.6,0.3
+hynek__argon2-cffi-174,wandering,submitted (exit_context),41,10,0.7219280948873623,0.2,0.8
+hynek__argon2-cffi-174,wandering,submitted (exit_context),40,10,2.2464393446710154,0.5,0.3
+hynek__argon2-cffi-174,wandering,submitted (exit_context),38,10,0.9709505944546686,0.2,0.6
+hynek__structlog-221,wandering,submitted (exit_context),42,10,1.0,0.2,0.5
+hynek__structlog-221,wandering,submitted (exit_context),35,10,1.0,0.2,0.5
+iamjackg__md2cf-97,wandering,submitted (exit_context),38,10,0.0,0.1,1.0
+iamjackg__md2cf-97,wandering,submitted (exit_context),50,10,0.8812908992306927,0.2,0.7
+iterative__dvc-6471,wandering,submitted (exit_context),68,10,0.0,0.1,1.0
+iterative__dvc-6471,wandering,submitted (exit_context),69,10,1.0,0.2,0.5
+iterative__dvc-6471,wandering,submitted (exit_context),41,10,0.0,0.1,1.0
+iterative__dvc-6471,wandering,submitted (exit_context),26,10,2.4464393446710155,0.6,0.3
+iterative__dvc-6633,wandering,submitted (exit_context),36,10,0.0,0.1,1.0
+iterative__dvc-6633,wandering,submitted (exit_context),92,10,2.0464393446710156,0.5,0.4
+iterative__dvc-6633,wandering,submitted (exit_context),85,10,0.0,0.1,1.0
+iterative__dvc-6633,wandering,submitted (exit_context),49,10,0.9709505944546686,0.2,0.6
+iterative__dvc-6633,wandering,submitted (exit_context),52,10,1.0,0.2,0.5
+iterative__dvc-6633,wandering,submitted (exit_context),85,10,0.0,0.1,1.0
+iterative__dvc-6633,wandering,submitted (exit_context),48,10,0.0,0.1,1.0
+iterative__dvc-6633,wandering,submitted (exit_context),72,10,0.0,0.1,1.0
+iterative__dvc-9000,wandering,submitted (exit_context),19,10,1.360964047443681,0.3,0.5
+iterative__dvc-9000,wandering,submitted (exit_context),67,10,1.721928094887362,0.4,0.4
+iterative__dvc-9000,wandering,submitted (exit_context),40,10,1.5709505944546684,0.3,0.4
+iterative__dvc-9000,wandering,submitted (exit_context),36,10,0.0,0.1,1.0
+iterative__dvc-9000,wandering,submitted (exit_context),43,12,1.384431504340598,0.3,0.5833333333333334
+iterative__dvc-9000,wandering,submitted (exit_context),24,11,1.867633890971212,0.5,0.5454545454545454
+iterative__dvc-9000,wandering,submitted (exit_context),51,10,1.1567796494470395,0.3,0.7
+iterative__dvc-9000,wandering,submitted (exit_context),44,10,0.0,0.1,1.0
+iterative__dvc-9000,wandering,submitted (exit_context),37,10,0.0,0.1,1.0
+iterative__dvc-9000,wandering,submitted (exit_context),261,10,0.0,0.1,1.0
+iterative__dvc-9000,wandering,submitted (exit_context),66,10,1.1567796494470395,0.3,0.7
+ithaka__apiron-8,wandering,submitted (exit_context),35,10,0.0,0.1,1.0
+jbradberry__universe-31,wandering,submitted (exit_context),128,10,0.0,0.1,1.0
+jbradberry__universe-31,wandering,submitted (exit_context),59,10,1.0,0.2,0.5
+jbradberry__universe-31,wandering,submitted (exit_context),39,10,1.5709505944546687,0.4,0.6
+johnsyweb__python_sparse_list-17,wandering,submitted (exit_context),46,10,1.0,0.2,0.5
+johnsyweb__python_sparse_list-17,wandering,submitted (exit_context),40,10,0.0,0.1,1.0
+joke2k__django-environ-325,wandering,submitted (exit_context),79,10,0.8812908992306927,0.2,0.7
+juju__juju-crashdump-54,wandering,submitted (exit_context),63,10,1.5709505944546684,0.3,0.4
+juju__juju-crashdump-54,wandering,submitted (exit_context),45,10,1.3609640474436813,0.3,0.5
+juju__juju-crashdump-54,wandering,submitted (exit_context),118,10,1.4854752972273344,0.3,0.5
+lbl-srg__BuildingsPy-249,wandering,submitted (exit_context),62,10,1.5219280948873621,0.3,0.4
+locustio__locust-994,wandering,submitted (exit_context),55,10,2.121928094887362,0.5,0.4
+locustio__locust-994,wandering,submitted (exit_context),33,10,1.5709505944546684,0.3,0.4
+locustio__locust-994,wandering,submitted (exit_context),62,10,1.0,0.2,0.5
+locustio__locust-994,wandering,submitted (exit_context),118,10,0.9709505944546686,0.2,0.6
+lucidsushi__gs_pip_install-132,wandering,submitted (exit_context),27,10,1.4854752972273344,0.3,0.5
+matthewwardrop__formulaic-166,wandering,submitted (exit_context),37,10,2.321928094887362,0.6,0.4
+matthewwardrop__formulaic-166,wandering,submitted (exit_context),52,10,1.295461844238322,0.3,0.6
+matthewwardrop__formulaic-166,wandering,submitted (exit_context),23,10,0.0,0.1,1.0
+matthewwardrop__formulaic-166,wandering,submitted (exit_context),112,10,0.0,0.1,1.0
+matthewwardrop__formulaic-166,wandering,submitted (exit_context),37,10,1.9609640474436814,0.5,0.5
+matthewwardrop__formulaic-166,wandering,submitted (exit_context),38,10,0.7219280948873623,0.2,0.8
+matthewwardrop__formulaic-166,wandering,submitted (exit_context),36,10,2.4464393446710155,0.6,0.3
+matthewwardrop__formulaic-166,wandering,submitted (exit_context),29,10,0.0,0.1,1.0
+matthewwardrop__formulaic-166,wandering,submitted (exit_context),62,10,1.7609640474436812,0.4,0.5
+mido__mido-474,wandering,submitted (exit_context),27,10,1.9219280948873623,0.4,0.4
+mido__mido-474,wandering,submitted (exit_context),31,10,1.0,0.2,0.5
+mido__mido-474,wandering,submitted (exit_context),39,10,0.0,0.1,1.0
+mps-gmbh__hl7-parser-24,wandering,submitted (exit_context),49,10,2.121928094887362,0.5,0.4
+mps-gmbh__hl7-parser-24,wandering,submitted (exit_context),74,10,0.0,0.1,1.0
+mps-gmbh__hl7-parser-24,wandering,submitted (exit_context),34,10,0.4689955935892812,0.2,0.9
+mps-gmbh__hl7-parser-24,wandering,submitted (exit_context),48,10,0.7219280948873623,0.2,0.8
+mps-gmbh__hl7-parser-24,wandering,submitted (exit_context),46,10,1.7609640474436812,0.4,0.5
+mps-gmbh__hl7-parser-24,wandering,submitted (exit_context),42,10,2.321928094887362,0.5,0.2
+mps-gmbh__hl7-parser-24,wandering,submitted (exit_context),61,10,0.0,0.1,1.0
+mps-gmbh__hl7-parser-24,wandering,submitted (exit_context),39,10,0.4689955935892812,0.2,0.9
+mps-gmbh__hl7-parser-24,wandering,submitted (exit_context),29,10,0.4689955935892812,0.2,0.9
+mps-gmbh__hl7-parser-24,wandering,submitted (exit_context),56,10,1.0,0.2,0.5
+mps-gmbh__hl7-parser-24,wandering,submitted (exit_context),102,10,1.3609640474436813,0.3,0.5
+mps-gmbh__hl7-parser-24,wandering,submitted (exit_context),35,10,2.4464393446710155,0.6,0.3
+networkx__networkx-4125,wandering,submitted (exit_context),14,10,1.3567796494470394,0.4,0.7
+networkx__networkx-4125,wandering,submitted (exit_context),34,10,2.1219280948873624,0.5,0.4
+networkx__networkx-4125,wandering,submitted (exit_context),52,10,0.8812908992306927,0.2,0.7
+networkx__networkx-4125,wandering,submitted (exit_context),42,10,0.7219280948873623,0.2,0.8
+networkx__networkx-4125,wandering,submitted (exit_context),29,10,1.0,0.2,0.5
+networkx__networkx-4125,wandering,submitted (exit_context),83,10,0.9709505944546686,0.2,0.6
+networkx__networkx-4125,wandering,submitted (exit_context),25,10,1.0,0.2,0.5
+palantir__python-language-server-275,wandering,submitted (exit_context),22,10,0.0,0.1,1.0
+palantir__python-language-server-275,wandering,submitted (exit_context),63,10,2.6464393446710153,0.7,0.3
+palantir__python-language-server-275,wandering,submitted (exit_context),39,10,1.0,0.2,0.5
+palantir__python-language-server-754,wandering,submitted (exit_context),56,10,1.0,0.2,0.5
+palantir__python-language-server-754,wandering,submitted (exit_context),53,10,1.9709505944546688,0.4,0.3
+palantir__python-language-server-754,wandering,submitted (exit_context),67,10,1.0,0.2,0.5
+palantir__python-language-server-754,wandering,submitted (exit_context),96,10,2.4464393446710155,0.6,0.3
+palantir__python-language-server-754,wandering,submitted (exit_context),136,10,0.0,0.1,1.0
+palantir__python-language-server-754,wandering,submitted (exit_context),55,10,0.0,0.1,1.0
+palantir__python-language-server-754,wandering,submitted (exit_context),37,10,0.9709505944546686,0.2,0.6
+pappasam__toml-sort-36,wandering,submitted (exit_context),78,10,1.0,0.2,0.5
+protolambda__remerkleable-2,wandering,submitted (exit_context),29,10,0.0,0.1,1.0
+protolambda__remerkleable-2,wandering,submitted (exit_context),27,10,1.0,0.2,0.5
+protolambda__remerkleable-2,wandering,submitted (exit_context),42,10,2.4464393446710155,0.6,0.3
+protolambda__remerkleable-2,wandering,submitted (exit_context),29,10,1.5709505944546684,0.3,0.4
+protolambda__remerkleable-2,wandering,submitted (exit_context),47,10,0.8812908992306927,0.2,0.7
+protolambda__remerkleable-2,wandering,submitted (exit_context),67,10,1.4854752972273344,0.3,0.5
+protolambda__remerkleable-2,wandering,submitted (exit_context),35,10,1.0,0.2,0.5
+protolambda__remerkleable-2,wandering,submitted (exit_context),33,10,0.8812908992306927,0.2,0.7
+pydantic__pydantic-2262,wandering,submitted (exit_context),37,10,1.0,0.2,0.5
+pydantic__pydantic-2262,wandering,submitted (exit_context),50,10,0.0,0.1,1.0
+pydantic__pydantic-2262,wandering,submitted (exit_context),43,10,1.0,0.2,0.5
+pydantic__pydantic-2262,wandering,submitted (exit_context),36,10,1.3709505944546687,0.3,0.6
+pydantic__pydantic-2262,wandering,submitted (exit_context),44,10,0.0,0.1,1.0
+pydantic__pydantic-2262,wandering,submitted (exit_context),27,10,0.8812908992306927,0.2,0.7
+pydantic__pydantic-2262,wandering,submitted (exit_context),36,10,0.8812908992306927,0.2,0.7
+pydantic__pydantic-2262,wandering,submitted (exit_context),29,10,0.0,0.1,1.0
+pydantic__pydantic-2262,wandering,submitted (exit_context),35,10,0.0,0.1,1.0
+pydantic__pydantic-2262,wandering,submitted (exit_context),17,10,1.5709505944546687,0.4,0.6
+pydantic__pydantic-2262,wandering,submitted (exit_context),39,41,0.9011701959974223,0.2,0.6829268292682927
+pydantic__pydantic-2262,wandering,submitted (exit_context),40,20,1.0,0.2,0.5
+pydantic__pydantic-2366,wandering,submitted (exit_context),60,20,1.0,0.2,0.5
+pypa__wheel-213,wandering,submitted (exit_context),75,10,1.0,0.2,0.5
+pypa__wheel-213,wandering,submitted (exit_context),44,10,1.0,0.2,0.5
+pypa__wheel-213,wandering,submitted (exit_context),68,10,1.4854752972273344,0.3,0.5
+pyvista__pyvista-4225,wandering,submitted (exit_context),23,10,0.4689955935892812,0.2,0.9
+pyvista__pyvista-4225,wandering,submitted (exit_context),16,10,2.1219280948873624,0.5,0.4
+reata__sqllineage-38,wandering,submitted (exit_context),37,10,0.0,0.1,1.0
+reata__sqllineage-38,wandering,submitted (exit_context),230,10,0.0,0.1,1.0
+reata__sqllineage-38,wandering,submitted (exit_context),42,10,0.9709505944546686,0.2,0.6
+reata__sqllineage-38,wandering,submitted (exit_context),38,10,1.0,0.2,0.5
+scrapy__scrapy-2847,wandering,submitted (exit_context),25,10,1.9219280948873623,0.4,0.4
+simonsobs__ocs-332,wandering,submitted (exit_context),49,10,0.8812908992306927,0.2,0.7
+tobymao__sqlglot-1765,wandering,submitted (exit_context),32,10,0.9709505944546686,0.2,0.6
+tobymao__sqlglot-1765,wandering,submitted (exit_context),31,10,0.0,0.1,1.0
+tobymao__sqlglot-1765,wandering,submitted (exit_context),29,10,0.8812908992306927,0.2,0.7
+tobymao__sqlglot-1765,wandering,submitted (exit_context),35,10,0.0,0.1,1.0
+tobymao__sqlglot-1765,wandering,submitted (exit_context),30,10,1.5709505944546684,0.3,0.4
+tobymao__sqlglot-1765,wandering,submitted (exit_context),18,10,2.4464393446710155,0.6,0.3
+tobymao__sqlglot-1765,wandering,submitted (exit_context),34,10,1.5709505944546684,0.3,0.4
+tobymao__sqlglot-1765,wandering,submitted (exit_context),25,10,1.0,0.2,0.5
+tobymao__sqlglot-1765,wandering,submitted (exit_context),29,10,1.9609640474436814,0.5,0.5
+typesafehub__conductr-cli-339,wandering,submitted (exit_context),42,10,0.0,0.1,1.0
+typesafehub__conductr-cli-339,wandering,submitted (exit_context),44,10,1.9709505944546686,0.4,0.3
+wandera__1password-client-16,wandering,submitted (exit_context),36,10,1.0,0.2,0.5
+wandera__1password-client-16,wandering,submitted (exit_context),31,10,2.4464393446710155,0.6,0.3
+wandera__1password-client-16,wandering,submitted (exit_context),24,10,0.4689955935892812,0.2,0.9
+wandera__1password-client-16,wandering,submitted (exit_context),126,10,1.0,0.2,0.5
+wandera__1password-client-16,wandering,submitted (exit_context),50,10,1.3709505944546687,0.3,0.6
+wandera__1password-client-16,wandering,submitted (exit_context),49,10,2.321928094887362,0.6,0.4
+wandera__1password-client-16,wandering,submitted (exit_context),41,10,1.0,0.2,0.5
+wandera__1password-client-16,wandering,submitted (exit_context),29,10,2.1219280948873624,0.5,0.4
+zamzterz__Flask-pyoidc-79,wandering,submitted (exit_context),27,10,0.0,0.1,1.0
+zamzterz__Flask-pyoidc-79,wandering,submitted (exit_context),26,10,0.0,0.1,1.0
+zamzterz__Flask-pyoidc-79,wandering,submitted (exit_context),33,10,1.0,0.2,0.5
+zamzterz__Flask-pyoidc-79,wandering,submitted (exit_context),34,10,2.4464393446710155,0.6,0.3
+AzureAD__azure-activedirectory-library-for-python-120,wandering,submitted (exit_context),37,10,1.9709505944546686,0.4,0.3
+AzureAD__azure-activedirectory-library-for-python-120,wandering,submitted (exit_context),94,10,1.0,0.2,0.5
+AzureAD__azure-activedirectory-library-for-python-120,wandering,submitted (exit_context),38,10,1.9219280948873623,0.4,0.4
+AzureAD__azure-activedirectory-library-for-python-120,wandering,submitted (exit_context),38,10,0.8812908992306927,0.2,0.7
+AzureAD__azure-activedirectory-library-for-python-120,wandering,submitted (exit_context),39,10,1.5219280948873621,0.3,0.4
+AzureAD__azure-activedirectory-library-for-python-120,wandering,submitted (exit_context),27,10,1.9609640474436814,0.5,0.5
+AzureAD__azure-activedirectory-library-for-python-120,wandering,submitted (exit_context),114,10,1.4854752972273344,0.3,0.5
+AzureAD__azure-activedirectory-library-for-python-120,wandering,submitted (exit_context),40,10,2.5219280948873624,0.6,0.2
+AzureAD__azure-activedirectory-library-for-python-120,wandering,submitted (exit_context),41,10,2.4464393446710155,0.6,0.3
+AzureAD__azure-activedirectory-library-for-python-120,wandering,submitted (exit_context),48,10,2.9219280948873623,0.8,0.2
+Azure__msrest-for-python-208,wandering,submitted (exit_context),43,10,1.0,0.2,0.5
+ESSS__conda-devenv-51,wandering,submitted (exit_context),49,10,1.0,0.2,0.5
+ESSS__conda-devenv-51,wandering,submitted (exit_context),41,10,1.0,0.2,0.5
+ESSS__conda-devenv-51,wandering,submitted (exit_context),38,10,1.0,0.2,0.5
+ESSS__conda-devenv-51,wandering,submitted (exit_context),43,10,1.1567796494470395,0.3,0.7
+ESSS__conda-devenv-51,wandering,submitted (exit_context),37,10,2.1219280948873624,0.5,0.4
+ESSS__conda-devenv-51,wandering,submitted (exit_context),40,10,2.170950594454669,0.5,0.3
+ESSS__conda-devenv-51,wandering,submitted (exit_context),33,10,0.8812908992306927,0.2,0.7
+EdinburghGenomics__EGCG-Core-11,wandering,submitted (exit_context),188,10,3.321928094887362,1.0,0.1
+EdinburghGenomics__EGCG-Core-11,wandering,submitted (exit_context),35,10,1.5219280948873621,0.3,0.4
+EdinburghGenomics__EGCG-Core-11,wandering,submitted (exit_context),38,10,1.8464393446710154,0.4,0.4
+EdinburghGenomics__EGCG-Core-11,wandering,submitted (exit_context),35,10,1.0,0.2,0.5
+PEtab-dev__libpetab-python-136,wandering,submitted (exit_context),21,10,0.0,0.1,1.0
+PyCQA__flake8-bugbear-316,wandering,submitted (exit_context),49,10,0.0,0.1,1.0
+TheFriendlyCoder__friendlypins-93,wandering,submitted (exit_context),32,10,2.4464393446710155,0.6,0.3
+TheFriendlyCoder__friendlypins-93,wandering,submitted (exit_context),38,10,1.3709505944546687,0.3,0.6
+TheFriendlyCoder__friendlypins-93,wandering,submitted (exit_context),40,10,1.1567796494470395,0.3,0.7
+TheFriendlyCoder__friendlypins-93,wandering,submitted (exit_context),47,10,1.4854752972273344,0.3,0.5
+TheFriendlyCoder__friendlypins-93,wandering,submitted (exit_context),10,10,2.1219280948873624,0.5,0.4
+TheFriendlyCoder__friendlypins-93,wandering,submitted (exit_context),53,10,1.5219280948873621,0.3,0.4
+airspeed-velocity__asv-734,wandering,submitted (exit_context),54,10,1.9609640474436814,0.5,0.5
+airspeed-velocity__asv-734,wandering,submitted (exit_context),42,10,2.2464393446710154,0.5,0.3
+airspeed-velocity__asv-734,wandering,submitted (exit_context),29,10,1.0,0.2,0.5
+alvinwan__TexSoup-140,wandering,submitted (exit_context),36,10,1.0,0.2,0.5
+alvinwan__TexSoup-140,wandering,submitted (exit_context),36,10,0.9219280948873623,0.3,0.8
+alvinwan__TexSoup-140,wandering,submitted (exit_context),31,10,0.0,0.1,1.0
+alvinwan__TexSoup-140,wandering,submitted (exit_context),137,10,0.0,0.1,1.0
+alvinwan__TexSoup-140,wandering,submitted (exit_context),33,10,0.0,0.1,1.0
+alvinwan__TexSoup-140,wandering,submitted (exit_context),26,10,1.0,0.2,0.5
+alvinwan__TexSoup-140,wandering,submitted (exit_context),25,10,0.0,0.1,1.0
+alvinwan__TexSoup-140,wandering,submitted (exit_context),40,10,0.0,0.1,1.0
+alvinwan__TexSoup-140,wandering,submitted (exit_context),30,10,0.9709505944546686,0.2,0.6
+alvinwan__TexSoup-140,wandering,submitted (exit_context),41,10,1.9709505944546686,0.4,0.3
+alvinwan__TexSoup-140,wandering,submitted (exit_context),36,10,0.0,0.1,1.0
+alvinwan__TexSoup-140,wandering,submitted (exit_context),43,10,0.0,0.1,1.0
+alvinwan__TexSoup-140,wandering,submitted (exit_context),43,10,1.1567796494470395,0.3,0.7
+alvinwan__TexSoup-140,wandering,submitted (exit_context),23,10,1.360964047443681,0.3,0.5
+alvinwan__TexSoup-140,wandering,submitted (exit_context),53,10,0.0,0.1,1.0
+alvinwan__TexSoup-140,wandering,submitted (exit_context),24,10,0.0,0.1,1.0
+alvinwan__TexSoup-140,wandering,submitted (exit_context),31,10,0.0,0.1,1.0
+alvinwan__TexSoup-140,wandering,submitted (exit_context),25,10,0.0,0.1,1.0
+alvinwan__TexSoup-140,wandering,submitted (exit_context),32,10,0.8812908992306927,0.2,0.7
+alvinwan__TexSoup-140,wandering,submitted (exit_context),35,10,1.0,0.2,0.5
+alvinwan__TexSoup-140,wandering,submitted (exit_context),56,10,1.0,0.2,0.5
+alvinwan__TexSoup-140,wandering,submitted (exit_context),43,10,0.0,0.1,1.0
+alvinwan__TexSoup-140,wandering,submitted (exit_context),27,10,0.0,0.1,1.0
+alvinwan__TexSoup-140,wandering,submitted (exit_context),25,10,0.0,0.1,1.0
+alvinwan__TexSoup-140,wandering,submitted (exit_context),86,10,0.8812908992306927,0.2,0.7
+alvinwan__TexSoup-140,wandering,submitted (exit_context),28,10,0.0,0.1,1.0
+alvinwan__TexSoup-140,wandering,submitted (exit_context),27,10,0.0,0.1,1.0
+alvinwan__TexSoup-140,wandering,submitted (exit_context),37,10,1.0,0.2,0.5
+alvinwan__TexSoup-140,wandering,submitted (exit_context),38,10,1.0,0.2,0.5
+alvinwan__TexSoup-140,wandering,submitted (exit_context),38,10,1.9709505944546686,0.4,0.3
+alvinwan__TexSoup-140,wandering,submitted (exit_context),41,10,0.0,0.1,1.0
+alvinwan__TexSoup-140,wandering,submitted (exit_context),31,10,0.7219280948873623,0.2,0.8
+alvinwan__TexSoup-140,wandering,submitted (exit_context),32,10,0.0,0.1,1.0
+alvinwan__TexSoup-140,wandering,submitted (exit_context),38,10,1.0,0.2,0.5
+alvinwan__TexSoup-140,wandering,submitted (exit_context),34,10,0.0,0.1,1.0
+alvinwan__TexSoup-140,wandering,submitted (exit_context),48,10,0.9709505944546686,0.2,0.6
+alvinwan__TexSoup-140,wandering,submitted (exit_context),24,10,1.6854752972273344,0.4,0.5
+alvinwan__TexSoup-140,wandering,submitted (exit_context),46,10,0.8812908992306927,0.2,0.7
+alvinwan__TexSoup-140,wandering,submitted (exit_context),35,10,0.0,0.1,1.0
+alvinwan__TexSoup-140,wandering,submitted (exit_context),39,10,0.0,0.1,1.0
+alvinwan__TexSoup-140,wandering,submitted (exit_context),52,10,1.5709505944546684,0.3,0.4
+alvinwan__TexSoup-140,wandering,submitted (exit_context),31,10,0.0,0.1,1.0
+alvinwan__TexSoup-140,wandering,submitted (exit_context),62,10,0.0,0.1,1.0
+alvinwan__TexSoup-140,wandering,submitted (exit_context),26,10,0.0,0.1,1.0
+alvinwan__TexSoup-140,wandering,submitted (exit_context),60,10,0.4689955935892812,0.2,0.9
+alvinwan__TexSoup-140,wandering,submitted (exit_context),27,10,1.1567796494470395,0.3,0.7
+alvinwan__TexSoup-140,wandering,submitted (exit_context),33,10,1.360964047443681,0.3,0.5
+alvinwan__TexSoup-140,wandering,submitted (exit_context),33,10,0.9219280948873623,0.3,0.8
+ameily__cincoconfig-26,wandering,submitted (exit_context),68,10,0.0,0.1,1.0
+ameily__cincoconfig-26,wandering,submitted (exit_context),91,10,1.0,0.2,0.5
+ameily__cincoconfig-26,wandering,submitted (exit_context),41,10,0.4689955935892812,0.2,0.9
+asottile__pyupgrade-166,wandering,submitted (exit_context),26,10,0.0,0.1,1.0
+asottile__pyupgrade-166,wandering,submitted (exit_context),75,10,1.0,0.2,0.5
+asottile__pyupgrade-166,wandering,submitted (exit_context),107,10,0.0,0.1,1.0
+asottile__pyupgrade-166,wandering,submitted (exit_context),55,10,1.3709505944546687,0.3,0.6
+asottile__pyupgrade-166,wandering,submitted (exit_context),46,10,0.0,0.1,1.0
+asottile__pyupgrade-330,wandering,submitted (exit_context),27,10,1.0,0.2,0.5
+asottile__pyupgrade-330,wandering,submitted (exit_context),77,10,0.0,0.1,1.0
+asottile__pyupgrade-330,wandering,submitted (exit_context),26,10,1.5709505944546684,0.3,0.4
+asottile__pyupgrade-330,wandering,submitted (exit_context),40,10,1.9219280948873623,0.4,0.4
+asottile__yesqa-44,wandering,submitted (exit_context),60,10,1.0,0.2,0.5
+astropenguin__pandas-dataclasses-120,wandering,submitted (exit_context),31,10,0.0,0.1,1.0
+astropenguin__pandas-dataclasses-120,wandering,submitted (exit_context),48,10,1.0,0.2,0.5
+astropenguin__pandas-dataclasses-120,wandering,submitted (exit_context),40,10,0.0,0.1,1.0
+astropenguin__pandas-dataclasses-120,wandering,submitted (exit_context),45,10,1.8464393446710154,0.4,0.4
+astropenguin__pandas-dataclasses-120,wandering,submitted (exit_context),44,10,1.4854752972273344,0.3,0.5
+astropenguin__pandas-dataclasses-120,wandering,submitted (exit_context),54,10,1.1567796494470395,0.3,0.7
+astropenguin__pandas-dataclasses-120,wandering,submitted (exit_context),43,10,0.0,0.1,1.0
+astropenguin__pandas-dataclasses-120,wandering,submitted (exit_context),42,10,1.5709505944546684,0.3,0.4
+astropenguin__pandas-dataclasses-120,wandering,submitted (exit_context),61,10,1.4854752972273344,0.3,0.5
+astropenguin__pandas-dataclasses-120,wandering,submitted (exit_context),57,10,1.0,0.2,0.5
+astropenguin__pandas-dataclasses-120,wandering,submitted (exit_context),52,10,0.8812908992306927,0.2,0.7
+astropenguin__pandas-dataclasses-120,wandering,submitted (exit_context),37,10,1.8954618442383218,0.4,0.3
+astropenguin__pandas-dataclasses-120,wandering,submitted (exit_context),34,10,0.8812908992306927,0.2,0.7
+astropenguin__pandas-dataclasses-120,wandering,submitted (exit_context),44,10,1.0,0.2,0.5
+benmoran56__esper-81,wandering,submitted (exit_context),46,10,0.0,0.1,1.0
+benmoran56__esper-81,wandering,submitted (exit_context),35,10,1.3709505944546687,0.3,0.6
+benmoran56__esper-81,wandering,submitted (exit_context),40,10,0.0,0.1,1.0
+benmoran56__esper-81,wandering,submitted (exit_context),35,10,0.0,0.1,1.0
+benmoran56__esper-81,wandering,submitted (exit_context),35,10,1.5709505944546684,0.3,0.4
+bids-standard__pybids-611,wandering,submitted (exit_context),38,10,1.7609640474436812,0.4,0.5
+bids-standard__pybids-611,wandering,submitted (exit_context),68,10,1.0,0.2,0.5
+canonical__charmcraft-802,wandering,submitted (exit_context),49,10,1.0,0.2,0.5
+canonical__charmcraft-802,wandering,submitted (exit_context),78,10,1.0,0.2,0.5
+childsish__dynamic-yaml-31,wandering,submitted (exit_context),92,10,1.5709505944546684,0.3,0.4
+childsish__dynamic-yaml-31,wandering,submitted (exit_context),55,10,0.9709505944546686,0.2,0.6
+conda__conda-pack-26,wandering,submitted (exit_context),98,10,0.9709505944546686,0.2,0.6
+conda__conda-pack-26,wandering,submitted (exit_context),28,10,1.3709505944546687,0.3,0.6
+conda__conda-pack-26,wandering,submitted (exit_context),228,10,2.170950594454669,0.5,0.3
+datalad__datalad-next-257,wandering,submitted (exit_context),68,10,1.5709505944546684,0.3,0.4
+datalad__datalad-next-257,wandering,submitted (exit_context),53,10,0.7219280948873623,0.2,0.8
+datalad__datalad-next-257,wandering,submitted (exit_context),39,10,1.0,0.2,0.5
+deardurham__ciprs-reader-38,wandering,submitted (exit_context),36,10,0.0,0.1,1.0
+deardurham__ciprs-reader-38,wandering,submitted (exit_context),77,10,0.0,0.1,1.0
+dfm__emcee-295,wandering,submitted (exit_context),66,10,1.8464393446710154,0.4,0.4
+dfm__emcee-295,wandering,submitted (exit_context),32,10,0.0,0.1,1.0
+dfm__emcee-295,wandering,submitted (exit_context),61,10,0.0,0.1,1.0
+dfm__emcee-295,wandering,submitted (exit_context),35,10,0.4689955935892812,0.2,0.9
+dfm__emcee-295,wandering,submitted (exit_context),29,10,0.0,0.1,1.0
+dfm__emcee-295,wandering,submitted (exit_context),53,10,1.4854752972273344,0.3,0.5
+dfm__emcee-295,wandering,submitted (exit_context),188,10,2.1219280948873624,0.5,0.4
+dwavesystems__dwave-cloud-client-417,wandering,submitted (exit_context),109,10,1.9709505944546686,0.4,0.3
+dwavesystems__dwave-cloud-client-417,wandering,submitted (exit_context),32,10,2.2464393446710154,0.5,0.3
+dwavesystems__dwave-cloud-client-417,wandering,submitted (exit_context),17,10,1.1567796494470395,0.3,0.7
+dwavesystems__dwave-cloud-client-417,wandering,submitted (exit_context),36,10,2.321928094887362,0.5,0.2
+dwavesystems__dwave-cloud-client-417,wandering,submitted (exit_context),31,10,0.0,0.1,1.0
+dwavesystems__dwave-cloud-client-417,wandering,submitted (exit_context),19,10,1.721928094887362,0.4,0.4
+dwavesystems__dwave-cloud-client-417,wandering,submitted (exit_context),24,10,1.3709505944546687,0.3,0.6
+dwavesystems__dwave-cloud-client-417,wandering,submitted (exit_context),28,10,0.8812908992306927,0.2,0.7
+fabiocaccamo__python-codicefiscale-24,wandering,submitted (exit_context),50,10,1.7609640474436812,0.4,0.5
+fabiocaccamo__python-codicefiscale-24,wandering,submitted (exit_context),26,10,0.0,0.1,1.0
+fabiocaccamo__python-codicefiscale-24,wandering,submitted (exit_context),36,10,0.4689955935892812,0.2,0.9
+fabiocaccamo__python-codicefiscale-24,wandering,submitted (exit_context),31,10,0.0,0.1,1.0
+fabiocaccamo__python-codicefiscale-24,wandering,submitted (exit_context),36,10,0.0,0.1,1.0
+fabiocaccamo__python-codicefiscale-24,wandering,submitted (exit_context),25,10,0.0,0.1,1.0
+fabiocaccamo__python-codicefiscale-24,wandering,submitted (exit_context),32,10,0.0,0.1,1.0
+fabiocaccamo__python-codicefiscale-24,wandering,submitted (exit_context),31,10,1.0,0.2,0.5
+fabiocaccamo__python-codicefiscale-24,wandering,submitted (exit_context),55,10,0.8812908992306927,0.2,0.7
+fabiocaccamo__python-codicefiscale-24,wandering,submitted (exit_context),30,10,0.0,0.1,1.0
+fabiocaccamo__python-codicefiscale-24,wandering,submitted (exit_context),44,10,1.7219280948873623,0.4,0.4
+fabiocaccamo__python-codicefiscale-24,wandering,submitted (exit_context),31,10,0.0,0.1,1.0
+fabiocaccamo__python-codicefiscale-24,wandering,submitted (exit_context),25,10,0.0,0.1,1.0
+fabiocaccamo__python-codicefiscale-24,wandering,submitted (exit_context),6,6,2.2516291673878226,0.8333333333333334,0.3333333333333333
+fabiocaccamo__python-codicefiscale-24,wandering,submitted (exit_context),12,10,2.0464393446710156,0.5,0.4
+fabiocaccamo__python-codicefiscale-24,wandering,submitted (exit_context),31,10,1.0,0.2,0.5
+fabiocaccamo__python-codicefiscale-24,wandering,submitted (exit_context),33,10,0.0,0.1,1.0
+fabiocaccamo__python-codicefiscale-24,wandering,submitted (exit_context),18,10,2.5219280948873624,0.7,0.4
+facelessuser__pymdown-extensions-2362,wandering,submitted (exit_context),204,10,0.0,0.1,1.0
+facelessuser__pymdown-extensions-2362,wandering,submitted (exit_context),163,10,0.7219280948873623,0.2,0.8
+facelessuser__pymdown-extensions-2362,wandering,submitted (exit_context),51,10,2.1219280948873624,0.5,0.4
+facelessuser__pymdown-extensions-2362,wandering,submitted (exit_context),80,10,0.7219280948873623,0.2,0.8
+facelessuser__pymdown-extensions-2362,wandering,submitted (exit_context),58,10,2.9219280948873623,0.8,0.2
+geopandas__geopandas-2959,wandering,submitted (exit_context),25,10,0.0,0.1,1.0
+geopandas__geopandas-2959,wandering,submitted (exit_context),26,10,0.0,0.1,1.0
+geopandas__geopandas-2959,wandering,submitted (exit_context),35,10,1.0,0.2,0.5
+geopandas__geopandas-2959,wandering,submitted (exit_context),35,10,1.0,0.2,0.5
+geopandas__geopandas-2959,wandering,submitted (exit_context),22,10,1.0,0.2,0.5
+geopandas__geopandas-2959,wandering,submitted (exit_context),28,10,0.0,0.1,1.0
+getsentry__responses-291,wandering,submitted (exit_context),34,10,0.0,0.1,1.0
+getsentry__responses-291,wandering,submitted (exit_context),46,10,0.0,0.1,1.0
+getsentry__responses-291,wandering,submitted (exit_context),38,10,0.0,0.1,1.0
+getsentry__responses-291,wandering,submitted (exit_context),39,10,2.1219280948873624,0.5,0.4
+getsentry__responses-291,wandering,submitted (exit_context),30,10,1.0,0.2,0.5
+google__sre_yield-21,wandering,submitted (exit_context),35,10,0.7219280948873623,0.2,0.8
+google__sre_yield-21,wandering,submitted (exit_context),41,10,1.4854752972273344,0.3,0.5
+google__sre_yield-21,wandering,submitted (exit_context),48,10,0.9709505944546686,0.2,0.6
+google__sre_yield-21,wandering,submitted (exit_context),44,10,0.8812908992306927,0.2,0.7
+google__sre_yield-21,wandering,submitted (exit_context),32,10,0.8812908992306927,0.2,0.7
+google__sre_yield-21,wandering,submitted (exit_context),39,10,2.1709505944546685,0.5,0.3
+google__sre_yield-21,wandering,submitted (exit_context),32,10,0.0,0.1,1.0
+google__sre_yield-21,wandering,submitted (exit_context),129,10,0.0,0.1,1.0
+hamcrest__PyHamcrest-129,wandering,submitted (exit_context),59,10,0.0,0.1,1.0
+hamcrest__PyHamcrest-129,wandering,submitted (exit_context),32,10,0.0,0.1,1.0
+hamcrest__PyHamcrest-129,wandering,submitted (exit_context),30,10,0.0,0.1,1.0
+hamcrest__PyHamcrest-129,wandering,submitted (exit_context),75,10,1.0,0.2,0.5
+hamcrest__PyHamcrest-129,wandering,submitted (exit_context),48,10,2.446439344671015,0.6,0.3
+hhursev__recipe-scrapers-915,wandering,submitted (exit_context),52,10,1.0,0.2,0.5
+hhursev__recipe-scrapers-915,wandering,submitted (exit_context),107,10,0.7219280948873623,0.2,0.8
+imageio__imageio-255,wandering,submitted (exit_context),38,10,2.1709505944546685,0.5,0.3
+imageio__imageio-255,wandering,submitted (exit_context),31,10,0.7219280948873623,0.2,0.8
+imageio__imageio-255,wandering,submitted (exit_context),66,10,1.5709505944546684,0.3,0.4
+imageio__imageio-255,wandering,submitted (exit_context),77,10,2.1709505944546685,0.5,0.3
+imageio__imageio-255,wandering,submitted (exit_context),55,10,1.1567796494470395,0.3,0.7
+iterative__dvc-2975,wandering,submitted (exit_context),263,10,0.0,0.1,1.0
+iterative__dvc-2975,wandering,submitted (exit_context),53,10,1.0,0.2,0.5
+iterative__dvc-2975,wandering,submitted (exit_context),83,10,1.0,0.2,0.5
+iterative__dvc-2975,wandering,submitted (exit_context),30,10,0.0,0.1,1.0
+iterative__dvc-2975,wandering,submitted (exit_context),55,10,0.0,0.1,1.0
+iterative__dvc-3428,wandering,submitted (exit_context),35,10,0.0,0.1,1.0
+iterative__dvc-3428,wandering,submitted (exit_context),54,10,2.4464393446710155,0.6,0.3
+iterative__dvc-3428,wandering,submitted (exit_context),36,10,0.0,0.1,1.0
+iterative__dvc-3428,wandering,submitted (exit_context),43,10,2.521928094887362,0.6,0.2
+iterative__dvc-3709,wandering,submitted (exit_context),67,10,0.9709505944546686,0.2,0.6
+iterative__dvc-3709,wandering,submitted (exit_context),35,10,0.4689955935892812,0.2,0.9
+iterative__dvc-3709,wandering,submitted (exit_context),109,10,0.0,0.1,1.0
+iterative__dvc-3709,wandering,submitted (exit_context),129,10,0.0,0.1,1.0
+iterative__dvc-3709,wandering,submitted (exit_context),67,10,0.0,0.1,1.0
+iterative__dvc-4415,wandering,submitted (exit_context),42,10,1.0,0.2,0.5
+iterative__dvc-4623,wandering,submitted (exit_context),67,10,2.2464393446710154,0.5,0.3
+iterative__dvc-5336,wandering,submitted (exit_context),36,10,0.0,0.1,1.0
+iterative__dvc-5336,wandering,submitted (exit_context),62,10,1.0,0.2,0.5
+iterative__dvc-5336,wandering,submitted (exit_context),55,10,1.5709505944546684,0.3,0.4
+iterative__dvc-5336,wandering,submitted (exit_context),31,10,1.570950594454669,0.4,0.6
+jackdewinter__pyscan-12,wandering,submitted (exit_context),29,10,0.0,0.1,1.0
+jackdewinter__pyscan-12,wandering,submitted (exit_context),43,10,2.3709505944546687,0.6,0.3
+joke2k__django-environ-419,wandering,submitted (exit_context),207,10,1.3609640474436813,0.3,0.5
+joke2k__django-environ-419,wandering,submitted (exit_context),36,10,0.7219280948873623,0.2,0.8
+joweich__chat-miner-93,wandering,submitted (exit_context),39,10,1.5709505944546684,0.3,0.4
+joweich__chat-miner-93,wandering,submitted (exit_context),40,10,1.3709505944546687,0.3,0.6
+kinnala__scikit-fem-634,wandering,submitted (exit_context),40,10,2.2464393446710154,0.5,0.3
+kinnala__scikit-fem-634,wandering,submitted (exit_context),24,10,0.0,0.1,1.0
+kinnala__scikit-fem-634,wandering,submitted (exit_context),37,10,0.0,0.1,1.0
+kinnala__scikit-fem-634,wandering,submitted (exit_context),41,10,1.5709505944546684,0.3,0.4
+kinnala__scikit-fem-634,wandering,submitted (exit_context),38,10,1.0,0.2,0.5
+kinnala__scikit-fem-634,wandering,submitted (exit_context),26,10,1.0,0.2,0.5
+m-labs__nmigen-50,wandering,submitted (exit_context),65,10,1.9709505944546686,0.4,0.3
+m-labs__nmigen-50,wandering,submitted (exit_context),103,10,1.0,0.2,0.5
+m-labs__nmigen-50,wandering,submitted (exit_context),43,10,0.7219280948873623,0.2,0.8
+macisamuele__language-formatters-pre-commit-hooks-9,wandering,submitted (exit_context),141,10,1.5709505944546684,0.3,0.4
+macisamuele__language-formatters-pre-commit-hooks-9,wandering,submitted (exit_context),37,10,1.0,0.2,0.5
+macisamuele__language-formatters-pre-commit-hooks-9,wandering,submitted (exit_context),58,10,1.5709505944546684,0.3,0.4
+macisamuele__language-formatters-pre-commit-hooks-9,wandering,submitted (exit_context),35,10,1.0,0.2,0.5
+mapbox__rio-color-14,wandering,submitted (exit_context),46,10,1.360964047443681,0.3,0.5
+mapbox__rio-color-14,wandering,submitted (exit_context),39,10,0.0,0.1,1.0
+mapbox__rio-color-14,wandering,submitted (exit_context),58,10,1.0,0.2,0.5
+marshmallow-code__webargs-463,wandering,submitted (exit_context),62,10,1.0,0.2,0.5
+marshmallow-code__webargs-463,wandering,submitted (exit_context),51,10,1.6854752972273346,0.4,0.5
+marshmallow-code__webargs-463,wandering,submitted (exit_context),36,10,0.0,0.1,1.0
+marshmallow-code__webargs-463,wandering,submitted (exit_context),57,10,1.0,0.2,0.5
+marshmallow-code__webargs-463,wandering,submitted (exit_context),63,10,0.8812908992306927,0.2,0.7
+matchms__matchms-493,wandering,submitted (exit_context),38,10,0.0,0.1,1.0
+matchms__matchms-493,wandering,submitted (exit_context),46,10,1.0,0.2,0.5
+matchms__matchms-493,wandering,submitted (exit_context),41,10,1.360964047443681,0.3,0.5
+matchms__matchms-493,wandering,submitted (exit_context),38,10,1.8954618442383218,0.4,0.3
+matchms__matchms-493,wandering,submitted (exit_context),61,10,0.9709505944546686,0.2,0.6
+miguelgrinberg__python-engineio-108,wandering,submitted (exit_context),27,10,1.6854752972273346,0.4,0.5
+miguelgrinberg__python-engineio-108,wandering,submitted (exit_context),60,10,1.9709505944546686,0.4,0.3
+miguelgrinberg__python-engineio-108,wandering,submitted (exit_context),28,10,0.4689955935892812,0.2,0.9
+miguelgrinberg__python-engineio-108,wandering,submitted (exit_context),14,10,2.7219280948873625,0.7,0.2
+miguelgrinberg__python-engineio-108,wandering,submitted (exit_context),58,10,1.0,0.2,0.5
+mplanchard__pydecor-20,wandering,submitted (exit_context),31,10,0.0,0.1,1.0
+mplanchard__pydecor-20,wandering,submitted (exit_context),35,10,1.0,0.2,0.5
+mplanchard__pydecor-20,wandering,submitted (exit_context),44,10,0.8812908992306927,0.2,0.7
+mplanchard__pydecor-20,wandering,submitted (exit_context),34,10,1.1567796494470395,0.3,0.7
+mplanchard__pydecor-20,wandering,submitted (exit_context),40,10,0.9709505944546686,0.2,0.6
+mplanchard__pydecor-20,wandering,submitted (exit_context),41,10,1.0,0.2,0.5
+mtik00__yamicache-9,wandering,submitted (exit_context),41,10,1.9709505944546688,0.4,0.3
+mtik00__yamicache-9,wandering,submitted (exit_context),42,10,0.8812908992306927,0.2,0.7
+mtik00__yamicache-9,wandering,submitted (exit_context),49,10,0.0,0.1,1.0
+mtik00__yamicache-9,wandering,submitted (exit_context),23,10,0.0,0.1,1.0
+netromdk__vermin-196,wandering,submitted (exit_context),37,10,0.0,0.1,1.0
+netromdk__vermin-196,wandering,submitted (exit_context),28,10,0.0,0.1,1.0
+netromdk__vermin-196,wandering,submitted (exit_context),24,10,0.0,0.1,1.0
+netromdk__vermin-196,wandering,submitted (exit_context),32,10,2.1219280948873624,0.5,0.4
+netromdk__vermin-196,wandering,submitted (exit_context),30,10,0.4689955935892812,0.2,0.9
+netromdk__vermin-196,wandering,submitted (exit_context),22,10,0.0,0.1,1.0
+netromdk__vermin-196,wandering,submitted (exit_context),22,10,0.0,0.1,1.0
+netromdk__vermin-196,wandering,submitted (exit_context),31,10,0.0,0.1,1.0
+numpy__numpy-financial-54,wandering,submitted (exit_context),19,10,0.0,0.1,1.0
+numpy__numpy-financial-54,wandering,submitted (exit_context),46,10,2.8464393446710154,0.8,0.3
+numpy__numpy-financial-54,wandering,submitted (exit_context),33,10,0.0,0.1,1.0
+plotly__dash-bio-589,wandering,submitted (exit_context),15,10,0.0,0.1,1.0
+plotly__dash-bio-589,wandering,submitted (exit_context),31,10,1.5709505944546684,0.3,0.4
+pvlib__pvlib-python-1048,wandering,submitted (exit_context),31,10,0.0,0.1,1.0
+pydantic__pydantic-4399,wandering,submitted (exit_context),59,10,0.0,0.1,1.0
+pydantic__pydantic-4399,wandering,submitted (exit_context),52,10,0.0,0.1,1.0
+pydantic__pydantic-4399,wandering,submitted (exit_context),76,10,0.0,0.1,1.0
+pydantic__pydantic-4399,wandering,submitted (exit_context),50,10,1.5709505944546684,0.3,0.4
+pydantic__pydantic-4399,wandering,submitted (exit_context),52,10,0.0,0.1,1.0
+pydantic__pydantic-4399,wandering,submitted (exit_context),35,10,1.0,0.2,0.5
+pyupio__changelogs-232,wandering,submitted (exit_context),34,10,1.5709505944546684,0.3,0.4
+ross__requests-futures-69,wandering,submitted (exit_context),27,10,1.5709505944546684,0.3,0.4
+sciunto-org__python-bibtexparser-379,wandering,submitted (exit_context),27,10,0.0,0.1,1.0
+sciunto-org__python-bibtexparser-379,wandering,submitted (exit_context),50,10,1.0,0.2,0.5
+sciunto-org__python-bibtexparser-379,wandering,submitted (exit_context),35,10,0.9709505944546686,0.2,0.6
+sciunto-org__python-bibtexparser-379,wandering,submitted (exit_context),49,10,0.9709505944546686,0.2,0.6
+sciunto-org__python-bibtexparser-379,wandering,submitted (exit_context),48,10,0.7219280948873623,0.2,0.8
+sciunto-org__python-bibtexparser-385,wandering,submitted (exit_context),54,10,2.1709505944546685,0.5,0.3
+sciunto-org__python-bibtexparser-385,wandering,submitted (exit_context),46,10,1.9219280948873623,0.4,0.4
+sciunto-org__python-bibtexparser-385,wandering,submitted (exit_context),41,10,0.0,0.1,1.0
+sciunto-org__python-bibtexparser-385,wandering,submitted (exit_context),47,10,0.0,0.1,1.0
+sciunto-org__python-bibtexparser-385,wandering,submitted (exit_context),44,10,0.9709505944546686,0.2,0.6
+sciunto-org__python-bibtexparser-385,wandering,submitted (exit_context),40,10,1.1567796494470395,0.3,0.7
+sciunto-org__python-bibtexparser-385,wandering,submitted (exit_context),56,10,1.6854752972273346,0.4,0.5
+sciunto-org__python-bibtexparser-385,wandering,submitted (exit_context),207,10,0.0,0.1,1.0
+sciunto-org__python-bibtexparser-385,wandering,submitted (exit_context),50,10,0.0,0.1,1.0
+sciunto-org__python-bibtexparser-385,wandering,submitted (exit_context),43,10,0.9219280948873623,0.3,0.8
+sciunto-org__python-bibtexparser-385,wandering,submitted (exit_context),46,10,0.9219280948873623,0.3,0.8
+sciunto-org__python-bibtexparser-385,wandering,submitted (exit_context),169,10,1.0,0.2,0.5
+sciunto-org__python-bibtexparser-385,wandering,submitted (exit_context),187,10,1.9709505944546686,0.4,0.3
+sciunto-org__python-bibtexparser-385,wandering,submitted (exit_context),134,10,1.0,0.2,0.5
+sciunto-org__python-bibtexparser-385,wandering,submitted (exit_context),39,10,0.8812908992306927,0.2,0.7
+sciunto-org__python-bibtexparser-385,wandering,submitted (exit_context),49,10,1.0,0.2,0.5
+sciunto-org__python-bibtexparser-385,wandering,submitted (exit_context),29,10,0.9219280948873623,0.3,0.8
+sciunto-org__python-bibtexparser-385,wandering,submitted (exit_context),133,10,1.0,0.2,0.5
+sciunto-org__python-bibtexparser-385,wandering,submitted (exit_context),52,10,0.0,0.1,1.0
+sciunto-org__python-bibtexparser-385,wandering,submitted (exit_context),107,10,1.0,0.2,0.5
+sciunto-org__python-bibtexparser-385,wandering,submitted (exit_context),33,10,1.360964047443681,0.3,0.5
+sciunto-org__python-bibtexparser-385,wandering,submitted (exit_context),50,10,1.7219280948873623,0.4,0.4
+sciunto-org__python-bibtexparser-385,wandering,submitted (exit_context),38,10,1.0,0.2,0.5
+sciunto-org__python-bibtexparser-385,wandering,submitted (exit_context),55,10,1.9709505944546686,0.4,0.3
+sciunto-org__python-bibtexparser-385,wandering,submitted (exit_context),36,10,0.7219280948873623,0.2,0.8
+sciunto-org__python-bibtexparser-385,wandering,submitted (exit_context),31,10,1.0,0.2,0.5
+sciunto-org__python-bibtexparser-385,wandering,submitted (exit_context),59,10,0.0,0.1,1.0
+sciunto-org__python-bibtexparser-385,wandering,submitted (exit_context),65,10,0.7219280948873623,0.2,0.8
+sciunto-org__python-bibtexparser-385,wandering,submitted (exit_context),117,10,1.3709505944546687,0.3,0.6
+sciunto-org__python-bibtexparser-385,wandering,submitted (exit_context),140,10,1.0,0.2,0.5
+sciunto-org__python-bibtexparser-385,wandering,submitted (exit_context),139,10,1.0,0.2,0.5
+sciunto-org__python-bibtexparser-385,wandering,submitted (exit_context),150,10,1.0,0.2,0.5
+sciunto-org__python-bibtexparser-385,wandering,submitted (exit_context),35,10,0.0,0.1,1.0
+sciunto-org__python-bibtexparser-385,wandering,submitted (exit_context),121,10,0.8812908992306927,0.2,0.7
+sciunto-org__python-bibtexparser-385,wandering,submitted (exit_context),37,10,0.4689955935892812,0.2,0.9
+sciunto-org__python-bibtexparser-385,wandering,submitted (exit_context),39,10,2.1709505944546685,0.5,0.3
+sciunto-org__python-bibtexparser-385,wandering,submitted (exit_context),23,10,0.0,0.1,1.0
+sciunto-org__python-bibtexparser-385,wandering,submitted (exit_context),70,10,1.8464393446710154,0.4,0.4
+sciunto-org__python-bibtexparser-385,wandering,submitted (exit_context),56,10,1.5709505944546687,0.4,0.6
+sciunto-org__python-bibtexparser-385,wandering,submitted (exit_context),39,10,0.4689955935892812,0.2,0.9
+scrapy__parsel-141,wandering,submitted (exit_context),27,10,2.246439344671016,0.5,0.3
+serge-sans-paille__beniget-80,wandering,submitted (exit_context),36,10,0.0,0.1,1.0
+serge-sans-paille__beniget-80,wandering,submitted (exit_context),129,10,2.446439344671015,0.6,0.3
+snowblink14__smatch-30,wandering,submitted (exit_context),70,10,1.0,0.2,0.5
+snowblink14__smatch-30,wandering,submitted (exit_context),79,10,0.9219280948873623,0.3,0.8
+snowblink14__smatch-30,wandering,submitted (exit_context),35,10,1.5709505944546684,0.3,0.4
+srsudar__eg-88,wandering,submitted (exit_context),31,10,0.7219280948873623,0.2,0.8
+srsudar__eg-88,wandering,submitted (exit_context),53,10,1.0,0.2,0.5
+srsudar__eg-88,wandering,submitted (exit_context),134,10,0.4689955935892812,0.2,0.9
+srsudar__eg-88,wandering,submitted (exit_context),59,10,0.0,0.1,1.0
+srsudar__eg-88,wandering,submitted (exit_context),33,10,0.0,0.1,1.0
+srsudar__eg-88,wandering,submitted (exit_context),72,10,1.0,0.2,0.5
+srsudar__eg-88,wandering,submitted (exit_context),54,10,1.5219280948873621,0.3,0.4
+stfc__PSyclone-1111,wandering,submitted (exit_context),16,10,2.1219280948873624,0.5,0.4
+stfc__PSyclone-2191,wandering,submitted (exit_context),36,10,1.3709505944546687,0.3,0.6
+stfc__PSyclone-2191,wandering,submitted (exit_context),103,10,1.5709505944546684,0.3,0.4
+tianocore__edk2-pytool-extensions-41,wandering,submitted (exit_context),40,10,1.5709505944546687,0.4,0.6
+tianocore__edk2-pytool-extensions-41,wandering,submitted (exit_context),200,10,1.4854752972273344,0.3,0.5
+tianocore__edk2-pytool-extensions-41,wandering,submitted (exit_context),32,10,0.0,0.1,1.0
+tianocore__edk2-pytool-extensions-41,wandering,submitted (exit_context),25,10,0.9709505944546686,0.2,0.6
+tianocore__edk2-pytool-extensions-41,wandering,submitted (exit_context),70,10,1.0,0.2,0.5
+tianocore__edk2-pytool-extensions-41,wandering,submitted (exit_context),35,10,1.0,0.2,0.5
+tianocore__edk2-pytool-extensions-41,wandering,submitted (exit_context),41,10,1.5709505944546684,0.3,0.4
+tobymao__sqlglot-1726,wandering,submitted (exit_context),109,10,1.5709505944546684,0.3,0.4
+tobymao__sqlglot-1726,wandering,submitted (exit_context),31,10,0.9709505944546686,0.2,0.6
+tobymao__sqlglot-1889,wandering,submitted (exit_context),190,10,2.046439344671015,0.5,0.4
+tobymao__sqlglot-1889,wandering,submitted (exit_context),39,10,1.4854752972273344,0.3,0.5
+tobymao__sqlglot-1889,wandering,submitted (exit_context),22,10,2.1219280948873624,0.5,0.4
+tobymao__sqlglot-1889,wandering,submitted (exit_context),27,10,1.0,0.2,0.5
+tobymao__sqlglot-1889,wandering,submitted (exit_context),67,10,1.5709505944546684,0.3,0.4
+tobymao__sqlglot-1889,wandering,submitted (exit_context),30,10,0.8812908992306927,0.2,0.7
+tobymao__sqlglot-1889,wandering,submitted (exit_context),47,10,1.1567796494470395,0.3,0.7
+tobymao__sqlglot-1889,wandering,submitted (exit_context),129,10,1.5709505944546684,0.3,0.4
+tobymao__sqlglot-1889,wandering,submitted (exit_context),35,10,0.0,0.1,1.0
+tobymao__sqlglot-1889,wandering,submitted (exit_context),58,10,1.8464393446710154,0.4,0.4
+tobymao__sqlglot-1889,wandering,submitted (exit_context),56,10,2.1219280948873624,0.5,0.4
+tobymao__sqlglot-1889,wandering,submitted (exit_context),37,10,0.9709505944546686,0.2,0.6
+tobymao__sqlglot-2063,wandering,submitted (exit_context),38,10,1.0,0.2,0.5
+tobymao__sqlglot-2063,wandering,submitted (exit_context),22,10,2.121928094887362,0.5,0.4
+tobymao__sqlglot-2063,wandering,submitted (exit_context),32,10,2.0464393446710156,0.5,0.4
+wearewhys__magnivore-14,wandering,submitted (exit_context),39,10,0.0,0.1,1.0
+wearewhys__magnivore-14,wandering,submitted (exit_context),37,10,1.5709505944546684,0.3,0.4
+wearewhys__magnivore-14,wandering,submitted (exit_context),34,10,0.4689955935892812,0.2,0.9
+wearewhys__magnivore-14,wandering,submitted (exit_context),43,10,1.0,0.2,0.5
+wearewhys__magnivore-14,wandering,submitted (exit_context),37,10,1.5709505944546684,0.3,0.4
+wearewhys__magnivore-14,wandering,submitted (exit_context),38,10,1.0,0.2,0.5
+wearewhys__magnivore-14,wandering,submitted (exit_context),101,10,1.0,0.2,0.5
+wearewhys__magnivore-14,wandering,submitted (exit_context),39,10,0.0,0.1,1.0
+wearewhys__magnivore-14,wandering,submitted (exit_context),81,10,1.0,0.2,0.5
+wearewhys__magnivore-14,wandering,submitted (exit_context),40,10,1.5709505944546684,0.3,0.4
+wearewhys__magnivore-14,wandering,submitted (exit_context),52,10,0.0,0.1,1.0
+wearewhys__magnivore-14,wandering,submitted (exit_context),41,10,1.0,0.2,0.5
+wearewhys__magnivore-14,wandering,submitted (exit_context),36,10,1.5709505944546684,0.3,0.4
+wearewhys__magnivore-14,wandering,submitted (exit_context),36,10,0.0,0.1,1.0
+wearewhys__magnivore-14,wandering,submitted (exit_context),41,10,0.0,0.1,1.0
+wearewhys__magnivore-14,wandering,submitted (exit_context),42,10,0.8812908992306927,0.2,0.7
+wearewhys__magnivore-14,wandering,submitted (exit_context),49,10,0.0,0.1,1.0
+wearewhys__magnivore-14,wandering,submitted (exit_context),41,10,0.8812908992306927,0.2,0.7
+wearewhys__magnivore-14,wandering,submitted (exit_context),39,10,1.3609640474436813,0.3,0.5
+wearewhys__magnivore-14,wandering,submitted (exit_context),42,10,1.0,0.2,0.5
+wearewhys__magnivore-14,wandering,submitted (exit_context),41,10,0.0,0.1,1.0
+wearewhys__magnivore-14,wandering,submitted (exit_context),36,10,0.7219280948873623,0.2,0.8
+wearewhys__magnivore-14,wandering,submitted (exit_context),49,10,0.8812908992306927,0.2,0.7
+wearewhys__magnivore-14,wandering,submitted (exit_context),44,10,1.0,0.2,0.5
+wearewhys__magnivore-14,wandering,submitted (exit_context),40,10,0.8812908992306927,0.2,0.7
+zalando-stups__senza-365,wandering,submitted (exit_context),37,10,1.721928094887362,0.4,0.4
+zalando-stups__senza-365,wandering,submitted (exit_context),31,10,0.0,0.1,1.0
+ARMmbed__greentea-237,wandering,submitted (exit_context),36,10,2.246439344671016,0.5,0.3
+ARMmbed__greentea-237,wandering,submitted (exit_context),46,10,1.5709505944546684,0.3,0.4
+ARMmbed__greentea-237,wandering,submitted (exit_context),35,10,1.5219280948873621,0.3,0.4
+Erotemic__ubelt-64,wandering,submitted (exit_context),37,10,0.0,0.1,1.0
+European-XFEL__EXtra-data-257,wandering,submitted (exit_context),67,10,1.8464393446710154,0.4,0.4
+European-XFEL__EXtra-data-257,wandering,submitted (exit_context),79,10,1.0,0.2,0.5
+pydata__pydata-google-auth-17,success,submitted,8,8,2.5,0.75,0.25
+konradhalas__dacite-216,success,submitted,21,10,2.0464393446710156,0.5,0.4
+just-work__fffw-100,success,submitted,16,10,1.7219280948873623,0.4,0.4
+streamlink__streamlink-1696,success,submitted,14,10,2.0464393446710156,0.5,0.4
+streamlink__streamlink-1696,success,submitted,6,11,2.845350936622437,1.3333333333333333,0.2727272727272727
+konradhalas__dacite-216,success,submitted,11,10,2.521928094887362,0.6,0.2
+ithaka__apiron-8,success,submitted,12,10,1.7709505944546688,0.5,0.6
+astarte-platform__astarte-device-sdk-python-98,success,submitted,22,10,1.7219280948873623,0.4,0.4
+package-url__packageurl-python-29,success,submitted,15,10,2.9219280948873623,0.8,0.2
+tempoCollaboration__OQuPy-74,success,submitted,11,10,2.3709505944546687,0.6,0.3
+ppizarror__pygame-menu-357,success,submitted,30,10,2.321928094887362,0.6,0.4
+stfc__PSyclone-1111,success,submitted,5,5,1.9219280948873623,0.8,0.4
+googleapis__python-api-core-546,success,submitted,19,10,2.5219280948873624,0.7,0.4
+networkx__networkx-7024,success,submitted,9,9,2.725480556997868,0.7777777777777778,0.2222222222222222
+pydicom__pydicom-1562,success,submitted,14,10,2.721928094887362,0.7,0.2
+kinnala__scikit-fem-634,success,submitted,16,10,2.8464393446710154,0.8,0.3
+astarte-platform__astarte-device-sdk-python-98,success,submitted,5,5,2.321928094887362,1.0,0.2
+bids-standard__pybids-611,success,submitted (exit_context),59,10,0.8812908992306927,0.2,0.7
+fair-workflows__nanopub-140,success,submitted,13,10,2.0464393446710156,0.5,0.4
+docker__docker-py-1167,success,submitted,24,10,2.6464393446710153,0.7,0.3
+tempoCollaboration__OQuPy-74,success,submitted,12,10,2.7219280948873625,0.7,0.2
+joke2k__django-environ-325,success,submitted,13,10,2.321928094887362,0.6,0.4
+ameily__cincoconfig-26,success,submitted,16,10,2.4464393446710155,0.6,0.3
+astarte-platform__astarte-device-sdk-python-98,success,submitted,22,10,2.321928094887362,0.6,0.4
+geopandas__geopandas-3240,success,submitted,17,10,2.9219280948873623,0.8,0.2
+kinnala__scikit-fem-634,success,submitted,14,10,2.5219280948873624,0.7,0.4
+networkx__networkx-7024,success,submitted,8,8,2.5,0.75,0.25
+asottile__yesqa-44,success,submitted,10,10,2.1219280948873624,0.5,0.4
+Azure__msrest-for-python-208,success,submitted,10,10,2.9219280948873623,0.8,0.2
+cunybpl__isdparser-4,success,submitted,10,10,2.6464393446710153,0.7,0.3
+celery__billiard-372,success,submitted,8,8,2.75,0.875,0.25
+joke2k__faker-828,success,submitted (exit_context),54,10,1.4854752972273344,0.3,0.5
+pydantic__pydantic-3975,success,submitted,18,10,2.6464393446710153,0.7,0.3
+python-control__python-control-834,success,submitted,5,5,2.321928094887362,1.0,0.2
+deardurham__ciprs-reader-38,success,submitted,9,9,2.2810361125534233,0.6666666666666666,0.4444444444444444
+tempoCollaboration__OQuPy-74,success,submitted,11,10,2.3709505944546687,0.6,0.3
+rapidpro__rapidpro-python-66,success,submitted,9,9,2.725480556997868,0.7777777777777778,0.2222222222222222
+wireservice__csvkit-800,success,submitted,15,10,2.5219280948873624,0.7,0.4
+pydantic__pydantic-3975,success,submitted,15,10,3.121928094887362,0.9,0.2
+Erotemic__ubelt-64,success,submitted,11,10,2.4464393446710155,0.6,0.3
+package-url__packageurl-python-29,success,submitted,15,10,2.9219280948873623,0.8,0.2
+fair-workflows__nanopub-140,success,submitted,17,10,1.6854752972273346,0.4,0.5
+googleapis__python-api-core-546,success,submitted,8,8,2.75,0.875,0.25
+adbar__simplemma-114,success,submitted,11,10,2.721928094887362,0.7,0.2
+oasis-open__cti-python-stix2-342,success,submitted,8,8,2.5,0.75,0.25
+geomet__geomet-101,success,submitted,15,10,2.1609640474436813,0.6,0.5
+fair-workflows__nanopub-140,success,submitted,10,10,2.6464393446710153,0.7,0.3
+konradhalas__dacite-216,success,submitted,25,10,1.9609640474436814,0.5,0.5
+joke2k__faker-828,success,submitted,20,10,2.6464393446710153,0.7,0.3
+geopandas__geopandas-1336,success,submitted,12,10,3.121928094887362,0.9,0.2
+package-url__packageurl-python-29,success,submitted,13,10,2.9219280948873623,0.8,0.2
+googleapis__python-api-core-546,success,submitted (exit_context),17,10,0.7219280948873623,0.2,0.8
+networkx__networkx-7024,success,submitted,9,9,2.725480556997868,0.7777777777777778,0.2222222222222222
+pappasam__toml-sort-36,success,submitted,10,10,2.9219280948873623,0.8,0.2
+tempoCollaboration__OQuPy-74,success,submitted,15,10,2.521928094887362,0.6,0.2
+package-url__packageurl-python-29,success,submitted,13,10,2.9219280948873623,0.8,0.2
+tehmaze__ansi-34,success,submitted,11,10,3.121928094887362,0.9,0.2
+joke2k__django-environ-358,success,submitted,15,10,1.9609640474436814,0.5,0.5
+package-url__packageurl-python-29,success,submitted,16,10,2.6464393446710153,0.7,0.3
+tianocore__edk2-pytool-extensions-41,success,submitted,5,5,2.321928094887362,1.0,0.2
+pydantic__pydantic-4399,success,submitted,14,10,2.9219280948873623,0.8,0.2
+googleapis__python-api-core-546,success,submitted,19,10,1.1567796494470395,0.3,0.7
+johnsyweb__python_sparse_list-17,success,submitted,9,9,2.725480556997868,0.7777777777777778,0.2222222222222222
+networkx__networkx-7024,success,submitted,9,9,2.725480556997868,0.7777777777777778,0.2222222222222222
+lucidsushi__gs_pip_install-132,success,submitted,5,5,2.321928094887362,1.0,0.2
+deardurham__ciprs-reader-38,success,submitted,9,9,2.5032583347756456,0.6666666666666666,0.2222222222222222
+pydantic__pydantic-3975,success,submitted,12,10,3.121928094887362,0.9,0.2
+deardurham__ciprs-reader-38,success,submitted,10,10,2.446439344671015,0.6,0.3
+package-url__packageurl-python-29,success,submitted,13,10,2.9219280948873623,0.8,0.2
+lucidsushi__gs_pip_install-132,success,submitted,5,5,2.321928094887362,1.0,0.2
+oasis-open__cti-python-stix2-342,success,submitted,15,10,1.9609640474436814,0.5,0.5
+microsoft__electionguard-python-83,success,submitted,8,8,2.5,0.75,0.25
+pappasam__toml-sort-36,success,submitted,8,8,2.5,0.75,0.25
+googleapis__python-api-core-546,success,submitted,8,8,2.75,0.875,0.25
+microsoft__electionguard-python-83,success,submitted,16,10,2.321928094887362,0.6,0.4
+simonsobs__ocs-332,success,submitted,9,9,2.94770277922009,0.8888888888888888,0.2222222222222222
+ppizarror__pygame-menu-357,success,submitted,25,10,3.121928094887362,0.9,0.2
+package-url__packageurl-python-29,success,submitted,14,10,3.121928094887362,0.9,0.2
+hugovk__pypistats-41,success,submitted,5,5,1.9219280948873623,0.8,0.4
+bids-standard__pybids-611,success,submitted,7,7,2.807354922057604,1.0,0.14285714285714285
+python-visualization__folium-1633,success,submitted,10,10,2.721928094887362,0.7,0.2
+bids-standard__pybids-611,success,submitted,90,10,1.7219280948873623,0.4,0.4
+networkx__networkx-7024,success,submitted,14,10,2.8464393446710154,0.8,0.3
+Melevir__cognitive_complexity-15,success,submitted,15,10,2.321928094887362,0.6,0.4
+deardurham__ciprs-reader-38,success,submitted,9,9,2.197159723424149,0.5555555555555556,0.3333333333333333
+oasis-open__cti-python-stix2-342,success,submitted,8,8,2.5,0.75,0.25
+astarte-platform__astarte-device-sdk-python-98,success,submitted,5,5,1.3709505944546687,0.6,0.6
+auth0__auth0-python-500,success,submitted (exit_context),36,10,1.0,0.2,0.5
+astarte-platform__astarte-device-sdk-python-98,success,submitted,8,8,2.75,0.875,0.25
+adbar__simplemma-114,success,submitted,11,10,2.721928094887362,0.7,0.2
+package-url__packageurl-python-29,success,submitted,13,10,2.9219280948873623,0.8,0.2
+stfc__PSyclone-1111,success,submitted,5,5,2.321928094887362,1.0,0.2
+ameily__cincoconfig-26,success,submitted,9,9,2.725480556997868,0.7777777777777778,0.2222222222222222
+streamlink__streamlink-1696,success,submitted,27,10,2.5219280948873624,0.6,0.2
+joke2k__faker-828,success,submitted,29,10,2.846439344671015,0.8,0.3
+package-url__packageurl-python-29,success,submitted,14,10,2.9219280948873623,0.8,0.2
+python-visualization__folium-1633,success,submitted,15,10,2.6464393446710153,0.7,0.3
+simonsobs__ocs-332,success,submitted,16,10,2.3709505944546687,0.6,0.3
+cunybpl__isdparser-4,success,submitted,10,10,2.6464393446710153,0.7,0.3
+astarte-platform__astarte-device-sdk-python-98,success,submitted,9,9,2.6416041678685933,0.7777777777777778,0.3333333333333333
+ithaka__apiron-8,success,submitted,11,10,2.121928094887362,0.5,0.4
+eEcoLiDAR__laserchicken-135,success,submitted,13,10,2.446439344671015,0.6,0.3
+pyupio__changelogs-232,success,submitted,11,10,2.446439344671015,0.6,0.3
+joke2k__django-environ-325,success,submitted,13,10,2.0464393446710156,0.5,0.4
+pydata__pydata-google-auth-17,success,submitted,8,8,2.5,0.75,0.25
+asottile__yesqa-44,success,submitted,9,9,2.725480556997868,0.7777777777777778,0.2222222222222222
+docker__docker-py-1167,success,submitted,12,10,2.6464393446710153,0.7,0.3
+marshmallow-code__apispec-811,success,submitted,11,10,2.6464393446710153,0.7,0.3
+networkx__networkx-7024,success,submitted,13,10,2.9219280948873623,0.8,0.2
+rapidpro__rapidpro-python-66,success,submitted,10,10,2.9219280948873623,0.8,0.2
+bids-standard__pybids-611,success,submitted,9,9,2.94770277922009,0.8888888888888888,0.2222222222222222
+simonsobs__ocs-332,success,submitted,26,10,2.721928094887362,0.7,0.2
+networkx__networkx-7024,success,submitted,12,10,2.9219280948873623,0.8,0.2
+ithaka__apiron-8,success,submitted,7,7,2.521640636343318,0.8571428571428571,0.2857142857142857
+docker__docker-py-1167,success,submitted,15,10,3.121928094887362,0.9,0.2
+ameily__cincoconfig-26,success,submitted,51,10,2.8464393446710154,0.8,0.3
+networkx__networkx-7024,success,submitted,9,9,2.725480556997868,0.7777777777777778,0.2222222222222222
+Azure__msrest-for-python-208,success,submitted,9,9,2.725480556997868,0.7777777777777778,0.2222222222222222
+hhursev__recipe-scrapers-915,success,submitted (exit_context),18,10,1.721928094887362,0.4,0.4
+asottile__yesqa-44,success,submitted,5,5,2.321928094887362,1.0,0.2
+geopandas__geopandas-3240,success,submitted,14,10,2.721928094887362,0.7,0.2
+astarte-platform__astarte-device-sdk-python-98,success,submitted,5,5,1.9219280948873623,0.8,0.4
+package-url__packageurl-python-29,success,submitted,13,10,2.9219280948873623,0.8,0.2
+hugovk__pypistats-41,success,submitted,10,10,1.6854752972273344,0.4,0.5
+geopandas__geopandas-3240,success,submitted,13,10,3.121928094887362,0.9,0.2
+ameily__cincoconfig-26,success,submitted,6,6,2.584962500721156,1.0,0.16666666666666666
+iterative__dvc-5785,success,submitted,12,13,2.873140679513133,0.8,0.23076923076923078
+oasis-open__cti-python-stix2-454,success,submitted,11,10,2.9219280948873623,0.8,0.2
+python-visualization__folium-1633,success,submitted,11,10,2.9219280948873623,0.8,0.2
+oasis-open__cti-python-stix2-454,success,submitted,15,11,2.7321588913645702,0.8,0.36363636363636365
+konradhalas__dacite-216,success,submitted,14,10,2.321928094887362,0.6,0.4
+ttu__ruuvitag-sensor-41,success,submitted,7,7,2.2359263506290326,0.7142857142857143,0.2857142857142857
+Melevir__cognitive_complexity-15,success,submitted,18,10,2.5219280948873624,0.6,0.2
+googleapis__python-api-core-546,success,submitted,18,10,2.446439344671015,0.6,0.3
+geomet__geomet-101,success,submitted,20,10,2.5219280948873624,0.7,0.4
+streamlink__streamlink-1696,success,submitted,11,10,2.6464393446710153,0.7,0.3
+astarte-platform__astarte-device-sdk-python-98,success,submitted,16,10,2.721928094887362,0.7,0.2
+scikit-hep__cabinetry-396,success,submitted (exit_context),43,10,0.8812908992306927,0.2,0.7
+iterative__dvc-5785,success,submitted,13,10,2.4464393446710155,0.6,0.3
+joke2k__django-environ-358,success,submitted,7,7,1.6644977792004614,0.5714285714285714,0.5714285714285714
+oasis-open__cti-python-stix2-342,success,submitted,8,8,2.5,0.75,0.25
+konradhalas__dacite-216,success,submitted,15,10,2.6464393446710157,0.7,0.3
+networkx__networkx-7024,success,submitted,9,9,2.725480556997868,0.7777777777777778,0.2222222222222222
+mherrmann__gitignore_parser-38,success,submitted,8,8,2.5,0.75,0.25
+konradhalas__dacite-216,success,submitted,9,9,2.725480556997868,0.7777777777777778,0.2222222222222222
+ameily__cincoconfig-26,success,submitted,16,10,2.0464393446710156,0.5,0.4
+pydata__pydata-google-auth-17,success,submitted,7,7,2.521640636343318,0.8571428571428571,0.2857142857142857
+package-url__packageurl-python-29,success,submitted,17,10,2.846439344671015,0.8,0.3
+adamchainz__ec2-metadata-350,success,submitted,14,10,2.9219280948873623,0.8,0.2
+oasis-open__cti-python-stix2-342,success,submitted,14,10,1.6854752972273346,0.4,0.5
+docker__docker-py-1167,success,submitted,23,10,1.8464393446710154,0.4,0.4
+package-url__packageurl-python-29,success,submitted,18,10,2.721928094887362,0.7,0.2
+simonsobs__ocs-332,success,submitted,30,10,2.321928094887362,0.6,0.4
+joke2k__django-environ-358,success,submitted,13,10,1.9609640474436814,0.5,0.5
+sqlfluff__sqlfluff-5206,success,submitted,15,10,2.1219280948873624,0.5,0.4
+joke2k__django-environ-358,success,submitted,14,10,1.9609640474436814,0.5,0.5
+marshmallow-code__apispec-811,success,submitted,15,10,2.0464393446710156,0.5,0.4
+Melevir__cognitive_complexity-15,success,submitted,22,10,2.321928094887362,0.6,0.4
+konradhalas__dacite-216,success,submitted,11,10,2.321928094887362,0.6,0.4
+bids-standard__pybids-611,success,submitted,6,6,2.584962500721156,1.0,0.16666666666666666
+marshmallow-code__apispec-811,success,submitted,16,10,1.7219280948873623,0.4,0.4
+gibsramen__evident-23,success,submitted,9,9,2.6416041678685933,0.7777777777777778,0.3333333333333333
+docker__docker-py-1167,success,submitted,9,9,2.94770277922009,0.8888888888888888,0.2222222222222222
+johnsyweb__python_sparse_list-17,success,submitted,9,9,2.725480556997868,0.7777777777777778,0.2222222222222222
+simonsobs__ocs-332,success,submitted,14,10,2.921928094887362,0.8,0.2
+rapidpro__rapidpro-python-66,success,submitted,10,10,2.721928094887362,0.7,0.2
+package-url__packageurl-python-29,success,submitted,15,10,2.9219280948873623,0.8,0.2
+bids-standard__pybids-611,success,submitted,19,10,2.0464393446710156,0.5,0.4
+geopandas__geopandas-1336,success,submitted,19,10,2.6464393446710153,0.7,0.3
+ithaka__apiron-8,success,submitted,7,7,2.521640636343318,0.8571428571428571,0.2857142857142857
+microsoft__electionguard-python-83,success,submitted,5,5,1.9219280948873623,0.8,0.4
+hynek__argon2-cffi-174,success,submitted,15,10,2.321928094887362,0.6,0.4
+gibsramen__evident-23,success,submitted,9,9,2.6416041678685933,0.7777777777777778,0.3333333333333333
+Melevir__cognitive_complexity-15,success,submitted,17,10,1.9609640474436814,0.5,0.5
+geomet__geomet-101,success,submitted,14,10,2.5219280948873624,0.7,0.4
+python-control__python-control-834,success,submitted,22,10,2.2464393446710154,0.5,0.3
+kinnala__scikit-fem-634,success,submitted,29,10,2.721928094887362,0.7,0.2
+ameily__cincoconfig-26,success,submitted,7,7,2.807354922057604,1.0,0.14285714285714285
+joke2k__faker-828,success,submitted,17,10,2.6464393446710153,0.7,0.3
+geomet__geomet-101,success,submitted,16,10,1.7709505944546688,0.5,0.6
+Azure__msrest-for-python-208,success,submitted,11,10,2.9219280948873623,0.8,0.2
+geomet__geomet-101,success,submitted,13,10,2.5219280948873624,0.7,0.4
+Azure__msrest-for-python-208,success,submitted,10,10,2.9219280948873623,0.8,0.2
+microsoft__electionguard-python-83,success,submitted,8,8,2.4056390622295662,0.75,0.375
+marshmallow-code__apispec-811,success,submitted,5,5,1.9219280948873623,0.8,0.4
+docker__docker-py-1167,success,submitted,17,10,2.0464393446710156,0.5,0.4
+microsoft__electionguard-python-83,success,submitted,12,10,2.6464393446710153,0.7,0.3
+celery__billiard-372,success,submitted,8,8,2.75,0.875,0.25
+adamchainz__ec2-metadata-350,success,submitted,8,8,2.4056390622295662,0.75,0.375
+ameily__cincoconfig-26,success,submitted,18,10,2.1709505944546685,0.5,0.3
+fair-workflows__nanopub-140,success,submitted,8,8,2.0,0.625,0.5
+PyCQA__flake8-bugbear-161,success,submitted,6,6,2.2516291673878226,0.8333333333333334,0.3333333333333333
+reata__sqllineage-38,success,submitted,21,10,2.446439344671015,0.6,0.3
+astarte-platform__astarte-device-sdk-python-98,success,submitted,7,7,2.5216406363433186,0.8571428571428571,0.2857142857142857
+pyupio__changelogs-232,success,submitted,8,8,2.75,0.875,0.25
+googleapis__python-api-core-546,success,submitted,13,10,2.321928094887362,0.6,0.4
+streamlink__streamlink-1696,success,submitted,5,5,2.321928094887362,1.0,0.2
+konradhalas__dacite-216,success,submitted,27,10,2.1709505944546685,0.5,0.3
+networkx__networkx-7024,success,submitted,10,10,2.6464393446710153,0.7,0.3
+docker__docker-py-1167,success,submitted,16,10,2.3709505944546687,0.6,0.3
+iterative__dvc-5785,success,submitted,17,10,1.5709505944546687,0.4,0.6
+ppizarror__pygame-menu-357,success,submitted,28,10,2.4464393446710155,0.6,0.3
+tempoCollaboration__OQuPy-74,success,submitted,10,10,2.3709505944546687,0.6,0.3
+geopandas__geopandas-3240,success,submitted,14,10,2.9219280948873623,0.8,0.2
+just-work__fffw-100,success,submitted,7,7,2.807354922057604,1.0,0.14285714285714285
+konradhalas__dacite-216,success,submitted,11,10,2.6464393446710153,0.7,0.3
+hugovk__pypistats-41,success,submitted,8,8,2.1556390622295662,0.625,0.375
+konradhalas__dacite-216,success,submitted,17,10,2.4464393446710155,0.6,0.3
+konradhalas__dacite-216,success,submitted,14,10,2.5219280948873624,0.7,0.4
+tobymao__sqlglot-2063,success,submitted,8,8,2.5,0.75,0.25
+geopandas__geopandas-1336,success,submitted,20,10,2.9219280948873623,0.8,0.2
+package-url__packageurl-python-29,success,submitted,13,10,2.9219280948873623,0.8,0.2
+pydantic__pydantic-3975,success,submitted,29,10,1.3567796494470397,0.4,0.7
+geopandas__geopandas-1336,success,submitted,20,10,2.721928094887362,0.7,0.2
+konradhalas__dacite-216,success,submitted,12,10,2.521928094887362,0.6,0.2
+tianocore__edk2-pytool-extensions-41,success,submitted,8,8,2.5,0.75,0.25
+joke2k__django-environ-325,success,submitted,9,9,2.4193819456463714,0.6666666666666666,0.3333333333333333
+pydata__pydata-google-auth-17,success,submitted,5,5,2.321928094887362,1.0,0.2
+streamlink__streamlink-1696,success,submitted,11,10,2.6464393446710153,0.7,0.3
+adbar__simplemma-114,success,submitted,11,10,2.721928094887362,0.7,0.2
+hynek__argon2-cffi-174,success,submitted,12,10,2.6464393446710153,0.7,0.3
+astarte-platform__astarte-device-sdk-python-98,success,submitted,8,8,2.75,0.875,0.25
+deardurham__ciprs-reader-38,success,submitted,14,10,2.0464393446710156,0.5,0.4
+streamlink__streamlink-1696,success,submitted,5,5,2.321928094887362,1.0,0.2
+package-url__packageurl-python-29,success,submitted,18,10,2.9219280948873623,0.8,0.2
+pyupio__changelogs-232,success,submitted,8,8,2.75,0.875,0.25
+rapidpro__rapidpro-python-66,success,submitted,9,9,2.725480556997868,0.7777777777777778,0.2222222222222222
+joke2k__django-environ-358,success,submitted,10,10,2.5219280948873624,0.7,0.4
+package-url__packageurl-python-29,success,submitted,14,10,2.721928094887362,0.7,0.2
+stfc__PSyclone-1111,success,submitted,9,9,2.725480556997868,0.7777777777777778,0.2222222222222222
+networkx__networkx-7024,success,submitted,12,10,2.9219280948873623,0.8,0.2
+ithaka__apiron-8,success,submitted,21,10,1.7219280948873623,0.4,0.4
+asottile__yesqa-44,success,submitted,9,9,2.725480556997868,0.7777777777777778,0.2222222222222222
+oasis-open__cti-python-stix2-454,success,submitted,13,10,2.9219280948873623,0.8,0.2
+lucidsushi__gs_pip_install-132,success,submitted,19,10,1.7219280948873623,0.4,0.4
+mherrmann__gitignore_parser-38,success,submitted,8,8,2.5,0.75,0.25
+lucidsushi__gs_pip_install-132,success,submitted,10,10,2.5219280948873624,0.6,0.2
+oasis-open__cti-python-stix2-342,success,submitted,10,10,2.3709505944546687,0.6,0.3
+iamjackg__md2cf-97,success,submitted,16,10,2.446439344671015,0.6,0.3
+adamchainz__ec2-metadata-350,success,submitted,17,14,2.8423709931771093,0.8,0.21428571428571427
+pappasam__toml-sort-36,success,submitted,7,7,2.2359263506290326,0.7142857142857143,0.2857142857142857
+ameily__cincoconfig-26,success,submitted,26,10,2.721928094887362,0.7,0.2
+bids-standard__pybids-611,success,submitted,9,9,2.5032583347756456,0.6666666666666666,0.2222222222222222
+pydantic__pydantic-3975,success,submitted,12,10,2.9219280948873623,0.8,0.2
+joke2k__faker-828,success,submitted,21,10,2.9219280948873623,0.8,0.2
+johnsyweb__python_sparse_list-17,success,submitted,9,9,2.725480556997868,0.7777777777777778,0.2222222222222222
+astarte-platform__astarte-device-sdk-python-98,success,submitted,11,10,2.5219280948873624,0.7,0.4
+ithaka__apiron-8,success,submitted,18,10,0.4689955935892812,0.2,0.9
+googleapis__python-api-core-546,success,submitted,12,10,2.1609640474436813,0.6,0.5
+ppizarror__pygame-menu-357,success,submitted,20,10,2.9219280948873623,0.8,0.2
+package-url__packageurl-python-29,success,submitted,13,10,2.9219280948873623,0.8,0.2
+ttu__ruuvitag-sensor-41,success,submitted,7,7,2.2359263506290326,0.7142857142857143,0.2857142857142857
+cunybpl__isdparser-4,success,submitted,15,10,2.3709505944546687,0.6,0.3
+tempoCollaboration__OQuPy-74,success,submitted,12,10,2.6464393446710153,0.7,0.3
+pappasam__toml-sort-36,success,submitted,8,8,2.5,0.75,0.25
+geopandas__geopandas-1336,success,submitted,16,10,2.9219280948873623,0.8,0.2
+gibsramen__evident-23,success,submitted,28,10,2.9219280948873623,0.8,0.2
+adamchainz__ec2-metadata-350,success,submitted,6,6,2.584962500721156,1.0,0.16666666666666666
+sqlfluff__sqlfluff-5206,success,submitted,24,11,2.2998963911678914,0.6,0.36363636363636365
+python-visualization__folium-1633,success,submitted,11,10,2.9219280948873623,0.8,0.2
+hynek__argon2-cffi-174,success,submitted,17,10,1.7219280948873623,0.4,0.4
+Azure__msrest-for-python-208,success,submitted,9,9,2.725480556997868,0.7777777777777778,0.2222222222222222
+konradhalas__dacite-216,success,submitted,11,10,2.9219280948873623,0.8,0.2
+simonsobs__ocs-332,success,submitted,10,10,3.121928094887362,0.9,0.2
+docker__docker-py-1167,success,submitted,18,10,2.9219280948873623,0.8,0.2
+geopandas__geopandas-3240,success,submitted,17,10,3.121928094887362,0.9,0.2
+tehmaze__ansi-34,success,submitted,10,10,2.9219280948873623,0.8,0.2
+fair-workflows__nanopub-140,success,submitted,17,10,1.6854752972273344,0.4,0.5
+ithaka__apiron-8,success,submitted,9,9,2.4193819456463714,0.6666666666666666,0.3333333333333333
+joke2k__django-environ-325,success,submitted,30,10,2.3709505944546687,0.6,0.3
+adbar__simplemma-114,success,submitted,24,10,2.321928094887362,0.6,0.4
+package-url__packageurl-python-29,success,submitted,14,10,2.9219280948873623,0.8,0.2
+geopandas__geopandas-1336,success,submitted,22,10,1.3567796494470397,0.4,0.7
+pydantic__pydantic-3975,success,submitted,15,10,2.6464393446710153,0.7,0.3
+joke2k__django-environ-358,success,submitted,9,9,2.2810361125534233,0.6666666666666666,0.4444444444444444
+lucidsushi__gs_pip_install-132,success,submitted,6,6,2.584962500721156,1.0,0.16666666666666666
+bids-standard__pybids-611,success,submitted,13,10,2.321928094887362,0.6,0.4
+gibsramen__evident-23,success,submitted,8,8,2.4056390622295662,0.75,0.375
+marshmallow-code__apispec-811,success,submitted,34,10,2.0464393446710156,0.5,0.4
+adbar__simplemma-114,success,submitted,13,10,3.121928094887362,0.9,0.2
+auth0__auth0-python-500,success,submitted (exit_context),48,10,1.3609640474436813,0.3,0.5
+facelessuser__pymdown-extensions-2039,success,submitted,18,10,2.6464393446710153,0.7,0.3
+deardurham__ciprs-reader-38,success,submitted (exit_context),104,10,1.9609640474436814,0.5,0.5
+wireservice__csvkit-800,success,submitted,11,10,1.9609640474436814,0.5,0.5
+package-url__packageurl-python-29,success,submitted,13,10,2.9219280948873623,0.8,0.2
+docker__docker-py-1167,success,submitted,26,10,2.3709505944546687,0.6,0.3
+stfc__PSyclone-1111,success,submitted,8,8,2.75,0.875,0.25
+fair-workflows__nanopub-140,success,submitted,7,7,2.1280852788913944,0.7142857142857143,0.42857142857142855
+docker__docker-py-1167,success,submitted,16,10,2.9219280948873623,0.8,0.2
+bids-standard__pybids-611,success,submitted,28,10,2.0464393446710156,0.5,0.4
+just-work__fffw-100,success,submitted,26,10,2.3709505944546687,0.6,0.3
+networkx__networkx-7024,success,submitted,12,11,2.9139770731827523,0.8,0.18181818181818182
+ithaka__apiron-8,success,submitted,37,10,2.4464393446710155,0.6,0.3
+gibsramen__evident-23,success,submitted,9,9,2.6416041678685933,0.7777777777777778,0.3333333333333333
+astarte-platform__astarte-device-sdk-python-98,success,submitted,6,6,2.584962500721156,1.0,0.16666666666666666
+geomet__geomet-101,success,submitted,23,10,2.3219280948873626,0.6,0.4
+hynek__argon2-cffi-174,success,submitted,13,10,2.9219280948873623,0.8,0.2
+package-url__packageurl-python-29,success,submitted,13,10,2.9219280948873623,0.8,0.2
+networkx__networkx-7024,success,submitted,11,10,2.3709505944546687,0.6,0.3
+networkx__networkx-7024,success,submitted,13,10,3.121928094887362,0.9,0.2
+package-url__packageurl-python-29,success,submitted,15,10,2.9219280948873623,0.8,0.2
+networkx__networkx-7024,success,submitted,14,10,3.121928094887362,0.9,0.2
+tempoCollaboration__OQuPy-74,success,submitted,10,10,2.9219280948873623,0.8,0.2
+adbar__simplemma-114,success,submitted,12,10,3.121928094887362,0.9,0.2
+mherrmann__gitignore_parser-38,success,submitted,8,8,2.5,0.75,0.25
+ithaka__apiron-8,success,submitted,11,10,1.9609640474436814,0.5,0.5
+package-url__packageurl-python-29,success,submitted,11,10,2.721928094887362,0.7,0.2
+geomet__geomet-101,success,submitted,14,10,2.5219280948873624,0.7,0.4
+package-url__packageurl-python-29,success,submitted,15,10,2.9219280948873623,0.8,0.2
+Melevir__cognitive_complexity-15,success,submitted,28,10,1.8464393446710154,0.4,0.4
+konradhalas__dacite-216,success,submitted,9,9,2.725480556997868,0.7777777777777778,0.2222222222222222
+microsoft__electionguard-python-83,success,submitted,13,10,2.321928094887362,0.6,0.4
+networkx__networkx-7024,success,submitted,9,9,2.725480556997868,0.7777777777777778,0.2222222222222222
+networkx__networkx-7024,success,submitted,13,10,2.9219280948873623,0.8,0.2
+marshmallow-code__apispec-811,success,submitted,14,10,2.6464393446710153,0.7,0.3
+ameily__cincoconfig-26,success,submitted,6,6,2.584962500721156,1.0,0.16666666666666666
+konradhalas__dacite-216,success,submitted,40,10,2.1219280948873624,0.5,0.4
+Erotemic__ubelt-64,success,submitted,21,10,2.6464393446710157,0.7,0.3
+numpy__numpy-financial-54,success,submitted (exit_context),37,10,2.321928094887362,0.5,0.2
+googleapis__python-api-core-546,success,submitted,9,14,1.4345491399952024,0.5555555555555556,0.7142857142857143
+googleapis__python-api-core-546,success,submitted,8,8,2.75,0.875,0.25
+lucidsushi__gs_pip_install-132,success,submitted,24,10,2.1219280948873624,0.5,0.4
+hynek__argon2-cffi-174,success,submitted,13,10,2.6464393446710153,0.7,0.3
+mherrmann__gitignore_parser-38,success,submitted,8,8,2.5,0.75,0.25
+ameily__cincoconfig-26,success,submitted,16,10,2.1709505944546685,0.5,0.3
+oasis-open__cti-python-stix2-342,success,submitted,19,10,1.9609640474436814,0.5,0.5
+celery__billiard-372,success,submitted,5,5,2.321928094887362,1.0,0.2
+ppizarror__pygame-menu-357,success,submitted,34,10,2.0464393446710156,0.5,0.4
+lucidsushi__gs_pip_install-132,success,submitted,15,10,2.0464393446710156,0.5,0.4
+fair-workflows__nanopub-140,success,submitted,8,8,2.5,0.75,0.25
+geomet__geomet-101,success,submitted,24,10,2.4464393446710155,0.6,0.3
+googleapis__python-api-core-546,success,submitted,8,8,2.75,0.875,0.25
+iamjackg__md2cf-97,success,submitted,12,10,2.6464393446710153,0.7,0.3
+Melevir__cognitive_complexity-15,success,submitted (exit_context),18,10,1.721928094887362,0.4,0.4
+pydantic__pydantic-2167,success,submitted,9,9,2.725480556997868,0.7777777777777778,0.2222222222222222
+astarte-platform__astarte-device-sdk-python-98,success,submitted,17,10,1.7219280948873623,0.4,0.4
+ameily__cincoconfig-26,success,submitted,20,10,1.6854752972273346,0.4,0.5
+networkx__networkx-7024,success,submitted,11,10,2.3709505944546687,0.6,0.3
+geomet__geomet-101,success,submitted,14,10,2.5219280948873624,0.7,0.4
+python-control__python-control-834,success,submitted,9,9,2.4193819456463714,0.6666666666666666,0.3333333333333333
+johnsyweb__python_sparse_list-17,success,submitted,9,9,2.725480556997868,0.7777777777777778,0.2222222222222222
+fair-workflows__nanopub-140,success,submitted,5,5,1.9219280948873623,0.8,0.4
+package-url__packageurl-python-29,success,submitted,16,10,2.6464393446710157,0.7,0.3
+astarte-platform__astarte-device-sdk-python-98,success,submitted (exit_context),72,10,1.0,0.2,0.5
+simonsobs__ocs-332,success,submitted,8,8,2.75,0.875,0.25
+geopandas__geopandas-1336,success,submitted,12,10,2.6464393446710153,0.7,0.3
+oasis-open__cti-python-stix2-454,success,submitted,11,10,2.9219280948873623,0.8,0.2
+eEcoLiDAR__laserchicken-135,success,submitted,13,10,2.446439344671015,0.6,0.3
+deardurham__ciprs-reader-38,success,submitted,10,10,2.721928094887362,0.7,0.2
+celery__billiard-372,success,submitted,8,8,2.1556390622295662,0.625,0.375
+adbar__simplemma-114,success,submitted,12,10,2.9219280948873623,0.8,0.2
+asottile__yesqa-44,success,submitted,18,10,2.3709505944546687,0.6,0.3
+astarte-platform__astarte-device-sdk-python-98,success,submitted,6,6,2.584962500721156,1.0,0.16666666666666666
+streamlink__streamlink-1696,success,submitted (exit_context),66,10,1.4854752972273344,0.3,0.5
+geomet__geomet-101,success,submitted,16,10,2.321928094887362,0.6,0.4
+adbar__simplemma-114,success,submitted,12,10,2.721928094887362,0.7,0.2
+package-url__packageurl-python-29,success,submitted,13,10,2.9219280948873623,0.8,0.2
+pydantic__pydantic-3975,success,submitted,20,10,2.8464393446710154,0.8,0.3
+streamlink__streamlink-1696,success,submitted,5,5,2.321928094887362,1.0,0.2
+Melevir__cognitive_complexity-15,success,submitted,15,10,2.446439344671015,0.6,0.3
+python-visualization__folium-1633,success,submitted,17,10,2.321928094887362,0.6,0.4
+package-url__packageurl-python-29,success,submitted,13,10,2.9219280948873623,0.8,0.2
+docker__docker-py-1167,success,submitted,17,10,2.9219280948873623,0.8,0.2
+auth0__auth0-python-500,success,submitted (exit_context),151,10,0.0,0.1,1.0
+konradhalas__dacite-216,success,submitted,11,10,2.521928094887362,0.6,0.2
+joke2k__django-environ-325,success,submitted,12,10,2.8464393446710154,0.8,0.3
+stfc__PSyclone-1111,success,submitted,7,7,2.2359263506290326,0.7142857142857143,0.2857142857142857
+ameily__cincoconfig-26,success,submitted (exit_context),112,10,0.9709505944546686,0.2,0.6
+PyCQA__flake8-bugbear-161,success,submitted,6,6,2.2516291673878226,0.8333333333333334,0.3333333333333333
+geopandas__geopandas-1336,success,submitted,21,10,2.721928094887362,0.7,0.2
+microsoft__electionguard-python-83,success,submitted,7,7,2.2359263506290326,0.7142857142857143,0.2857142857142857
+mherrmann__gitignore_parser-38,success,submitted,10,10,2.3709505944546687,0.6,0.3
+hynek__argon2-cffi-174,success,submitted,12,10,2.6464393446710153,0.7,0.3
+streamlink__streamlink-1696,success,submitted,9,9,2.058813890331201,0.5555555555555556,0.4444444444444444
+pappasam__toml-sort-36,success,submitted,8,8,2.5,0.75,0.25
+docker__docker-py-1167,success,submitted,17,10,2.8464393446710154,0.8,0.3
+cunybpl__isdparser-4,success,submitted,14,10,2.3709505944546687,0.6,0.3
+lucidsushi__gs_pip_install-132,success,submitted,8,8,2.75,0.875,0.25
+simonsobs__ocs-332,success,submitted,15,10,2.6464393446710153,0.7,0.3
+marshmallow-code__apispec-811,success,submitted,14,10,2.6464393446710153,0.7,0.3
+tehmaze__ansi-34,success,submitted,9,9,2.94770277922009,0.8888888888888888,0.2222222222222222
+eEcoLiDAR__laserchicken-135,success,submitted (exit_context),46,10,0.9709505944546686,0.2,0.6
+tempoCollaboration__OQuPy-74,success,submitted,13,10,2.9219280948873623,0.8,0.2
+sqlfluff__sqlfluff-5206,success,submitted,13,10,2.0464393446710156,0.5,0.4
+astarte-platform__astarte-device-sdk-python-98,success,submitted,14,10,2.721928094887362,0.7,0.2
+deardurham__ciprs-reader-38,success,submitted,19,10,1.7709505944546688,0.5,0.6
+networkx__networkx-7024,success,submitted,8,8,2.5,0.75,0.25
+python-visualization__folium-1633,success,submitted,29,10,2.8464393446710154,0.8,0.3
+joke2k__faker-828,success,submitted,18,10,2.6464393446710153,0.7,0.3
+bids-standard__pybids-611,success,submitted,8,8,2.4056390622295662,0.75,0.375
+Azure__msrest-for-python-208,success,submitted,9,9,2.725480556997868,0.7777777777777778,0.2222222222222222
+PyCQA__flake8-bugbear-161,success,submitted,13,10,2.9219280948873623,0.8,0.2
+tempoCollaboration__OQuPy-74,success,submitted,13,10,2.121928094887362,0.5,0.4
+hugovk__pypistats-41,success,submitted,5,5,1.9219280948873623,0.8,0.4
+pydantic__pydantic-3975,success,submitted,24,10,2.1609640474436813,0.6,0.5
+python-visualization__folium-1633,success,submitted,10,10,2.721928094887362,0.7,0.2
+ameily__cincoconfig-26,success,submitted,7,7,2.807354922057604,1.0,0.14285714285714285
+konradhalas__dacite-216,success,submitted,13,10,2.6464393446710153,0.7,0.3
+rapidpro__rapidpro-python-66,success,submitted,10,10,2.9219280948873623,0.8,0.2
+oasis-open__cti-python-stix2-454,success,submitted,20,10,2.9219280948873623,0.8,0.2
+ithaka__apiron-8,success,submitted,13,10,1.3567796494470397,0.4,0.7
+oasis-open__cti-python-stix2-454,success,submitted,11,10,2.9219280948873623,0.8,0.2
+ameily__cincoconfig-26,success,submitted,13,10,2.6464393446710153,0.7,0.3
+Azure__msrest-for-python-208,success,submitted,9,9,2.725480556997868,0.7777777777777778,0.2222222222222222
+Melevir__cognitive_complexity-15,success,submitted,21,10,2.121928094887362,0.5,0.4
+package-url__packageurl-python-29,success,submitted,13,10,3.121928094887362,0.9,0.2
+package-url__packageurl-python-29,success,submitted,17,10,2.721928094887362,0.7,0.2
+konradhalas__dacite-216,success,submitted,9,9,2.725480556997868,0.7777777777777778,0.2222222222222222
+simonsobs__ocs-332,success,submitted,9,9,2.94770277922009,0.8888888888888888,0.2222222222222222
+streamlink__streamlink-1696,success,submitted,12,10,1.9609640474436814,0.5,0.5
+tempoCollaboration__OQuPy-74,success,submitted,11,10,2.3709505944546687,0.6,0.3
+docker__docker-py-1167,success,submitted,10,10,3.121928094887362,0.9,0.2
+streamlink__streamlink-1696,success,submitted,12,10,2.6464393446710153,0.7,0.3
+bids-standard__pybids-611,success,submitted,6,6,2.584962500721156,1.0,0.16666666666666666
+astarte-platform__astarte-device-sdk-python-98,success,submitted,17,10,1.7219280948873623,0.4,0.4
+python-visualization__folium-1633,success,submitted,12,10,2.6464393446710157,0.7,0.3
+geomet__geomet-101,success,submitted,14,10,2.5219280948873624,0.7,0.4
+oasis-open__cti-python-stix2-454,success,submitted,11,10,2.9219280948873623,0.8,0.2
+docker__docker-py-1167,success,submitted,13,10,2.721928094887362,0.7,0.2
+snowblink14__smatch-30,success,submitted,21,12,2.9182958340544896,0.9,0.3333333333333333
+networkx__networkx-7024,success,submitted,11,10,2.3709505944546687,0.6,0.3
+streamlink__streamlink-1696,success,submitted,6,6,2.2516291673878226,0.8333333333333334,0.3333333333333333
+astarte-platform__astarte-device-sdk-python-98,success,submitted,8,8,2.75,0.875,0.25
+package-url__packageurl-python-29,success,submitted,13,10,3.321928094887362,1.0,0.1
+googleapis__python-api-core-546,success,submitted,8,8,2.75,0.875,0.25
+reata__sqllineage-38,success,submitted,17,10,2.0464393446710156,0.5,0.4
+pyupio__changelogs-232,success,submitted,12,10,1.6854752972273344,0.4,0.5
+joke2k__django-environ-358,success,submitted,16,10,1.9609640474436814,0.5,0.5
+joke2k__faker-828,success,submitted,31,10,2.6464393446710153,0.7,0.3
+python-visualization__folium-1633,success,submitted,14,10,2.721928094887362,0.7,0.2
+joke2k__faker-828,success,submitted,21,10,2.321928094887362,0.6,0.4
+celery__billiard-372,success,submitted,8,8,2.75,0.875,0.25
+konradhalas__dacite-216,success,submitted,13,10,2.321928094887362,0.6,0.4
+python-visualization__folium-1633,success,submitted,13,10,2.9219280948873623,0.8,0.2
+oasis-open__cti-python-stix2-454,success,submitted,13,10,2.846439344671015,0.8,0.3
+bids-standard__pybids-611,success,submitted,14,10,2.6464393446710157,0.7,0.3
+pydata__pydata-google-auth-17,success,submitted,7,7,2.521640636343318,0.8571428571428571,0.2857142857142857
+python-visualization__folium-1633,success,submitted,18,10,2.9219280948873623,0.8,0.2
+deardurham__ciprs-reader-38,success,submitted (exit_context),84,10,1.0,0.2,0.5
+marshmallow-code__apispec-811,success,submitted,13,10,2.446439344671015,0.6,0.3
+tehmaze__ansi-34,success,submitted,9,9,2.94770277922009,0.8888888888888888,0.2222222222222222
+geopandas__geopandas-3240,success,submitted,12,10,3.121928094887362,0.9,0.2
+geopandas__geopandas-1336,success,submitted,14,10,2.921928094887362,0.8,0.2
+astarte-platform__astarte-device-sdk-python-98,success,submitted,7,7,2.5216406363433186,0.8571428571428571,0.2857142857142857
+geomet__geomet-101,success,submitted,15,10,1.7709505944546688,0.5,0.6
+Azure__msrest-for-python-208,success,submitted,16,10,1.7219280948873623,0.4,0.4
+tempoCollaboration__OQuPy-74,success,submitted,11,10,2.3709505944546687,0.6,0.3
+docker__docker-py-1167,success,submitted,11,10,2.5219280948873624,0.7,0.4
+tehmaze__ansi-34,success,submitted,8,8,2.75,0.875,0.25
+asottile__yesqa-44,success,submitted,8,8,2.75,0.875,0.25
+python-visualization__folium-1633,success,submitted,11,10,2.9219280948873623,0.8,0.2
+Melevir__cognitive_complexity-15,success,submitted,12,10,2.3709505944546687,0.6,0.3
+stfc__PSyclone-1111,success,submitted,8,8,2.75,0.875,0.25
+wireservice__csvkit-800,success,submitted,21,10,1.7709505944546688,0.5,0.6
+lucidsushi__gs_pip_install-132,success,submitted,12,10,2.321928094887362,0.6,0.4
+streamlink__streamlink-1696,success,submitted,10,10,2.4464393446710155,0.6,0.3
+just-work__fffw-100,success,submitted,11,10,2.721928094887362,0.7,0.2
+marshmallow-code__apispec-811,success,submitted,9,9,2.6416041678685933,0.7777777777777778,0.3333333333333333
+streamlink__streamlink-1696,success,submitted (exit_context),45,10,2.2464393446710154,0.5,0.3
+fair-workflows__nanopub-140,success,submitted,21,10,1.1567796494470395,0.3,0.7
+python-visualization__folium-1633,success,submitted,17,10,2.6464393446710153,0.7,0.3
+asottile__yesqa-44,success,submitted,5,5,1.9219280948873623,0.8,0.4
+eEcoLiDAR__laserchicken-135,success,submitted,13,10,2.6464393446710153,0.7,0.3
+astarte-platform__astarte-device-sdk-python-98,success,submitted,24,10,2.4464393446710155,0.6,0.3
+lucidsushi__gs_pip_install-132,success,submitted,14,10,1.5709505944546687,0.4,0.6
+python-visualization__folium-1633,success,submitted,32,10,2.8464393446710154,0.8,0.3
+Erotemic__ubelt-64,success,submitted,17,10,1.9609640474436814,0.5,0.5
+Azure__msrest-for-python-208,success,submitted,9,9,2.725480556997868,0.7777777777777778,0.2222222222222222
+lucidsushi__gs_pip_install-132,success,submitted,13,10,2.6464393446710153,0.7,0.3
+tempoCollaboration__OQuPy-74,success,submitted,11,10,2.1709505944546685,0.5,0.3
+astarte-platform__astarte-device-sdk-python-98,success,submitted,41,10,2.9219280948873623,0.8,0.2
+hugovk__pypistats-41,success,submitted,8,8,2.75,0.875,0.25
+ithaka__apiron-8,success,submitted,14,10,2.046439344671015,0.5,0.4
+ppizarror__pygame-menu-357,success,submitted,25,10,2.9219280948873623,0.8,0.2
+streamlink__streamlink-1696,success,submitted,9,9,2.94770277922009,0.8888888888888888,0.2222222222222222
+iterative__dvc-5785,success,submitted,27,10,2.321928094887362,0.6,0.4
+iamjackg__md2cf-97,success,submitted,17,10,2.9219280948873623,0.8,0.2
+reata__sqllineage-38,success,submitted,12,10,2.6464393446710153,0.7,0.3
+geopandas__geopandas-1336,success,submitted,23,10,1.5709505944546687,0.4,0.6
+geomet__geomet-101,success,submitted,17,10,2.5219280948873624,0.7,0.4
+geomet__geomet-101,success,submitted,13,10,2.5219280948873624,0.7,0.4
+dfm__emcee-295,success,submitted,25,10,2.6464393446710153,0.7,0.3
+tempoCollaboration__OQuPy-74,success,submitted,12,10,2.9219280948873623,0.8,0.2
+geopandas__geopandas-3240,success,submitted,11,10,2.9219280948873623,0.8,0.2
+microsoft__electionguard-python-83,success,submitted,18,10,2.6464393446710153,0.7,0.3
+oasis-open__cti-python-stix2-454,success,submitted,11,10,2.9219280948873623,0.8,0.2
+cunybpl__isdparser-4,success,submitted,13,10,2.6464393446710153,0.7,0.3
+johnsyweb__python_sparse_list-17,success,submitted,8,8,2.5,0.75,0.25
+pydantic__pydantic-1989,locked,early_exit,129,10,1.9219280948873623,0.4,0.4
+asottile__pyupgrade-166,locked,submitted_no_patch,13,10,2.0464393446710156,0.5,0.4
+stfc__PSyclone-2191,locked,submitted,15,10,2.321928094887362,0.6,0.4
+iterative__dvc-7205,locked,early_exit,146,10,0.0,0.1,1.0
+canonical__charmcraft-403,locked,exit_context,69,10,0.0,0.1,1.0
+airspeed-velocity__asv-702,locked,exit_context,87,10,0.0,0.1,1.0
+fabiocaccamo__python-codicefiscale-24,locked,submitted,9,9,1.6577427265048887,0.4444444444444444,0.5555555555555556
+iterative__dvc-7205,locked,exit_context,8,8,2.1556390622295662,0.625,0.375
+hynek__argon2-cffi-174,locked,exit_context,39,10,1.5709505944546684,0.3,0.4
+aws-cloudformation__cloudformation-cli-python-plugin-236,locked,submitted,5,5,2.321928094887362,1.0,0.2
+pydantic__pydantic-4350,locked,early_exit,10,11,2.663532754804255,0.7,0.2727272727272727
+pvlib__pvlib-python-1296,locked,submitted,7,7,2.5216406363433186,0.8571428571428571,0.2857142857142857
+pydantic__pydantic-2167,locked,submitted,15,10,1.5709505944546687,0.4,0.6
+asottile__pyupgrade-142,locked,exit_context,12,10,1.1567796494470395,0.3,0.7
+iterative__dvc-3726,locked,early_exit,36,10,1.3567796494470397,0.4,0.7
+cookiecutter__cookiecutter-839,locked,exit_context,33,10,1.4854752972273344,0.3,0.5
+oasis-open__cti-python-stix2-74,locked,submitted,21,10,2.6464393446710157,0.7,0.3
+Azure__azure-functions-python-worker-890,locked,submitted,12,10,3.121928094887362,0.9,0.2
+wearewhys__magnivore-14,locked,early_exit,29,10,1.5219280948873621,0.3,0.4
+pvlib__pvlib-python-1048,locked,exit_context,7,7,1.8423709931771088,0.5714285714285714,0.42857142857142855
+Erotemic__ubelt-64,locked,submitted_no_patch,10,10,2.1709505944546685,0.5,0.3
+sciunto-org__python-bibtexparser-385,locked,early_exit,100,10,1.3609640474436813,0.3,0.5
+iterative__dvc-5785,locked,exit_context,43,10,0.0,0.1,1.0
+serge-sans-paille__beniget-70,locked,early_exit,16,10,1.9709505944546688,0.4,0.3
+scrapy__parsel-141,locked,exit_context,121,10,1.8464393446710154,0.4,0.4
+dwavesystems__dwave-cloud-client-417,locked,exit_context,16,10,0.8812908992306927,0.2,0.7
+Erotemic__ubelt-64,locked,exit_context,25,10,0.7219280948873623,0.2,0.8
+asottile__pyupgrade-208,locked,submitted_no_patch,9,9,2.725480556997868,0.7777777777777778,0.2222222222222222
+matchms__matchms-187,locked,submitted,12,10,1.8464393446710154,0.4,0.4
+wireservice__agate-637,locked,early_exit,12,10,1.1567796494470395,0.3,0.7
+fair-workflows__nanopub-140,locked,submitted,18,10,1.9609640474436814,0.5,0.5
+sciunto-org__python-bibtexparser-385,locked,early_exit,9,9,1.6577427265048887,0.4444444444444444,0.5555555555555556
+reata__sqllineage-17,locked,early_exit,29,10,1.0,0.2,0.5
+mapbox__rio-color-14,locked,exit_context,212,10,1.0,0.2,0.5
+dwavesystems__dwave-cloud-client-417,locked,exit_context,27,10,1.5709505944546684,0.3,0.4
+destag__at-date-17,locked,submitted,7,7,2.5216406363433186,0.8571428571428571,0.2857142857142857
+lbl-srg__BuildingsPy-249,locked,submitted,14,10,2.446439344671015,0.6,0.3
+asottile__pyupgrade-142,locked,submitted_no_patch,6,6,2.2516291673878226,0.8333333333333334,0.3333333333333333
+iterative__dvc-5336,locked,early_exit,34,10,1.0,0.2,0.5
+asottile__pyupgrade-142,locked,exit_context,22,10,1.5219280948873621,0.3,0.4
+canonical__charmcraft-403,locked,exit_context,107,10,0.0,0.1,1.0
+jackdewinter__pyscan-12,locked,submitted,13,10,1.6854752972273344,0.4,0.5
+ppizarror__pygame-menu-357,locked,early_exit,52,10,2.1709505944546685,0.5,0.3
+casbin__pycasbin-53,locked,submitted,9,9,2.4193819456463714,0.6666666666666666,0.3333333333333333
+wearewhys__magnivore-14,locked,exit_context,50,10,1.295461844238322,0.3,0.6
+wireservice__agate-637,locked,early_exit,67,10,1.0,0.2,0.5
+wireservice__agate-637,locked,exit_context,26,10,0.9709505944546686,0.2,0.6
+peterbe__premailer-218,locked,early_exit,49,10,1.0,0.2,0.5
+sciunto-org__python-bibtexparser-385,locked,early_exit,13,10,2.9219280948873623,0.8,0.2
+Erotemic__ubelt-64,locked,submitted_no_patch,9,9,2.197159723424149,0.5555555555555556,0.3333333333333333
+iterative__dvc-6633,locked,exit_context,54,10,0.0,0.1,1.0
+iterative__dvc-3726,locked,early_exit,41,10,1.9709505944546686,0.4,0.3
+asottile__pyupgrade-208,locked,early_exit,6,6,1.4591479170272446,0.5,0.5
+serge-sans-paille__gast-59,locked,early_exit,26,10,1.5709505944546687,0.4,0.6
+fair-workflows__nanopub-140,locked,submitted,18,10,2.5219280948873624,0.6,0.2
+iterative__dvc-5785,locked,submitted,7,7,2.2359263506290326,0.7142857142857143,0.2857142857142857
+astarte-platform__astarte-device-sdk-python-98,locked,early_exit,36,10,0.9709505944546686,0.2,0.6
+tech-teach__marshmallowjson-3,locked,submitted,7,7,2.5216406363433186,0.8571428571428571,0.2857142857142857
+pydantic__pydantic-4399,locked,early_exit,111,10,1.0,0.2,0.5
+iterative__dvc-3709,locked,submitted (exit_context),41,10,0.0,0.1,1.0
+iterative__dvc-3462,locked,early_exit,155,10,0.0,0.1,1.0
+tianocore__edk2-pytool-extensions-41,locked,early_exit,9,9,2.197159723424149,0.5555555555555556,0.3333333333333333
+wearewhys__magnivore-14,locked,early_exit,19,10,1.360964047443681,0.3,0.5
+matchms__matchms-187,locked,submitted,10,10,2.0464393446710156,0.5,0.4
+iterative__dvc-5362,locked,early_exit,135,10,0.0,0.1,1.0
+ReproNim__reproman-518,locked,exit_context,39,10,1.0,0.2,0.5
+astropenguin__pandas-dataclasses-120,locked,exit_context,156,10,0.8812908992306927,0.2,0.7
+pydantic__pydantic-2262,locked,early_exit,31,10,0.9709505944546686,0.2,0.6
+bids-standard__pybids-611,locked,early_exit,77,10,1.0,0.2,0.5
+pydata__pydata-google-auth-17,locked,early_exit,6,6,2.584962500721156,1.0,0.16666666666666666
+keras-team__keras-nlp-131,locked,early_exit,13,10,2.1219280948873624,0.5,0.4
+wearewhys__magnivore-14,locked,exit_context,76,10,0.0,0.1,1.0
+canonical__charmcraft-802,locked,exit_context,21,10,1.7709505944546686,0.5,0.6
+astropenguin__pandas-dataclasses-120,locked,early_exit,32,10,1.0,0.2,0.5
+Erotemic__ubelt-64,locked,submitted,15,10,2.9219280948873623,0.8,0.2
+jbradberry__universe-31,locked,exit_context,97,10,0.0,0.1,1.0
+iterative__dvc-5785,locked,submitted,8,8,2.5,0.75,0.25
+asottile__pyupgrade-142,locked,submitted_no_patch,13,10,2.5219280948873624,0.7,0.4
+andialbrecht__sqlparse-445,locked,early_exit,28,10,1.5709505944546684,0.3,0.4
+iterative__dvc-8425,locked,submitted,7,7,2.2359263506290326,0.7142857142857143,0.2857142857142857
+matthewwardrop__formulaic-166,locked,early_exit,27,10,3.121928094887362,0.9,0.2
+iterative__dvc-3726,locked,submitted,14,19,2.208196592277087,0.6,0.42105263157894735
+pylint-dev__astroid-1092,locked,early_exit,92,10,0.0,0.1,1.0
+sciunto-org__python-bibtexparser-385,locked,early_exit,56,10,1.0,0.2,0.5
+casbin__pycasbin-53,locked,exit_context,174,10,1.0,0.2,0.5
+iterative__dvc-3405,locked,early_exit,76,10,0.0,0.1,1.0
+aio-libs__aioftp-97,locked,submitted,14,10,1.7219280948873623,0.4,0.4
+devopshq__artifactory-439,locked,early_exit,37,10,0.7219280948873623,0.2,0.8
+package-url__packageurl-python-29,locked,submitted,23,10,1.7609640474436812,0.4,0.5
+airspeed-velocity__asv-702,locked,exit_context,262,10,0.0,0.1,1.0
+alvinwan__TexSoup-140,locked,early_exit,15,10,1.7609640474436812,0.4,0.5
+matchms__matchms-187,locked,submitted,14,10,1.5709505944546687,0.4,0.6
+peterbe__premailer-218,locked,early_exit,22,10,1.0,0.2,0.5
+iterative__dvc-3726,locked,early_exit,41,10,1.8954618442383218,0.4,0.3
+pyupio__changelogs-232,locked,submitted,10,10,2.4464393446710155,0.6,0.3
+EdinburghGenomics__EGCG-Core-88,locked,exit_context,45,10,0.0,0.1,1.0
+joke2k__django-environ-358,locked,early_exit,8,8,1.061278124459133,0.375,0.75
+deardurham__ciprs-reader-38,locked,exit_context,53,10,0.0,0.1,1.0
+DCC-Lab__RayTracing-196,locked,exit_context,46,10,0.0,0.1,1.0
+devopshq__artifactory-439,locked,early_exit,26,10,2.6464393446710153,0.7,0.3
+brettcannon__mousebender-70,locked,submitted,8,8,2.5,0.75,0.25
+alvinwan__TexSoup-140,locked,exit_context,26,10,1.9609640474436814,0.5,0.5
+fabiocaccamo__python-codicefiscale-24,locked,exit_context,22,10,0.0,0.1,1.0
+wearewhys__magnivore-14,locked,early_exit,23,10,0.9709505944546686,0.2,0.6
+wearewhys__magnivore-14,locked,early_exit,16,10,1.5709505944546687,0.4,0.6
+palantir__python-language-server-275,locked,exit_context,40,10,1.0,0.2,0.5
+PEtab-dev__libpetab-python-136,locked,submitted,27,10,1.295461844238322,0.3,0.6
+PyCQA__flake8-bugbear-284,locked,exit_context,16,10,1.3567796494470397,0.4,0.7
+Shoobx__mypy-zope-88,locked,submitted,14,10,2.446439344671015,0.6,0.3
+iterative__dvc-4415,locked,early_exit,41,10,2.4464393446710155,0.6,0.3
+dwavesystems__dwave-cloud-client-417,locked,exit_context,30,10,1.3709505944546687,0.3,0.6
+DCC-Lab__RayTracing-273,locked,submitted,26,10,2.1709505944546685,0.5,0.3
+airspeed-velocity__asv-702,locked,submitted_no_patch,13,10,2.4464393446710155,0.6,0.3
+pydantic__pydantic-2366,locked,exit_context,60,10,2.446439344671015,0.6,0.3
+mplanchard__pydecor-20,locked,submitted_no_patch,8,8,2.1556390622295662,0.625,0.375
+datosgobar__pydatajson-212,locked,submitted,7,7,2.5216406363433186,0.8571428571428571,0.2857142857142857
+reata__sqllineage-17,locked,early_exit,26,10,1.0,0.2,0.5
+srsudar__eg-88,locked,exit_context,32,10,0.0,0.1,1.0
+iterative__dvc-3405,locked,exit_context,141,10,1.0,0.2,0.5
+wearewhys__magnivore-14,locked,submitted,7,7,2.5216406363433186,0.8571428571428571,0.2857142857142857
+dwavesystems__dwave-cloud-client-417,locked,exit_context,138,10,0.0,0.1,1.0
+meerk40t__svgelements-183,locked,submitted,16,10,2.8464393446710154,0.8,0.3
+fabiocaccamo__python-codicefiscale-24,locked,early_exit,5,5,1.3709505944546687,0.6,0.6
+astarte-platform__astarte-device-sdk-python-98,locked,early_exit,6,6,1.7924812503605778,0.6666666666666666,0.5
+andialbrecht__sqlparse-445,locked,early_exit,16,10,1.8464393446710154,0.4,0.4
+dwavesystems__dwave-cloud-client-417,locked,submitted,12,10,2.9219280948873623,0.8,0.2
+fair-workflows__nanopub-140,locked,submitted,13,10,3.1219280948873624,0.9,0.2
+iterative__dvc-5785,locked,exit_context,57,10,1.9709505944546686,0.4,0.3
+iterative__dvc-2815,locked,early_exit,6,6,1.9182958340544896,0.6666666666666666,0.3333333333333333
+iterative__dvc-3349,locked,early_exit,16,10,2.1609640474436813,0.6,0.5
+andialbrecht__sqlparse-445,locked,early_exit,21,10,1.5219280948873621,0.3,0.4
+omni-us__jsonargparse-176,locked,submitted,7,7,2.1280852788913944,0.7142857142857143,0.42857142857142855
+mapbox__rio-color-14,locked,exit_context,79,10,0.8812908992306927,0.2,0.7
+pypa__wheel-213,locked,submitted,15,10,2.446439344671015,0.6,0.3
+PyCQA__flake8-bugbear-316,locked,submitted,7,7,2.5216406363433186,0.8571428571428571,0.2857142857142857
+asottile__pyupgrade-142,locked,submitted_no_patch,9,9,1.8799649487271108,0.5555555555555556,0.5555555555555556
+Azure__azure-functions-python-worker-890,locked,submitted,15,10,2.321928094887362,0.6,0.4
+Erotemic__ubelt-64,locked,exit_context,46,10,2.5219280948873624,0.6,0.2
+netromdk__vermin-196,locked,exit_context,22,10,0.4689955935892812,0.2,0.9
+iterative__dvc-6471,locked,exit_context,101,10,1.4854752972273344,0.3,0.5
+valohai__valohai-cli-52,locked,exit_context,37,10,0.0,0.1,1.0
+dwavesystems__dwave-cloud-client-417,locked,early_exit,45,10,0.8812908992306927,0.2,0.7
+wireservice__agate-637,locked,early_exit,43,10,0.0,0.1,1.0
+asottile__pyupgrade-142,locked,exit_context,23,10,0.0,0.1,1.0
+dwavesystems__dwave-cloud-client-417,locked,submitted,25,11,2.1180782093497093,0.5,0.36363636363636365
+pydantic__pydantic-4350,locked,exit_context,20,10,1.0,0.2,0.5
+omni-us__jsonargparse-176,locked,submitted,18,10,3.121928094887362,0.9,0.2
+lucidsushi__gs_pip_install-132,locked,early_exit,12,10,1.295461844238322,0.3,0.6
+iterative__dvc-3726,locked,early_exit,53,10,0.9709505944546686,0.2,0.6
+asottile__pyupgrade-142,locked,submitted_no_patch,6,6,2.2516291673878226,0.8333333333333334,0.3333333333333333
+airspeed-velocity__asv-734,locked,submitted,8,9,2.4193819456463714,0.75,0.3333333333333333
+pydantic__pydantic-3975,locked,submitted,9,9,2.197159723424149,0.5555555555555556,0.3333333333333333
+DCC-Lab__RayTracing-196,locked,exit_context,31,10,0.0,0.1,1.0
+glue-viz__glue-astronomy-25,locked,exit_context,196,10,0.0,0.1,1.0
+destag__at-date-17,locked,submitted,15,10,2.8464393446710154,0.8,0.3
+sciunto-org__python-bibtexparser-385,locked,early_exit,96,10,1.4854752972273344,0.3,0.5
+ithaka__apiron-8,locked,exit_context,16,10,0.9219280948873623,0.3,0.8
+wireservice__agate-637,locked,early_exit,10,10,0.9219280948873623,0.3,0.8
+fsspec__filesystem_spec-926,locked,early_exit,262,10,0.0,0.1,1.0
+nathandines__SPF2IP-3,locked,exit_context,20,10,0.0,0.1,1.0
+PEtab-dev__libpetab-python-136,locked,exit_context,21,10,0.0,0.1,1.0
+asottile__pyupgrade-208,locked,submitted_no_patch,12,10,2.321928094887362,0.6,0.4
+asottile__pyupgrade-890,locked,submitted,11,10,2.5219280948873624,0.6,0.2
+iterative__dvc-3709,locked,submitted (exit_context),21,10,0.0,0.1,1.0
+asottile__pyupgrade-147,locked,submitted,14,10,1.9609640474436814,0.5,0.5
+peterbe__premailer-218,locked,submitted_no_patch,15,10,1.9609640474436814,0.5,0.5
+brettcannon__mousebender-70,locked,submitted,7,7,2.5216406363433186,0.8571428571428571,0.2857142857142857
+pre-commit__pre-commit-1707,locked,exit_context,48,10,0.0,0.1,1.0
+canonical__operator-823,locked,submitted,9,9,2.725480556997868,0.7777777777777778,0.2222222222222222
+Erotemic__ubelt-64,locked,early_exit,17,10,1.1567796494470395,0.3,0.7
+geopandas__geopandas-2959,locked,submitted,13,10,1.6854752972273346,0.4,0.5
+dwavesystems__dwave-cloud-client-417,locked,exit_context,21,10,0.8812908992306927,0.2,0.7
+pypa__wheel-213,locked,exit_context,47,10,0.0,0.1,1.0
+pydantic__pydantic-2366,locked,early_exit,98,37,2.5240256542836423,0.9,0.3783783783783784
+fabiocaccamo__python-codicefiscale-24,locked,exit_context,47,10,0.0,0.1,1.0
+ESSS__conda-devenv-51,locked,exit_context,36,10,1.0,0.2,0.5
+geopandas__geopandas-2959,locked,submitted_no_patch,11,10,2.3709505944546687,0.6,0.3
+fabiocaccamo__python-codicefiscale-24,locked,early_exit,18,10,2.0464393446710156,0.5,0.4
+iterative__dvc-3462,locked,early_exit,8,9,2.5032583347756456,0.75,0.2222222222222222
+PyCQA__flake8-bugbear-316,locked,submitted,9,9,2.113283334294875,0.5555555555555556,0.3333333333333333
+devopshq__artifactory-439,locked,submitted_no_patch,12,10,1.7219280948873623,0.4,0.4
+fabiocaccamo__python-codicefiscale-24,locked,early_exit,16,10,2.6464393446710153,0.7,0.3
+iamjackg__md2cf-97,locked,submitted,12,10,2.3709505944546683,0.6,0.3
+Shoobx__mypy-zope-88,locked,exit_context,178,10,1.9219280948873623,0.4,0.4
+reata__sqllineage-17,locked,early_exit,26,10,1.0,0.2,0.5
+astropenguin__pandas-dataclasses-120,locked,exit_context,78,10,1.0,0.2,0.5
+Erotemic__ubelt-64,locked,submitted_no_patch,11,10,1.7609640474436812,0.4,0.5
+cookiecutter__cookiecutter-839,locked,submitted_no_patch,9,9,2.197159723424149,0.5555555555555556,0.3333333333333333
+marshmallow-code__apispec-webframeworks-64,locked,submitted,19,10,2.1709505944546685,0.5,0.3
+glue-viz__glue-astronomy-25,locked,submitted,13,10,2.6464393446710153,0.7,0.3
+wireservice__agate-637,locked,early_exit,58,10,1.0,0.2,0.5
+glue-viz__glue-astronomy-25,locked,submitted,9,9,2.6416041678685933,0.7777777777777778,0.3333333333333333
+wireservice__agate-637,locked,early_exit,128,10,1.0,0.2,0.5
+dwavesystems__dwave-cloud-client-417,locked,exit_context,10,10,1.7709505944546686,0.5,0.6
+sciunto-org__python-bibtexparser-385,locked,early_exit,101,10,1.0,0.2,0.5
+sciunto-org__python-bibtexparser-385,locked,early_exit,5,5,1.5219280948873621,0.6,0.4
+plotly__dash-bio-589,locked,exit_context,12,10,0.9219280948873623,0.3,0.8
+pydantic__pydantic-4350,locked,exit_context,154,10,0.0,0.1,1.0
+iterative__dvc-3349,locked,early_exit,111,10,0.0,0.1,1.0
+DCC-Lab__RayTracing-196,locked,exit_context,36,10,0.0,0.1,1.0
+EdinburghGenomics__EGCG-Core-88,locked,exit_context,48,10,0.0,0.1,1.0
+absent1706__sqlalchemy-mixins-108,locked,submitted_no_patch,40,10,1.7219280948873623,0.4,0.4
+miguelgrinberg__python-engineio-108,locked,exit_context,50,10,2.121928094887362,0.5,0.4
+asottile__pyupgrade-142,locked,submitted_no_patch,8,8,2.1556390622295662,0.625,0.375
+dwavesystems__dwave-cloud-client-417,locked,exit_context,24,10,0.0,0.1,1.0
+benjamincorcoran__sasdocs-41,locked,submitted,28,10,2.2464393446710154,0.5,0.3
+iterative__dvc-3493,locked,submitted (exit_context),36,20,0.0,0.1,1.0
+EdinburghGenomics__EGCG-Core-88,locked,exit_context,45,10,0.0,0.1,1.0
+dwavesystems__dwave-cloud-client-417,locked,exit_context,22,10,0.0,0.1,1.0
+pydantic__pydantic-3975,locked,early_exit,23,10,0.0,0.1,1.0
+keras-team__keras-nlp-131,locked,submitted,12,10,1.7219280948873623,0.4,0.4
+asottile__pyupgrade-545,locked,submitted_no_patch,10,10,2.721928094887362,0.7,0.2
+astropy__sphinx-automodapi-51,locked,submitted,7,11,1.971747257128181,0.7142857142857143,0.45454545454545453
+asottile__pyupgrade-142,locked,early_exit,15,10,0.9219280948873623,0.3,0.8
+dwavesystems__dwave-cloud-client-417,locked,exit_context,22,10,0.0,0.1,1.0
+iterative__dvc-9212,locked,early_exit,138,10,0.7219280948873623,0.2,0.8
+srsudar__eg-88,locked,exit_context,45,10,0.0,0.1,1.0
+facelessuser__pymdown-extensions-2362,locked,submitted,12,10,2.521928094887362,0.6,0.2
+asottile__pyupgrade-142,locked,submitted_no_patch,10,10,1.9609640474436814,0.5,0.5
+alvinwan__TexSoup-140,locked,early_exit,9,9,2.4193819456463714,0.6666666666666666,0.3333333333333333
+aio-libs__aioftp-97,locked,submitted,13,10,1.7219280948873623,0.4,0.4
+airspeed-velocity__asv-734,locked,exit_context,35,10,1.3609640474436813,0.3,0.5
+devopshq__artifactory-439,locked,early_exit,33,10,1.3709505944546687,0.3,0.6
+joke2k__django-environ-419,locked,early_exit,35,10,2.3709505944546687,0.6,0.3
+pydantic__pydantic-2366,locked,submitted,24,10,1.8464393446710154,0.4,0.4
+alvinwan__TexSoup-140,locked,early_exit,20,10,2.721928094887362,0.7,0.2
+andialbrecht__sqlparse-445,locked,early_exit,28,10,1.0,0.2,0.5
+reata__sqllineage-17,locked,early_exit,63,10,1.0,0.2,0.5
+keras-team__keras-nlp-131,locked,early_exit,6,6,1.9182958340544893,0.6666666666666666,0.3333333333333333
+matchms__matchms-493,locked,submitted,22,10,2.721928094887362,0.7,0.2
+dwavesystems__dwave-cloud-client-417,locked,exit_context,31,10,0.0,0.1,1.0
+astarte-platform__astarte-device-sdk-python-98,locked,early_exit,9,9,2.6416041678685933,0.7777777777777778,0.3333333333333333
+pydantic__pydantic-4350,locked,exit_context,38,10,0.7219280948873623,0.2,0.8
+asottile__pyupgrade-142,locked,submitted_no_patch,11,10,1.5709505944546687,0.4,0.6
+serge-sans-paille__beniget-80,locked,submitted_no_patch,19,10,2.5219280948873624,0.7,0.4
+iris-hep__func_adl-116,locked,submitted,9,9,2.4193819456463714,0.6666666666666666,0.3333333333333333
+casbin__pycasbin-53,locked,exit_context,67,10,0.9709505944546686,0.2,0.6
+pydantic__pydantic-3975,locked,submitted,28,10,1.8464393446710154,0.4,0.4
+joke2k__faker-828,locked,exit_context,9,9,2.4193819456463714,0.6666666666666666,0.3333333333333333
+asottile__pyupgrade-142,locked,submitted_no_patch,6,6,2.2516291673878226,0.8333333333333334,0.3333333333333333
+iterative__dvc-3405,locked,early_exit,51,10,1.0,0.2,0.5
+wireservice__agate-637,locked,exit_context,89,10,2.521928094887362,0.6,0.2
+iterative__dvc-7497,locked,submitted,22,10,2.8464393446710154,0.8,0.3
+wearewhys__magnivore-14,locked,early_exit,25,10,1.0,0.2,0.5
+docker__docker-py-822,locked,submitted,21,16,1.5919171866886992,0.4,0.5625
+pvlib__pvlib-python-1218,locked,early_exit,94,10,0.0,0.1,1.0
+nathandines__SPF2IP-3,locked,exit_context,25,10,0.0,0.1,1.0
+canonical__operator-823,locked,exit_context,44,10,1.4854752972273344,0.3,0.5
+peterbe__premailer-218,locked,early_exit,8,8,2.5,0.75,0.25
+canonical__charmcraft-403,locked,exit_context,27,10,1.4854752972273344,0.3,0.5
+treasure-data__td-client-python-44,locked,submitted,51,10,2.446439344671015,0.6,0.3
+tech-teach__marshmallowjson-3,locked,submitted,8,8,2.5,0.75,0.25
+keras-team__keras-nlp-131,locked,submitted,16,10,1.6854752972273346,0.4,0.5
+ReproNim__reproman-518,locked,exit_context,5,5,0.7219280948873623,0.4,0.8
+asottile__pyupgrade-147,locked,early_exit,30,10,2.521928094887362,0.6,0.2
+EdinburghGenomics__EGCG-Core-11,locked,submitted_no_patch,9,9,2.6416041678685933,0.7777777777777778,0.3333333333333333
+fabiocaccamo__python-codicefiscale-24,locked,early_exit,16,10,2.0464393446710156,0.5,0.4
+fabiocaccamo__python-codicefiscale-24,locked,early_exit,19,10,1.7609640474436812,0.4,0.5
+asottile__pyupgrade-142,locked,submitted_no_patch,6,6,2.2516291673878226,0.8333333333333334,0.3333333333333333
+asottile__pyupgrade-347,locked,submitted,16,10,2.6464393446710153,0.7,0.3
+wearewhys__magnivore-14,locked,early_exit,30,10,0.9709505944546686,0.2,0.6
+iterative__dvc-3709,locked,early_exit,63,10,1.0,0.2,0.5
+Melevir__cognitive_complexity-15,locked,submitted,17,10,2.6464393446710153,0.7,0.3
+dwavesystems__dwave-cloud-client-417,locked,exit_context,25,10,0.9219280948873623,0.3,0.8
+dwavesystems__dwave-cloud-client-417,locked,exit_context,9,9,1.879964948727111,0.5555555555555556,0.5555555555555556
+jbradberry__universe-31,locked,exit_context,126,10,0.0,0.1,1.0
+childsish__dynamic-yaml-31,locked,submitted,23,10,2.1709505944546685,0.5,0.3
+iterative__dvc-3493,locked,early_exit,20,10,0.0,0.1,1.0
+marshmallow-code__apispec-webframeworks-64,locked,submitted,9,9,2.113283334294875,0.5555555555555556,0.3333333333333333
+asottile__pyupgrade-142,locked,exit_context,15,10,1.295461844238322,0.3,0.6
+astropenguin__pandas-dataclasses-120,locked,submitted_no_patch,18,10,2.1709505944546685,0.5,0.3
+amplify-education__python-hcl2-73,locked,exit_context,55,10,0.8812908992306927,0.2,0.7
+asottile__pyupgrade-545,locked,submitted,20,10,1.7219280948873623,0.4,0.4
+package-url__packageurl-python-29,locked,early_exit,11,10,2.6464393446710153,0.7,0.3
+asottile__pyupgrade-142,locked,exit_context,16,10,1.0,0.2,0.5
+ramonsaraiva__pubg-python-87,locked,early_exit,8,8,2.1556390622295662,0.625,0.375
+wearewhys__magnivore-14,locked,early_exit,25,10,1.0,0.2,0.5
+astarte-platform__astarte-device-sdk-python-98,locked,early_exit,5,5,1.9219280948873623,0.8,0.4
+iterative__dvc-4623,locked,submitted (exit_context),59,10,1.9709505944546688,0.4,0.3
+iterative__dvc-6633,locked,early_exit,61,10,0.4689955935892812,0.2,0.9
+fair-workflows__nanopub-140,locked,exit_context,21,10,0.9709505944546686,0.2,0.6
+wearewhys__magnivore-14,locked,exit_context,21,10,0.0,0.1,1.0
+joweich__chat-miner-93,locked,submitted,20,10,1.7219280948873623,0.4,0.4
+iris-hep__func_adl-116,locked,submitted_no_patch,9,9,2.4193819456463714,0.6666666666666666,0.3333333333333333
+pvlib__pvlib-python-1448,locked,early_exit,87,10,0.0,0.1,1.0
+asottile__pyupgrade-208,locked,submitted_no_patch,12,10,2.9219280948873623,0.8,0.2
+fair-workflows__nanopub-140,locked,submitted,8,8,2.0,0.625,0.5
+andialbrecht__sqlparse-445,locked,early_exit,34,10,1.8464393446710154,0.4,0.4
+iterative__dvc-5336,locked,submitted,28,10,2.046439344671015,0.5,0.4
+aws-cloudformation__cloudformation-cli-937,locked,submitted,5,5,1.3709505944546687,0.6,0.6
+iterative__dvc-3428,locked,early_exit,78,10,1.3567796494470397,0.4,0.7
+EdinburghGenomics__EGCG-Core-88,locked,exit_context,47,10,0.0,0.1,1.0
+planetlabs__planet-client-python-621,locked,exit_context,156,10,0.0,0.1,1.0
+tobymao__sqlglot-1765,locked,early_exit,22,10,1.0,0.2,0.5
+iterative__dvc-5785,locked,exit_context,40,10,1.0,0.2,0.5
+astropenguin__pandas-dataclasses-120,locked,submitted_no_patch,7,7,2.2359263506290326,0.7142857142857143,0.2857142857142857
+wearewhys__magnivore-14,locked,early_exit,8,8,2.1556390622295662,0.625,0.375
+pydicom__pydicom-1555,locked,submitted,53,10,2.6464393446710153,0.7,0.3
+ESSS__conda-devenv-51,locked,early_exit,23,10,1.9219280948873623,0.4,0.4
+airspeed-velocity__asv-734,locked,early_exit,43,10,0.0,0.1,1.0
+getsentry__responses-291,locked,early_exit,23,10,0.0,0.1,1.0
+iterative__dvc-3534,locked,submitted,16,10,1.8464393446710154,0.4,0.4
+EdinburghGenomics__EGCG-Core-88,locked,exit_context,42,10,0.0,0.1,1.0
+iterative__dvc-6471,locked,submitted,18,10,1.5709505944546687,0.4,0.6
+PyCQA__flake8-bugbear-284,locked,submitted_no_patch,14,10,1.6854752972273346,0.4,0.5
+PyCQA__flake8-bugbear-316,locked,exit_context,27,10,0.0,0.1,1.0
+absent1706__sqlalchemy-mixins-108,locked,submitted_no_patch,9,9,2.058813890331201,0.5555555555555556,0.4444444444444444
+pydantic__pydantic-2366,locked,submitted,14,10,2.121928094887362,0.5,0.4
+asottile__pyupgrade-142,locked,exit_context,25,10,0.0,0.1,1.0
+DCC-Lab__RayTracing-196,locked,exit_context,41,10,0.0,0.1,1.0
+wireservice__agate-637,locked,submitted_no_patch,17,10,2.0464393446710156,0.5,0.4
+iterative__dvc-5362,locked,early_exit,134,10,0.0,0.1,1.0
+sciunto-org__python-bibtexparser-385,locked,early_exit,19,10,0.8812908992306927,0.2,0.7
+lbl-srg__BuildingsPy-249,locked,exit_format,23,10,0.0,0.1,1.0
+iterative__dvc-6471,locked,exit_context,46,10,0.9709505944546686,0.2,0.6
+amplify-education__python-hcl2-73,locked,exit_context,28,10,0.4689955935892812,0.2,0.9
+iterative__dvc-3709,locked,early_exit,183,10,0.4689955935892812,0.2,0.9
+iterative__dvc-2815,locked,early_exit,7,7,2.2359263506290326,0.7142857142857143,0.2857142857142857
+Shoobx__mypy-zope-88,locked,submitted,29,10,2.6464393446710153,0.7,0.3
+brettcannon__mousebender-70,locked,submitted,8,8,2.5,0.75,0.25
+matchms__matchms-493,locked,submitted,13,10,2.7219280948873625,0.7,0.2
+nathandines__SPF2IP-3,locked,exit_context,31,10,0.0,0.1,1.0
+asottile__pyupgrade-142,locked,submitted_no_patch,12,10,2.721928094887362,0.7,0.2
+canonical__charmcraft-802,locked,submitted,35,10,2.9219280948873623,0.8,0.2
+iterative__dvc-7497,locked,exit_context,398,10,0.0,0.1,1.0
+fatiando__pooch-171,locked,exit_context,260,10,0.0,0.1,1.0
+iterative__dvc-6633,locked,early_exit,14,10,1.6854752972273346,0.4,0.5
+J-CPelletier__webcomix-7,locked,exit_context,132,10,0.0,0.1,1.0
+mapbox__rio-color-14,locked,exit_context,31,10,0.0,0.1,1.0
+netromdk__vermin-196,locked,early_exit,10,10,1.9609640474436814,0.5,0.5
+PyCQA__pyflakes-729,locked,submitted,15,10,2.321928094887362,0.6,0.4
+asottile__yesqa-44,locked,exit_context,309,10,0.0,0.1,1.0
+geopandas__geopandas-1336,locked,early_exit,34,10,1.295461844238322,0.3,0.6
+radiasoft__pykern-349,locked,submitted,10,10,2.6464393446710153,0.7,0.3
+kinnala__scikit-fem-634,locked,submitted,23,10,2.521928094887362,0.6,0.2
+reata__sqllineage-17,locked,early_exit,48,10,1.0,0.2,0.5
+iterative__dvc-5336,locked,exit_context,31,10,0.0,0.1,1.0
+peterbe__premailer-218,locked,submitted_no_patch,11,10,1.7219280948873623,0.4,0.4
+DCC-Lab__RayTracing-196,locked,early_exit,28,10,0.0,0.1,1.0
+wireservice__agate-637,locked,early_exit,21,10,1.0,0.2,0.5
+astropenguin__pandas-dataclasses-120,locked,submitted_no_patch,8,8,1.75,0.5,0.5
+peterbe__premailer-218,locked,early_exit,7,7,1.8423709931771084,0.5714285714285714,0.42857142857142855
+pydantic__pydantic-3975,locked,submitted,19,10,2.1709505944546685,0.5,0.3
+devopshq__artifactory-439,locked,early_exit,64,10,3.321928094887362,1.0,0.1
+google__docker-explorer-64,locked,exit_context,5,5,1.3709505944546687,0.6,0.6
+facelessuser__pymdown-extensions-2362,locked,submitted,7,7,2.2359263506290326,0.7142857142857143,0.2857142857142857
+reata__sqllineage-17,locked,exit_context,26,10,0.0,0.1,1.0
+canonical__charmcraft-530,locked,exit_context,35,10,1.7609640474436812,0.4,0.5
+iterative__dvc-3349,locked,early_exit,20,10,2.4464393446710155,0.6,0.3
+pydantic__pydantic-3975,locked,submitted,17,10,1.7709505944546688,0.5,0.6
+wireservice__agate-637,locked,early_exit,24,10,1.8464393446710154,0.4,0.4
+kinnala__scikit-fem-634,locked,submitted_no_patch,14,10,2.6464393446710153,0.7,0.3
+Erotemic__ubelt-64,locked,submitted_no_patch,17,10,1.9609640474436814,0.5,0.5
+geopandas__geopandas-2959,locked,submitted,8,8,2.5,0.75,0.25
+nathandines__SPF2IP-3,locked,exit_context,22,10,0.0,0.1,1.0
+sanic-org__sanic-2837,locked,submitted,19,10,2.0464393446710156,0.5,0.4
+reata__sqllineage-17,locked,exit_context,34,10,0.0,0.1,1.0
+wearewhys__magnivore-14,locked,early_exit,31,10,1.0,0.2,0.5
+joke2k__faker-828,locked,exit_context,32,10,0.0,0.1,1.0
+Textualize__textual-3396,locked,exit_context,28,10,0.0,0.1,1.0
+asottile__pyupgrade-890,locked,submitted,15,10,2.0464393446710156,0.5,0.4
+iterative__dvc-9212,locked,early_exit,6,6,1.4591479170272448,0.5,0.5
+reata__sqllineage-17,locked,early_exit,5,5,2.321928094887362,1.0,0.2
+sciunto-org__python-bibtexparser-385,locked,early_exit,49,10,1.8464393446710154,0.4,0.4
+ESSS__conda-devenv-51,locked,exit_context,36,10,0.0,0.1,1.0
+iterative__dvc-3428,locked,early_exit,136,10,0.0,0.1,1.0
+ESSS__conda-devenv-51,locked,exit_context,33,10,1.5709505944546684,0.3,0.4
+iterative__dvc-2975,locked,early_exit,12,10,1.7609640474436812,0.4,0.5
+PEtab-dev__libpetab-python-136,locked,submitted,33,11,2.2221915755066783,0.6,0.45454545454545453
+reata__sqllineage-38,locked,submitted,9,9,2.4193819456463714,0.6666666666666666,0.3333333333333333
+wearewhys__magnivore-14,locked,early_exit,9,9,1.8910611120726526,0.4444444444444444,0.3333333333333333
+google__docker-explorer-64,locked,exit_context,79,10,0.0,0.1,1.0
+iterative__dvc-5336,locked,exit_context,261,10,0.0,0.1,1.0
+fabiocaccamo__python-codicefiscale-24,locked,early_exit,60,10,1.0,0.2,0.5
+alvinwan__TexSoup-140,locked,early_exit,18,10,2.170950594454669,0.5,0.3
+pydantic__pydantic-1989,locked,submitted,20,10,1.6854752972273346,0.4,0.5
+canonical__charmcraft-403,locked,exit_context,69,10,2.4464393446710155,0.6,0.3
+astropenguin__pandas-dataclasses-120,locked,early_exit,29,10,1.0,0.2,0.5
+hamcrest__PyHamcrest-129,locked,submitted,16,10,2.0464393446710156,0.5,0.4
+dwavesystems__dwave-cloud-client-417,locked,exit_context,25,10,0.0,0.1,1.0
+protolambda__remerkleable-2,locked,early_exit,41,10,1.0,0.2,0.5
+marshmallow-code__flask-smorest-561,locked,submitted,25,10,2.3709505944546687,0.6,0.3
+Shoobx__mypy-zope-88,locked,submitted_no_patch,54,10,1.3567796494470397,0.4,0.7
+nathandines__SPF2IP-3,locked,exit_context,22,10,0.0,0.1,1.0
+pydantic__pydantic-2167,locked,early_exit,26,10,1.0,0.2,0.5
+iterative__dvc-7497,locked,early_exit,18,10,2.4464393446710155,0.6,0.3
+sciunto-org__python-bibtexparser-385,locked,early_exit,9,9,2.197159723424149,0.5555555555555556,0.3333333333333333
+asottile__pyupgrade-208,locked,submitted_no_patch,13,10,2.5219280948873624,0.6,0.2
+pior__pyramid_useragent-3,locked,submitted,13,10,2.6464393446710153,0.7,0.3
+serge-sans-paille__gast-59,locked,early_exit,31,10,2.0464393446710156,0.5,0.4
+airspeed-velocity__asv-734,locked,early_exit,9,9,1.6577427265048887,0.4444444444444444,0.5555555555555556
+fatiando__pooch-171,locked,submitted,29,10,1.6854752972273346,0.4,0.5
+sciunto-org__python-bibtexparser-385,locked,early_exit,59,10,0.9709505944546686,0.2,0.6
+wireservice__agate-637,locked,early_exit,12,10,2.1219280948873624,0.5,0.4
+pydantic__pydantic-2167,locked,early_exit,15,10,2.1709505944546685,0.5,0.3
+pydantic__pydantic-4350,locked,exit_context,125,10,0.0,0.1,1.0
+reata__sqllineage-17,locked,early_exit,20,10,1.0,0.2,0.5
+wearewhys__magnivore-14,locked,early_exit,32,10,1.0,0.2,0.5
+pydantic__pydantic-2366,locked,submitted,16,10,2.121928094887362,0.5,0.4
+pypa__wheel-213,locked,submitted,17,10,0.9219280948873623,0.3,0.8
+marshmallow-code__apispec-webframeworks-64,locked,submitted,7,7,2.2359263506290326,0.7142857142857143,0.2857142857142857
+dwavesystems__dwave-cloud-client-417,locked,submitted_no_patch,20,10,1.7219280948873623,0.4,0.4
+encode__starlette-563,locked,submitted_no_patch,21,10,2.321928094887362,0.6,0.4
+reata__sqllineage-17,locked,exit_context,69,10,1.4854752972273344,0.3,0.5
+Erotemic__ubelt-64,locked,submitted_no_patch,12,10,2.6464393446710153,0.7,0.3
+devopshq__artifactory-439,locked,submitted_no_patch,12,10,3.1219280948873624,0.9,0.2
+sciunto-org__python-bibtexparser-385,locked,submitted_no_patch,15,10,2.4464393446710155,0.6,0.3
+asottile__pyupgrade-142,locked,submitted_no_patch,10,10,2.0464393446710156,0.5,0.4
+iterative__dvc-5336,locked,early_exit,11,10,2.7219280948873625,0.7,0.2
+dwavesystems__dwave-cloud-client-417,locked,exit_context,36,10,1.0,0.2,0.5
+robotpy__robotpy-cppheaderparser-28,locked,early_exit,184,10,0.8812908992306927,0.2,0.7
+dwavesystems__dwave-cloud-client-417,locked,exit_context,20,10,1.0,0.2,0.5
+iterative__dvc-4623,locked,early_exit,123,10,1.0,0.2,0.5
+asottile__pyupgrade-142,locked,exit_context,20,10,0.0,0.1,1.0
+asottile__pyupgrade-208,locked,submitted_no_patch,12,10,2.321928094887362,0.6,0.4
+google__mobly-472,locked,exit_context,40,10,0.0,0.1,1.0
+devopshq__artifactory-439,locked,early_exit,53,10,1.0,0.2,0.5
+meerk40t__svgelements-183,locked,submitted,22,10,2.9219280948873623,0.8,0.2
+wireservice__agate-637,locked,exit_context,62,10,1.7609640474436812,0.4,0.5
+dandi__dandi-cli-59,locked,submitted,23,10,1.6854752972273344,0.4,0.5
+andialbrecht__sqlparse-445,locked,early_exit,21,10,1.5709505944546684,0.3,0.4
+airspeed-velocity__asv-702,locked,exit_context,39,10,1.0,0.2,0.5
+asottile__pyupgrade-142,locked,exit_context,20,10,0.0,0.1,1.0
+asottile__pyupgrade-142,locked,submitted_no_patch,6,6,2.2516291673878226,0.8333333333333334,0.3333333333333333
+asottile__pyupgrade-208,locked,early_exit,13,10,2.4464393446710155,0.6,0.3
+DCC-Lab__RayTracing-196,locked,exit_context,37,10,0.0,0.1,1.0
+pylint-dev__astroid-984,locked,early_exit,96,10,0.0,0.1,1.0
+fabiocaccamo__python-codicefiscale-24,locked,early_exit,5,5,1.9219280948873623,0.8,0.4
+iterative__dvc-4623,locked,early_exit,45,10,1.4854752972273344,0.3,0.5
+iterative__dvc-9212,locked,exit_context,282,10,0.0,0.1,1.0
+sciunto-org__python-bibtexparser-385,locked,early_exit,18,10,1.3609640474436813,0.3,0.5
+peterbe__premailer-218,locked,exit_context,33,10,0.0,0.1,1.0
+asottile__pyupgrade-890,locked,submitted,7,7,2.2359263506290326,0.7142857142857143,0.2857142857142857
+wireservice__agate-637,locked,submitted_no_patch,11,10,1.7219280948873623,0.4,0.4
+sciunto-org__python-bibtexparser-385,locked,early_exit,120,10,0.8812908992306927,0.2,0.7
+iterative__dvc-6471,locked,early_exit,59,10,1.9709505944546686,0.4,0.3
+mapbox__rio-color-14,locked,submitted_no_patch,12,10,2.2464393446710154,0.5,0.3
+canonical__charmcraft-403,locked,exit_context,47,10,1.4854752972273344,0.3,0.5
+dwavesystems__dwave-cloud-client-417,locked,submitted,19,10,2.9219280948873623,0.8,0.2
+nathandines__SPF2IP-3,locked,exit_context,143,10,0.4689955935892812,0.2,0.9
+asottile__pyupgrade-142,locked,exit_context,33,10,0.0,0.1,1.0
+sciunto-org__python-bibtexparser-385,locked,early_exit,84,10,1.5219280948873621,0.3,0.4
+mplanchard__pydecor-20,locked,submitted_no_patch,11,10,1.5709505944546687,0.4,0.6
+iterative__dvc-3534,locked,early_exit,48,10,1.5709505944546687,0.4,0.6
+ESSS__conda-devenv-51,locked,submitted_no_patch,15,10,2.6464393446710153,0.7,0.3
+devopshq__artifactory-439,locked,early_exit,21,10,1.1567796494470395,0.3,0.7
+iterative__dvc-9000,locked,early_exit,30,10,1.9709505944546688,0.4,0.3
+ESSS__conda-devenv-51,locked,exit_context,55,10,1.295461844238322,0.3,0.6
+iterative__dvc-8425,locked,submitted,5,5,2.321928094887362,1.0,0.2
+Melevir__cognitive_complexity-15,locked,submitted,20,10,2.6464393446710153,0.7,0.3
+wireservice__agate-637,locked,early_exit,30,10,1.0,0.2,0.5
+stfc__PSyclone-2191,locked,exit_context,32,10,0.0,0.1,1.0
+numpy__numpy-financial-54,locked,submitted,25,25,3.113269689515108,1.1,0.24
+canonical__charmcraft-802,locked,submitted,30,19,2.063202513215852,0.6,0.42105263157894735
+peterbe__premailer-218,locked,exit_context,25,10,0.0,0.1,1.0
+marshmallow-code__apispec-webframeworks-64,locked,submitted,11,10,1.7219280948873623,0.4,0.4
+dwavesystems__dwave-cloud-client-417,locked,exit_context,11,10,1.3567796494470394,0.4,0.7
+sciunto-org__python-bibtexparser-385,locked,submitted_no_patch,25,10,1.9609640474436814,0.5,0.5
+wearewhys__magnivore-14,locked,early_exit,25,10,0.8812908992306927,0.2,0.7
+iterative__dvc-8129,locked,early_exit,18,10,1.7609640474436812,0.4,0.5
+iterative__dvc-9000,locked,exit_context,391,10,0.0,0.1,1.0
+asottile__pyupgrade-208,locked,submitted,10,10,2.6464393446710153,0.7,0.3
+peterbe__premailer-218,locked,submitted_no_patch,9,9,2.4193819456463714,0.6666666666666666,0.3333333333333333
+glue-viz__glue-astronomy-25,locked,exit_context,61,10,1.9709505944546686,0.4,0.3
+iterative__dvc-8129,locked,exit_context,55,10,0.0,0.1,1.0
+casbin__pycasbin-53,locked,exit_context,59,10,0.9709505944546686,0.2,0.6
+PyCQA__flake8-bugbear-316,locked,exit_context,28,10,0.0,0.1,1.0
+asottile__pyupgrade-147,locked,submitted,17,10,2.8464393446710154,0.8,0.3
+asottile__pyupgrade-142,locked,exit_context,24,10,0.4689955935892812,0.2,0.9
