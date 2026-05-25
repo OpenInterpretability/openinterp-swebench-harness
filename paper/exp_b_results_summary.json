@@ -1,0 +1,56 @@
+{
+  "experiment": "Exp B Plan B — L55 SUCCESS-donor activation steering",
+  "completion_date": "2026-05-25",
+  "compute": {
+    "platform": "Colab H100",
+    "primary_wall_hours": 6.6,
+    "baseline_wall_hours": 6.5,
+    "total_cost_usd_approx": 28
+  },
+  "configuration": {
+    "model": "Qwen3.6-27B",
+    "intervention": "LayerPatch(L=55, mode=add, alpha=0.3)",
+    "patch_source": "per-repo mean L55 pre_tool residual from SUCCESS trajectories",
+    "patch_L2_effective": 38,
+    "residual_baseline_L2": 58,
+    "ratio": 0.66,
+    "n_wandering": 20,
+    "max_turns": 50,
+    "seed": "deterministic per iid (Runner.seed_for)"
+  },
+  "results": {
+    "primary_with_hook_finish_tool": 6,
+    "baseline_no_hook_finish_tool": 7,
+    "primary_max_turns": 14,
+    "baseline_max_turns": 13,
+    "paired_contingency_2x2": {
+      "both_finish_tool": 4,
+      "both_max_turns": 11,
+      "primary_only_finish_tool": 2,
+      "baseline_only_finish_tool": 3
+    },
+    "mcnemar_exact_two_sided_p": "≈ 1.0",
+    "fisher_exact_two_sided_p": "≈ 0.74",
+    "odds_ratio": 0.80
+  },
+  "verdict": "NULL — hook NOT causal for finish_tool emission",
+  "secondary_findings": {
+    "stable_wandering_pct": 55,
+    "natural_finishers_pct": 20,
+    "stochastic_switchers_pct": 25,
+    "hardware_instability_finding": "Phase 6 WANDERING classification (single run RTX 6000) not stable across H100: 30% of trajectories show different outcome on different hardware"
+  },
+  "paper2_implications": {
+    "claim_walked_back": "L55 SUCCESS-donor injection does not bias toward finish_tool",
+    "core_hypothesis_status": "mid-to-edge alignment hypothesis from Tool-Entropy §13 NOT supported by this intervention (could still be supported by different intervention design)",
+    "methodological_contribution": "Cross-hardware reproducibility of WANDERING classification — publishable independent finding",
+    "next_options": [
+      "alpha=0.7 stronger hook (caveat: 11/20 stable WANDERING is small sample)",
+      "different layer (L11 surface, L43 mid-mid)",
+      "difference direction (SUCCESS - WANDERING diff, not just SUCCESS)",
+      "specific-turn injection (Plan A revisited, transient hook)",
+      "accept null, write Exp B + Exp D as convergent null paper",
+      "pivot to Exp C (v5 collapse direction at L43) for orthogonal causal test"
+    ]
+  }
+}
