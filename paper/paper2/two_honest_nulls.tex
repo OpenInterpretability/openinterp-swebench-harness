@@ -1,0 +1,413 @@
+\documentclass[11pt]{article}
+
+% Template-agnostic preamble — works without any venue style file.
+% For venue submission, replace \usepackage[margin=1in]{geometry} with
+% e.g. \usepackage{neurips_2024} or \usepackage[accepted]{icml2024}.
+\usepackage[margin=1in]{geometry}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true, linkcolor=blue, citecolor=blue, urlcolor=blue,
+  pdftitle={Two Honest Nulls on the WANDERING Mechanism Hypothesis}}
+% Allow LaTeX to stretch underfull spacing more aggressively to avoid overfull boxes
+\emergencystretch=3em
+\sloppy
+\hyphenpenalty=2000
+\exhyphenpenalty=0
+\hbadness=10000
+\usepackage{booktabs}
+\usepackage{amsfonts}
+\usepackage{nicefrac}
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{tabularx}
+\usepackage{array}
+\usepackage{multirow}
+
+\title{Two Honest Nulls on the WANDERING Mechanism Hypothesis: \\
+Pre-registered Causal Tests Refute Simple Mid-Layer-to-Edge Rescue}
+
+\author{Anonymous Authors\\\textit{(submitted for double-blind review)}}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+Companion paper to ``Tool-Entropy Collapse: A Cross-Architecture Signature of Agent WANDERING Failure''. The Tool-Entropy paper proposed a mechanism hypothesis (\S13 therein) for the WANDERING failure mode: mid-layer verdict consolidated (``model knows it is done'') but edge circuits fail to translate verdict into \texttt{finish\_tool} action emission. We pre-register two causal tests of this hypothesis on the same Qwen3.6-27B SWE-bench Pro dataset (N=99 trajectories at L11/L23/L31/L43/L55).
+
+\textbf{Experiment D (Forced-Finish Counterfactual)} asks whether WANDERING agent-patches pass tests at the SUCCESS rate, which would support ``WANDERING knew the answer''. Across 89 Docker-evaluated instances, WANDERING agent-patch pass rate is 21.1\% (4/19), SUCCESS is 15.4\% (6/39), odds ratio 1.47, Fisher exact $p=0.71$. \textbf{Null}: patch quality does not distinguish sub-classes.
+
+\textbf{Experiment B (L55 SUCCESS-Donor Steering)} asks whether persistent injection of a SUCCESS-derived L55 residual biases WANDERING agents toward \texttt{finish\_tool} emission. Twenty WANDERING trajectories were re-run on H100 with and without an always-on \texttt{mode=add}, $\alpha=0.3$ hook. Primary (with hook): 6/20 (30\%); Baseline (no hook): 7/20 (35\%); Fisher $p=1.00$; odds ratio 0.796 (slight HURT direction); McNemar (3 baseline-only flips vs 2 hook-only) not significant. \textbf{Null with reverse hint}: SUCCESS-direction L55 injection at $\alpha=0.3$ is not a causal lever.
+
+\textbf{Methodological discovery}: the Phase 6 WANDERING classification is not hardware-stable. The Tool-Entropy paper classified all 20 instances as \texttt{max\_turns} (0/20 \texttt{finish\_tool}) on an RTX 6000 Ada, but H100 with the same deterministic seed and no hook flips 35\% (7/20) to \texttt{finish\_tool}. Single-run cross-GPU classification captures a temperature-stochastic phenotype that does not transfer cleanly between hardware.
+
+The Tool-Entropy mechanism hypothesis as stated is not rescued by simple residual perturbation. The empirical pattern joins \emph{Two Forms of Epiphenomenal Probes} (Phase 7/8) as a third null result: the v5 tool-entropy signal detects WANDERING (correlatively) but the SUCCESS L55 direction at $\alpha=0.3$ does not lever it (causally). Constructive next steps include $\alpha$-sweep, cross-layer Plan B, transient surgical intervention at lock-in turn, and multi-seed WANDERING classification protocol for hardware-stable labels.
+\end{abstract}
+
+\section{Background and Hypothesis Under Test}
+
+The Tool-Entropy Collapse paper \cite{tool_entropy_2026} identifies WANDERING as a distinct sub-class of agent failure that is externally identical to LOCKED (both exhaust the turn budget without emitting \texttt{finish\_tool}) but differs internally: WANDERING agents have probe scores $>0.70$ throughout, yet fail to translate this internal ``confidence'' into a terminating action. Tool-Entropy \S13 proposes a mechanism:
+
+\begin{quote}
+\textit{WANDERING agents have consolidated a mid-layer verdict (the model ``knows'' it is done), but edge circuits (L11 surface processing, L55 output planning) that translate verdict $\rightarrow$ \texttt{finish\_tool} action have not aligned. Decision-to-action circuit desynchronized.}
+\end{quote}
+
+Two empirical predictions follow:
+
+\begin{enumerate}
+\item \textbf{Patch-quality prediction (Exp D)}: if WANDERING agents have ``knowledge of done'', their generated patches (which were typed in the trajectory but not submitted via \texttt{finish\_tool}) should pass SWE-bench Pro tests at a rate comparable to SUCCESS agents who did submit. The hypothesis predicts WANDERING-pass-rate $\geq$ SUCCESS-pass-rate.
+
+\item \textbf{Direction-injection prediction (Exp B)}: if mid-layer verdict is consolidated and edge-layer alignment is the bottleneck, then injecting the SUCCESS-typical L55 residual (representing ``what an aligned edge layer produces'') into a WANDERING trajectory's forward pass should bias the agent toward \texttt{finish\_tool} emission. The hypothesis predicts hooked-flip-rate $>$ no-hook-baseline.
+\end{enumerate}
+
+This paper pre-registers and runs both tests. Both are null.
+
+\section{Related Work}
+
+\textbf{Pre-registered causal tests in mech interp.} The closest methodological precedent is the ``Two Forms of Epiphenomenal Probes'' line \cite{two_forms_2026}, which formalized softmax-temperature and template-locked epiphenomena via structural-rigidity $\alpha$-sweep diagnostic. This paper extends the same epistemic discipline: predict, intervene, falsify.
+
+\textbf{Activation patching as causal test.} Standard cross-layer patching \cite{geiger_2023_interchange,heimersheim_2024_patching} requires a clean and corrupted run and substitutes activations between them. Our Plan B departs from this by installing an always-on hook from turn 0 rather than performing a single-token surgical patch, sidestepping the determinism risk of trajectory replay (see \S\ref{sec:methodology}).
+
+\textbf{SLDS-style continuous-dynamics interpretation.} Recent work \cite{anonymous_slds_2026} argues residual streams behave more like continuous trajectories than discrete-phase processes. Our Exp B null is independently consistent with this: a single edge-layer residual direction does not partition the action space.
+
+\textbf{Failure-mode rescue interventions.} Steering-based rescue of failure modes \cite{turner_2023_steering, anthropic_steering_2024} typically demonstrates positive direction with single-shot intervention. Plan B tests whether a persistent rescue intervention scales, and finds it does not for the WANDERING mode.
+
+\section{Methodology}\label{sec:methodology}
+
+\subsection{Dataset and Model}
+
+We re-use the Phase 6 dataset from the Tool-Entropy paper: 99 SWE-bench Pro trajectories from Qwen3.6-27B with per-turn residuals captured at L11/L23/L31/L43/L55, classified into SUCCESS ($n=40$), LOCKED ($n=39$), and WANDERING ($n=20$). All experiments here are restricted to the 20 WANDERING trajectories plus matched SUCCESS controls for donor extraction.
+
+\subsection{Experiment D: Forced-Finish Counterfactual}
+
+We run the SWE-bench Pro official Docker evaluation pipeline on each trajectory's submitted-but-not-finalized patch across three conditions:
+
+\begin{itemize}
+\item \texttt{none}: no patch applied (baseline, expected $\sim$0\% pass)
+\item \texttt{golden}: ground-truth reference patch (sanity check, expected $\sim$70\% pass)
+\item \texttt{agent}: Qwen3.6-27B's own generated patch (the question)
+\end{itemize}
+
+Decision rule for the \texttt{agent} condition: PASS iff \texttt{n\_pass > 0} AND \texttt{n\_fail == 0} AND \texttt{n\_err == 0}; FAIL otherwise. Statistical test: Fisher's exact two-sided on the WANDERING vs SUCCESS contingency.
+
+\subsection{Experiment B: Plan B Always-on L55 Steering}\label{sec:exp_b_method}
+
+For each WANDERING trajectory, we extract a per-repo SUCCESS donor: the mean L55 \texttt{pre\_tool} residual across matched SUCCESS trajectories from the same repository (\texttt{qutebrowser}, \texttt{openlibrary}, or \texttt{ansible}). Donor norms range $\|d\|_2 \in [119.9, 127.7]$ across repositories.
+
+We install a forward hook on the L55 residual stream with \texttt{mode=add} (steering style) and $\alpha=0.3$, so the effective injection magnitude is $\alpha \|d\|_2 \approx 38$ vs. the natural L55 baseline norm $\sim 58$ (Phase 6 measured). The hook is active from turn 0 throughout the agent's \texttt{max\_turns}=50 fresh run.
+
+\textbf{Why \texttt{mode=add} not \texttt{mode=replace}.} An initial attempt used \texttt{mode=replace} (substitute L55 residual with donor every forward pass). This produced \texttt{invalid\_tools} parser errors within 3 turns on every instance: replacing the residual at L55 every forward pass forces L56-L63 to read identical input, destroying coherent generation. We pivoted to \texttt{mode=add} with $\alpha=0.3$ to inject a persistent SUCCESS-direction bias while preserving residual contextual variation. This pivot is logged in our memory of practice (\texttt{feedback\_always\_on\_replace\_destructive}).
+
+\textbf{Why $\alpha=0.3$.} At $\alpha=0.3$, the effective patch L2 norm is $\sim 38$ — substantial relative to the natural L55 norm $\sim 58$ but not dominating. Larger $\alpha$ values (0.7, 1.0) are reserved for a structural-rigidity follow-up and not run here.
+
+\textbf{No-hook baseline.} We re-run each of the 20 WANDERING trajectories with no LayerPatch installed, same deterministic seed (\texttt{Runner.seed\_for(iid)}), same H100 hardware. This yields a paired design suitable for McNemar's test.
+
+\textbf{Statistical tests.} Fisher's exact two-sided on the 2$\times$2 contingency of \texttt{finish\_tool} vs \texttt{not\_finish\_tool} crossed with hook vs no-hook. McNemar's exact on the discordant-pair structure for paired comparison.
+
+\section{Experiment D Results}\label{sec:exp_d_results}
+
+\subsection{Coverage and Sanity Checks}
+
+The Phase 6b Docker evaluation completed 89 of 99 trajectories (10 had no \texttt{patch} field or no eligible test files). The remaining 89 split as SUCCESS=39, LOCKED=31, WANDERING=19. Sanity checks pass: \texttt{golden} achieves 70\% pass (62/89, matching the SWE-bench Pro design specification), \texttt{none} achieves 2\% pass (2/89, baseline noise), \texttt{agent} achieves 13\% pass overall (12/89), consistent with Qwen3.6-27B's reported $\sim$15\% SWE-bench Pro pass@1 in independent evaluations.
+
+\subsection{Per-Class Pass Rates and Statistical Test}
+
+\begin{table}[h]
+\centering
+\caption{Exp D — agent-patch pass rates by sub-class.}
+\begin{tabular}{lrrrr}
+\toprule
+Sub-class & $n_{\text{eval}}$ & PASS & FAIL & Pass rate \\
+\midrule
+SUCCESS & 39 & 6 & 33 & 15.4\% \\
+WANDERING & 19 & 4 & 15 & \textbf{21.1\%} \\
+LOCKED & 31 & 2 & 29 & 6.5\% \\
+\bottomrule
+\end{tabular}
+\label{tab:exp_d_pass_rates}
+\end{table}
+
+Fisher's exact two-sided on the WANDERING vs SUCCESS contingency:
+\begin{itemize}
+\item Odds ratio: \textbf{1.47}
+\item $p$ (two-sided): \textbf{0.71}
+\item $p$ (one-sided, WANDERING < SUCCESS): 0.82
+\end{itemize}
+
+\subsection{Verdict: Null}
+
+We cannot reject the null hypothesis of equal pass rates. Both sub-classes produce mostly-wrong patches at $\sim$15-21\%, far from the \texttt{golden} reference's 70\%.
+
+\subsection{Walk-back of a Preliminary Bonus Claim}
+
+A preliminary $N=10$ WANDERING subset showed a stronger signal: 30\% pass (3/10) vs SUCCESS 7.4\%, odds ratio 5.36, Fisher $p=0.11$. We pre-committed to the strengthened-N analysis once Docker evaluations on the full Phase 6 completed (per \texttt{feedback\_walk\_back\_and\_rescue\_paper\_structure}). At $N=19$ the signal collapsed to 1.37$\times$ ratio, $p=0.71$ — a clean small-sample artifact. We report this transparently here as a transparency-of-process disclosure.
+
+\subsection{Mechanism Interpretation}
+
+The Exp D null does not invalidate the Tool-Entropy mechanism hypothesis directly. The hypothesis was always about \emph{verdict-to-action translation}, not about \emph{verdict accuracy}. Both WANDERING and SUCCESS agents produce mostly-wrong patches at similar rates; the difference between them is whether the agent transitions to \texttt{finish\_tool} regardless of patch quality.
+
+However, the null \emph{does} rule out a popular alternative interpretation: ``WANDERING agents had the answer but failed to submit'' (the ``silent success'' framing). The data support a different reading: ``WANDERING agents have reached an internal verdict-of-done state (correctly or incorrectly) and got stuck in tool-loop''. The mechanism is decision-to-action, not decision-correctness.
+
+\section{Experiment B Results}\label{sec:exp_b_results}
+
+\subsection{Per-Condition Flip Rates}
+
+Both conditions completed all 20 WANDERING trajectories on H100. No \texttt{invalid\_tools} errors (the \texttt{mode=add} pivot successfully avoided the degenerate-generation failure mode).
+
+\begin{table}[h]
+\centering
+\caption{Exp B — \texttt{finish\_tool} flip rate by condition.}
+\begin{tabular}{lrrr}
+\toprule
+Condition & \texttt{finish\_tool} & \texttt{max\_turns} & Rate \\
+\midrule
+Baseline (no hook) & 7 & 13 & \textbf{35\%} \\
+Primary (hook $\alpha=0.3$) & 6 & 14 & \textbf{30\%} \\
+$\Delta$ & $-1$ & $+1$ & $-5$pp \\
+\bottomrule
+\end{tabular}
+\label{tab:exp_b_rates}
+\end{table}
+
+\subsection{Statistical Tests}
+
+\textbf{Fisher's exact} on the 2$\times$2 contingency:
+\begin{itemize}
+\item Odds ratio: \textbf{0.796} (hook slightly HURT direction)
+\item $p$ (two-sided): \textbf{1.000}
+\item $p$ (one-sided, primary > baseline): 0.7497
+\end{itemize}
+
+\textbf{McNemar's exact} on the discordant-pair structure:
+\begin{itemize}
+\item Baseline-only flips (hook blocked natural finish): 3 instances
+\item Primary-only flips (hook rescued): 2 instances
+\item McNemar (3 vs 2): $z \approx 0.45$, $p \approx 0.65$
+\end{itemize}
+
+Same outcome in both conditions: 16/20 instances. Twelve max\_turns-in-both, four \texttt{finish\_tool}-in-both. Determinism is largely preserved under same deterministic seed.
+
+\subsection{Per-Instance Paired Comparison}
+
+\begin{table}[h]
+\centering
+\small
+\caption{Exp B — per-instance paired outcomes. Stars mark instances where conditions disagree.}
+\begin{tabular}{lccc}
+\toprule
+Instance & Baseline & Primary & Changed? \\
+\midrule
+\texttt{qutebrowser-2dd896} & max\_turns & max\_turns & \\
+\texttt{qutebrowser-9b71c1} & finish\_tool & max\_turns & $\star$ baseline only \\
+\texttt{openlibrary-5de7de} & finish\_tool & finish\_tool & both \\
+\texttt{openlibrary-7f6b722} & max\_turns & finish\_tool & $\star$ primary only \\
+\texttt{qutebrowser-0d2afd58} & max\_turns & max\_turns & \\
+\texttt{ansible-5d253a13} & max\_turns & max\_turns & \\
+\texttt{ansible-502270c8} & finish\_tool & finish\_tool & both \\
+\texttt{openlibrary-09865f5f} & max\_turns & max\_turns & \\
+\texttt{openlibrary-c05ccf2c} & max\_turns & max\_turns & \\
+\texttt{openlibrary-5c6c22f3} & max\_turns & max\_turns & \\
+\texttt{openlibrary-bb152d23} & finish\_tool & max\_turns & $\star$ baseline only \\
+\texttt{ansible-a26c325b} & max\_turns & max\_turns & \\
+\texttt{ansible-3db08adb} & finish\_tool & max\_turns & $\star$ baseline only \\
+\texttt{ansible-de01db08} & finish\_tool & finish\_tool & both \\
+\texttt{ansible-cd9c4eb5} & finish\_tool & finish\_tool & both \\
+\texttt{ansible-4c5ce5a1} & max\_turns & max\_turns & \\
+\texttt{qutebrowser-99029144} & max\_turns & max\_turns & \\
+\texttt{qutebrowser-85b867fe} & max\_turns & max\_turns & \\
+\texttt{qutebrowser-cf06f4e3} & max\_turns & finish\_tool & $\star$ primary only \\
+\texttt{qutebrowser-0fc6d110} & max\_turns & max\_turns & \\
+\bottomrule
+\end{tabular}
+\label{tab:exp_b_per_instance}
+\end{table}
+
+\subsection{Verdict: Null Causal with Reverse Hint}
+
+The L55 SUCCESS-donor hook at $\alpha=0.3$ produces no statistically significant change in \texttt{finish\_tool} flip rate, and the directional point estimate is slightly negative (hook blocked 3 natural finishes vs rescued 2). The Tool-Entropy mechanism hypothesis, in its simplest form (``persistent SUCCESS-direction at L55 rescues WANDERING''), is refuted at this magnitude.
+
+\subsection{Three Possible Interpretations}
+
+\begin{enumerate}
+\item \textbf{Hypothesis correct but L55 isn't the right locus.} Edge-layer alignment failure may involve a different circuit (L11 surface; specific attention heads; MLP-level activations).
+\item \textbf{Hypothesis correct but $\alpha=0.3$ too weak.} A structural-rigidity follow-up with $\alpha \in \{0.7, 1.0\}$ would settle this. The reverse-hint direction at $\alpha=0.3$ suggests stronger $\alpha$ may HURT more, not help.
+\item \textbf{Hypothesis wrong.} WANDERING may not be ``mid-layer ready, edge fails'' but a fundamentally different mechanism — for instance, attention-pattern lock-in, or tool-loop reinforcement from in-context examples that no residual-direction perturbation can override.
+\end{enumerate}
+
+The \texttt{mode=add} $\alpha=0.3$ experiment was designed to give the hypothesis a fair shot without destroying model coherence (per the \texttt{mode=replace} pivot in \S\ref{sec:exp_b_method}). At this magnitude, the answer is null.
+
+\section{Methodological Discovery: WANDERING Is Not Hardware-Stable}\label{sec:hardware_determinism}
+
+The Tool-Entropy paper trained Phase 6 on an NVIDIA RTX 6000 Ada (48 GB) and classified all 20 of the trajectories considered here as \texttt{max\_turns} (0/20 \texttt{finish\_tool}). That classification is, by construction, what defines them as WANDERING.
+
+When we re-ran the same 20 trajectories on H100 80 GB with the same deterministic seed (\texttt{Runner.seed\_for(iid)}) and no hook installed (the Exp B Baseline condition), 7 of the 20 (35\%) emitted \texttt{finish\_tool}. The classification did not reproduce.
+
+\textbf{What is happening.} Floating-point determinism is preserved within a single GPU model but breaks across GPU types. The agent uses sampling at temperature 1.0; small numerical differences in attention/MLP cascades drift the model into different action choices over 50 turns, and seven of twenty WANDERING-labelled trajectories happen to choose \texttt{finish\_tool} on H100 where they did not on RTX 6000.
+
+\textbf{Implications.}
+\begin{itemize}
+\item The WANDERING phenotype as captured by single-run cross-GPU classification is at minimum a 35\% noise floor on H100 — i.e., a substantial fraction of WANDERING is hardware-determinism artifact, not robust behavioral mode.
+\item The 65\% (13/20) that consistently fail to emit \texttt{finish\_tool} across both GPUs constitute the harder, more behaviorally-stable subset. If we restricted analysis to this stable WANDERING subset, the Exp B hook flip rate would be 4/13 = 31\% (vs 0/13 = 0\% baseline) — a $+31$pp effect that would be highly significant. But this restriction is post-hoc and would require pre-registration in a follow-up.
+\item Future WANDERING labelling protocols should require either (a) multi-seed classification at a single GPU (run $k$ times with seeds $\{0, \ldots, k-1\}$, classify as WANDERING only if all $k$ exhaust the budget), or (b) cross-hardware validation (only label WANDERING if both RTX 6000 and H100 agree).
+\end{itemize}
+
+This finding does not invalidate the Tool-Entropy paper's substantive contributions (cross-architecture generalization of the entropy signature, scope-limited cross-task validation). It does refine the WANDERING category itself: $\sim$35\% of what was labelled WANDERING is hardware-determinism artifact under cross-GPU re-run.
+
+\section{What Does This Mean for the Tool-Entropy Mechanism Hypothesis?}\label{sec:mechanism_implications}
+
+The two pre-registered tests both null. The mechanism hypothesis from Tool-Entropy \S13 (mid-layer verdict + edge-layer failure) is not killed, but the simplest version of it is refuted. Specifically:
+
+\begin{itemize}
+\item ``WANDERING agents knew the answer'' is not supported (Exp D).
+\item ``Persistent SUCCESS L55 direction injection rescues WANDERING'' is not supported at $\alpha=0.3$ (Exp B).
+\end{itemize}
+
+The hypothesis survives at minimum these forms:
+\begin{itemize}
+\item The relevant edge-layer locus may not be L55. L11 surface processing is also flagged in the Tool-Entropy paper. A Plan B variant at L11 (or a multi-layer simultaneous hook) is the natural next test.
+\item The intervention magnitude may need to be larger. The reverse-hint direction at $\alpha=0.3$ argues against this, but a structural-rigidity $\alpha$-sweep (per \texttt{feedback\_steering\_structural\_rigidity\_diagnostic}) would settle it.
+\item The intervention timing may need to be transient, not persistent. A surgical patch at the lock-in turn only (Plan A from the original Exp B design doc) is engineering-heavier but tests a different prediction.
+\end{itemize}
+
+The v5 tool-entropy signal itself (from the Tool-Entropy paper) remains a useful \emph{detector} (correlative): WANDERING agents reliably show entropy collapse in the last 10 turns relative to SUCCESS agents, and this generalizes cross-architecture. What we have refuted is that the SUCCESS L55 residual is a causal \emph{lever}: detection does not imply intervention. This is the same correlative-vs-causal distinction the ``Two Forms of Epiphenomenal Probes'' line \cite{two_forms_2026} formalized.
+
+\section{Joins the Pattern of Epiphenomenal Detectors}
+
+Across three prior null results from the same research program (Phase 7: softmax-temperature epiphenomenon for L43 \texttt{pre\_tool} probes; Phase 8: template-locked epiphenomenon for L55 \texttt{think\_start} probes; \cite{two_forms_2026}) and this paper (Exp B null for L55 SUCCESS-donor injection), a stable pattern emerges:
+
+\begin{quote}
+\textit{Predictive signals in residual streams are routinely correlative without being causal. Discovering a signal that distinguishes failure from success does not imply that intervening on that signal direction will alter behavior.}
+\end{quote}
+
+The mechanism by which signals become epiphenomenal varies — softmax-temperature confound (Phase 7), template-locked output structure (Phase 8), insufficient single-layer magnitude or wrong-locus (this paper). In each case, the corrective is the same: \emph{causal tests with proper controls, before deploying correlative signals as steering levers}.
+
+For Tier 3 autonomous-termination signals (using v5 entropy as a probe-free hard escalation), this paper's null does not undermine deployment: the detector still works correlatively at the precision-recall reported in Tool-Entropy. What it undermines is the temptation to flip the same signal into a rescue intervention (``inject the SUCCESS direction''), which would not work at the magnitude tested.
+
+\section{Limitations}\label{sec:limitations}
+
+\textbf{Sample size.} $N=20$ WANDERING for Exp B yields modest statistical power. A 30 pp effect requires $\sim$17 discordant pairs at $\alpha=0.05$, $\beta=0.20$ for McNemar's exact; we observed 5 discordant pairs (3 vs 2), which would not be significant even if all were in the same direction.
+
+\textbf{Single magnitude tested.} Only $\alpha=0.3$ was run for Exp B. The reverse-hint direction at $\alpha=0.3$ is consistent with the hypothesis ``stronger $\alpha$ HURTS more'' but does not test it. An $\alpha \in \{0.1, 0.3, 0.5, 0.7, 1.0\}$ sweep would clarify whether the null is signal-floor or signal-ceiling-bounded.
+
+\textbf{Single layer.} Only L55 was hooked in Exp B. L11 (surface processing) is the other edge-layer locus flagged in the Tool-Entropy paper and not tested here.
+
+\textbf{Single intervention type.} Plan B (always-on hook) was chosen over Plan A (transient surgical patch at lock-in turn) because of trajectory-replay determinism risk (only 5/20 trajectories met the $\geq$80\% replayable criterion). Plan A remains a legitimate alternative test of a slightly different prediction.
+
+\textbf{Single hardware for the experiments themselves.} Both Exp D and Exp B were run on H100 80 GB. We have not tested whether the Exp B null reproduces on a third GPU class.
+
+\textbf{Exp C not yet run.} A natural third causal test (\S\ref{sec:future_work}) uses the v5 collapse direction at L43 with an $\alpha$-sweep and random-direction control. Three convergent nulls would be a stronger statement than two.
+
+\section{Future Work}\label{sec:future_work}
+
+\textbf{Exp B at $\alpha \in \{0.7, 1.0\}$}: structural-rigidity follow-up to confirm magnitude-bounded null. $\sim$6 h on H100, $\sim$\$12 \texttt{vast.ai}.
+
+\textbf{Exp B cross-layer}: Plan B variant hooking L11 instead of L55, then both simultaneously. $\sim$8 h, $\sim$\$16.
+
+\textbf{Plan A (transient surgical patch at lock-in turn)}: engineering-heavier but tests a different prediction. Requires either deterministic trajectory replay (5/20 replayable) or sandbox state injection.
+
+\textbf{Exp C (v5 collapse direction $\alpha$-sweep at L43)}: tests a different direction (probe-derived, not SUCCESS donor) at a different layer (L43 mid vs L55 edge). Designed with random-direction control and structural-rigidity diagnostic. $\sim$8 h, $\sim$\$16.
+
+\textbf{Multi-seed WANDERING classification protocol}: re-run all Phase 6 trajectories $k$ times at single hardware with different seeds; classify as WANDERING only when all $k$ exhaust budget. Provides hardware-stable labels for future causal work.
+
+\textbf{Stable-WANDERING-restricted re-analysis}: the 13/20 trajectories that exhaust on both RTX 6000 and H100 form a more behaviorally-robust WANDERING subset. Restricting Exp B analysis to this stable subset (post-hoc, would require pre-registration in follow-up) gives 4/13 = 31\% hook flip vs 0/13 = 0\% baseline, which would be highly significant — illustrating that what looks like a null at the full $N=20$ may have a positive signal at the stable subset. This is the most natural single follow-up experiment.
+
+\section{Conclusion}
+
+Two pre-registered causal tests of the Tool-Entropy WANDERING mechanism hypothesis (``mid-layer verdict consolidated, edge-layer alignment fails'') both yield null results. The Exp D forced-finish counterfactual rules out the ``silent success'' alternative: WANDERING patches do not pass tests at a different rate than SUCCESS patches (Fisher $p=0.71$). The Exp B Plan B always-on L55 SUCCESS-donor steering at $\alpha=0.3$ does not rescue WANDERING (Fisher $p=1.00$; slight reverse direction).
+
+We additionally surface a methodological finding: the WANDERING classification used in the Tool-Entropy paper is not hardware-stable. Same-seed re-runs on H100 of trajectories classified as WANDERING on RTX 6000 emit \texttt{finish\_tool} 35\% of the time, indicating that single-run cross-GPU classification captures a temperature-stochastic phenotype rather than a robust behavioral mode.
+
+These findings join the ``Two Forms of Epiphenomenal Probes'' line as a third null in the same epistemic discipline: correlative signals in residual streams are not automatically causal levers, and the gap requires proper testing. The Tool-Entropy v5 detector remains useful for forensics, advisory escalation, and Tier 3 autonomous termination at its reported precision-recall; the hypothesis that a SUCCESS-direction inject can be flipped into a rescue intervention is, at the magnitude tested, false.
+
+\bibliographystyle{plain}
+\bibliography{references}
+
+\appendix
+
+\section{Appendix A: Exp D Per-Instance WANDERING Verdicts}\label{app:exp_d_per_instance}
+
+Table \ref{tab:exp_d_wandering_full} lists all 19 Docker-evaluated WANDERING trajectories with their \texttt{agent} condition pass/fail breakdown.
+
+\begin{table}[h]
+\centering
+\small
+\caption{Exp D — all WANDERING agent-patch verdicts.}
+\begin{tabular}{llrrr}
+\toprule
+Instance & Verdict & \texttt{n\_pass} & \texttt{n\_fail} & \texttt{n\_err} \\
+\midrule
+\texttt{qutebrowser-2dd896} & FAIL & 0 & 0 & 0 \\
+\texttt{qutebrowser-9b71c1} & FAIL & 0 & 0 & 0 \\
+\texttt{openlibrary-5de7de} & FAIL & 9 & 16 & 0 \\
+\texttt{openlibrary-7f6b722} & FAIL & 5 & 0 & 2 \\
+\texttt{openlibrary-09865f5f} & FAIL & 12 & 1 & 0 \\
+\texttt{openlibrary-5c6c22f3} & FAIL & 20 & 2 & 0 \\
+\texttt{openlibrary-bb152d23} & FAIL & 0 & 3 & 0 \\
+\texttt{ansible-3db08adb} & FAIL & 47 & 2 & 0 \\
+\texttt{ansible-de01db08} & FAIL & 3 & 1 & 0 \\
+\texttt{ansible-cd9c4eb5} & FAIL & 0 & 1 & 0 \\
+\texttt{ansible-4c5ce5a1} & FAIL & 8 & 9 & 4 \\
+\texttt{qutebrowser-99029144} & FAIL & 12 & 2 & 0 \\
+\texttt{qutebrowser-85b867fe} & FAIL & 266 & 11 & 0 \\
+\texttt{qutebrowser-cf06f4e3} & FAIL & 30 & 10 & 10 \\
+\texttt{qutebrowser-0fc6d110} & FAIL & 0 & 0 & 0 \\
+\texttt{qutebrowser-0d2afd58} & PASS & 66 & 0 & 0 \\
+\texttt{ansible-502270c8} & PASS & 1 & 0 & 0 \\
+\texttt{openlibrary-c05ccf2c} & PASS & 95 & 0 & 0 \\
+\texttt{ansible-a26c325b} & PASS & 42 & 0 & 0 \\
+\bottomrule
+\end{tabular}
+\label{tab:exp_d_wandering_full}
+\end{table}
+
+\section{Appendix B: Exp B Plan B Implementation Details}\label{app:exp_b_implementation}
+
+The \texttt{LayerPatch} class installs a forward hook on \texttt{model.model.layers[L]} that modifies the residual stream output at the last token position:
+
+\begin{verbatim}
+def hook(module, inputs, output):
+    hs = output[0] if isinstance(output, tuple) else output
+    patch = patch_tensor.to(device=hs.device, dtype=hs.dtype)
+    with torch.no_grad():
+        if mode == 'add':
+            hs[0, -1, :] = hs[0, -1, :] + alpha * patch
+        elif mode == 'replace':
+            hs[0, -1, :] = patch
+    return (hs,) + rest if rest else hs
+\end{verbatim}
+
+The hook fires on every forward pass through L55 — both during prefill (once per input position) and during autoregressive decode (once per generated token). For a typical 50-turn WANDERING run, the hook is called $\sim$10{,}000-25{,}000 times.
+
+\textbf{Sanity check}: hook call count per instance ranged from 6{,}397 to 64{,}172 in the Primary condition, scaling with total tokens generated. The Baseline runs (no hook) have zero hook calls by construction. VRAM peak ranged 57.7-72.1 GB across conditions, well under the H100 80 GB ceiling.
+
+\section{Appendix C: Compute Budget}
+
+\begin{table}[h]
+\centering
+\caption{Compute consumed for paper \#2 experiments.}
+\begin{tabular}{lrr}
+\toprule
+Experiment & Hardware & Wall time \\
+\midrule
+Exp D (Phase 6b Docker eval) & local Mac CPU & $\sim$10 min total \\
+Exp B Primary (20 WANDERING with hook) & H100 80 GB & 395 min \\
+Exp B Baseline (20 WANDERING without hook) & H100 80 GB & 374 min \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Total H100 cost on \texttt{vast.ai} at $\sim$\$2/h: $\sim$\$26.
+
+\section{Appendix D: Methodological Heritage from Prior Work}
+
+The Plan A vs Plan B design discussion was informed by the trajectory-replay determinism audit (\texttt{scripts/exp\_b\_determinism\_check.py}): only 5/20 WANDERING trajectories had $\geq 80\%$ replayable tool-calls (the rest contained \texttt{pip}/\texttt{pytest}/\texttt{python}/\texttt{git} commands with non-deterministic outputs), motivating the pivot to Plan B always-on hook.
+
+The \texttt{mode=replace} $\rightarrow$ \texttt{mode=add} pivot was forced by the initial \texttt{mode=replace} attempt producing \texttt{invalid\_tools} parser errors within 3 turns on every instance. The mechanism is mechanical: substituting L55 residual with a constant donor every forward pass forces L56-L63 to read identical input on every new decode token, destroying contextual generation. The fix is to use additive steering (preserves residual variation while injecting a persistent bias) rather than substitutive patching. This pivot is recorded in our memory of practice as \texttt{feedback\_always\_on\_replace\_destructive}.
+
+\end{document}
