@@ -30,7 +30,7 @@
 \usepackage{multirow}
 
 \title{Two Honest Nulls on the WANDERING Mechanism Hypothesis: \\
-Pre-registered Causal Tests Refute Simple Mid-Layer-to-Edge Rescue}
+Pre-registered Causal Tests Refine the Mid-Layer-to-Edge Picture}
 
 \author{Anonymous Authors\\\textit{(submitted for double-blind review)}}
 
@@ -45,7 +45,7 @@ Companion paper to ``Tool-Entropy Collapse: A Cross-Architecture Signature of Ag
 
 \textbf{Experiment B (L55 SUCCESS-Donor Steering)} asks whether persistent injection of a SUCCESS-derived L55 residual biases WANDERING agents toward \texttt{finish\_tool} emission. Twenty WANDERING trajectories were re-run on H100 with and without an always-on \texttt{mode=add}, $\alpha=0.3$ hook. Primary (with hook): 6/20 (30\%); Baseline (no hook): 7/20 (35\%); Fisher $p=1.00$; odds ratio 0.796 (slight HURT direction); McNemar (3 baseline-only flips vs 2 hook-only) not significant. \textbf{Null with reverse hint}: SUCCESS-direction L55 injection at $\alpha=0.3$ is not a causal lever.
 
-\textbf{Methodological discovery}: the Phase 6 WANDERING classification is not hardware-stable. The Tool-Entropy paper classified all 20 instances as \texttt{max\_turns} (0/20 \texttt{finish\_tool}) on an RTX 6000 Ada, but H100 with the same deterministic seed and no hook flips 35\% (7/20) to \texttt{finish\_tool}. Single-run cross-GPU classification captures a temperature-stochastic phenotype that does not transfer cleanly between hardware.
+\textbf{Methodological discovery}: the Phase 6 WANDERING classification is not hardware-stable. The Tool-Entropy paper classified all 20 instances as \texttt{max\_turns} (0/20 \texttt{finish\_tool}) on an RTX 6000 Ada, but H100 with the same deterministic seed and no hook flips 7/20 = 35\% to \texttt{finish\_tool}. Single-run cross-GPU classification captures a temperature-stochastic phenotype that does not transfer cleanly between hardware. Restricted to the 13/20 trajectories that consistently fail under both GPUs (the ``stable-WANDERING'' subset), the Plan B hook flips 4/13 = 31\% vs 0/13 = 0\% baseline --- a post-hoc subgroup analysis that we surface honestly but do not pre-register here.
 
 The Tool-Entropy mechanism hypothesis as stated is not rescued by simple residual perturbation. The empirical pattern joins \emph{Two Forms of Epiphenomenal Probes} (Phase 7/8) as a third null result: the v5 tool-entropy signal detects WANDERING (correlatively) but the SUCCESS L55 direction at $\alpha=0.3$ does not lever it (causally). Constructive next steps include $\alpha$-sweep, cross-layer Plan B, transient surgical intervention at lock-in turn, and multi-seed WANDERING classification protocol for hardware-stable labels.
 \end{abstract}
@@ -120,14 +120,14 @@ The Phase 6b Docker evaluation completed 89 of 99 trajectories (10 had no \textt
 
 \begin{table}[h]
 \centering
-\caption{Exp D — agent-patch pass rates by sub-class.}
-\begin{tabular}{lrrrr}
+\caption{Exp D --- agent-patch pass rates by sub-class. Wilson 95\% CIs.}
+\begin{tabular}{lrrrll}
 \toprule
-Sub-class & $n_{\text{eval}}$ & PASS & FAIL & Pass rate \\
+Sub-class & $n_{\text{eval}}$ & PASS & FAIL & Pass rate & 95\% CI \\
 \midrule
-SUCCESS & 39 & 6 & 33 & 15.4\% \\
-WANDERING & 19 & 4 & 15 & \textbf{21.1\%} \\
-LOCKED & 31 & 2 & 29 & 6.5\% \\
+SUCCESS & 39 & 6 & 33 & 15.4\% & $[7.18\%,\ 29.69\%]$ \\
+WANDERING & 19 & 4 & 15 & \textbf{21.1\%} & $[8.51\%,\ 43.34\%]$ \\
+LOCKED & 31 & 2 & 29 & 6.5\% & $[1.79\%,\ 20.71\%]$ \\
 \bottomrule
 \end{tabular}
 \label{tab:exp_d_pass_rates}
@@ -162,18 +162,25 @@ Both conditions completed all 20 WANDERING trajectories on H100. No \texttt{inva
 
 \begin{table}[h]
 \centering
-\caption{Exp B — \texttt{finish\_tool} flip rate by condition.}
-\begin{tabular}{lrrr}
+\caption{Exp B --- \texttt{finish\_tool} flip rate by condition. Wilson 95\% CIs.}
+\begin{tabular}{lrrll}
 \toprule
-Condition & \texttt{finish\_tool} & \texttt{max\_turns} & Rate \\
+Condition & \texttt{finish\_tool} & \texttt{max\_turns} & Rate & 95\% CI \\
 \midrule
-Baseline (no hook) & 7 & 13 & \textbf{35\%} \\
-Primary (hook $\alpha=0.3$) & 6 & 14 & \textbf{30\%} \\
-$\Delta$ & $-1$ & $+1$ & $-5$pp \\
+Baseline (no hook) & 7 & 13 & \textbf{35\%} & $[17.74\%,\ 57.42\%]$ \\
+Primary (hook $\alpha=0.3$) & 6 & 14 & \textbf{30\%} & $[14.55\%,\ 51.92\%]$ \\
+$\Delta$ & $-1$ & $+1$ & $-5$pp & \\
 \bottomrule
 \end{tabular}
 \label{tab:exp_b_rates}
 \end{table}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.75\textwidth]{figures/exp_b_confusion_matrix.pdf}
+\caption{Exp B paired confusion matrix. Rows: outcome under Baseline (no hook). Columns: outcome under Primary (hook L55 SUCCESS donor, $\alpha=0.3$). Off-diagonal cells (3 + 2 = 5 discordant pairs) drive the McNemar exact test; the slight asymmetry (3 baseline-only flips vs 2 primary-only flips) is consistent with no causal effect of the hook on \texttt{finish\_tool} emission.}
+\label{fig:exp_b_confusion}
+\end{figure}
 
 \subsection{Statistical Tests}
 
@@ -186,9 +193,10 @@ $\Delta$ & $-1$ & $+1$ & $-5$pp \\
 
 \textbf{McNemar's exact} on the discordant-pair structure:
 \begin{itemize}
-\item Baseline-only flips (hook blocked natural finish): 3 instances
-\item Primary-only flips (hook rescued): 2 instances
-\item McNemar (3 vs 2): $z \approx 0.45$, $p \approx 0.65$
+\item Baseline-only flips (hook \emph{blocked} natural finish): 3 instances
+\item Primary-only flips (hook \emph{rescued}): 2 instances
+\item McNemar exact two-tailed: $p = 1.00$ (binomial CDF saturated at $n_{\text{discordant}}=5$)
+\item The slight directional asymmetry --- 3 blocks vs 2 rescues --- favours hook \emph{blocking} natural finishes over \emph{rescuing} WANDERING instances, but the magnitude is well within sampling noise
 \end{itemize}
 
 Same outcome in both conditions: 16/20 instances. Twelve max\_turns-in-both, four \texttt{finish\_tool}-in-both. Determinism is largely preserved under same deterministic seed.
