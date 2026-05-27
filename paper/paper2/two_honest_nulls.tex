@@ -252,7 +252,7 @@ The \texttt{mode=add} $\alpha=0.3$ experiment was designed to give the hypothesi
 
 \section{Methodological Discovery: WANDERING Is Not Hardware-Stable}\label{sec:hardware_determinism}
 
-The Tool-Entropy paper trained Phase 6 on an NVIDIA RTX 6000 Pro Blackwell (48 GB) and classified all 20 of the trajectories considered here as \texttt{max\_turns} (0/20 \texttt{finish\_tool}). That classification is, by construction, what defines them as WANDERING.
+The Tool-Entropy paper trained Phase 6 on an NVIDIA RTX 6000 Pro Blackwell (96 GB) and classified all 20 of the trajectories considered here as \texttt{max\_turns} (0/20 \texttt{finish\_tool}). That classification is, by construction, what defines them as WANDERING.
 
 When we re-ran the same 20 trajectories on H100 80 GB with the same deterministic seed (\texttt{Runner.seed\_for(iid)}) and no hook installed (the Exp B Baseline condition), 7 of the 20 (35\%) emitted \texttt{finish\_tool}. The classification did not reproduce.
 

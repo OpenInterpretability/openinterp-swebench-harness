@@ -204,7 +204,7 @@ Sub-class derivation rule:
 - **Model**: Qwen3.6-27B (Alibaba 2026), `enable_thinking=True`, temperature=1.0
 - **Task**: SWE-bench Pro (Pro-balanced split), MIT-licensed
 - **Scaffold**: OpenInterpretability custom agent loop (forward-hook compatible) — [github.com/OpenInterpretability/openinterp-swebench-harness](https://github.com/OpenInterpretability/openinterp-swebench-harness)
-- **Hardware**: NVIDIA RTX 6000 Pro Blackwell (48 GB), bfloat16 inference
+- **Hardware**: NVIDIA RTX 6000 Pro Blackwell (96 GB), bfloat16 inference
 - **Run date**: 2026-05-06 → 2026-05-08
 - **Phase 6b Docker eval**: completed 2026-05-24 → 2026-05-25 (local Mac CPU + Docker)
 
