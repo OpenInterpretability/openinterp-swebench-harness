@@ -73,7 +73,7 @@ The mode=add experiment with α=0.3 was designed to give the hypothesis a fair s
 
 ## Hardware-determinism methodological discovery
 
-**Critical finding**: Phase 6 was run on RTX 6000 Ada (48GB). All 20 WANDERING instances were classified as `finish_reason=max_turns` (0/20 finish_tool) — that's how they got the WANDERING label.
+**Critical finding**: Phase 6 was run on RTX 6000 Pro Blackwell (48GB). All 20 WANDERING instances were classified as `finish_reason=max_turns` (0/20 finish_tool) — that's how they got the WANDERING label.
 
 On H100 80GB with the SAME seed (Runner.seed_for is deterministic by iid) and NO HOOK, baseline shows 7/20 = 35% finish_tool. The classification is not reproducible across GPUs.
 
