@@ -90,13 +90,13 @@ Any non-null outcome is a publishable finding. Even REFUTED is informative: woul
 
 | Component | Resource | Cost |
 |---|---|---|
-| Qwen3.6-27B inference (full precision) | H100 80GB or A100 80GB | Required |
+| Qwen3.6-27B inference (full precision) | RTX 6000 Pro Blackwell 96GB | Required |
 | Per-trajectory replay | ~1 min sandbox setup | — |
 | Per-trajectory inference | ~25 turns × 5sec = 125s | — |
 | Primary + 4 controls × 20 traj | ~5 × 20 × 3min = 5h | — |
 | Model loading | ~5min × 1 session | — |
 | **Total wall time** | ~5-6h compute | — |
-| **Recommended env** | vast.ai H100 @ $2/h × 6h | **~$12** |
+| **Recommended env** | vast.ai RTX 6000 Pro Blackwell 96GB @ $0.65/h × 6h | **~$4** |
 | **Alternative** | Caio's local Mac (MLX 4-bit, different hook API, +2 days dev) | $0 |
 
 ## Engineering tasks (when ready to execute)

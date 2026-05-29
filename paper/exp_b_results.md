@@ -71,17 +71,18 @@ L55 SUCCESS-donor always-on hook with mode=add α=0.3 has **no causal effect** o
 
 The mode=add experiment with α=0.3 was designed to give the hypothesis a fair shot without destroying the model (per `feedback_always_on_replace_destructive`). At this magnitude, the answer is null.
 
-## Hardware-determinism methodological discovery
+## Run-stability methodological discovery
 
 **Critical finding**: Phase 6 was run on RTX 6000 Pro Blackwell (96 GB). All 20 WANDERING instances were classified as `finish_reason=max_turns` (0/20 finish_tool) — that's how they got the WANDERING label.
 
-On H100 80GB with the SAME seed (Runner.seed_for is deterministic by iid) and NO HOOK, baseline shows 7/20 = 35% finish_tool. The classification is not reproducible across GPUs.
+On the SAME RTX 6000 Pro Blackwell with the SAME seed (Runner.seed_for is nominally deterministic by iid) and NO HOOK, an independent re-run shows 7/20 = 35% finish_tool, while a fresh same-session determinism check shows 0/5. The classification is not reproducible run-to-run under temperature=1.0 (this is a sampling/run-variance effect, NOT a hardware effect — all runs used RTX 6000 Pro Blackwell; no H100 was used).
 
 **Implications**:
-- WANDERING phenotype is partly artifact of single-run + RTX 6000 floating-point determinism
-- Hardware drift across GPUs (H100 vs RTX 6000) shifts ~35% of WANDERING-classified instances toward natural finalization
-- Future WANDERING labeling protocols should require either (a) multi-seed classification at single GPU, or (b) cross-hardware validation
-- The "WANDERING is real" claim from Tool-Entropy paper should be revisited with this caveat — the population is at minimum 35% noise-floor by hardware
+- WANDERING phenotype is partly artifact of single-run classification under temperature=1.0 sampling stochasticity
+- Re-running the same instances no-hook yields variable finish_tool rates (0/20 Phase 6, 7/20 independent re-run, 0/5 fresh check) — same hardware, same nominal seed, different outcomes
+- The same nominal seed producing different outcomes indicates reproducibility under temperature=1.0 is weaker than the deterministic-seed assumption implies
+- Future WANDERING labeling protocols should require multi-seed classification at a single GPU (classify as WANDERING only if all k runs exhaust the budget)
+- The "WANDERING is real" claim from Tool-Entropy paper should be revisited with this caveat — the population is at minimum 35% run-to-run noise-floor under temperature sampling
 
 ## Paper #2 narrative consolidation
 
@@ -91,7 +92,7 @@ Two convergent nulls now in the paper:
 
 2. **Exp B Plan B NULL** (this doc): L55 SUCCESS-donor injection doesn't rescue WANDERING (Δ=−5pp, p=1.00). Rules out "simple residual perturbation rescues alignment failure" — hook at L55 with α=0.3 is not causal lever.
 
-3. **Methodological discovery**: WANDERING is not hardware-stable — single-run classification on RTX 6000 captures temperature-stochastic phenotype.
+3. **Methodological discovery**: WANDERING is not run-stable under temperature=1.0 — single-run classification on RTX 6000 captures a temperature-stochastic phenotype (same hardware, same nominal seed, variable outcomes across runs). Not a hardware effect; no H100 used.
 
 ## Per Caio's standard
 
@@ -99,8 +100,8 @@ Per [[feedback-walk-back-and-rescue-paper-structure]]: report nulls honestly, st
 
 ## Optional next experiments
 
-- **Exp B at α=0.7 or α=1.0** (~6h H100): structural-rigidity check that α=0.3 wasn't too weak. If stronger α also null → confirms L55 SUCCESS donor isn't a lever regardless of magnitude.
-- **Exp C (v5 direction L43 α-sweep)** (~8h H100): tests a different direction (probe-derived v5 collapse direction, not SUCCESS donor) at a different layer (L43 mid vs L55 edge). Includes random direction control + structural-rigidity diagnostic. If Exp C also null = THREE convergent nulls = very strong paper.
+- **Exp B at α=0.7 or α=1.0** (~6h RTX 6000 Pro Blackwell): structural-rigidity check that α=0.3 wasn't too weak. If stronger α also null → confirms L55 SUCCESS donor isn't a lever regardless of magnitude.
+- **Exp C (v5 direction L43 α-sweep)** (~8h RTX 6000 Pro Blackwell): tests a different direction (probe-derived v5 collapse direction, not SUCCESS donor) at a different layer (L43 mid vs L55 edge). Includes random direction control + structural-rigidity diagnostic. If Exp C also null = THREE convergent nulls = very strong paper.
 
 ## Artifacts
 
@@ -108,5 +109,5 @@ Per [[feedback-walk-back-and-rescue-paper-structure]]: report nulls honestly, st
   - `exp_b_primary_add/results.json` — 20 with hook α=0.3
   - `exp_b_baseline_nohook/results.json` — 20 without hook
 - Notebooks: `notebooks/nb_exp_b_c_combined_steering.ipynb` (primary), `notebooks/nb_exp_b_baseline.ipynb` (baseline)
-- Hardware: NVIDIA H100 80GB (vast.ai)
-- Total compute: ~13h H100 (~$26)
+- Hardware: NVIDIA RTX 6000 Pro Blackwell 96GB (vast.ai)
+- Total compute: ~13h RTX 6000 Pro Blackwell (~$13-15)

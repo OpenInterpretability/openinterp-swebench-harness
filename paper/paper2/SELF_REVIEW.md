@@ -43,9 +43,9 @@ Workshop papers need at least one figure. Table 3 (per-instance paired compariso
 
 ### I2. Stable-WANDERING subset analysis buried in §10
 
-The strongest positive signal in the paper — restricting to the 13/20 trajectories that exhaust on both GPUs gives 4/13 = 31% hook vs 0/13 = 0% baseline (highly significant) — is mentioned only in §10 Future Work as "post-hoc, requires pre-registration". This buries a finding that could substantially change the reader's impression.
+The strongest positive signal in the paper — restricting to the 13/20 trajectories that consistently exhaust across the original run and an independent re-run (same RTX 6000) gives 4/13 = 31% hook vs 0/13 = 0% baseline (highly significant) — is mentioned only in §10 Future Work as "post-hoc, requires pre-registration". This buries a finding that could substantially change the reader's impression.
 
-**Fix**: surface this in §6 (Hardware-Determinism Discovery) with explicit numbers and the "post-hoc" caveat, so the reader sees both (a) the null at full N=20 and (b) the positive trend at the stable subset, with proper hedging.
+**Fix**: surface this in §6 (Run-Stability Discovery) with explicit numbers and the "post-hoc" caveat, so the reader sees both (a) the null at full N=20 and (b) the positive trend at the stable subset, with proper hedging.
 
 ### I3. McNemar discordant pair count: 3 vs 2 is wrong direction sign discussion
 
@@ -68,11 +68,11 @@ Only 5 bibliography entries. Workshop reviewers expect 10-20 contextual refs for
 - METR MALT (cross-task agent failure)
 - Tool-entropy reward-shaping prior (cited in companion paper)
 
-### I5. Abstract lacks the Hardware-Determinism finding's punchline number
+### I5. Abstract lacks the Run-Stability finding's punchline number
 
-Abstract mentions "single-run cross-GPU classification captures a temperature-stochastic phenotype that does not transfer cleanly between hardware" without the punchline number (35% flip in baseline). The methodological finding is one of three contributions; the number should appear.
+Abstract mentions "single-run classification captures a temperature-stochastic phenotype that varies run-to-run on identical hardware (RTX 6000; no H100)" without the punchline number (35% flip in an independent no-hook re-run). The methodological finding is one of three contributions; the number should appear.
 
-**Fix**: add "...baseline shows 7/20 = 35% finish_tool flip rate on H100, indicating..." to abstract.
+**Fix**: add "...an independent no-hook re-run shows 7/20 = 35% finish_tool flip rate (same RTX 6000 Pro Blackwell), indicating run-to-run stochasticity under temperature=1.0, not hardware determinism..." to abstract.
 
 ## NICE-TO-HAVE (optional in v0.2)
 

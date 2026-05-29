@@ -208,9 +208,9 @@ Sub-class derivation rule:
 - **Run date**: 2026-05-06 → 2026-05-08
 - **Phase 6b Docker eval**: completed 2026-05-24 → 2026-05-25 (local Mac CPU + Docker)
 
-## Hardware-determinism caveat (important for WANDERING category)
+## Run-stability caveat (important for WANDERING category)
 
-The WANDERING sub-class label was assigned by single-run classification on RTX 6000 Pro Blackwell (all 20 WANDERING instances had `finish_reason=max_turns` by that single run, with probe scores > 0.70). When the same 20 trajectories are re-run on **H100 80GB with the same deterministic seed and no intervention**, 7/20 = 35% emit `finish_tool` naturally. The WANDERING phenotype is thus partly artifact of single-run + RTX 6000 floating-point determinism; cross-hardware re-classification would tighten the category.
+The WANDERING sub-class label was assigned by single-run classification on RTX 6000 Pro Blackwell (all 20 WANDERING instances had `finish_reason=max_turns` by that single run, with probe scores > 0.70). When the same 20 trajectories are re-run with no intervention (same deterministic seed `Runner.seed_for(iid)`, same RTX 6000 Pro Blackwell hardware), run-to-run variance under temperature=1.0 yields different finish_tool rates: an independent no-hook re-run showed 7/20 = 35% emit `finish_tool`, while a fresh same-session determinism check showed 0/5. The WANDERING phenotype is thus partly an artifact of single-run classification under temperature-sampling stochasticity — **not a hardware effect** (all runs used RTX 6000 Pro Blackwell; no H100 was used). Notably, the same nominal seed produced different outcomes across independent runs, indicating reproducibility under temperature=1.0 is weaker than the deterministic-seed assumption implies; multi-seed classification would tighten the category.
 
 Companion paper #2 (Two Honest Nulls) discusses this and recommends multi-seed classification protocols for future WANDERING labelling.
 

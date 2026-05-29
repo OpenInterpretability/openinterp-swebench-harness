@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 """
-Phase 4 — Cross-Hardware Prediction Analysis for paper #3.
+Phase 4 — Run-to-Run Stochasticity Analysis for paper #3 (WANDERING classification stability under temperature=1.0; same RTX 6000 hardware, NOT cross-hardware).
 
 Join features_n99.csv with paper3_hardware_validation.csv on iid.
 Train binary classifier on WANDERING subset (n=20) features (from RTX 6000)
-to predict h100_flipped outcome (7/13 split).
+to predict rerun_flipped outcome (7/13 split from an independent no-hook re-run on the SAME RTX 6000 hardware).
 
 Reports AUROC + 1000-permutation null + top-features.
 
@@ -88,7 +88,7 @@ def permutation_null(X, y, clf, n_perm=1000, seed=42):
 
 
 def main():
-    print("=== Paper #3 Phase 4 — Cross-Hardware Prediction ===\n")
+    print("=== Paper #3 Phase 4 — Run-to-Run Stochasticity (same RTX 6000) ===\n")
 
     # Load both CSVs
     feats = pd.read_csv(FEATURES_CSV)
@@ -128,12 +128,12 @@ def main():
     if len(merged) >= 15:
         # Drop non-numeric/identifier columns
         drop_cols = [c for c in merged.columns if not pd.api.types.is_numeric_dtype(merged[c])]
-        drop_cols += ["h100_flipped"]
+        drop_cols += ["rerun_flipped"]
         feature_cols = [c for c in merged.columns if c not in drop_cols and c not in ["rtx6000_n_turns"]]
         # Some columns might still be id-like; filter
         feature_cols = [c for c in feature_cols if merged[c].notna().sum() > 5]
         X = merged[feature_cols].values
-        y = merged["h100_flipped"].astype(int).values
+        y = merged["rerun_flipped"].astype(int).values
 
         print(f"\nFeature matrix: {X.shape}")
         print(f"y distribution: flipped={int(y.sum())}, stayed={int((1-y).sum())}")

@@ -43,11 +43,11 @@ Companion paper to ``Tool-Entropy Collapse: A Cross-Architecture Signature of Ag
 
 \textbf{Experiment D (Forced-Finish Counterfactual)} asks whether WANDERING agent-patches pass tests at the SUCCESS rate, which would support ``WANDERING knew the answer''. Across 89 Docker-evaluated instances, WANDERING agent-patch pass rate is 21.1\% (4/19), SUCCESS is 15.4\% (6/39), odds ratio 1.47, Fisher exact $p=0.71$. \textbf{Null}: patch quality does not distinguish sub-classes.
 
-\textbf{Experiment B (L55 SUCCESS-Donor Steering)} asks whether persistent injection of a SUCCESS-derived L55 residual biases WANDERING agents toward \texttt{finish\_tool} emission. Twenty WANDERING trajectories were re-run on H100 with and without an always-on \texttt{mode=add}, $\alpha=0.3$ hook. Primary (with hook): 6/20 (30\%); Baseline (no hook): 7/20 (35\%); Fisher $p=1.00$; odds ratio 0.796 (slight HURT direction); McNemar (3 baseline-only flips vs 2 hook-only) not significant. \textbf{Null with reverse hint}: SUCCESS-direction L55 injection at $\alpha=0.3$ is not a causal lever.
+\textbf{Experiment B (L55 SUCCESS-Donor Steering)} asks whether persistent injection of a SUCCESS-derived L55 residual biases WANDERING agents toward \texttt{finish\_tool} emission. Twenty WANDERING trajectories were re-run on RTX 6000 Pro Blackwell 96\,GB with and without an always-on \texttt{mode=add}, $\alpha=0.3$ hook. Primary (with hook): 6/20 (30\%); Baseline (no hook): 7/20 (35\%); Fisher $p=1.00$; odds ratio 0.796 (slight HURT direction); McNemar (3 baseline-only flips vs 2 hook-only) not significant. \textbf{Null with reverse hint}: SUCCESS-direction L55 injection at $\alpha=0.3$ is not a causal lever.
 
-\textbf{Methodological discovery}: the Phase 6 WANDERING classification is not hardware-stable. The Tool-Entropy paper classified all 20 instances as \texttt{max\_turns} (0/20 \texttt{finish\_tool}) on an RTX 6000 Pro Blackwell, but H100 with the same deterministic seed and no hook flips 7/20 = 35\% to \texttt{finish\_tool}. Single-run cross-GPU classification captures a temperature-stochastic phenotype that does not transfer cleanly between hardware. Restricted to the 13/20 trajectories that consistently fail under both GPUs (the ``stable-WANDERING'' subset), the Plan B hook flips 4/13 = 31\% vs 0/13 = 0\% baseline --- a post-hoc subgroup analysis that we surface honestly but do not pre-register here.
+\textbf{Methodological discovery}: the Phase 6 WANDERING classification is not run-stable under temperature$=$1.0. The Tool-Entropy paper classified all 20 instances as \texttt{max\_turns} (0/20 \texttt{finish\_tool}) on RTX 6000 Pro Blackwell, but an independent no-hook re-run of the same instances (same deterministic seed, same RTX 6000 Pro Blackwell hardware) flips 7/20 = 35\% to \texttt{finish\_tool}, while a fresh same-session determinism check yields 0/5. Single-run classification captures a temperature-stochastic phenotype that varies run-to-run even on identical hardware (no H100 was used). Restricted to the 13/20 trajectories that consistently fail across the original classification and the re-run (the ``stable-WANDERING'' subset), the Plan B hook flips 4/13 = 31\% vs 0/13 = 0\% baseline --- a post-hoc subgroup analysis that we surface honestly but do not pre-register here.
 
-The Tool-Entropy mechanism hypothesis as stated is not rescued by simple residual perturbation. The empirical pattern joins \emph{Two Forms of Epiphenomenal Probes} (Phase 7/8) as a third null result: the v5 tool-entropy signal detects WANDERING (correlatively) but the SUCCESS L55 direction at $\alpha=0.3$ does not lever it (causally). Constructive next steps include $\alpha$-sweep, cross-layer Plan B, transient surgical intervention at lock-in turn, and multi-seed WANDERING classification protocol for hardware-stable labels.
+The Tool-Entropy mechanism hypothesis as stated is not rescued by simple residual perturbation. The empirical pattern joins \emph{Two Forms of Epiphenomenal Probes} (Phase 7/8) as a third null result: the v5 tool-entropy signal detects WANDERING (correlatively) but the SUCCESS L55 direction at $\alpha=0.3$ does not lever it (causally). Constructive next steps include $\alpha$-sweep, cross-layer Plan B, transient surgical intervention at lock-in turn, and multi-seed WANDERING classification protocol for run-stable labels.
 \end{abstract}
 
 \section{Background and Hypothesis Under Test}
@@ -106,7 +106,7 @@ We install a forward hook on the L55 residual stream with \texttt{mode=add} (ste
 
 \textbf{Why $\alpha=0.3$.} At $\alpha=0.3$, the effective patch L2 norm is $\sim 38$ — substantial relative to the natural L55 norm $\sim 58$ but not dominating. Larger $\alpha$ values (0.7, 1.0) are reserved for a structural-rigidity follow-up and not run here.
 
-\textbf{No-hook baseline.} We re-run each of the 20 WANDERING trajectories with no LayerPatch installed, same deterministic seed (\texttt{Runner.seed\_for(iid)}), same H100 hardware. This yields a paired design suitable for McNemar's test.
+\textbf{No-hook baseline.} We re-run each of the 20 WANDERING trajectories with no LayerPatch installed, same deterministic seed (\texttt{Runner.seed\_for(iid)}), same RTX 6000 Pro Blackwell hardware. This yields a paired design suitable for McNemar's test.
 
 \textbf{Statistical tests.} Fisher's exact two-sided on the 2$\times$2 contingency of \texttt{finish\_tool} vs \texttt{not\_finish\_tool} crossed with hook vs no-hook. McNemar's exact on the discordant-pair structure for paired comparison.
 
@@ -158,7 +158,7 @@ However, the null \emph{does} rule out a popular alternative interpretation: ``W
 
 \subsection{Per-Condition Flip Rates}
 
-Both conditions completed all 20 WANDERING trajectories on H100. No \texttt{invalid\_tools} errors (the \texttt{mode=add} pivot successfully avoided the degenerate-generation failure mode).
+Both conditions completed all 20 WANDERING trajectories on RTX 6000 Pro Blackwell. No \texttt{invalid\_tools} errors (the \texttt{mode=add} pivot successfully avoided the degenerate-generation failure mode).
 
 \begin{table}[h]
 \centering
@@ -250,22 +250,22 @@ The L55 SUCCESS-donor hook at $\alpha=0.3$ produces no statistically significant
 
 The \texttt{mode=add} $\alpha=0.3$ experiment was designed to give the hypothesis a fair shot without destroying model coherence (per the \texttt{mode=replace} pivot in \S\ref{sec:exp_b_method}). At this magnitude, the answer is null.
 
-\section{Methodological Discovery: WANDERING Is Not Hardware-Stable}\label{sec:hardware_determinism}
+\section{Methodological Discovery: WANDERING Is Not Run-Stable}\label{sec:run_stability}
 
 The Tool-Entropy paper trained Phase 6 on an NVIDIA RTX 6000 Pro Blackwell (96 GB) and classified all 20 of the trajectories considered here as \texttt{max\_turns} (0/20 \texttt{finish\_tool}). That classification is, by construction, what defines them as WANDERING.
 
-When we re-ran the same 20 trajectories on H100 80 GB with the same deterministic seed (\texttt{Runner.seed\_for(iid)}) and no hook installed (the Exp B Baseline condition), 7 of the 20 (35\%) emitted \texttt{finish\_tool}. The classification did not reproduce.
+When we re-ran the same 20 trajectories on RTX 6000 Pro Blackwell 96\,GB with the same deterministic seed (\texttt{Runner.seed\_for(iid)}) and no hook installed (the Exp B Baseline condition), 7 of the 20 (35\%) emitted \texttt{finish\_tool}; a fresh same-session determinism check yielded 0/5. The classification did not reproduce run-to-run on identical hardware.
 
-\textbf{What is happening.} Floating-point determinism is preserved within a single GPU model but breaks across GPU types. The agent uses sampling at temperature 1.0; small numerical differences in attention/MLP cascades drift the model into different action choices over 50 turns, and seven of twenty WANDERING-labelled trajectories happen to choose \texttt{finish\_tool} on H100 where they did not on RTX 6000.
+\textbf{What is happening.} Generation uses sampling at temperature 1.0, which is not bit-reproducible run-to-run even with a fixed nominal seed (kernel/batch nondeterminism plus library-version drift). Small numerical differences in attention/MLP cascades drift the model into different action choices over 50 turns, and seven of twenty WANDERING-labelled trajectories happen to choose \texttt{finish\_tool} on an independent re-run where they did not in the original Phase 6 run --- on the same RTX 6000 Pro Blackwell hardware.
 
 \textbf{Implications.}
 \begin{itemize}
-\item The WANDERING phenotype as captured by single-run cross-GPU classification is at minimum a 35\% noise floor on H100 — i.e., a substantial fraction of WANDERING is hardware-determinism artifact, not robust behavioral mode.
-\item The 65\% (13/20) that consistently fail to emit \texttt{finish\_tool} across both GPUs constitute the harder, more behaviorally-stable subset. If we restricted analysis to this stable WANDERING subset, the Exp B hook flip rate would be 4/13 = 31\% (vs 0/13 = 0\% baseline) — a $+31$pp effect that would be highly significant. But this restriction is post-hoc and would require pre-registration in a follow-up.
-\item Future WANDERING labelling protocols should require either (a) multi-seed classification at a single GPU (run $k$ times with seeds $\{0, \ldots, k-1\}$, classify as WANDERING only if all $k$ exhaust the budget), or (b) cross-hardware validation (only label WANDERING if both RTX 6000 and H100 agree).
+\item The WANDERING phenotype as captured by single-run classification is at minimum a 35\% run-to-run noise floor under temperature sampling — i.e., a substantial fraction of WANDERING is sampling-stochasticity artifact, not robust behavioral mode.
+\item The 65\% (13/20) that consistently fail to emit \texttt{finish\_tool} across the original run and an independent re-run constitute the harder, more behaviorally-stable subset. If we restricted analysis to this stable WANDERING subset, the Exp B hook flip rate would be 4/13 = 31\% (vs 0/13 = 0\% baseline) — a $+31$pp effect that would be highly significant. But this restriction is post-hoc and would require pre-registration in a follow-up.
+\item Future WANDERING labelling protocols should require multi-seed classification at a single GPU (run $k$ times with seeds $\{0, \ldots, k-1\}$, classify as WANDERING only if all $k$ exhaust the budget).
 \end{itemize}
 
-This finding does not invalidate the Tool-Entropy paper's substantive contributions (cross-architecture generalization of the entropy signature, scope-limited cross-task validation). It does refine the WANDERING category itself: $\sim$35\% of what was labelled WANDERING is hardware-determinism artifact under cross-GPU re-run.
+This finding does not invalidate the Tool-Entropy paper's substantive contributions (cross-architecture generalization of the entropy signature, scope-limited cross-task validation). It does refine the WANDERING category itself: $\sim$35\% of what was labelled WANDERING is run-to-run stochasticity artifact under temperature$=$1.0 re-run.
 
 \section{What Does This Mean for the Tool-Entropy Mechanism Hypothesis?}\label{sec:mechanism_implications}
 
@@ -307,13 +307,13 @@ For Tier 3 autonomous-termination signals (using v5 entropy as a probe-free hard
 
 \textbf{Single intervention type.} Plan B (always-on hook) was chosen over Plan A (transient surgical patch at lock-in turn) because of trajectory-replay determinism risk (only 5/20 trajectories met the $\geq$80\% replayable criterion). Plan A remains a legitimate alternative test of a slightly different prediction.
 
-\textbf{Single hardware for the experiments themselves.} Both Exp D and Exp B were run on H100 80 GB. We have not tested whether the Exp B null reproduces on a third GPU class.
+\textbf{Single hardware for the experiments themselves.} Both Exp D and Exp B were run on RTX 6000 Pro Blackwell 96\,GB. We have not tested whether the Exp B null reproduces on a different GPU class.
 
 \textbf{Exp C not yet run.} A natural third causal test (\S\ref{sec:future_work}) uses the v5 collapse direction at L43 with an $\alpha$-sweep and random-direction control. Three convergent nulls would be a stronger statement than two.
 
 \section{Future Work}\label{sec:future_work}
 
-\textbf{Exp B at $\alpha \in \{0.7, 1.0\}$}: structural-rigidity follow-up to confirm magnitude-bounded null. $\sim$6 h on H100, $\sim$\$12 \texttt{vast.ai}.
+\textbf{Exp B at $\alpha \in \{0.7, 1.0\}$}: structural-rigidity follow-up to confirm magnitude-bounded null. $\sim$6 h on RTX 6000 Pro Blackwell, $\sim$\$4 \texttt{vast.ai}.
 
 \textbf{Exp B cross-layer}: Plan B variant hooking L11 instead of L55, then both simultaneously. $\sim$8 h, $\sim$\$16.
 
@@ -321,15 +321,15 @@ For Tier 3 autonomous-termination signals (using v5 entropy as a probe-free hard
 
 \textbf{Exp C (v5 collapse direction $\alpha$-sweep at L43)}: tests a different direction (probe-derived, not SUCCESS donor) at a different layer (L43 mid vs L55 edge). Designed with random-direction control and structural-rigidity diagnostic. $\sim$8 h, $\sim$\$16.
 
-\textbf{Multi-seed WANDERING classification protocol}: re-run all Phase 6 trajectories $k$ times at single hardware with different seeds; classify as WANDERING only when all $k$ exhaust budget. Provides hardware-stable labels for future causal work.
+\textbf{Multi-seed WANDERING classification protocol}: re-run all Phase 6 trajectories $k$ times at single hardware with different seeds; classify as WANDERING only when all $k$ exhaust budget. Provides run-stable labels for future causal work.
 
-\textbf{Stable-WANDERING-restricted re-analysis}: the 13/20 trajectories that exhaust on both RTX 6000 and H100 form a more behaviorally-robust WANDERING subset. Restricting Exp B analysis to this stable subset (post-hoc, would require pre-registration in follow-up) gives 4/13 = 31\% hook flip vs 0/13 = 0\% baseline, which would be highly significant — illustrating that what looks like a null at the full $N=20$ may have a positive signal at the stable subset. This is the most natural single follow-up experiment.
+\textbf{Stable-WANDERING-restricted re-analysis}: the 13/20 trajectories that consistently exhaust across the original classification and an independent re-run form a more behaviorally-robust WANDERING subset. Restricting Exp B analysis to this stable subset (post-hoc, would require pre-registration in follow-up) gives 4/13 = 31\% hook flip vs 0/13 = 0\% baseline, which would be highly significant — illustrating that what looks like a null at the full $N=20$ may have a positive signal at the stable subset. This is the most natural single follow-up experiment.
 
 \section{Conclusion}
 
 Two pre-registered causal tests of the Tool-Entropy WANDERING mechanism hypothesis (``mid-layer verdict consolidated, edge-layer alignment fails'') both yield null results. The Exp D forced-finish counterfactual rules out the ``silent success'' alternative: WANDERING patches do not pass tests at a different rate than SUCCESS patches (Fisher $p=0.71$). The Exp B Plan B always-on L55 SUCCESS-donor steering at $\alpha=0.3$ does not rescue WANDERING (Fisher $p=1.00$; slight reverse direction).
 
-We additionally surface a methodological finding: the WANDERING classification used in the Tool-Entropy paper is not hardware-stable. Same-seed re-runs on H100 of trajectories classified as WANDERING on RTX 6000 emit \texttt{finish\_tool} 35\% of the time, indicating that single-run cross-GPU classification captures a temperature-stochastic phenotype rather than a robust behavioral mode.
+We additionally surface a methodological finding: the WANDERING classification used in the Tool-Entropy paper is not run-stable under temperature$=$1.0. Same-seed independent re-runs (same RTX 6000 Pro Blackwell hardware) of trajectories classified as WANDERING emit \texttt{finish\_tool} up to 35\% of the time, indicating that single-run classification captures a temperature-stochastic phenotype rather than a robust behavioral mode.
 
 These findings join the ``Two Forms of Epiphenomenal Probes'' line as a third null in the same epistemic discipline: correlative signals in residual streams are not automatically causal levers, and the gap requires proper testing. The Tool-Entropy v5 detector remains useful for forensics, advisory escalation, and Tier 3 autonomous termination at its reported precision-recall; the hypothesis that a SUCCESS-direction inject can be flipped into a rescue intervention is, at the magnitude tested, false.
 
@@ -392,7 +392,7 @@ def hook(module, inputs, output):
 
 The hook fires on every forward pass through L55 — both during prefill (once per input position) and during autoregressive decode (once per generated token). For a typical 50-turn WANDERING run, the hook is called $\sim$10{,}000-25{,}000 times.
 
-\textbf{Sanity check}: hook call count per instance ranged from 6{,}397 to 64{,}172 in the Primary condition, scaling with total tokens generated. The Baseline runs (no hook) have zero hook calls by construction. VRAM peak ranged 57.7-72.1 GB across conditions, well under the H100 80 GB ceiling.
+\textbf{Sanity check}: hook call count per instance ranged from 6{,}397 to 64{,}172 in the Primary condition, scaling with total tokens generated. The Baseline runs (no hook) have zero hook calls by construction. VRAM peak ranged 57.7-72.1 GB across conditions, well under the RTX 6000 Pro Blackwell 96 GB ceiling.
 
 \section{Appendix C: Compute Budget}
 
@@ -404,13 +404,13 @@ The hook fires on every forward pass through L55 — both during prefill (once p
 Experiment & Hardware & Wall time \\
 \midrule
 Exp D (Phase 6b Docker eval) & local Mac CPU & $\sim$10 min total \\
-Exp B Primary (20 WANDERING with hook) & H100 80 GB & 395 min \\
-Exp B Baseline (20 WANDERING without hook) & H100 80 GB & 374 min \\
+Exp B Primary (20 WANDERING with hook) & RTX 6000 Pro Blackwell 96 GB & 395 min \\
+Exp B Baseline (20 WANDERING without hook) & RTX 6000 Pro Blackwell 96 GB & 374 min \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-Total H100 cost on \texttt{vast.ai} at $\sim$\$2/h: $\sim$\$26.
+Total compute cost (RTX 6000 Pro Blackwell) on \texttt{vast.ai} at $\sim$\$1.50--2/h: $\sim$\$20.
 
 \section{Appendix D: Methodological Heritage from Prior Work}
 

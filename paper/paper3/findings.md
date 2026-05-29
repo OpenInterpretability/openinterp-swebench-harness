@@ -3,7 +3,7 @@
 **Date**: 2026-05-27
 **Status**: Findings validated post-sanity-check; draft pending.
 **Data**: N=99 Qwen3.6-27B SWE-bench Pro trajectories (SUCCESS=40, LOCKED=39, WANDERING=20)
-**Hardware**: RTX 6000 Pro Blackwell 96 GB (original), H100 80 GB (Exp B baseline re-runs)
+**Hardware**: RTX 6000 Pro Blackwell 96 GB (all runs — original Phase 6 + Exp B/L11 re-runs; no H100 was used for SWE-bench Pro work)
 **Total compute cost**: $6.19 (Liu et al. taxonomy bridge via OpenRouter Opus 4.7) + ~$0 local
 
 ---
@@ -20,7 +20,7 @@ Three findings are paper-grade:
 
 3. **Stability selection independently surfaces the paper #1 §13 mechanism**: LOCKED dominated by L43 mid-layer convergence (`L43_cosine_consec_late`), WANDERING by L11 edge-layer drift (`L11_drift_first_last`). Confirmed via ultra-conservative analysis (drop all L43 features → L11 signature survives, z=1.88).
 
-**Bonus**: Phase 4 cross-hardware prediction (n=20 WANDERING; 7 flipped to finish_tool on H100) also surfaces L11_cosine_consec_late as top predictor (AUC 0.725, p=0.096 marginal). Double independent confirmation of L11 as mechanistic locus.
+**Bonus**: Phase 4 run-to-run stability prediction (n=20 WANDERING; 7 flipped to finish_tool on an independent no-hook re-run, same RTX 6000, temperature=1.0) also surfaces L11_cosine_consec_late as top predictor (AUC 0.725, p=0.096 marginal). Double independent confirmation of L11 as mechanistic locus.
 
 ---
 
@@ -138,13 +138,13 @@ This is a **statistical regularity** captured by L1 selection across folds, NOT 
 
 ---
 
-## Phase 4 — Cross-hardware prediction (n=20 WANDERING)
+## Phase 4 — Run-to-run stability prediction (n=20 WANDERING)
 
-**Question**: Can RTX 6000 trajectory features predict which WANDERING agents flip to `finish_tool` on H100 (same deterministic seed)?
+**Question**: Can RTX 6000 trajectory features predict which WANDERING agents flip to `finish_tool` on an independent no-hook re-run (same RTX 6000 Pro Blackwell, same deterministic seed, temperature=1.0)?
 
 Ground truth (from `paper/exp_b_results.md` Exp B baseline-nohook):
-- 7 / 20 flipped to `finish_tool` on H100
-- 13 / 20 stayed `max_turns` on H100
+- 7 / 20 flipped to `finish_tool` on the re-run
+- 13 / 20 stayed `max_turns` on the re-run
 
 **Method**: L1 logistic on all 62 features (no nested CV due to small n; used leave-one-out CV instead). 1000-permutation null.
 
@@ -160,7 +160,7 @@ Ground truth (from `paper/exp_b_results.md` Exp B baseline-nohook):
 4. `L55_cosine_consec_mean` (+0.23)
 5. `detector_v4_fire_turn` (-0.23)
 
-**Key insight**: **L11 (edge-layer) signature is the dominant cross-hardware predictor**, independently surfacing what Phase 2 stability selection also identified. Negative coefficient: lower L11 cosine consistency late → more likely to flip on H100 (i.e., less hardware-stable WANDERING).
+**Key insight**: **L11 (edge-layer) signature is the dominant re-run-flip predictor**, independently surfacing what Phase 2 stability selection also identified. Negative coefficient: lower L11 cosine consistency late → more likely to flip on re-run (i.e., less run-stable WANDERING).
 
 **Honest caveat**: p=0.096 is **marginal** (above conventional 0.05). At n=20 with 62 features, AUC=0.725 is suggestive but underpowered. Random Forest underperforms (AUC=0.363), consistent with N=20 limiting nonlinear methods.
 
@@ -216,7 +216,7 @@ Reviewers will expect "smoking gun". We have statistical signature, not visual g
 Possible alternative interpretation: WANDERING agents think MORE in final turn → different L11 dynamics → L11_drift selected as proxy for "thinking volume", not "edge-layer mechanism". Paper should: (a) report joint analysis, (b) test conditional on thinking_length, (c) acknowledge as open question.
 
 ### 3. N=20 WANDERING is binding for within-class analysis
-Phase 4 cross-hardware (n=20) has limited statistical power even with L1 + LOO. Hardware-flip prediction p=0.096 is marginal. Replication at larger N required for strong claim.
+Phase 4 run-to-run stability (n=20) has limited statistical power even with L1 + LOO. Re-run-flip prediction p=0.096 is marginal. Replication at larger N required for strong claim.
 
 ### 4. tool_diversity_count is essentially binary
 SUCCESS = 3.0 (Q25=Q75=3.0) is suspicious. Likely reflects "did agent reach the third available tool (e.g., `edit` after `bash`+`view`)" rather than "general tool diversity". Real signal, but interpretation matters.

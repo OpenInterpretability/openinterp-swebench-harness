@@ -2,7 +2,7 @@
   "experiment": "Exp B Plan B — L55 SUCCESS-donor activation steering",
   "completion_date": "2026-05-25",
   "compute": {
-    "platform": "Colab H100",
+    "platform": "Colab RTX 6000 Pro Blackwell 96GB (vast.ai)",
     "primary_wall_hours": 6.6,
     "baseline_wall_hours": 6.5,
     "total_cost_usd_approx": 28
@@ -38,12 +38,12 @@
     "stable_wandering_pct": 55,
     "natural_finishers_pct": 20,
     "stochastic_switchers_pct": 25,
-    "hardware_instability_finding": "Phase 6 WANDERING classification (single run RTX 6000) not stable across H100: 30% of trajectories show different outcome on different hardware"
+    "run_instability_finding": "Phase 6 WANDERING classification is run-unstable under temperature=1.0: re-running the same instances no-hook on the SAME RTX 6000 Pro Blackwell yields variable finish_tool rates (Phase 6: 0/20; independent re-run: 7/20; fresh determinism check: 0/5). Same nominal seed, different outcomes — a temperature-sampling effect, NOT hardware; no H100 used."
   },
   "paper2_implications": {
     "claim_walked_back": "L55 SUCCESS-donor injection does not bias toward finish_tool",
     "core_hypothesis_status": "mid-to-edge alignment hypothesis from Tool-Entropy §13 NOT supported by this intervention (could still be supported by different intervention design)",
-    "methodological_contribution": "Cross-hardware reproducibility of WANDERING classification — publishable independent finding",
+    "methodological_contribution": "Run-to-run reproducibility of WANDERING classification under temperature=1.0 — temperature-sampling instability, not hardware-dependent; all runs on RTX 6000 Pro Blackwell — publishable independent finding",
     "next_options": [
       "alpha=0.7 stronger hook (caveat: 11/20 stable WANDERING is small sample)",
       "different layer (L11 surface, L43 mid-mid)",
