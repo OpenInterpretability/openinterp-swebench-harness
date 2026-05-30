@@ -1,0 +1,22 @@
+{
+  "n_wandering": 20,
+  "n_rescued": 6,
+  "features": [
+    "L11_drift_first_last",
+    "L11_cosine_consec_late",
+    "tool_entropy_last10",
+    "L43_cosine_consec_late"
+  ],
+  "univariate_auc": {
+    "L11_drift_first_last": 0.5595238095238095,
+    "L11_cosine_consec_late": 0.6190476190476191,
+    "tool_entropy_last10": 0.7678571428571428,
+    "L43_cosine_consec_late": 0.5
+  },
+  "loo_auc": 0.6190476190476191,
+  "perm_p": 0.16283716283716285,
+  "perm_z": 1.0774166400034821,
+  "null_mean": 0.3921071428571429,
+  "null_std": 0.21063390685124628,
+  "gate_go": false
+}
