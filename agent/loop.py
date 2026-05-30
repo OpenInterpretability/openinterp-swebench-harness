@@ -155,6 +155,16 @@ class AgentLoop:
             return torch.tensor([out], dtype=torch.long)
         raise RuntimeError(f"unexpected apply_chat_template return type: {type(out)}")
 
+    def _on_turn_start(self, turn_idx: int, messages: list[dict], result: "AgentResult") -> None:
+        """Hook called at the start of every turn, before the model generates.
+
+        No-op in the base loop (existing behavior unchanged). Subclasses may inspect
+        `result.turns` (completed turns) and mutate `messages` in place — used by the
+        "Modality Matters" closed-loop experiment to inject a behavioral intervention
+        when a live detector (e.g. v5 tool-entropy collapse) fires.
+        """
+        pass
+
     def run(self, problem_message: str) -> AgentResult:
         result = AgentResult(instance_id=self.instance_id, finished=False, finish_reason="error")
 
@@ -170,6 +180,7 @@ class AgentLoop:
         invalid_in_row = 0
 
         for turn_idx in range(self.cfg.max_turns):
+            self._on_turn_start(turn_idx, messages, result)
             try:
                 input_ids = self._build_input_ids(messages)
             except Exception as e:
