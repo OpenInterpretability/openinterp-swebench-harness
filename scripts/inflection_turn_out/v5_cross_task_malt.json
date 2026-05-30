@@ -1,37 +1,42 @@
 {
-  "n_trajectories": 1209,
-  "overall_W_vs_S": {
-    "n_w": 9,
-    "n_s": 1200
+ "n_trajectories": 1209,
+ "overall_W_vs_S": {
+  "n_w": 9,
+  "n_s": 1200,
+  "w_median": 1.4591,
+  "s_median": 1.4488,
+  "ratio": 1.0071,
+  "mannwhitney_p_two_sided": 0.8149,
+  "note": "Headline MALT cross-task null (paper #1). Recomputed from v5_cross_task_malt.csv 2026-05-29: n_W=9 gives_up vs n_S=1200 normal, tool_entropy_last10, Mann-Whitney two-sided p=0.8149, ratio 1.0071. The per_model claude p=0.6944 is a SUBSET (n_S=598, claude only) \u2014 NOT the headline."
+ },
+ "per_family": {
+  "local_research": {
+   "n_wandering": 4,
+   "n_success": 28,
+   "w_median": 1.41896570525671,
+   "s_median": 1.3787834934861753,
+   "p": 0.40213670392559375,
+   "ratio": 1.0291432352942782,
+   "direction_matches": false
   },
-  "per_family": {
-    "local_research": {
-      "n_wandering": 4,
-      "n_success": 28,
-      "w_median": 1.41896570525671,
-      "s_median": 1.3787834934861753,
-      "p": 0.40213670392559375,
-      "ratio": 1.0291432352942782,
-      "direction_matches": false
-    },
-    "local_research_tex": {
-      "n_wandering": 5,
-      "n_success": 51,
-      "w_median": 1.5709505944546687,
-      "s_median": 1.8423709931771084,
-      "p": 0.15834056563109022,
-      "ratio": 0.8526787494334221,
-      "direction_matches": true
-    }
-  },
-  "per_model": {
-    "claude-3-5-sonnet-20240620": {
-      "n_wandering": 9,
-      "n_success": 598,
-      "w_median": 1.4591479170272448,
-      "s_median": 1.4466166676282082,
-      "p": 0.6944243530171931,
-      "ratio": 1.008662453350259
-    }
+  "local_research_tex": {
+   "n_wandering": 5,
+   "n_success": 51,
+   "w_median": 1.5709505944546687,
+   "s_median": 1.8423709931771084,
+   "p": 0.15834056563109022,
+   "ratio": 0.8526787494334221,
+   "direction_matches": true
   }
+ },
+ "per_model": {
+  "claude-3-5-sonnet-20240620": {
+   "n_wandering": 9,
+   "n_success": 598,
+   "w_median": 1.4591479170272448,
+   "s_median": 1.4466166676282082,
+   "p": 0.6944243530171931,
+   "ratio": 1.008662453350259
+  }
+ }
 }
