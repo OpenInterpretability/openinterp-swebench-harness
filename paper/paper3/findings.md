@@ -185,6 +185,43 @@ Used Claude Opus 4.7 via OpenRouter to classify all 99 trajectories against Liu 
 
 ---
 
+## Phase 6 — Rescuability prediction (walk-back-and-rescue): residual-blind, behavior-legible
+
+**Question**: paper #2's L11 SUCCESS-donor injection causally rescues ~25% of WANDERING agents, with strong per-instance heterogeneity (6/20 rescued at either α; 14/20 resistant). Does the multi-channel signature predict WHICH instances are rescuable? If yes, the signature is not just descriptive but *causally actionable* — a monitor could select who to intervene on.
+
+**Pre-registered** (committed before fitting, `scripts/paper2_phase0_rescuability_predictor.py`):
+- Label: `rescued ∈ {0,1}` = the 6 instances that emitted `finish_tool` at either α=0.70 or α=1.15 in the L11 Phase 1 experiment (paper #2), vs 14 resistant. All features from the *original no-hook* Phase 6 trajectory (anti-leakage: nothing from the intervention runs).
+- Features (mechanistically motivated, no search over 60): `L11_drift_first_last`, `L11_cosine_consec_late`, `tool_entropy_last10`, `L43_cosine_consec_late`.
+- Primary: leave-one-out AUC + 1000-permutation null. Decision gate: GO iff LOO-AUC ≥ 0.70 and p < 0.10.
+
+**Confirmatory result — pre-registered model FAILS the gate**:
+
+| Model | LOO-AUC | Perm p | Verdict |
+|---|---|---|---|
+| 4-feature mechanistic (L11/L43 + tool-entropy) | **0.619** | 0.16 | FAIL gate |
+
+The mid-/edge-layer *residual* signature that classifies the sub-classes (Phase 2) does **not** predict causal rescuability.
+
+**Walk-back-and-rescue — exploratory single-channel positive** (flagged as exploratory, not the pre-registered primary; per `feedback_walk_back_and_rescue_paper_structure`):
+
+| Feature | Univariate AUC | Perm p | Mann-Whitney p | Δ median (rescued − resistant) |
+|---|---|---|---|---|
+| `L11_drift_first_last` | 0.560 | — | — | −0.010 |
+| `L11_cosine_consec_late` | 0.619 | — | — | +0.003 |
+| `L43_cosine_consec_late` | 0.500 | — | — | +0.001 |
+| **`tool_entropy_last10`** | **0.768** | **0.066** | **0.060** | **−0.487** |
+
+The three residual channels are near-chance. But **tool-entropy collapse depth alone predicts rescuability** (AUC 0.768, perm p=0.066, MW p=0.060). Rescued agents had much *lower* original tool-entropy (median 0.234 vs 0.722): **the more an agent has collapsed onto a single repeated tool, the more rescuable it is by SUCCESS-direction injection.**
+
+**Mechanistic interpretation**: the SUCCESS direction "un-sticks" agents that are stuck looping on one tool, but cannot redirect agents that are flailing across many tools. Strikingly, the *same* v5 tool-entropy signal that **detects** WANDERING (paper #1) also **selects** which WANDERING agents are salvageable — the causally-actionable information lives in the behavioral channel, not the residual signature.
+
+**Honest framing for paper**:
+> "Causal rescuability of WANDERING is residual-blind but behavior-legible: the mid/edge-layer residual signature that distinguishes the sub-classes does not predict which agents recover under SUCCESS-direction injection (LOO-AUC 0.619, p=0.16), whereas tool-entropy collapse depth does (AUC 0.768, p≈0.06). The deeper the tool-loop, the more rescuable the agent. This is exploratory at N=20/6 events and requires confirmatory replication, but it suggests the v5 detector doubles as a rescuability selector — pointing to a tool-entropy-gated detection→intervention loop as the natural next experiment."
+
+**Gate consequence**: the original closed-loop design (select-who-to-rescue via the *mechanistic* signature) is not justified — the residual signature fails. A revised closed loop gated on the *v5 tool-entropy* signal (which both streams online and predicts rescuability) is the natural next pre-registered experiment, deferred to follow-up (`paper/paper3/NEXT_RESEARCH_DECISION_2026-05-29.md`).
+
+---
+
 ## Ultra-conservative sensitivity (sanity check)
 
 To address second-order leakage concern (L43 features are correlated with probe substrate since the probe was trained on L43 residuals), we dropped ALL L43 features + `tool_diversity_count` (dominant SUCCESS) and re-fit pairwise W vs L:
