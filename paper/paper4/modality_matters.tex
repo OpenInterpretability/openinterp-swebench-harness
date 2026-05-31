@@ -108,7 +108,7 @@ We verified the finalization analysis two independent ways: a re-computation fro
 
 \subsection{Solve-rate: a suggestive course-correction (with a transparency caveat)}
 
-Do the rescued finalizations resolve the issue, or does the interruption make agents submit garbage? The B1 patches resolve \textbf{10/20 = 50\%} of issues (SWE-bench Pro Docker, authoritative \texttt{eval\_results.json}). They are substantial diffs (1.7--17 KB, none empty), so the finalizations are real fixes, not hollow containment.
+Do the rescued finalizations resolve the issue, or does the interruption make agents submit garbage? The B1 patches resolve \textbf{10/20 = 50\%} of issues (SWE-bench Pro Docker, authoritative \texttt{eval\_results.json}). The resolving diffs are substantial (3.5--23 KB; all 20 B1 patches are non-empty, 1.1--23 KB), so the finalizations are real fixes, not hollow containment.
 
 To ask whether the interruption \emph{improves} solve-rate, we need a no-intervention baseline solve-rate. Here we must be transparent about a design defect: our runner wrote each patch to \texttt{\{instance\_id\}.patch}, keyed by instance and not by arm, so the four arms overwrote one another and only the last arm's (B1's) patches survived. We therefore cannot compute a \emph{same-session} per-arm solve-rate. We instead use two \emph{independent} no-intervention baselines that do have saved patches: the paper-2 no-hook re-run of the same 20 WANDERING (5/20 = 25\%) and the original Phase-6 WANDERING patches scored in \cite{residual_nulls} (4/19 = 21\%). The two agree at $\sim$23\%, indicating solve-rate is far more run-stable than finalization. Against this:
 
