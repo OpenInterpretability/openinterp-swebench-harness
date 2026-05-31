@@ -19,6 +19,7 @@
 \usepackage{amssymb}
 \usepackage{xcolor}
 \usepackage{array}
+\usepackage{graphicx}
 
 \title{Modality Matters: A Transient Behavioral Interruption Rescues \\
 Agent WANDERING Where Residual Steering Does Not}
@@ -53,7 +54,7 @@ A multi-turn coding agent fails in a distinctive way we call \textbf{WANDERING}:
 
 \textbf{Population.} The 20 WANDERING trajectories from \cite{residual_nulls,multichannel}: Qwen3.6-27B on SWE-bench Pro, 50-turn budget, temperature 1.0, captured at L11/L23/L31/L43/L55. All runs use the deterministic per-instance seed. Hardware: one RTX 6000 Pro Blackwell (96 GB).
 
-\textbf{Live trigger.} We fire one intervention per trajectory, online, at the first turn $\geq 10$ at which the Shannon entropy of the last-10 tool-call names drops below $\tau=0.503$ --- the operating threshold of the deployed v5 detector \cite{tool_entropy}. Computed from the running trajectory's own tool history (no oracle), the trigger fires on 19--20 of 20 instances at a median turn of 17, leaving roughly 33 turns for the intervention to act. This mimics deployment: the detector flags the collapse, and we intervene.
+\textbf{Live trigger.} We fire one intervention per trajectory, online, at the first turn $\geq 10$ at which the Shannon entropy of the last-10 tool-call names drops below $\tau=0.503$ --- the operating threshold of the deployed v5 detector \cite{tool_entropy}. Computed from the running trajectory's own tool history (no oracle), the trigger fires on 18 of 20 instances in the live runs (19/20 in calibration on the original no-hook traces) at a median turn of 17, leaving roughly 30 turns for the intervention to act. This mimics deployment: the detector flags the collapse, and we intervene.
 
 \textbf{Four arms, varied only in modality.} At the trigger turn we apply one of:
 \begin{itemize}
@@ -70,6 +71,13 @@ B0 is the behavioral analog of a placebo: it controls for ``a message appeared /
 
 \section{Results}\label{sec:results}
 
+\begin{figure}[t]
+\centering
+\includegraphics[width=\textwidth]{figures/main_result.pdf}
+\caption{\textbf{Modality matters.} (a) Finalization rate by intervention arm on the same 20 WANDERING trajectories, gated by the same live tool-entropy collapse detector. The two behavioral arms (blue) roughly double the rate at which agents emit \texttt{finish} (30\% $\to$ 70\%); the residual L11 injection (gray) is inert ($A$ vs.\ $0$, $p=0.63$). A content-neutral message rescues as well as a re-plan ($B0\equiv B1$, $p=1.0$): it is the interruption, not the content. (b) SWE-bench Pro solve-rate. The behavioral interruption (B1, 50\%) strictly dominates two independent no-intervention baselines ($\sim$23\%; paired $5$--$0$, $p=0.062$) --- a suggestive secondary effect carrying a cross-session caveat (\S\ref{sec:results}).}
+\label{fig:main}
+\end{figure}
+
 \subsection{Finalization: behavioral rescues, residual is inert}
 
 \begin{center}
@@ -85,7 +93,7 @@ B1 --- behavioral, re-plan & 14/20 (70\%) & 6/20 & 0 \\
 \end{tabular}
 \end{center}
 
-The behavioral arms roughly double the finalization rate (30\% $\to$ 70\%); the residual arm barely moves it. Paired McNemar on the trigger population ($n{=}19$):
+The behavioral arms roughly double the finalization rate (30\% $\to$ 70\%); the residual arm barely moves it (Figure~\ref{fig:main}a). Paired McNemar ($n{=}20$; the $\leq 2$ instances that never trigger receive no intervention and are concordant by construction, so restricting to the triggered subset gives identical discordant counts):
 \begin{itemize}
 \item \textbf{H1 (B1 vs.\ 0):} 9 B1-only flips vs.\ 1 baseline-only, \textbf{McNemar $p=0.021$ --- PASS.} The behavioral interruption causally increases finalization.
 \item \textbf{H2 (B1 vs.\ A):} 6 B1-only vs.\ 0 A-only, $p=0.031$ --- \textbf{PASS}. Modality matters: behavioral beats residual.
@@ -128,7 +136,7 @@ Paired on the same 20 instances, B1 \emph{strictly dominates} the no-hook baseli
 
 \textbf{It is the interruption, not the content.} That a neutral, ``carry on'' message rescues as well as a structured re-plan (H3 null) is mechanistically informative: WANDERING is dislodgeable by disruption rather than instruction. For deployment this is good news --- the cheapest possible intervention (one templated turn, no model call, no advice) suffices to break the loop --- and it cautions against over-crediting the \emph{content} of course-correction methods.
 
-\textbf{Deployment value vs.\ offline score.} SWE-bench scores the final diff regardless of whether \texttt{finish} was called, so finalization per se does not move an offline leaderboard. But a WANDERING agent that never finalizes is useless in production: it burns the full budget, never returns a result, and never signals completion. The interruption makes it terminate (median turn $\sim$30 vs.\ 50), return, and --- suggestively --- solve more. The value is in the deployment loop, which is precisely the agent-monitoring setting our detector targets.
+\textbf{Deployment value vs.\ offline score.} SWE-bench scores the final diff regardless of whether \texttt{finish} was called, so finalization per se does not move an offline leaderboard. But a WANDERING agent that never finalizes is useless in production: it burns the full budget, never returns a result, and never signals completion. The interruption makes it terminate earlier (median finish turn 34 of the 50-turn budget), return, and --- suggestively --- solve more. The value is in the deployment loop, which is precisely the agent-monitoring setting our detector targets.
 
 \section{Limitations}\label{sec:limitations}
 
@@ -147,6 +155,9 @@ On the same WANDERING trajectories where residual steering fails three times, a 
 \section*{Future Work}
 (1) Same-session per-arm solve-rate (the one-line patch-save fix) to upgrade the solve-rate from suggestive to confirmed. (2) Cross-architecture replication (Llama-70b). (3) A v5-gated transient pulse vs.\ the always-on residual direction --- whether a behavioral-\emph{timed} residual edit narrows the modality gap. (4) Tool-space restriction as a fourth behavioral arm. (5) Whether the ``interruption, not content'' finding generalizes to other agent loop-failures beyond WANDERING.
 
+\section*{Reproducibility}
+The experiment is fully pre-registered (design, frozen prompts, and decision gate committed before the behavioral arms were collected). The detector gate, the four-arm intervention loop, the 80 per-arm run records, the finalization analysis (independently re-computed from the raw per-run logs), and the SWE-bench Pro patch-pass evaluation are released; finalization figures are reproduced from the raw logs by a single script. Anonymized for review.
+
 \begin{thebibliography}{99}
 \bibitem{tool_entropy} Anonymous. Tool-Entropy Collapse: A Cross-Architecture Signature of Agent WANDERING Failure. Zenodo, 2026. DOI 10.5281/zenodo.20368601.
 \bibitem{residual_nulls} Anonymous. Causal Localization of Agent WANDERING to Edge-Layer L11: The Right Locus Is Still Not a Rescue Lever. Companion paper, 2026.
@@ -160,5 +171,45 @@ On the same WANDERING trajectories where residual steering fails three times, a 
 \bibitem{tool_entropy_train} Li et al. Rethinking the Role of Entropy in Optimizing Tool-Use Behaviors for LLM Agents. arXiv:2602.02050, 2026.
 \bibitem{tatsat} Tatsat \& Shater. Beyond the Black Box: Interpretability of Agentic AI Tool Use. arXiv:2605.06890, 2026.
 \end{thebibliography}
+
+\appendix
+\section{Per-instance outcomes}\label{app:per_instance}
+
+Table~\ref{tab:per_instance} lists, for each of the 20 WANDERING instances, the finalization outcome of each arm (\texttt{F}=\texttt{finish}, \texttt{M}=\texttt{max\_turns}; no \texttt{invalid\_tools} occurred) and whether the no-hook baseline and the B1 patches resolved the SWE-bench Pro issue. A reviewer can recompute every paired McNemar count directly from this table.
+
+\begin{table}[h]
+\centering
+\small
+\caption{Per-instance finalization (arms 0/A/B0/B1) and solve (baseline vs.\ B1).}
+\label{tab:per_instance}
+\begin{tabular}{lcccc cc}
+\toprule
+Instance & 0 & A & B0 & B1 & base & B1 \\
+\midrule
+\texttt{ansi-3db08a} & M & M & F & M & \checkmark & \checkmark \\
+\texttt{ansi-4c5ce5} & M & M & M & M & -- & -- \\
+\texttt{ansi-502270} & F & F & F & F & \checkmark & \checkmark \\
+\texttt{ansi-5d253a} & F & M & F & M & -- & \checkmark \\
+\texttt{ansi-a26c32} & M & M & M & F & -- & \checkmark \\
+\texttt{ansi-cd9c4e} & F & F & F & F & \checkmark & \checkmark \\
+\texttt{ansi-de01db} & F & F & F & F & -- & \checkmark \\
+\texttt{open-09865f} & F & F & F & F & -- & \checkmark \\
+\texttt{open-5c6c22} & M & F & F & F & -- & -- \\
+\texttt{open-5de7de} & M & M & M & M & -- & -- \\
+\texttt{open-7f6b72} & M & M & F & F & -- & -- \\
+\texttt{open-bb152d} & M & M & F & F & -- & -- \\
+\texttt{open-c05ccf} & M & F & F & F & -- & \checkmark \\
+\texttt{qute-0d2afd} & M & M & F & F & -- & -- \\
+\texttt{qute-0fc6d1} & M & M & M & F & -- & -- \\
+\texttt{qute-2dd896} & F & F & F & F & -- & -- \\
+\texttt{qute-85b867} & M & M & M & M & \checkmark & \checkmark \\
+\texttt{qute-990291} & M & M & M & M & -- & -- \\
+\texttt{qute-9b71c1} & M & M & F & F & -- & -- \\
+\texttt{qute-cf06f4} & M & F & F & F & \checkmark & \checkmark \\
+\midrule
+\textbf{finish/solve} & 6 & 8 & 14 & 14 & 5 & 10 \\
+\bottomrule
+\end{tabular}
+\end{table}
 
 \end{document}
