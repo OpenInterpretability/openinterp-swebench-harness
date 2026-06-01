@@ -36,3 +36,4 @@ runs/
 
 # Zenodo upload runtime state (deposition ids)
 scripts/.zenodo_arc_deposits.json
+scripts/.zenodo_*.json
