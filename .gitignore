@@ -33,3 +33,6 @@ runs/
 # Large model artifacts
 *.bin
 *.pt
+
+# Zenodo upload runtime state (deposition ids)
+scripts/.zenodo_arc_deposits.json
