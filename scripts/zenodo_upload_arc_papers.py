@@ -117,7 +117,7 @@ def metadata(p):
         "keywords": COMMON_KEYWORDS,
         "related_identifiers": [
             {"identifier": GH, "relation": "isSupplementedBy", "scheme": "url"},
-            {"identifier": TOOLENTROPY_DOI, "relation": "isContinuationOf", "scheme": "doi"},
+            {"identifier": TOOLENTROPY_DOI, "relation": "references", "scheme": "doi"},
         ],
     }}
 
