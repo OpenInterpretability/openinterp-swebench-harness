@@ -9,7 +9,8 @@
 \usepackage[T1]{fontenc}
 \usepackage{hyperref}
 \hypersetup{colorlinks=true, linkcolor=blue, citecolor=blue, urlcolor=blue,
-  pdftitle={Causal Localization of Agent WANDERING to Edge-Layer L11: The Right Locus Is Still Not a Rescue Lever}}
+  pdftitle={Causal Localization of Agent WANDERING to Edge-Layer L11: The Right Locus Is Still Not a Rescue Lever},
+  pdfauthor={Caio Vicentino}}
 % Allow LaTeX to stretch underfull spacing more aggressively to avoid overfull boxes
 \emergencystretch=3em
 \sloppy
@@ -32,7 +33,13 @@
 \title{Causal Localization of Agent WANDERING to Edge-Layer L11: \\
 The Right Locus Is Still Not a Rescue Lever}
 
-\author{Anonymous Authors\\\textit{(submitted for double-blind review)}}
+\author{%
+  Caio Vicentino \\
+  OpenInterpretability \\
+  Fortaleza, Brazil \\
+  ORCID: 0009-0003-4331-6259 \\
+  \texttt{caio@openinterp.org}%
+}
 
 \begin{document}
 
@@ -391,6 +398,9 @@ The one robust causal effect we find is the opposite of a rescue: at higher magn
 We additionally surface a load-bearing methodological finding: the WANDERING classification is not run-stable under temperature$=$1.0. Same-seed independent re-runs (same RTX 6000 Pro Blackwell hardware) of trajectories labelled WANDERING emit \texttt{finish\_tool} up to 35\% of the time. This is why every intervention test must be paired, and why the unpaired $0/20$ comparison manufactures a false positive.
 
 The arc --- detector (Tool-Entropy v5) $\to$ inert at L55 $\to$ live-but-un-steerable at L11, the strongest detector locus --- is the paper's contribution. Correcting the locus did not convert the null: the SUCCESS direction detects WANDERING without being a lever to fix it, \emph{even at the layer where detection is strongest}. The Tool-Entropy v5 detector remains useful for forensics, advisory escalation, and Tier 3 autonomous termination at its reported precision-recall; the move from that detector to a one-shot residual rescue is, at both edge layers tested, false. Where a lever might still live --- a transient, behavior-gated intervention rather than an always-on residual direction --- is the next paper's question.
+
+\section*{Data and code availability}
+All code --- the always-on steering hook, the L11 $\alpha$-sweep, the paired McNemar analysis (\texttt{scripts/paper2\_l11\_honest\_paired\_analysis.py}), the Exp D Docker patch-pass harness, and the figure generators --- is released under Apache-2.0 at \url{https://github.com/OpenInterpretability/openinterp-swebench-harness}. The underlying Phase-6 trajectories and residuals are on HuggingFace at \texttt{huggingface.co/datasets/caiovicentino1/swebench-pro-qwen36-27b-phase6}. Companion paper: Tool-Entropy Collapse (DOI~\texttt{10.5281/zenodo.20368601}).
 
 \bibliographystyle{plain}
 \bibliography{references}

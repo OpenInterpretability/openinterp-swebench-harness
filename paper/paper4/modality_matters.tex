@@ -6,7 +6,8 @@
 \usepackage[T1]{fontenc}
 \usepackage{hyperref}
 \hypersetup{colorlinks=true, linkcolor=blue, citecolor=blue, urlcolor=blue,
-  pdftitle={Modality Matters: A Transient Behavioral Interruption Rescues Agent WANDERING Where Residual Steering Does Not}}
+  pdftitle={Modality Matters: A Transient Behavioral Interruption Rescues Agent WANDERING Where Residual Steering Does Not},
+  pdfauthor={Caio Vicentino}}
 % Aggressive spacing to avoid overfull boxes from long dataset/path names.
 \emergencystretch=3em
 \sloppy
@@ -24,7 +25,13 @@
 \title{Modality Matters: A Transient Behavioral Interruption Rescues \\
 Agent WANDERING Where Residual Steering Does Not}
 
-\author{Anonymous Authors\\\textit{(submitted for double-blind review)}}
+\author{%
+  Caio Vicentino \\
+  OpenInterpretability \\
+  Fortaleza, Brazil \\
+  ORCID: 0009-0003-4331-6259 \\
+  \texttt{caio@openinterp.org}%
+}
 
 \begin{document}
 
@@ -156,12 +163,12 @@ On the same WANDERING trajectories where residual steering fails three times, a 
 (1) Same-session per-arm solve-rate (the one-line patch-save fix) to upgrade the solve-rate from suggestive to confirmed. (2) Cross-architecture replication (Llama-70b). (3) A v5-gated transient pulse vs.\ the always-on residual direction --- whether a behavioral-\emph{timed} residual edit narrows the modality gap. (4) Tool-space restriction as a fourth behavioral arm. (5) Whether the ``interruption, not content'' finding generalizes to other agent loop-failures beyond WANDERING.
 
 \section*{Reproducibility}
-The experiment is fully pre-registered (design, frozen prompts, and decision gate committed before the behavioral arms were collected). The detector gate, the four-arm intervention loop, the 80 per-arm run records, the finalization analysis (independently re-computed from the raw per-run logs), and the SWE-bench Pro patch-pass evaluation are released; finalization figures are reproduced from the raw logs by a single script. Anonymized for review.
+The experiment is fully pre-registered (design, frozen prompts, and decision gate committed before the behavioral arms were collected). The detector gate, the four-arm intervention loop, the 80 per-arm run records, the finalization analysis (independently re-computed from the raw per-run logs), and the SWE-bench Pro patch-pass evaluation are released under Apache-2.0 at \url{https://github.com/OpenInterpretability/openinterp-swebench-harness}; finalization figures are reproduced from the raw logs by a single script.
 
 \begin{thebibliography}{99}
-\bibitem{tool_entropy} Anonymous. Tool-Entropy Collapse: A Cross-Architecture Signature of Agent WANDERING Failure. Zenodo, 2026. DOI 10.5281/zenodo.20368601.
-\bibitem{residual_nulls} Anonymous. Causal Localization of Agent WANDERING to Edge-Layer L11: The Right Locus Is Still Not a Rescue Lever. Companion paper, 2026.
-\bibitem{multichannel} Anonymous. Multi-Channel Mechanistic Signatures of Agent WANDERING: Classification, Causal Localization, and Behavior-Legible Rescuability. Companion paper, 2026.
+\bibitem{tool_entropy} C. Vicentino. Tool-Entropy Collapse: A Cross-Architecture Signature of Agent WANDERING Failure. Zenodo, 2026. DOI 10.5281/zenodo.20368601.
+\bibitem{residual_nulls} C. Vicentino. Causal Localization of Agent WANDERING to Edge-Layer L11: The Right Locus Is Still Not a Rescue Lever. Companion paper, 2026.
+\bibitem{multichannel} C. Vicentino. Multi-Channel Mechanistic Signatures of Agent WANDERING: Classification, Causal Localization, and Behavior-Legible Response to Intervention. Companion paper, 2026.
 \bibitem{basu_kag} Basu et al. Interpretability without actionability: mechanistic methods cannot correct LM errors despite near-perfect internal representations. arXiv:2603.18353, 2026.
 \bibitem{bhalla_pc} Bhalla et al. Towards Unifying Interpretability and Control: Evaluation via Intervention. arXiv:2411.04430, 2024.
 \bibitem{swe_prm} Gandhi et al. When Agents Go Astray: Course-Correcting SWE Agents with PRMs. arXiv:2509.02360, 2025.
