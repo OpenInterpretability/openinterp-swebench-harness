@@ -1,0 +1,124 @@
+\documentclass[11pt]{article}
+
+% Template-agnostic preamble (matches the WANDERING-arc papers).
+\usepackage[margin=1in]{geometry}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true, linkcolor=blue, citecolor=blue, urlcolor=blue,
+  pdftitle={No Better Than Behavioral: Residual Velocity-Freezing Predicts Agent WANDERING No Better Than the Cheap Tool-Entropy Detector},
+  pdfauthor={Caio Vicentino}}
+\emergencystretch=3em
+\sloppy
+\hyphenpenalty=2000
+\exhyphenpenalty=0
+\hbadness=10000
+\usepackage{booktabs}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{xcolor}
+\usepackage{array}
+
+\title{No Better Than Behavioral: A Residual \\
+Velocity-Freezing Fingerprint Predicts Agent WANDERING \\
+No Better Than the Cheap Tool-Entropy Detector \\[2pt]
+\large A Pre-Registered Negative --- Companion Note to the WANDERING Arc}
+
+\author{%
+  Caio Vicentino \\
+  OpenInterpretability \\
+  Fortaleza, Brazil \\
+  ORCID: 0009-0003-4331-6259 \\
+  \texttt{caio@openinterp.org}%
+}
+\date{June 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+The WANDERING arc detects a long-horizon agent failure --- an agent that keeps acting but never finalizes --- from a probe-free \emph{behavioral} signal (tool-call entropy collapse) and shows that residual steering cannot rescue it while a behavioral interruption can \cite{tool_entropy,residual_nulls,multichannel,modality}. A natural follow-up, motivated by the ``context rot'' literature (long-context degradation is representational, not retrieval \cite{contextrot}), asks whether the residual stream carries an \emph{earlier or better detector} than the cheap behavioral signal: does the geometry rot before the behavior does? We pre-register and test this on the same 99 Qwen3.6-27B SWE-bench Pro trajectories with per-turn residual captures at five layers. Stage~1 (raw residual geometry, no SAE) finds a real but weak fingerprint: \textbf{representational velocity-freezing}. Trajectories that will WANDER show a smaller per-turn change in their residual state early on --- they settle toward an attractor sooner --- and the effect is directionally consistent across all five layers (4/5 raw $p<0.05$, length-controlled), with one mid-network layer (L31) clearing a pre-registered trend-and-divergence conjunction ($p=0.015$). Nothing survives multiple-comparison correction over the $4\times5$ metric--layer grid. Stage~2 (the decisive predictive test) then asks whether this fingerprint beats the cheap detector it would replace. It does not. Early-window velocity at L31 reaches AUROC $0.695$, statistically indistinguishable from the fair early behavioral baseline (\texttt{tool\_entropy\_first10}, $0.688$; paired bootstrap $\Delta=+0.008$, 95\% CI $[-0.170,+0.211]$), and clearly below the deployed late detector (\texttt{tool\_entropy\_last10}, $0.888$). As a sharp alarm calibrated to $\le 5\%$ false-positive on successes, velocity catches only $1$--$3$ of $20$ WANDERING trajectories and never fires earlier than the deployed detector. We report this as a clean pre-registered negative: \textbf{at this granularity the residual fingerprint is real but downstream-redundant} --- it adds no predictive information over the probe-free behavioral signal. The result \emph{strengthens} the arc: for this failure mode, watching the cheap behavior is as good as or better than reading the residual stream.
+\end{abstract}
+
+\section{Motivation}\label{sec:motivation}
+
+The WANDERING arc establishes an asymmetry between detection and intervention for a long-horizon agent failure: the failure is \emph{detectable} from a residual-stream signature \cite{tool_entropy} and a probe-free tool-entropy collapse \cite{tool_entropy}, and is \emph{localizable} to an edge layer \cite{multichannel}, but three pre-registered residual interventions fail to rescue it \cite{residual_nulls} while a content-free behavioral interruption roughly doubles finalization \cite{modality}. Across the arc the workhorse signal in deployment is the cheap one: the Shannon entropy of the last-ten tool-call names. It needs no probe, no activation capture, and generalizes across architectures.
+
+This note asks the obvious efficiency question that a skeptic --- or a product engineer --- would raise next. The ``context rot'' literature shows that long-context degradation is \emph{representational}: context length alone hurts task performance even under perfect retrieval \cite{contextrot}, and the residual stream is known to drift toward low-dimensional attractors as a function of depth \cite{attractors} and to enter states its feature dictionary covers worse \cite{darkmatter}. If WANDERING is the behavioral endpoint of a representational rot, then the \emph{geometry might rot before the behavior does} --- giving an earlier, richer detector than the last-ten-turn tool collapse. If true, that would justify the cost of activation capture; if false, it tells us the cheap behavioral signal is not merely convenient but actually sufficient. Either way the answer is worth pre-registering. We did, before looking at any predictive number.\footnote{Pre-registration, full results, and analysis code are in the arc repository under \texttt{paper/context\_rot/} (\texttt{PREREG\_context\_rot\_fingerprint.md}, \texttt{STAGE1\_RESULTS.md}, \texttt{STAGE2\_RESULTS.md}, \texttt{scripts/context\_rot\_stage\{1,2\}.py}). The analysis runs on CPU on the existing captures; no new compute.}
+
+\section{Method}\label{sec:method}
+
+\textbf{Data.} The 99 Qwen3.6-27B SWE-bench Pro trajectories of the arc, labeled $\{$\textsc{success}:40, \textsc{locked}:39, \textsc{wandering}:20$\}$, with one residual vector per turn per layer (mean over each turn's capture positions) at L11/L23/L31/L43/L55. The primary contrast is \textsc{wandering} vs.\ \textsc{success}.
+
+\textbf{Stage 1 --- does a fingerprint exist?} We compute four raw geometry metrics per trajectory as a function of turn index: \textbf{norm} $\lVert v_t\rVert$; \textbf{velocity} $1-\cos(v_t,v_{t-1})$ (per-turn state movement, $\to 0$ = freezing toward an attractor); \textbf{drift} $\cos(v_t,v_0)$; and windowed effective dimension (participation ratio). The single mandatory control is the \emph{length confound}: failures run to the turn budget and so are longer, which makes any length-correlate look discriminative. We therefore (i) restrict the success-vs-failure contrast to the \emph{early overlap window} where both classes still have live trajectories, (ii) summarize each trajectory by one early-window mean (independent samples --- no pseudo-replication), and (iii) partial out total trajectory length. Pre-registered GO requires, for at least one metric, both a within-trajectory monotone trend (P1) \emph{and} an early matched-window success-vs-failure divergence (Mann--Whitney $p<0.05$) that survives the length control (P2).
+
+\textbf{Stage 2 --- is the fingerprint worth more than the cheap detector?} For the surviving metric we ask the decisive question with a pre-registered evaluation fixed before any AUROC was computed. Predicting \textsc{wandering} vs.\ \textsc{success}, we compare the early-window fingerprint against the behavioral baselines on two axes. (a) \emph{Discrimination}: single-feature rank-AUROC (fit-free, no cross-validation needed, no leakage), with a paired bootstrap for the AUROC difference against the \emph{fair early} baseline \texttt{tool\_entropy\_first10} (same early horizon as the fingerprint). We also report the deployed late detector \texttt{tool\_entropy\_last10} and the length floor \texttt{n\_turns}. (b) \emph{Lead-time}: calibrate a velocity alarm threshold so that $\le 5\%$ of \textsc{success} trajectories ever fire (the deployed detector's operating point), then compare the velocity alarm turn and catch-rate on the 20 \textsc{wandering} trajectories against the deployed \texttt{detector\_v5} fire turn. GO requires the fingerprint to match or beat the cheap baseline on at least one axis without being clearly worse on the other; otherwise the program stops as an honest negative.
+
+\section{Results}\label{sec:results}
+
+\textbf{Stage 1: a real but weak fingerprint.} Velocity is the one metric carrying signal. \textsc{wandering} trajectories freeze earlier --- lower early-window velocity --- and the direction is consistent across all five layers (Table~\ref{tab:velocity}), with four of five layers reaching uncorrected $p<0.05$ and negative length-controlled partial correlation. Only mid-network L31 clears the full pre-registered conjunction (trend $p=0.0026$; early divergence $p=0.015$, partial $r=-0.242$). The other three metrics fail: drift trends strongly within trajectories ($p\sim10^{-6}$) but does not discriminate the classes ($p\approx0.71$, a pure ordering artifact); effective dimension discriminates at L11 ($p=0.028$) but has no trend; norm is flat. \emph{Nothing survives Bonferroni or Benjamini--Hochberg correction over the $4\times5$ grid} (minimum $p=0.0148$ vs.\ Bonferroni threshold $0.0025$). The fingerprint is thus a directionally-coherent, uncorrected, single-layer-clean candidate --- exactly the kind of signal that must be cross-checked against a baseline before it is believed.
+
+\begin{table}[h]
+\centering
+\caption{Stage 1: early-window velocity ($1-\cos(v_t,v_{t-1})$), \textsc{success} vs.\ \textsc{wandering}. Lower velocity = more frozen. Direction is consistent in 5/5 layers; only L31 clears the pre-registered trend-and-divergence conjunction; none survive multiple-comparison correction.}
+\label{tab:velocity}
+\begin{tabular}{lccccc}
+\toprule
+Layer & \textsc{success} & \textsc{wandering} & MW $p$ & partial $r\mid$len & sign matches \\
+\midrule
+L11 & 0.0041 & 0.0039 & 0.297 & $+0.018$ & yes (n.s.) \\
+L23 & 0.0248 & 0.0225 & 0.039 & $-0.148$ & yes \\
+L31 & 0.0630 & 0.0567 & \textbf{0.015} & $-0.242$ & yes \\
+L43 & 0.1119 & 0.1023 & 0.038 & $-0.138$ & yes \\
+L55 & 0.1876 & 0.1723 & 0.031 & $-0.143$ & yes \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\textbf{Stage 2: the fingerprint adds nothing over the cheap detector.} Table~\ref{tab:auroc} gives the verdict. Early-window velocity at L31 reaches AUROC $0.695$ --- but the fair early behavioral baseline \texttt{tool\_entropy\_first10} reaches $0.688$, and the paired-bootstrap difference is $+0.008$ with a 95\% CI of $[-0.170,+0.211]$ that straddles zero: at the only \emph{fair} (early, no outcome-peek) comparison, the residual geometry and the cheap behavioral signal are statistically indistinguishable. Both are modest. The deployed late detector \texttt{tool\_entropy\_last10}, which is allowed to see the final ten turns, reaches $0.888$ and the postdictive length floor reaches $1.000$ --- velocity beats neither.
+
+\begin{table}[h]
+\centering
+\caption{Stage 2: AUROC for predicting \textsc{wandering} vs.\ \textsc{success} ($n=20$ vs.\ $40$). The residual fingerprint (bold) ties the fair early behavioral baseline and loses to the deployed late detector.}
+\label{tab:auroc}
+\begin{tabular}{lcl}
+\toprule
+Signal & AUROC & note \\
+\midrule
+\texttt{n\_turns} (length) & 1.000 & postdictive perfect separator \\
+\texttt{tool\_entropy\_last10} & 0.888 & deployed detector (sees last 10 turns) \\
+\texttt{tool\_entropy\_full} & 0.835 & \\
+\textbf{velocity (L31, early)} & \textbf{0.695} & the residual fingerprint \\
+velocity (L55, early) & 0.673 & \\
+velocity (pooled, early) & 0.660 & \\
+\texttt{tool\_entropy\_first10} & 0.688 & fair early behavioral baseline \\
+velocity (L11, early) & 0.584 & \\
+\texttt{probe\_score\_first} & 0.491 & trajectory probe (early) --- no signal \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\textbf{Stage 2: the fingerprint is a poor alarm.} As a deployable detector calibrated to $\le 5\%$ false-positive on \textsc{success} trajectories, velocity catches only $1$--$3$ of $20$ \textsc{wandering} trajectories (L11 1/20, L31 2/20, L55 3/20) and \emph{never} co-fires with the deployed \texttt{detector\_v5} on a trajectory both catch --- so there is no lead-time advantage to measure. Freezing is a soft distributional shift, not a threshold event; tool-entropy collapse is the sharper, more detectable one.
+
+\section{What this rules out}\label{sec:ruleout}
+
+The pre-registered gate returns NO-GO on three independent grounds, any one sufficient: velocity \emph{ties} rather than beats the fair early behavioral baseline; it is a poor low-false-positive alarm; and it loses to the deployed detector and to length. We therefore stop, as pre-committed, and do not enter the gated downstream stages (a sparse-autoencoder feature-level reading; a causal mediation test of the behavioral rescue). Spending interpretability compute to explain, or causal compute to intervene on, a signal that carries no operational information would be motivated continuation.
+
+The contribution is the negative itself. Context rot \emph{does} leave a faint, directionally-coherent representational trace --- early velocity-freezing, consistent across the stack --- but \textbf{at this granularity that trace carries no predictive information beyond the cheap probe-free behavioral detector it would replace}. The residual geometry is downstream-redundant, not a privileged early window. This sharpens, rather than undermines, the arc: across four papers the deployed signal has been the cheap behavioral one, and here we show that choice is not merely a convenience --- for this failure mode the behavioral signal is as good as or better than reading the residual stream. ``Just watch the geometry'' is ruled out as a better detector.
+
+\section{Scope and honest caveats}\label{sec:scope}
+
+This is a single-model ($n{=}99$, Qwen3.6-27B), single-task-family (SWE-bench Pro coding agents) result on \emph{raw} residual geometry; a richer representation (sparse-autoencoder features, attention-level statistics) could in principle carry information the four scalar geometry metrics miss, and we did not test it (it was gated off by the predictive null, by design). Most importantly, this is a statement about \emph{prediction and redundancy}, not \emph{causation}: a predictive-redundancy null does not logically exclude that the frozen geometry lies on the causal path of the behavioral rescue \cite{modality}. We make no causal claim here, and a future causal test would have to be re-pre-registered as its own question rather than offered as a rescue of this one. With those bounds, the result is what it is: at the granularity that a cheap deployable monitor would actually use, the residual fingerprint of context rot is real and useless.
+
+\begin{thebibliography}{99}
+\bibitem{tool_entropy} C. Vicentino. Tool-Entropy Collapse: A Cross-Architecture Signature of Agent WANDERING Failure. Zenodo, 2026. DOI 10.5281/zenodo.20368601.
+\bibitem{residual_nulls} C. Vicentino. Causal Localization of Agent WANDERING to Edge-Layer L11: The Right Locus Is Still Not a Rescue Lever. Zenodo, 2026. DOI 10.5281/zenodo.20490278.
+\bibitem{multichannel} C. Vicentino. Multi-Channel Mechanistic Signatures of Agent WANDERING: Classification, Causal Localization, and Behavior-Legible Response to Intervention. Zenodo, 2026. DOI 10.5281/zenodo.20490284.
+\bibitem{modality} C. Vicentino. Modality Matters: A Transient Behavioral Interruption Rescues Agent WANDERING Where Residual Steering Does Not. Zenodo, 2026. DOI 10.5281/zenodo.20490286.
+\bibitem{contextrot} Hong et al. Context Length Alone Hurts LLM Performance Despite Perfect Retrieval. arXiv:2510.05381, 2025.
+\bibitem{attractors} Cohen et al. Dynamical Systems and the Residual Stream: Attractors over Transformer Depth. arXiv:2502.12131, 2025.
+\bibitem{darkmatter} Engels et al. Decomposing the Dark Matter of Sparse Autoencoders. arXiv:2410.14670, 2024.
+\end{thebibliography}
+
+\end{document}
