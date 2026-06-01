@@ -63,3 +63,35 @@ Computed per trajectory as a function of turn index `t` (one residual vector per
 
 - `scripts/context_rot_stage1.py` — Stage-1a analysis (+ `--smoke` synthetic self-test that must detect a planted signal and reject a planted null before trusting the real run).
 - Output: `scripts/context_rot_out/stage1_metrics.json` + per-metric plots (metric vs turn, by outcome) + the GATE verdict.
+
+---
+
+## 8. Stage-2 ADDENDUM (P3, predictive) — pre-registered 2026-06-01 BEFORE computing any AUROC
+
+Stage-1a produced a QUALIFIED GO on **velocity-freezing** (`STAGE1_RESULTS.md`). Stage 2 asks the decisive product question: **is the representational fingerprint worth more than the cheap probe-free behavioral detector it would replace/augment?** The velocity DIRECTION is already known from Stage 1 (failures freeze); Stage 2 pre-commits the *evaluation procedure* (below) before any predictive number is seen.
+
+**Task.** Primary: WANDERING(20) vs SUCCESS(40), binary. (Secondary: WANDERING vs rest, n=99.)
+
+**Candidate predictor.** Early-window mean `velocity` (same outcome-blind early window as Stage 1) per layer; **primary = L31** (the prereg-passing layer), also report best-layer (flagged as selected) and pooled mean-across-layers.
+
+**Behavioral baselines to beat (from `features_n99.csv`).**
+- `tool_entropy_first10` — the **fair early** baseline (same early horizon as velocity).
+- `tool_entropy_last10` — the **strong late** baseline (sees the last 10 turns ≈ near outcome; velocity is NOT allowed that info).
+- `tool_entropy_full`, and `probe_score_first` (early trajectory-probe) as secondary references.
+- `n_turns` — **length floor**: velocity must beat trajectory-length-alone or it is just length.
+
+**Metric.** Rank-AUROC for predicting FAIL under the **pre-registered direction** (velocity: lower→fail; tool-entropy: lower→fail = collapse). 2000× bootstrap 95% CI per AUROC; **paired-bootstrap 95% CI of the difference** AUROC(velocity) − AUROC(tool_entropy_first10) (resample trajectories, recompute both). A feature whose AUROC<0.5 under its pre-registered direction = wrong-direction = no signal (reported as-is, not flipped).
+
+**Lead-time.** velocity alarm = first early-turn with velocity < θ, where θ is calibrated so **≤5% of SUCCESS trajectories ever fire** (matches the Tool-Entropy paper's 5% FP operating point). Compare velocity alarm turn + catch-rate on the 20 WANDERING trajectories vs the deployed `detector_v5_fire_turn` (and v1/v4). Earlier alarm and/or higher catch-rate at matched 5% FP = win.
+
+**GATE (Stage 2 → Stage 3).**
+- **GO** iff velocity (at L31 or pooled) **matches or beats** the cheap tool-entropy baseline on **≥1** of {early AUROC: paired-bootstrap CI of the difference vs `first10` includes 0 or is positive; lead-time: fires no later than v5 at matched 5% FP, ideally earlier} **AND is not clearly worse on the other**.
+- **NO-GO / honest negative** iff velocity AUROC is clearly below tool-entropy AND shows no lead-time advantage → headline: *"representational freezing is real but adds nothing over the cheap behavioral signal"* — STOP, publish the negative.
+- Velocity must also clear the **length floor** (AUROC > AUROC(n_turns)); failing that = length artifact = NO-GO.
+
+## 9. Stage-3 ADDENDUM (P4, causal/mediation) — gated by Stage-2 GO
+- **3a (re-analysis, CPU if data exists):** in the Modality-Matters #4 data, does the B0 fresh-interruption benefit get **mediated** by restoration of velocity (post-interruption velocity rises back toward the SUCCESS regime on rescued trajectories, and that rise statistically mediates the finalization gain)? Mediation = bootstrap indirect effect.
+- **3b (new runs, GPU — prep only, hand to Caio):** an intervention that directly **restores the geometry** (context reset / compression / feature denoise at the freezing turn) restores behavior, and the representational restoration mediates the behavioral rescue. Honest-negative-publishable either way.
+
+## 10. Stage-1b ADDENDUM (SAE feature reading — secondary, not an existence proof)
+Run only as interpretability color on the velocity finding: does the freezing have a feature-level signature (L0 collapse / interference rise / dark-matter rise tracking the velocity drop)? Requires `caiovicentino1/qwen36-27b-sae-fullstack`. Not gated by Stage 2; reported descriptively.

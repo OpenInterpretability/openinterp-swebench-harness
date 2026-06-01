@@ -1,0 +1,171 @@
+{
+  "task": "WANDERING vs SUCCESS",
+  "n_fail": 20,
+  "n_succ": 40,
+  "auroc": {
+    "velocity_L11": {
+      "auroc": 0.5838,
+      "ci95": [
+        0.4138,
+        0.7422
+      ],
+      "n": 60
+    },
+    "velocity_L23": {
+      "auroc": 0.665,
+      "ci95": [
+        0.517,
+        0.81
+      ],
+      "n": 60
+    },
+    "velocity_L31": {
+      "auroc": 0.695,
+      "ci95": [
+        0.552,
+        0.8263
+      ],
+      "n": 60
+    },
+    "velocity_L43": {
+      "auroc": 0.6662,
+      "ci95": [
+        0.5199,
+        0.8075
+      ],
+      "n": 60
+    },
+    "velocity_L55": {
+      "auroc": 0.6725,
+      "ci95": [
+        0.5262,
+        0.8113
+      ],
+      "n": 60
+    },
+    "velocity_pooled": {
+      "auroc": 0.66,
+      "ci95": [
+        0.504,
+        0.8025
+      ],
+      "n": 60
+    },
+    "tool_entropy_first10": {
+      "auroc": 0.6875,
+      "ci95": [
+        0.5526,
+        0.82
+      ],
+      "n": 60
+    },
+    "tool_entropy_last10": {
+      "auroc": 0.8875,
+      "ci95": [
+        0.7976,
+        0.9569
+      ],
+      "n": 60
+    },
+    "tool_entropy_full": {
+      "auroc": 0.835,
+      "ci95": [
+        0.7235,
+        0.9213
+      ],
+      "n": 60
+    },
+    "probe_score_first": {
+      "auroc": 0.4912,
+      "ci95": [
+        0.3338,
+        0.658
+      ],
+      "n": 60
+    },
+    "n_turns_lengthfloor": {
+      "auroc": 1.0,
+      "ci95": [
+        1.0,
+        1.0
+      ],
+      "n": 60
+    }
+  },
+  "paired_diffs": {
+    "velocity_L31_minus_tool_entropy_first10": {
+      "delta_auroc": 0.0075,
+      "ci95": [
+        -0.1697,
+        0.211
+      ],
+      "n": 60
+    },
+    "velocity_pooled_minus_tool_entropy_first10": {
+      "delta_auroc": -0.0275,
+      "ci95": [
+        -0.2302,
+        0.1704
+      ],
+      "n": 60
+    }
+  },
+  "lead_time": {
+    "L11": {
+      "theta": 0.00014,
+      "success_FP": 0.05,
+      "velocity_catch_rate": "1/20",
+      "median_velocity_alarm_turn": null,
+      "median_v5_fire_turn": null,
+      "paired_wilcoxon_p": null,
+      "n_both_caught": 0
+    },
+    "L23": {
+      "theta": 0.00103,
+      "success_FP": 0.05,
+      "velocity_catch_rate": "1/20",
+      "median_velocity_alarm_turn": null,
+      "median_v5_fire_turn": null,
+      "paired_wilcoxon_p": null,
+      "n_both_caught": 0
+    },
+    "L31": {
+      "theta": 0.00474,
+      "success_FP": 0.05,
+      "velocity_catch_rate": "2/20",
+      "median_velocity_alarm_turn": null,
+      "median_v5_fire_turn": null,
+      "paired_wilcoxon_p": null,
+      "n_both_caught": 0
+    },
+    "L43": {
+      "theta": 0.01648,
+      "success_FP": 0.05,
+      "velocity_catch_rate": "2/20",
+      "median_velocity_alarm_turn": null,
+      "median_v5_fire_turn": null,
+      "paired_wilcoxon_p": null,
+      "n_both_caught": 0
+    },
+    "L55": {
+      "theta": 0.04497,
+      "success_FP": 0.05,
+      "velocity_catch_rate": "3/20",
+      "median_velocity_alarm_turn": null,
+      "median_v5_fire_turn": null,
+      "paired_wilcoxon_p": null,
+      "n_both_caught": 0
+    }
+  },
+  "GATE": {
+    "verdict": "NO-GO (honest negative)",
+    "best_velocity_auroc": 0.695,
+    "tool_entropy_first10_auroc": 0.6875,
+    "tool_entropy_last10_auroc": 0.8875,
+    "length_floor_auroc": 1.0,
+    "clears_length_floor": false,
+    "auc_tie_or_win_vs_first10": true,
+    "lead_time_win_L31": false,
+    "rule": "GO iff clears length floor AND (early-AUROC ties/beats tool_entropy_first10 OR fires no later than v5 at 5% FP). NO-GO = freezing real but adds nothing over the cheap behavioral detector -> stop, publish negative."
+  }
+}
