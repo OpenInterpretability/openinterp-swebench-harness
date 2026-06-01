@@ -90,7 +90,7 @@ This third test, too, is null on rescue --- but with a twist that distinguishes 
 
 \textbf{Activation patching as causal test.} Standard cross-layer patching \cite{geiger_2023_interchange,heimersheim_2024_patching} requires a clean and corrupted run and substitutes activations between them. Our Plan B departs from this by installing an always-on hook from turn 0 rather than performing a single-token surgical patch, sidestepping the determinism risk of trajectory replay (see \S\ref{sec:methodology}).
 
-\textbf{SLDS-style continuous-dynamics interpretation.} Recent work \cite{anonymous_slds_2026} argues residual streams behave more like continuous trajectories than discrete-phase processes. Our Exp B null is independently consistent with this: a single edge-layer residual direction does not partition the action space.
+\textbf{SLDS-style continuous-dynamics interpretation.} Recent work \cite{vicentino_slds_2026} argues residual streams behave more like continuous trajectories than discrete-phase processes. Our Exp B null is independently consistent with this: a single edge-layer residual direction does not partition the action space.
 
 \textbf{Failure-mode rescue interventions.} Steering-based rescue of failure modes \cite{turner_2023_steering, anthropic_steering_2024} typically demonstrates positive direction with single-shot intervention. Plan B tests whether a persistent rescue intervention scales, and finds it does not for the WANDERING mode.
 
@@ -407,7 +407,7 @@ All code --- the always-on steering hook, the L11 $\alpha$-sweep, the paired McN
 
 \appendix
 
-\section{Appendix A: Exp D Per-Instance WANDERING Verdicts}\label{app:exp_d_per_instance}
+\section{Exp D Per-Instance WANDERING Verdicts}\label{app:exp_d_per_instance}
 
 Table \ref{tab:exp_d_wandering_full} lists all 19 Docker-evaluated WANDERING trajectories with their \texttt{agent} condition pass/fail breakdown.
 
@@ -443,7 +443,7 @@ Instance & Verdict & \texttt{n\_pass} & \texttt{n\_fail} & \texttt{n\_err} \\
 \label{tab:exp_d_wandering_full}
 \end{table}
 
-\section{Appendix B: Exp B Plan B Implementation Details}\label{app:exp_b_implementation}
+\section{Exp B Plan B Implementation Details}\label{app:exp_b_implementation}
 
 The \texttt{LayerPatch} class installs a forward hook on \texttt{model.model.layers[L]} that modifies the residual stream output at the last token position:
 
@@ -463,7 +463,7 @@ The hook fires on every forward pass through L55 --- both during prefill (once p
 
 \textbf{Sanity check}: hook call count per instance ranged from 6{,}397 to 64{,}172 in the Primary condition, scaling with total tokens generated. The Baseline runs (no hook) have zero hook calls by construction. VRAM peak ranged 57.7-72.1 GB across conditions, well under the RTX 6000 Pro Blackwell 96 GB ceiling.
 
-\section{Appendix C: Compute Budget}
+\section{Compute Budget}
 
 \begin{table}[h]
 \centering
@@ -485,7 +485,7 @@ Exp L11 random-direction control (5 instances) & $\sim$100 min (est.) \\
 
 Total GPU compute (RTX 6000 Pro Blackwell) on \texttt{vast.ai} at $\sim$\$1.50--2/h: $\sim$\$50 (Exp B $\sim$\$20 measured; Exp L11 $\sim$\$30 estimated).
 
-\section{Appendix D: Methodological Heritage from Prior Work}
+\section{Methodological Heritage from Prior Work}
 
 The Plan A vs Plan B design discussion was informed by the trajectory-replay determinism audit (\texttt{scripts/exp\_b\_determinism\_check.py}): only 5/20 WANDERING trajectories had $\geq 80\%$ replayable tool-calls (the rest contained \texttt{pip}/\texttt{pytest}/\texttt{python}/\texttt{git} commands with non-deterministic outputs), motivating the pivot to Plan B always-on hook.
 
