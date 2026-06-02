@@ -37,3 +37,15 @@ WANDERING agents at high-#22358 are saying *"works as expected / my fix is appro
 
 ## Status
 H1 (the gate) = **PASS, done on CPU.** Proceed to H2/H4 when a GPU backend is up (openinterp MCP or any A100/H100). The notebook's transcript adapter must use the `traces/` `turns` schema (not `messages`).
+
+---
+
+## Observational §13 (behavioral, CPU — uses ground-truth actions from `traces/`, no model)
+Computed the feature's link to the actual `finish` action across all 4354 pre_tool points (tool called from the trace).
+
+- **E — feature predicts the finish action:** AUROC(act#22358 → next-tool==finish) = **0.911** over all turns; **0.889 within SUCCESS only** (non-circular: SUCCESS has both finish and non-finish turns, 39 finishes / 1435 turns). Top-decile finish-rate 6.9% vs 0.92% base (8×). #22358 is genuinely a *ready-to-finish* signal, by ground-truth behavior.
+- **E2 — the §13 readout gap (observational):** among top-decile-activation pre_tool turns, finish-rate = **SUCCESS 12.2% (245 turns) / WANDERING 0.0% (84 turns) / LOCKED 0.0% (107 turns)**. WANDERING **reaches the high completion-verification state 84 times yet never converts**. *Caveat (honest):* WANDERING never-finishing is partly definitional (they are labeled WANDERING by never calling finish); the non-trivial parts are (a) they form the verdict repeatedly (84 high-act turns) and (b) the in-SUCCESS AUROC 0.889 is the clean feature→action link.
+- **H1 quantified:** completion/verification language (regex) in **top-100 act = 50% vs random-200 = 6% vs bottom-100 = 5%** (~8× enrichment) — a number behind the H1 PASS.
+
+## What remains = ONLY the causal test (GPU)
+The observational Stage-1 is complete on CPU: the feature is a completion-verification signal (H1), predicts the finish action (E, AUROC 0.91), and WANDERING forms it but doesn't act (E2 + structural collapse). The **one** remaining piece is **H4 causal**: does *clamping #22358 up* at a WANDERING decision point *cause* the model to emit finish (verdict sufficient → lever) or not (readout broken → §13 confirmed)? That needs a model forward pass = **GPU**. Everything up to here used zero GPU.
