@@ -40,7 +40,7 @@ C.append(code(r'''
 import os, sys, subprocess
 REPO_DIR="/content/openinterp-swebench-harness"
 if not os.path.exists(REPO_DIR):
-    !git clone -q https://github.com/OpenInterpretability/openinterp-swebench-harness {REPO_DIR}
+    subprocess.run(["git","clone","-q","https://github.com/OpenInterpretability/openinterp-swebench-harness",REPO_DIR], check=True)
 sys.path.insert(0, REPO_DIR)
 import transformers; print("transformers", transformers.__version__)
 try:
