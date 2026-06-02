@@ -180,14 +180,15 @@ cells.append(code(r'''
 # Adapter: load whatever text you have per instance. Looks for *.json under DRIVE.
 import glob, json as _json
 def load_trajectory_texts(drive=DRIVE, limit=60):
+    # Phase-6 transcripts live in DRIVE/traces/instance_*.json with schema {turns:[{thinking,content,tool_calls,...}]}
     texts = []
-    for p in sorted(glob.glob(os.path.join(drive, "**", "*.json"), recursive=True)):
+    for p in sorted(glob.glob(os.path.join(drive, "traces", "instance_*.json"))):
         try: obj = _json.load(open(p))
         except Exception: continue
-        msgs = obj.get("messages") or obj.get("trajectory") or obj
-        if isinstance(msgs, list):
-            t = "\n".join(str(m.get("content","")) for m in msgs if isinstance(m, dict))
-            if len(t) > 200: texts.append(t[:8000])
+        turns = obj.get("turns")
+        if isinstance(turns, list):
+            t = "\n".join(str(tn.get("content") or tn.get("thinking") or "") for tn in turns if isinstance(tn, dict))
+            if len(t) > 200: texts.append(t[:12000])
         if len(texts) >= limit: break
     return texts
 traj_texts = load_trajectory_texts()
