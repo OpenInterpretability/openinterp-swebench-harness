@@ -1,0 +1,42 @@
+{
+  "verdict": "GO",
+  "primary_feature": 908,
+  "done_score": 0.975,
+  "P1_wander_final_gt_early_p": 0.021557223391537678,
+  "P1_ok": true,
+  "P2_wander_final_gt_locked_p": 0.014068625643876646,
+  "P2_auroc": 0.5993589743589743,
+  "P2_ok": true,
+  "C2_randfeat_null_auroc95": 0.5,
+  "C2_beats_null": true,
+  "C1_partial_r_given_turn": 0.29453892341838833,
+  "C1_survives_turn": true,
+  "topK_aggregate_auroc": 0.7666666666666667,
+  "topK": [
+    908,
+    34228,
+    8898,
+    18841,
+    22680,
+    19628,
+    6905,
+    31904
+  ],
+  "means": {
+    "S_final": 1.8070940047502517,
+    "W_final": 0.322359561920166,
+    "W_early": 0.0,
+    "L_final": 0.049655950986422025
+  },
+  "G0": {
+    "median_recon_cosine": 0.8489261865615845,
+    "median_FVU": 1.1618419885635376,
+    "usable": true
+  },
+  "layer": 43,
+  "n_by_class": {
+    "success": 40,
+    "wandering": 20,
+    "locked": 39
+  }
+}
