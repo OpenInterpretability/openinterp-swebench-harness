@@ -1,0 +1,24 @@
+{
+ "layer": 23,
+ "feature": 22358,
+ "n_per_class": 10,
+ "truncation": 4000,
+ "behavioral_fidelity": {
+  "success_baseP_finish": 0.577,
+  "wandering_baseP_finish": 0.075
+ },
+ "feat_at_choice_point": {
+  "success": 0.53,
+  "wandering": 0.0
+ },
+ "clamp_target": 0.526,
+ "H4": {
+  "clamp_feature_meanDP": -0.001,
+  "clamp_feature_p": 0.4375,
+  "clamp_random_meanDP": 0.002,
+  "clamp_random_p": 0.9375,
+  "ablate_success_meanDP": -0.008,
+  "ablate_success_p": 0.21875
+ },
+ "verdict": "NULL -> \u00a713 confirmed: verdict feature detectable+predictive but NOT a causal lever (detection != control)"
+}
