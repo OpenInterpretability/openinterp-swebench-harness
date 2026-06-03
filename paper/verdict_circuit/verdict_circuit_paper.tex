@@ -19,6 +19,7 @@
 \usepackage{amssymb}
 \usepackage{xcolor}
 \usepackage{array}
+\usepackage{graphicx}
 
 \title{The Verdict Is Not the Lever: \\
 An Interpretable Task-Completion Feature Predicts but Does Not \\
@@ -91,7 +92,14 @@ Reading the transcripts where \#22358 fires hardest is unambiguous: the agent is
 Behaviorally, against ground-truth tool calls, \#22358's \texttt{pre\_tool} activation predicts whether the next action is \texttt{finish} with \textbf{AUROC $0.911$} across all turns and $0.889$ within SUCCESS turns alone (a non-circular split, since SUCCESS has both \texttt{finish} and non-\texttt{finish} turns). Among the top decile of activation, the \texttt{finish}-rate is SUCCESS $12.2\%$ vs.\ WANDERING $0.0\%$ vs.\ LOCKED $0.0\%$: WANDERING reaches the high-completion state 84 times yet never converts (the never-converting is partly definitional; the load-bearing facts are that it forms the verdict repeatedly and the within-SUCCESS AUROC is $0.89$). The feature is, by every observational measure, the ``ready to finish'' signal.
 
 \subsection{H4: clamping the verdict does not cause finishing}\label{sec:h4}
-The reconstruction is behaviorally faithful: at the reconstructed decision point the model picks \texttt{finish} with probability $0.577$ in SUCCESS and $0.075$ in WANDERING --- it recovers the real decision. At that point the feature itself reads $0.53$ in SUCCESS and $0.00$ in WANDERING, consistent with a collapse of the verdict by the moment of action (the structural profile shows it peaking before the action in SUCCESS and decaying in WANDERING). The causal test (Table~\ref{tab:h4}) is a clean null. Clamping the verdict feature \emph{up} to the SUCCESS level at the WANDERING decision point changes $P(\texttt{finish})$ by $-0.001$ --- statistically and practically indistinguishable from a random-feature clamp ($+0.002$). Ablating the feature in SUCCESS trends in the necessity direction ($-0.008$) but is not significant: we cannot even establish that the feature is necessary for finishing. \emph{The verdict is present, interpretable, and predictive --- and it is not the lever.}
+The reconstruction is behaviorally faithful: at the reconstructed decision point the model picks \texttt{finish} with probability $0.577$ in SUCCESS and $0.075$ in WANDERING --- it recovers the real decision. At that point the feature itself reads $0.53$ in SUCCESS and $0.00$ in WANDERING, consistent with a collapse of the verdict by the moment of action: Figure~\ref{fig:profile} traces the feature across the final turn and shows SUCCESS rising and \emph{consolidating through} the \texttt{finish} action while WANDERING peaks at the decision point and then collapses, and LOCKED stays low throughout. The causal test (Table~\ref{tab:h4}, Figure~\ref{fig:h4}) is a clean null.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.62\textwidth]{figures/fig1_verdict_profile.pdf}
+\caption{The verdict feature (\#22358) across the final turn, by position, per class (mean over trajectories). SUCCESS rises monotonically and \emph{consolidates through} the action (peaking after \texttt{finish}); WANDERING reaches the decision point with the verdict partially present ($0.70$) but it \emph{collapses} once a non-\texttt{finish} action is taken ($0.11$); LOCKED never forms it. The verdict is present at the WANDERING decision point yet is not acted on.}
+\label{fig:profile}
+\end{figure} Clamping the verdict feature \emph{up} to the SUCCESS level at the WANDERING decision point changes $P(\texttt{finish})$ by $-0.001$ --- statistically and practically indistinguishable from a random-feature clamp ($+0.002$). Ablating the feature in SUCCESS trends in the necessity direction ($-0.008$) but is not significant: we cannot even establish that the feature is necessary for finishing. \emph{The verdict is present, interpretable, and predictive --- and it is not the lever.}
 
 \begin{table}[h]
 \centering
@@ -108,6 +116,13 @@ ablate \#22358 in SUCCESS ($\to 0$) & $-0.008$ & $+0.000$ & $0.22$ \\
 \end{tabular}
 \end{table}
 
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.50\textwidth]{figures/fig2_h4_null.pdf}
+\caption{H4 causal test. Clamping the verdict feature to the SUCCESS level at the WANDERING decision point ($-0.001$) is indistinguishable from clamping a random active feature ($+0.002$); ablating it in SUCCESS ($-0.008$) is not significant. The verdict feature is not a lever for termination.}
+\label{fig:h4}
+\end{figure}
+
 \section{Discussion}\label{sec:discussion}
 
 \textbf{Detection $\neq$ control, at the level of one named feature.} The knowledge--action gap \cite{basu_kag} and the predict/control discrepancy \cite{bhalla_pc} are established for single-token errors. We show the same asymmetry for a \emph{long-horizon behavioral decision} (to terminate), localized to a \emph{single, interpretable, named} feature that represents exactly that decision. The agent forms a clean ``I am done'' representation, that representation predicts the \texttt{finish} action at AUROC $0.91$, and yet supplying it where it has collapsed does nothing. This is one level deeper than the arc's residual nulls \cite{residual_nulls}: those could be read as ``we injected the wrong direction at the wrong layer.'' Here the direction is the \emph{right} one --- selected to be the verdict, verified to be the verdict, shown to predict the action --- and it is still inert.
@@ -120,7 +135,9 @@ ablate \#22358 in SUCCESS ($\to 0$) & $-0.008$ & $+0.000$ & $0.22$ \\
 Single model ($n{=}99$, Qwen3.6-27B), single task family (SWE-bench Pro). \emph{Stage 0} is uncorrected/single-layer-clean (nothing survives FDR); the claim rests on convergence across stages, not one $p$-value. \emph{H1}'s strict general-corpus semantic gate failed (boundary tokens) --- the feature is domain-specific and read in-domain; a full per-token top-activation run would refine it. \emph{H4} is the load-bearing negative and is modest in power: $n{=}10$/class, a single layer and a single token position, behavioral-fidelity-gated (the cosine fidelity to the saved capture was not used), with prompts truncated to the last 4000 tokens for memory. The clean null (effect $\approx$ random null, far from significance) rules out \emph{L23 \#22358 as a single-position lever}; it does not prove that no verdict locus anywhere is a lever, and a multi-layer or multi-position clamp could in principle differ. We make no claim beyond: the right, interpretable, predictive verdict feature, clamped where it has collapsed, does not cause termination.
 
 \section{Conclusion}\label{sec:conclusion}
-The WANDERING arc now closes mechanistically. \emph{Detect} (tool-entropy collapse) $\to$ \emph{localize} (edge layers) $\to$ \emph{residual steering fails} (three nulls) $\to$ \emph{behavioral interruption works} (first positive) $\to$ and now \emph{the verdict is a real, interpretable, predictive feature that is still not the causal lever}. A long-horizon agent can represent ``I have finished this'' as cleanly as any concept we can name --- and that representation is not what makes it stop. Code, pre-registrations, and data: \texttt{github.com/OpenInterpretability/openinterp-swebench-harness} (\texttt{paper/verdict\_circuit/}).
+The WANDERING arc now closes mechanistically. \emph{Detect} (tool-entropy collapse) $\to$ \emph{localize} (edge layers) $\to$ \emph{residual steering fails} (three nulls) $\to$ \emph{behavioral interruption works} (first positive) $\to$ and now \emph{the verdict is a real, interpretable, predictive feature that is still not the causal lever}. A long-horizon agent can represent ``I have finished this'' as cleanly as any concept we can name --- and that representation is not what makes it stop.
+
+\paragraph{Data and code availability.} Pre-registrations, analysis code (smoke-validated, CPU), the causal-test notebook, and per-stage results are in the arc repository \texttt{github.com/OpenInterpretability/openinterp-swebench-harness} under \texttt{paper/verdict\_circuit/} and \texttt{scripts/}. Trajectory transcripts, labels, and fidelity residuals: \texttt{huggingface.co/datasets/caiovicentino1/swebench-phase6-verdict-circuit}. SAE: \texttt{caiovicentino1/qwen36-27b-sae-fullstack}. This is the mechanistic capstone of the WANDERING arc \cite{tool_entropy,residual_nulls,multichannel,modality,companion_note}.
 
 \begin{thebibliography}{99}
 \bibitem{tool_entropy} C. Vicentino. Tool-Entropy Collapse: A Cross-Architecture Signature of Agent WANDERING Failure. Zenodo, 2026. DOI 10.5281/zenodo.20368601.
