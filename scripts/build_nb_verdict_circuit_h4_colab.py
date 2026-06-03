@@ -115,24 +115,24 @@ from agent.prompts import SYSTEM_PROMPT, render_problem
 from agent.tools import TOOLS
 from agent.parser import _strip_think
 from datasets import load_dataset
-import csv, glob, json as J
-# instance lookup: match SWE-bench Pro rows by base_commit (present in our instance_id)
+from huggingface_hub import hf_hub_download
+from pathlib import Path
+import csv, glob, json as J, tarfile
+# Account-independent: traces + labels + fidelity residuals bundled on HF (the Colab Drive account
+# need not hold the Phase-6 data).
+DATA_REPO="caiovicentino1/swebench-phase6-verdict-circuit"
+os.makedirs("/content/vc_data",exist_ok=True)
+with tarfile.open(hf_hub_download(DATA_REPO,"traces.tar.gz",repo_type="dataset")) as t: t.extractall("/content/vc_data")
+TRACES={Path(p).stem:p for p in glob.glob("/content/vc_data/traces/instance_*.json")}
+LAB={r["iid"]:r["sub_class"] for r in csv.DictReader(open(hf_hub_download(DATA_REPO,"features_n99.csv",repo_type="dataset")))}
+FIDR=dict(np.load(hf_hub_download(DATA_REPO,"final_pretool_L23.npz",repo_type="dataset")))
 ds=load_dataset("ScaleAI/SWE-bench_Pro", split="test")
-by_commit={}
-for r in ds:
-    bc=r.get("base_commit")
-    if bc: by_commit[bc]=r
+by_commit={r["base_commit"]:r for r in ds if r.get("base_commit")}
 def instance_for(iid):
     for bc,row in by_commit.items():
         if bc and bc in iid: return row
     return None
-# labels
-LAB={}
-lp=os.path.join(DRIVE,"..","inflection_turn_out","features_n99.csv")
-if os.path.exists(lp):
-    for r in csv.DictReader(open(lp)): LAB[r["iid"]]=r["sub_class"]
-TRACES={Path(p).stem:p for p in glob.glob(os.path.join(DRIVE,"traces","instance_*.json"))}
-print("dataset rows:",len(ds)," | traces:",len(TRACES)," | labels:",len(LAB))
+print("traces",len(TRACES),"| labels",len(LAB),"| fidresid",len(FIDR),"| dataset",len(ds))
 '''))
 
 C.append(md('''## 5. Reconstruct the WANDERING/SUCCESS **final-turn decision point** (reuse harness assembly) + FIDELITY GATE
@@ -164,16 +164,8 @@ def choice_point_ids(trace, instance):
     return tok(full, return_tensors="pt", truncation=True, max_length=16000).input_ids
 
 def saved_pretool_residual(iid):
-    import re
-    p=os.path.join(DRIVE,"captures",iid+".safetensors")
-    if not os.path.exists(p): return None
-    best=None
-    with safe_open(p,"pt") as f:
-        mx=-1
-        for k in f.keys():
-            m=re.match(r"t(\d+)_pre_tool_p\d+_L23$",k)
-            if m and int(m.group(1))>mx: mx=int(m.group(1)); best=k
-        return f.get_tensor(best).float().to(DEVICE) if best else None
+    v=FIDR.get(iid) or next((FIDR[k] for k in FIDR if iid.startswith(k) or k.startswith(iid)),None)
+    return torch.tensor(np.asarray(v),device=DEVICE) if v is not None else None
 
 def collect(cls, n):
     out=[]
