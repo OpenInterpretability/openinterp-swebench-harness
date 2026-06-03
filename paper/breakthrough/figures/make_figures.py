@@ -69,23 +69,34 @@ for bar,r,lab in zip(bars, rates, ["","p=1.0","p=0.125","p=0.031 *"]):
                     fontweight=("bold" if "0.031" in lab else "normal"))
 fig.tight_layout(); fig.savefig(OUT/"fig2_generation.pdf"); plt.close(fig)
 
-# ---------------------------------------------------------------- Fig 3: the graded law
-fig, c = plt.subplots(figsize=(5.2,3.6))
-fig.subplots_adjust(bottom=0.30)
-sites = ["verdict feature\nL23 · paper #5","late residual\ntask-matched · here","behavioral interrupt.\ntoken · paper #4"]
+# ---------------------------------------------------------------- Fig 3: where control lives
+# Honest framing: the CONTROLLED claim is verdict-null -> late-lever (same experiment, solid bars).
+# The behavioral bar is a SEPARATE experiment (paper #4); by lift it is comparable to the late lever.
+fig, c = plt.subplots(figsize=(5.4,3.7))
+fig.subplots_adjust(bottom=0.32)
+sites = ["verdict feature\nL23 · paper #5","late residual\nL55–63 · here","behavioral interrupt.\ntoken · paper #4"]
 vals  = [0.00, 0.42, 0.70]
+base  = [0.00, 0.00, 0.30]                     # baselines differ across experiments
 cols  = ["#b2182b","#2166ac","#1b7837"]
-bars = c.bar(sites, vals, color=cols, width=0.62)
-for bar,v in zip(bars,vals):
-    c.text(bar.get_x()+bar.get_width()/2, v+0.02, f"{int(v*100)}%", ha="center",
-           fontsize=11, fontweight="bold")
-c.set_ylabel("causal control over termination")
-c.set_ylim(0,0.82)
-c.set_title("Control is graded by proximity to the action channel")
-c.annotate("", xy=(2.45,-0.30), xytext=(-0.45,-0.30), annotation_clip=False,
-           arrowprops=dict(arrowstyle="->", color="#444", lw=1.3))
-c.text(1.0,-0.40,"increasing proximity to the action / token channel $\\rightarrow$",
-       ha="center", fontsize=8.5, color="#444", clip_on=False)
+bars = c.bar(sites, vals, color=cols, width=0.60, edgecolor="white")
+# the behavioral bar is a different experiment -> hatch + lighter, mark its baseline
+bars[2].set_hatch("//"); bars[2].set_alpha(0.75)
+c.bar(2, base[2], width=0.60, color="white", edgecolor="#1b7837", lw=0)   # mask baseline portion
+c.bar(2, base[2], width=0.60, color="#cfe8d6")
+labels = ["0%\n($\\Delta P\\!\\approx\\!0$)", "42%\nfrom 0%, $p{=}.031$", "70%\nfrom 30% (sep. exp.)"]
+for bar,v,lab in zip(bars,vals,labels):
+    c.text(bar.get_x()+bar.get_width()/2, v+0.015, lab, ha="center", va="bottom",
+           fontsize=8.5, fontweight="bold")
+c.set_ylabel("finish / rescue rate achieved")
+c.set_ylim(0,0.88)
+c.set_title("Termination is known mid-stream, writable only late")
+# bracket the controlled contrast
+c.annotate("", xy=(1.0,-0.34), xytext=(0.0,-0.34), annotation_clip=False,
+           arrowprops=dict(arrowstyle="-", color="#222", lw=1.2))
+c.text(0.5,-0.45,"controlled (same experiment):\nnull $\\rightarrow$ real lever",
+       ha="center", fontsize=7.8, color="#222", clip_on=False)
+c.text(2.0,-0.40,"separate experiment;\ncomparable by lift (+42 vs +40 pp)",
+       ha="center", fontsize=7.5, color="#666", clip_on=False)
 fig.savefig(OUT/"fig3_graded_law.pdf", bbox_inches="tight"); plt.close(fig)
 
 print("wrote:", *[p.name for p in sorted(OUT.glob("fig*_*.pdf"))])
