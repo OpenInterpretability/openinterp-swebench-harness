@@ -1,5 +1,7 @@
 # decision-locator
 
+> **Canonical, pip-installable repo:** [github.com/OpenInterpretability/decision-locator](https://github.com/OpenInterpretability/decision-locator) — `pip install git+https://github.com/OpenInterpretability/decision-locator` then `decision-locator demo --model gpt2`. This in-repo copy is the original; the standalone repo adds the CLI, packaging, tests, and a Colab.
+
 **Find and steer the layer where a tool-calling agent commits a decision.**
 
 A small, dependency-light (`torch` + `transformers` only), model-agnostic tool that locates *where inside a

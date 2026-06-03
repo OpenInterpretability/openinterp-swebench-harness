@@ -9,7 +9,7 @@ Permanent links:
 - companion note ("No Better Than Behavioral") https://doi.org/10.5281/zenodo.20500053
 - #5 capstone ("The Verdict Is Not the Lever") https://doi.org/10.5281/zenodo.20532769
 - **#6 first positive ("The Lever Is Late") https://doi.org/10.5281/zenodo.20534219**
-- 🛠 tool `decision-locator` https://github.com/OpenInterpretability/openinterp-swebench-harness/tree/main/tools/decision_locator
+- 🛠 tool `decision-locator` (pip-installable) https://github.com/OpenInterpretability/decision-locator
 - arc mirror https://huggingface.co/datasets/caiovicentino1/wandering-arc-papers
 - code https://github.com/OpenInterpretability/openinterp-swebench-harness
 
@@ -59,7 +59,7 @@ doi.org/10.5281/zenodo.20534219
 
 **13/** Everything — five papers, the companion note, the tool, code, and data — is open:
 📄 arc mirror: huggingface.co/datasets/caiovicentino1/wandering-arc-papers
-🛠 tool: github.com/OpenInterpretability/openinterp-swebench-harness/tree/main/tools/decision_locator
+🛠 tool: github.com/OpenInterpretability/decision-locator  (`pip install` + `decision-locator demo`)
 💻 code: github.com/OpenInterpretability/openinterp-swebench-harness
 Honest nulls + the positive that resolves them, all pre-registered. Feedback welcome.
 
