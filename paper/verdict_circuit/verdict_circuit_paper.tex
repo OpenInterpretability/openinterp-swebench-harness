@@ -1,0 +1,135 @@
+\documentclass[11pt]{article}
+
+% Template-agnostic preamble (matches the WANDERING-arc papers).
+\usepackage[margin=1in]{geometry}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true, linkcolor=blue, citecolor=blue, urlcolor=blue,
+  pdftitle={The Verdict Is Not the Lever: An Interpretable Task-Completion Feature Predicts but Does Not Cause Long-Horizon Agent Termination},
+  pdfauthor={Caio Vicentino}}
+\emergencystretch=3em
+\sloppy
+\hyphenpenalty=2000
+\exhyphenpenalty=0
+\hbadness=10000
+\usepackage{booktabs}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{xcolor}
+\usepackage{array}
+
+\title{The Verdict Is Not the Lever: \\
+An Interpretable Task-Completion Feature Predicts but Does Not \\
+Cause Long-Horizon Agent Termination \\[2pt]
+\large The mechanistic capstone of the WANDERING arc}
+
+\author{%
+  Caio Vicentino \\
+  OpenInterpretability \\
+  Fortaleza, Brazil \\
+  ORCID: 0009-0003-4331-6259 \\
+  \texttt{caio@openinterp.org}%
+}
+\date{June 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+A long-horizon coding agent fails in a distinctive way we call \textbf{WANDERING}: it keeps acting --- reading, editing, running commands --- but never emits the \texttt{finish} action, exhausting its turn budget. A four-paper arc detects WANDERING behaviorally and shows that residual steering cannot rescue it, while a content-free behavioral interruption can. Here we ask the deepest mechanistic version of the question: does the agent \emph{internally represent} a ``the task is done'' verdict, and if so, is that representation the \emph{causal lever} for termination? Using a full-stack sparse autoencoder (SAE) on Qwen3.6-27B over 99 SWE-bench Pro trajectories, we (i) isolate --- anti-circularly, from SUCCESS trajectories only --- an SAE feature at layer~23 (\#22358) that is active at the final turn of WANDERING but not LOCKED runs (WANDERING-vs-LOCKED AUROC $0.81$, length-controlled, partial-$r=0.55$); (ii) interpret it \emph{in-domain} as a ``subtask completed and verified'' feature (its top activations are statements like ``all tests pass'', ``the implementation is complete''; completion-language enrichment $50\%$ vs.\ $6\%$ baseline); (iii) show it \emph{predicts the actual} \texttt{finish} \emph{action} with AUROC $0.91$ (ground-truth tool calls); yet (iv) \textbf{clamping it to the SUCCESS level at the WANDERING decision point produces no change in the probability of finishing} ($\Delta P(\texttt{finish})=-0.001$, indistinguishable from a random-feature clamp at $+0.002$), and ablating it in SUCCESS does not significantly reduce finishing ($-0.008$, n.s.). The agent represents ``I'm done'' as a clean, interpretable, predictive feature --- \emph{but that representation is not what makes it stop.} This extends the detection-versus-control asymmetry to the granularity of a single named feature, sharpening the arc's three residual nulls: not the wrong direction or locus, but the right \emph{interpretable} feature still failing as a lever. The only known rescue for WANDERING remains a behavioral interruption --- the lever is behavioral, not representational. All experiments are CPU-only except a single forward pass for the causal test.
+\end{abstract}
+
+\section{Background}\label{sec:background}
+
+\textbf{WANDERING and the arc.} Give a capable model a real software issue, a shell, and a fixed turn budget. Most runs end by submitting a patch via a \texttt{finish} tool (SUCCESS) or by locking onto a dead end and giving up early (LOCKED). A third, quieter failure is WANDERING: the agent keeps working and never decides it is done, exhausting the budget without ever calling \texttt{finish}. A four-paper arc establishes a detection--intervention asymmetry around this mode. Paper~\#1 detects WANDERING from a residual-stream signature and a probe-free tool-entropy collapse, and proposes (its \S13) a mechanism: \emph{the mid-layer ``verdict'' that the task is done is consolidated, but the edge circuits that translate the verdict into the \texttt{finish} action fail to fire} \cite{tool_entropy}. Paper~\#2 pre-registers three residual interventions to supply the missing translation --- injecting a SUCCESS-direction at the output layer and at the edge layer that best discriminates WANDERING --- and all three are null on rescue \cite{residual_nulls}. Paper~\#3 localizes multi-channel signatures and finds that response to intervention is behavior-legible but residual-blind \cite{multichannel}. Paper~\#4, the first positive, shows that a transient \emph{behavioral} interruption roughly doubles finalization where residual steering fails, and that the lever is the interruption itself, not its content \cite{modality}. A companion note shows the residual geometry of context-rot adds nothing predictive over the cheap behavioral detector \cite{companion_note}.
+
+\textbf{The open mechanistic question.} The arc's \S13 mechanism is, across all of it, only a \emph{hypothesis}: ``the verdict is consolidated but not emitted.'' Two halves have never been tested directly. \emph{First half:} is the ``task is done'' verdict an actual, interpretable internal object --- a feature one can name --- and is it present in WANDERING (which never terminates)? \emph{Second half:} if it is present, is it the \emph{cause} of termination, i.e.\ a lever? This paper answers both, using a sparse autoencoder to make the verdict a concrete feature and an activation clamp to test its causal role.
+
+\textbf{Why this is the right tool, and what is at stake.} The broader interpretability field has repeatedly found that internal states which \emph{predict} a behavior do not \emph{control} it --- a ``knowledge--action gap'' in which probes read errors at near-perfect AUROC while interventions correct almost none \cite{basu_kag}, and a ``predict/control discrepancy'' in which the features that predict a behavior are not those that steer it \cite{bhalla_pc}. These results are established for single-forward-pass settings. What is unexamined is the asymmetry \emph{on long-horizon agents}, at the level of a \emph{single, interpretable, named feature} representing a specific decision (to terminate). If even the exact verdict feature is not a lever, the asymmetry is deeper than ``we steered the wrong thing.''
+
+\section{Method}\label{sec:method}
+
+\textbf{Data and SAE.} The 99 Qwen3.6-27B SWE-bench Pro trajectories of the arc, labeled $\{$\textsc{success}:40, \textsc{locked}:39, \textsc{wandering}:20$\}$, with per-turn, per-position residual captures. A full-stack TopK SAE (\texttt{caiovicentino1/qwen36-27b-sae-fullstack}, $k=128$, $d_{\text{sae}}=40960$) at layer~23 (and 43 for replication) encodes the residual at the \texttt{pre\_tool} position --- the state immediately before the agent emits an action. Everything in Stages 0--2 runs on CPU on existing captures; the causal test (\S\ref{sec:h4}) is the only model forward pass. Each stage was pre-registered before the corresponding result was seen.
+
+\textbf{Stage 0 --- does the verdict feature exist (first half of \S13)?} A candidate ``done'' feature is selected \emph{from SUCCESS trajectories only}: features that fire more at the SUCCESS \texttt{finish}-turn than at SUCCESS early turns. WANDERING and LOCKED never touch the selection, so they are a held-out test of the prediction that WANDERING (which has reached completion) carries the verdict while LOCKED (which gave up) does not. We report per-trajectory early-window contrasts with a length confound control (partial-$r$ given total trajectory length) and a within-trajectory trend test.
+
+\textbf{H1 --- what is the feature (in-domain interpretation)?} We read the transcript text at the turns where the selected feature fires hardest, and quantify completion/verification language against random and bottom-activation turns. (A general-corpus top-activation pass reads as boundary/punctuation tokens --- a domain-mismatch artifact; the feature is agent-domain-specific, so the in-domain reading is decisive.)
+
+\textbf{E --- does it predict the action (behavioral, ground truth)?} Using the actual tool called at each turn (from the trajectory logs, no model), we measure the AUROC of the feature's \texttt{pre\_tool} activation for predicting whether the next action is \texttt{finish}.
+
+\textbf{H4 --- is it the lever (causal)?} \label{sec:method_h4} We reconstruct the WANDERING and SUCCESS final-turn \emph{decision point} by re-running the model on the original prompt (reusing the harness's own prompt assembly so the reconstruction is faithful) up to the token where the tool name is chosen, and read $P(\texttt{finish})$ as the next-token mass over the three tools. We then \emph{clamp} feature \#22358 at layer~23 to the SUCCESS-final level at that position and re-read $P(\texttt{finish})$. Controls: a random \emph{active} feature clamped to the same magnitude (null), and ablation of the feature in SUCCESS (necessity). Tests are paired per trajectory.
+
+\section{Results}\label{sec:results}
+
+\subsection{Stage 0: the verdict feature exists and is held by WANDERING}
+A single SUCCESS-selected feature (\#22358 at L23) carries the signal. It is active at the WANDERING final turn but not at the LOCKED final turn --- exactly the \S13 prediction that WANDERING holds a verdict LOCKED does not (Table~\ref{tab:stage0}). The effect survives the length control (partial-$r=0.55$) and replicates, more weakly, at layer~43 (AUROC $0.60$). With the program's standard discipline: this is an uncorrected, single-layer-clean result --- nothing survives multiple-comparison correction over the full metric$\times$layer grid --- so the claim rests on the convergence of Stages 0/H1/E/H4 below, not on one corrected $p$-value.
+
+\begin{table}[h]
+\centering
+\caption{Stage 0 (held-out WANDERING/LOCKED test of the SUCCESS-selected feature \#22358). The feature is present at the WANDERING decision point and absent at LOCKED.}
+\label{tab:stage0}
+\small
+\begin{tabular}{lcc}
+\toprule
+ & L23 (primary) & L43 (replication) \\
+\midrule
+WANDERING-final $>$ early (P1) & $p=2{\times}10^{-4}$ & $p=0.02$ \\
+WANDERING-final $>$ LOCKED-final (P2) & $p=1.7{\times}10^{-5}$, AUROC $0.81$ & $p=0.01$, AUROC $0.60$ \\
+survives length control (partial $r$) & $0.55$ & $0.30$ \\
+top-$K$ aggregate AUROC & $0.89$ & $0.77$ \\
+mean act.\ S/W/W$_{0}$/L & 1.01/0.58/0.00/0.15 & 1.81/0.32/0.00/0.05 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{H1: it is a ``subtask completed and verified'' feature}
+Reading the transcripts where \#22358 fires hardest is unambiguous: the agent is confirming a unit of work. Top activations include \emph{``All 157 tests pass. Let me view the final state\ldots''}, \emph{``The implementation is complete and tested\ldots''}, \emph{``The refactoring is complete. Let me provide a summary\ldots''}, \emph{``restoring the default caching behavior''}. Completion/verification language appears in $50\%$ of the top-100 activating turns versus $6\%$ of random turns and $5\%$ of bottom turns; the \texttt{finish} tool is $18\%$ of the top-60 activations versus $0.9\%$ overall ($\sim$20$\times$ enriched). The feature marks \emph{a unit of work is complete}, firing at subtask completions throughout, not only at the global \texttt{finish}.
+
+\subsection{E: it predicts the finish action}
+Behaviorally, against ground-truth tool calls, \#22358's \texttt{pre\_tool} activation predicts whether the next action is \texttt{finish} with \textbf{AUROC $0.911$} across all turns and $0.889$ within SUCCESS turns alone (a non-circular split, since SUCCESS has both \texttt{finish} and non-\texttt{finish} turns). Among the top decile of activation, the \texttt{finish}-rate is SUCCESS $12.2\%$ vs.\ WANDERING $0.0\%$ vs.\ LOCKED $0.0\%$: WANDERING reaches the high-completion state 84 times yet never converts (the never-converting is partly definitional; the load-bearing facts are that it forms the verdict repeatedly and the within-SUCCESS AUROC is $0.89$). The feature is, by every observational measure, the ``ready to finish'' signal.
+
+\subsection{H4: clamping the verdict does not cause finishing}\label{sec:h4}
+The reconstruction is behaviorally faithful: at the reconstructed decision point the model picks \texttt{finish} with probability $0.577$ in SUCCESS and $0.075$ in WANDERING --- it recovers the real decision. At that point the feature itself reads $0.53$ in SUCCESS and $0.00$ in WANDERING, consistent with a collapse of the verdict by the moment of action (the structural profile shows it peaking before the action in SUCCESS and decaying in WANDERING). The causal test (Table~\ref{tab:h4}) is a clean null. Clamping the verdict feature \emph{up} to the SUCCESS level at the WANDERING decision point changes $P(\texttt{finish})$ by $-0.001$ --- statistically and practically indistinguishable from a random-feature clamp ($+0.002$). Ablating the feature in SUCCESS trends in the necessity direction ($-0.008$) but is not significant: we cannot even establish that the feature is necessary for finishing. \emph{The verdict is present, interpretable, and predictive --- and it is not the lever.}
+
+\begin{table}[h]
+\centering
+\caption{H4 causal test (clamp at L23, WANDERING decision point; $n=10$/class; paired Wilcoxon). The verdict-feature clamp is indistinguishable from a random-feature clamp.}
+\label{tab:h4}
+\begin{tabular}{lccc}
+\toprule
+condition & mean $\Delta P(\texttt{finish})$ & median & $p$ \\
+\midrule
+clamp \#22358 $\to$ SUCCESS level (0.53) & $-0.001$ & $+0.000$ & $0.44$ \\
+clamp random active feature (null) & $+0.002$ & $+0.000$ & $0.94$ \\
+ablate \#22358 in SUCCESS ($\to 0$) & $-0.008$ & $+0.000$ & $0.22$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\section{Discussion}\label{sec:discussion}
+
+\textbf{Detection $\neq$ control, at the level of one named feature.} The knowledge--action gap \cite{basu_kag} and the predict/control discrepancy \cite{bhalla_pc} are established for single-token errors. We show the same asymmetry for a \emph{long-horizon behavioral decision} (to terminate), localized to a \emph{single, interpretable, named} feature that represents exactly that decision. The agent forms a clean ``I am done'' representation, that representation predicts the \texttt{finish} action at AUROC $0.91$, and yet supplying it where it has collapsed does nothing. This is one level deeper than the arc's residual nulls \cite{residual_nulls}: those could be read as ``we injected the wrong direction at the wrong layer.'' Here the direction is the \emph{right} one --- selected to be the verdict, verified to be the verdict, shown to predict the action --- and it is still inert.
+
+\textbf{What this says about \S13.} The mechanism's first half is literally true: the verdict \emph{is} consolidated as an interpretable feature, and WANDERING \emph{does} carry it. But the second half --- ``the edge fails to emit'' --- is not a broken \emph{readout from this feature}; restoring the feature does not drive emission. The decision to terminate is made downstream of, and not driven by, the representation that means ``done.'' WANDERING is best described not as ``failing to form the verdict'' but as ``forming it and not treating it as terminal.''
+
+\textbf{The lever is behavioral.} The only thing in the arc that rescues WANDERING is the transient behavioral interruption of paper~\#4 \cite{modality}, which works without restoring any internal verdict. Taken together: the predictive signal lives in the representation, the causal lever lives in behavior. For practitioners building agent reliability, this argues against ``read the activations and nudge the right feature'' and for cheap behavioral monitoring and behavioral course-correction.
+
+\section{Scope and honest caveats}\label{sec:scope}
+Single model ($n{=}99$, Qwen3.6-27B), single task family (SWE-bench Pro). \emph{Stage 0} is uncorrected/single-layer-clean (nothing survives FDR); the claim rests on convergence across stages, not one $p$-value. \emph{H1}'s strict general-corpus semantic gate failed (boundary tokens) --- the feature is domain-specific and read in-domain; a full per-token top-activation run would refine it. \emph{H4} is the load-bearing negative and is modest in power: $n{=}10$/class, a single layer and a single token position, behavioral-fidelity-gated (the cosine fidelity to the saved capture was not used), with prompts truncated to the last 4000 tokens for memory. The clean null (effect $\approx$ random null, far from significance) rules out \emph{L23 \#22358 as a single-position lever}; it does not prove that no verdict locus anywhere is a lever, and a multi-layer or multi-position clamp could in principle differ. We make no claim beyond: the right, interpretable, predictive verdict feature, clamped where it has collapsed, does not cause termination.
+
+\section{Conclusion}\label{sec:conclusion}
+The WANDERING arc now closes mechanistically. \emph{Detect} (tool-entropy collapse) $\to$ \emph{localize} (edge layers) $\to$ \emph{residual steering fails} (three nulls) $\to$ \emph{behavioral interruption works} (first positive) $\to$ and now \emph{the verdict is a real, interpretable, predictive feature that is still not the causal lever}. A long-horizon agent can represent ``I have finished this'' as cleanly as any concept we can name --- and that representation is not what makes it stop. Code, pre-registrations, and data: \texttt{github.com/OpenInterpretability/openinterp-swebench-harness} (\texttt{paper/verdict\_circuit/}).
+
+\begin{thebibliography}{99}
+\bibitem{tool_entropy} C. Vicentino. Tool-Entropy Collapse: A Cross-Architecture Signature of Agent WANDERING Failure. Zenodo, 2026. DOI 10.5281/zenodo.20368601.
+\bibitem{residual_nulls} C. Vicentino. Causal Localization of Agent WANDERING to Edge-Layer L11: The Right Locus Is Still Not a Rescue Lever. Zenodo, 2026. DOI 10.5281/zenodo.20490278.
+\bibitem{multichannel} C. Vicentino. Multi-Channel Mechanistic Signatures of Agent WANDERING: Classification, Causal Localization, and Behavior-Legible Response to Intervention. Zenodo, 2026. DOI 10.5281/zenodo.20490284.
+\bibitem{modality} C. Vicentino. Modality Matters: A Transient Behavioral Interruption Rescues Agent WANDERING Where Residual Steering Does Not. Zenodo, 2026. DOI 10.5281/zenodo.20490286.
+\bibitem{companion_note} C. Vicentino. No Better Than Behavioral: A Residual Velocity-Freezing Fingerprint Predicts Agent WANDERING No Better Than the Cheap Tool-Entropy Detector. Zenodo, 2026. DOI 10.5281/zenodo.20500053.
+\bibitem{basu_kag} Basu et al. Interpretability without actionability: mechanistic methods cannot correct LM errors despite near-perfect internal representations. arXiv:2603.18353, 2026.
+\bibitem{bhalla_pc} Bhalla et al. Towards Unifying Interpretability and Control: Evaluation via Intervention. arXiv:2411.04430, 2024.
+\end{thebibliography}
+
+\end{document}
