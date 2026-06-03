@@ -57,7 +57,7 @@ SAE_REPO="caiovicentino1/qwen36-27b-sae-fullstack"
 DRIVE="/content/drive/MyDrive/openinterp_runs/swebench_v6_phase6"   # has captures/ and traces/
 OUT="/content/drive/MyDrive/openinterp_runs/verdict_circuit_stage1"; os.makedirs(OUT, exist_ok=True)
 TOOL_NAMES=["bash","str_replace_editor","finish"]
-PREFIX='<function='   # real Phase-6 tool-call format is <function={name}>
+PREFIX='<function'   # cut before '='; first divergent token after <function picks the tool
 FIDELITY_COS=0.60      # keep trajectories whose reconstructed L23 residual matches the saved capture
 N_PER_CLASS=15
 DEVICE="cuda" if torch.cuda.is_available() else "cpu"; print("device",DEVICE)
@@ -102,7 +102,7 @@ def fwd(ids):
 def first_tok_after(prefix,name):
     a=tok(prefix,add_special_tokens=False).input_ids; b=tok(prefix+name,add_special_tokens=False).input_ids
     return b[len(a)]
-ACTION_TOK={n:first_tok_after(PREFIX,n) for n in TOOL_NAMES}
+ACTION_TOK={"finish":28,"bash":21402,"str_replace_editor":15462}   # verified token ids ( =/=b/=str )
 def p_finish(nl):
     ids=[ACTION_TOK[n] for n in TOOL_NAMES]; p=torch.softmax(nl[ids].float(),-1)
     return float(p[TOOL_NAMES.index("finish")])
