@@ -58,7 +58,7 @@ DRIVE="/content/drive/MyDrive/openinterp_runs/swebench_v6_phase6"   # has captur
 OUT="/content/drive/MyDrive/openinterp_runs/verdict_circuit_stage1"; os.makedirs(OUT, exist_ok=True)
 TOOL_NAMES=["bash","str_replace_editor","finish"]
 PREFIX='<tool_call>{"name": "'
-FIDELITY_COS=0.90      # keep trajectories whose reconstructed L23 residual matches the saved capture
+FIDELITY_COS=0.60      # keep trajectories whose reconstructed L23 residual matches the saved capture
 N_PER_CLASS=15
 DEVICE="cuda" if torch.cuda.is_available() else "cpu"; print("device",DEVICE)
 '''))
