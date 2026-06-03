@@ -1,4 +1,4 @@
-# Announcement copy — WANDERING arc (papers #2/#3/#4 + companion note + #5 capstone published)
+# Announcement copy — WANDERING arc (papers #2–#6 + companion note published — #6 is the FIRST POSITIVE)
 
 Draft for Caio to post. Channels (per memory): X @0xCVYH, Farcaster, HF Community (146 followers), HackerNews, cold email to Anthropic interp / ICPs. **LessWrong/AF banned — do not post there.**
 
@@ -8,6 +8,8 @@ Permanent links:
 - #4 https://doi.org/10.5281/zenodo.20490286
 - companion note ("No Better Than Behavioral") https://doi.org/10.5281/zenodo.20500053
 - #5 capstone ("The Verdict Is Not the Lever") https://doi.org/10.5281/zenodo.20532769
+- **#6 first positive ("The Lever Is Late") https://doi.org/10.5281/zenodo.20534219**
+- 🛠 tool `decision-locator` https://github.com/OpenInterpretability/openinterp-swebench-harness/tree/main/tools/decision_locator
 - arc mirror https://huggingface.co/datasets/caiovicentino1/wandering-arc-papers
 - code https://github.com/OpenInterpretability/openinterp-swebench-harness
 
@@ -20,8 +22,8 @@ New: 3 papers + a companion note on **WANDERING** — when an LLM coding agent s
 (Qwen3.6-27B · SWE-bench Pro · all CC-BY)
 
 **2/** The arc in one line:
-detect → localize → **residual steering fails (3 nulls)** → **a one-line behavioral nudge works** → **and reading the geometry doesn't beat the cheap behavioral detector** (a new companion note).
-The predictive signal lives in the residual stream; the causal lever lives in behavior.
+detect → localize → **residual steering fails (3 nulls)** → a behavioral nudge works → the named "done" feature still isn't the lever (#5) → **and we finally find where the internal lever IS: late, ~30 layers downstream of the verdict (#6, the first positive).**
+The decision is *known* mid-stream but only *writable* late.
 
 **3/** Paper #2 — "The Right Locus Is Still Not a Rescue Lever."
 We injected the SUCCESS direction at L11, the exact layer where WANDERING is most *detectable*. It does **not** rescue (paired McNemar p=0.73). Push harder and it just destabilizes the model into malformed tool calls (0→60%). A monitor is not a lever.
@@ -45,10 +47,21 @@ doi.org/10.5281/zenodo.20490286
 We asked the skeptic's question: does the *residual geometry* rot before the behavior, giving an earlier detector than the cheap tool-entropy signal? There is a real signal (failing runs' state "freezes" early, 5/5 layers) — but it ties the cheap signal (AUROC 0.70 vs 0.69) and is a worse alarm. The geometry is real but redundant. "Just watch the activations" loses to "watch the tool calls."
 doi.org/10.5281/zenodo.20500053
 
-**10/** Everything — four papers, the companion note, code, and data — is open:
+**10/** Paper #5 — "The Verdict Is Not the Lever."
+With a sparse autoencoder we find an interpretable "task-done" feature that IS present in WANDERING and predicts the finish action at AUROC 0.91 — yet clamping it does nothing (ΔP=−0.001 = random null). The agent represents "I'm done" cleanly, and that feature still isn't what makes it stop.
+doi.org/10.5281/zenodo.20532769
+
+**11/** Paper #6 — "The Lever Is Late" (the FIRST POSITIVE). So where IS the lever?
+Logit-lens + activation patching across all 64 layers: the finish decision is invisible until the last ~12 layers (L51–63), ~30 layers downstream of the verdict. Transplant the SUCCESS late-block state into a WANDERING agent at its decision point and it **emits a real `finish` call 42% of the time** (p=0.031) — but only with a task-matched donor. The verdict is *known* mid-stream; it's only *writable* late.
+doi.org/10.5281/zenodo.20534219
+
+**12/** The law: the knowledge–action gap on agents is a **layer gap**. Control over a decision is null at the verdict (0%), real at the late task-matched residual (42%), and a behavioral interruption gives a comparable lift (#4). We ship the method as a tool — `decision-locator` finds & steers the commitment layer for any tool-calling decision on any open model.
+
+**13/** Everything — five papers, the companion note, the tool, code, and data — is open:
 📄 arc mirror: huggingface.co/datasets/caiovicentino1/wandering-arc-papers
+🛠 tool: github.com/OpenInterpretability/openinterp-swebench-harness/tree/main/tools/decision_locator
 💻 code: github.com/OpenInterpretability/openinterp-swebench-harness
-Honest nulls included on purpose. Feedback welcome.
+Honest nulls + the positive that resolves them, all pre-registered. Feedback welcome.
 
 ---
 
@@ -61,5 +74,6 @@ Honest nulls included on purpose. Feedback welcome.
 - **#4** ([DOI](https://doi.org/10.5281/zenodo.20490286)) — the first positive: a transient behavioral interruption (one fresh user turn) ~doubles finalization (30%→70%, p=0.021) where residual steering fails — and it's the interruption, not its content.
 - **Companion note** ([DOI](https://doi.org/10.5281/zenodo.20500053)) — "No Better Than Behavioral": a pre-registered negative. The residual geometry *does* carry a context-rot fingerprint (failing runs "freeze" early, 5/5 layers), but it merely ties the cheap tool-entropy detector (AUROC 0.70 vs 0.69) and is a worse alarm — real but redundant. "Just watch the activations" loses to "watch the tool calls."
 - **#5 capstone** ([DOI](https://doi.org/10.5281/zenodo.20532769)) — "The Verdict Is Not the Lever": with a sparse autoencoder we find an interpretable "task-done" feature (#22358) that is present in WANDERING (AUROC 0.81 vs LOCKED) and predicts the finish action (AUROC 0.91) — yet clamping it does NOT cause finishing (ΔP=−0.001 = random null). The agent represents "I'm done" as a clean, named, predictive feature, and that feature is still not the causal lever. Detection ≠ control, one level deeper.
+- **#6 first positive** ([DOI](https://doi.org/10.5281/zenodo.20534219)) — "The Lever Is Late": so where IS the lever? Logit-lens + activation patching across all 64 layers shows the finish decision is invisible until the last ~12 layers (L51–63), ~30 layers downstream of the verdict. Transplanting the SUCCESS late-block state into a WANDERING agent at its decision point makes it emit a real `finish` call in 42% of cases (5/12, exact McNemar p=0.031) — but only with a task-matched donor (a coarse class mean is n.s.). The knowledge–action gap on agents is a **layer gap**: the decision is known mid-stream, writable only late. Shipped with `decision-locator`, a model-agnostic tool that finds & steers the commitment layer on any open model.
 
-The thesis: for long-horizon agents the predictive signal is residual but the causal lever is behavioral. Code + data: github.com/OpenInterpretability/openinterp-swebench-harness · mirror: huggingface.co/datasets/caiovicentino1/wandering-arc-papers
+The thesis: detection ≠ control for long-horizon agents — but the gap closes. The decision is *known* mid-stream and *writable* late; the cheapest lever is behavioral, the internal lever is late and task-matched, and the verdict representation is not a lever at all. Code + tool + data: github.com/OpenInterpretability/openinterp-swebench-harness · mirror: huggingface.co/datasets/caiovicentino1/wandering-arc-papers

@@ -98,5 +98,6 @@ causal LMs. For anything else, pass `DecisionLocator(model, tok, layer_modules=l
 
 > C. Vicentino. *The Lever Is Late: Causal Control of Long-Horizon Agent Termination Lives in a Task-Matched,
 > Late Action-Commitment Block.* OpenInterpretability, 2026. WANDERING arc paper #6.
+> Zenodo. DOI [10.5281/zenodo.20534219](https://doi.org/10.5281/zenodo.20534219).
 
 Part of the [WANDERING arc](../../paper/) on long-horizon agent failure.
