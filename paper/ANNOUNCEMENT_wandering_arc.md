@@ -1,4 +1,4 @@
-# Announcement copy — WANDERING arc (papers #2/#3/#4 + companion note published)
+# Announcement copy — WANDERING arc (papers #2/#3/#4 + companion note + #5 capstone published)
 
 Draft for Caio to post. Channels (per memory): X @0xCVYH, Farcaster, HF Community (146 followers), HackerNews, cold email to Anthropic interp / ICPs. **LessWrong/AF banned — do not post there.**
 
@@ -7,6 +7,7 @@ Permanent links:
 - #3 https://doi.org/10.5281/zenodo.20490284
 - #4 https://doi.org/10.5281/zenodo.20490286
 - companion note ("No Better Than Behavioral") https://doi.org/10.5281/zenodo.20500053
+- #5 capstone ("The Verdict Is Not the Lever") https://doi.org/10.5281/zenodo.20532769
 - arc mirror https://huggingface.co/datasets/caiovicentino1/wandering-arc-papers
 - code https://github.com/OpenInterpretability/openinterp-swebench-harness
 
@@ -59,5 +60,6 @@ Honest nulls included on purpose. Feedback welcome.
 - **#3** ([DOI](https://doi.org/10.5281/zenodo.20490284)) — 60-feature classifier (macro-F1 0.636, honest walk-back from a leaky 0.987); the residual signature doesn't predict who responds to intervention, but tool-entropy collapse depth does.
 - **#4** ([DOI](https://doi.org/10.5281/zenodo.20490286)) — the first positive: a transient behavioral interruption (one fresh user turn) ~doubles finalization (30%→70%, p=0.021) where residual steering fails — and it's the interruption, not its content.
 - **Companion note** ([DOI](https://doi.org/10.5281/zenodo.20500053)) — "No Better Than Behavioral": a pre-registered negative. The residual geometry *does* carry a context-rot fingerprint (failing runs "freeze" early, 5/5 layers), but it merely ties the cheap tool-entropy detector (AUROC 0.70 vs 0.69) and is a worse alarm — real but redundant. "Just watch the activations" loses to "watch the tool calls."
+- **#5 capstone** ([DOI](https://doi.org/10.5281/zenodo.20532769)) — "The Verdict Is Not the Lever": with a sparse autoencoder we find an interpretable "task-done" feature (#22358) that is present in WANDERING (AUROC 0.81 vs LOCKED) and predicts the finish action (AUROC 0.91) — yet clamping it does NOT cause finishing (ΔP=−0.001 = random null). The agent represents "I'm done" as a clean, named, predictive feature, and that feature is still not the causal lever. Detection ≠ control, one level deeper.
 
 The thesis: for long-horizon agents the predictive signal is residual but the causal lever is behavioral. Code + data: github.com/OpenInterpretability/openinterp-swebench-harness · mirror: huggingface.co/datasets/caiovicentino1/wandering-arc-papers
