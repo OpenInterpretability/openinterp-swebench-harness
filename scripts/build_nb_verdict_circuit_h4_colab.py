@@ -57,7 +57,7 @@ SAE_REPO="caiovicentino1/qwen36-27b-sae-fullstack"
 DRIVE="/content/drive/MyDrive/openinterp_runs/swebench_v6_phase6"   # has captures/ and traces/
 OUT="/content/drive/MyDrive/openinterp_runs/verdict_circuit_stage1"; os.makedirs(OUT, exist_ok=True)
 TOOL_NAMES=["bash","str_replace_editor","finish"]
-PREFIX='<tool_call>{"name": "'
+PREFIX='<function='   # real Phase-6 tool-call format is <function={name}>
 FIDELITY_COS=0.60      # keep trajectories whose reconstructed L23 residual matches the saved capture
 N_PER_CLASS=15
 DEVICE="cuda" if torch.cuda.is_available() else "cpu"; print("device",DEVICE)
@@ -127,11 +127,10 @@ TRACES={Path(p).stem:p for p in glob.glob("/content/vc_data/traces/instance_*.js
 LAB={r["iid"]:r["sub_class"] for r in csv.DictReader(open(hf_hub_download(DATA_REPO,"features_n99.csv",repo_type="dataset")))}
 FIDR=dict(np.load(hf_hub_download(DATA_REPO,"final_pretool_L23.npz",repo_type="dataset")))
 ds=load_dataset("ScaleAI/SWE-bench_Pro", split="test")
-by_commit={r["base_commit"]:r for r in ds if r.get("base_commit")}
+by_iid={r["instance_id"]:r for r in ds if r.get("instance_id")}
 def instance_for(iid):
-    for bc,row in by_commit.items():
-        if bc and bc in iid: return row
-    return None
+    if iid in by_iid: return by_iid[iid]
+    return next((r for k,r in by_iid.items() if k in iid or iid in k), None)
 print("traces",len(TRACES),"| labels",len(LAB),"| fidresid",len(FIDR),"| dataset",len(ds))
 '''))
 
