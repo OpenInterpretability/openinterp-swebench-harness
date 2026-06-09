@@ -25,6 +25,21 @@ from agent.parser import _strip_think
 def log(*a):
     print(f"[{time.strftime('%H:%M:%S')}]", *a, flush=True)
 
+CKPT = {}
+def checkpoint(key, value):
+    """Save partial state locally AND to HF after every stage — a VM death can never eat progress."""
+    CKPT[key] = value
+    path = "/content/commit_lever_partial.json"
+    json.dump(CKPT, open(path, "w"), indent=1)
+    try:
+        from huggingface_hub import upload_file
+        upload_file(path_or_fileobj=path, path_in_repo="results/commit_lever_partial.json",
+                    repo_id="caiovicentino1/swebench-phase6-verdict-circuit", repo_type="dataset",
+                    token=os.environ.get("HF_TOKEN"))
+        log(f"checkpoint '{key}' uploaded to HF")
+    except Exception as e:
+        log(f"checkpoint upload failed ({str(e)[:80]}) — kept locally")
+
 MODEL_ID = "Qwen/Qwen3.6-27B"
 DATA_REPO = "caiovicentino1/swebench-phase6-verdict-circuit"
 OUT = "/content/commit_lever_out"; os.makedirs(OUT, exist_ok=True)
@@ -206,6 +221,7 @@ fid = {"edit_pts_baseP_edit": float(np.mean([r["baseP_edit"] for r in EDIT])),
        "edit_pts_meanturn": float(np.mean([r["turn"] for r in EDIT])),
        "bash_pts_meanturn": float(np.mean([r["turn"] for r in BASH]))}
 log("FIDELITY:", json.dumps(fid))
+checkpoint("fidelity", fid)
 
 log("LOCATE sweep")
 def lens_profile(rows, layers):
@@ -218,6 +234,7 @@ def lens_profile(rows, layers):
 edit_lens = lens_profile(EDIT, SWEEP)
 bash_lens = lens_profile(BASH, SWEEP)
 for L in SWEEP: log(f"  L{L:2d}: edit {edit_lens[L]:+.3f}  bash {bash_lens[L]:+.3f}")
+checkpoint("locate", {"edit": edit_lens, "bash": bash_lens})
 
 log("building donors")
 LAYERS_NEEDED = sorted(set(PATCH_LATE + PATCH_MID + GEN_LAYERS))
@@ -257,23 +274,27 @@ log("H1 ELICIT (at BASH points)")
 H1 = {}
 r0, e0 = emit_rate(BASH, TARGET, tag="baseline"); H1["baseline_edit_rate"] = r0
 log(f"  baseline edit-rate {r0:.2f} eg {e0}")
+checkpoint("H1_elicit", H1)
 for L in GEN_LAYERS:
     rs, es = emit_rate(BASH, TARGET, L=L, donor_fn=lambda r, i, LL=L: edit_donor_for(r, i)[LL], tag=f"edit-donor L{L}")
     rn, _ = emit_rate(BASH, TARGET, L=L, donor_fn=lambda r, i, LL=L: bash_donor_for(r, i)[LL], tag=f"bash-null L{L}")
     rc, _ = emit_rate(BASH, TARGET, L=L, donor_fn=lambda r, i, LL=L: crosstask_edit_donor_for(r, i)[LL], tag=f"cross-task L{L}")
     H1[f"editdonor_L{L}"] = rs; H1[f"bashnull_L{L}"] = rn; H1[f"crosstask_L{L}"] = rc
     log(f"  L{L}: edit-donor {rs:.2f} | bash-null {rn:.2f} | cross-task {rc:.2f} eg {es}")
+    checkpoint("H1_elicit", H1)
 
 log("H2 SUPPRESS (at EDIT points) — the brake")
 H2 = {}
 rE, exE = emit_rate(EDIT, TARGET, tag="baseline-edit"); H2["baseline_edit_rate"] = rE
 log(f"  baseline edit-rate {rE:.2f} eg {exE}")
+checkpoint("H2_suppress", H2)
 for L in GEN_LAYERS:
     rsup, _ = emit_rate(EDIT, TARGET, L=L, donor_fn=lambda r, i, LL=L: bash_donor_for(r, i)[LL], tag=f"suppress L{L}")
     rbash, _ = emit_rate(EDIT, ALT, L=L, donor_fn=lambda r, i, LL=L: bash_donor_for(r, i)[LL], tag=f"suppress-bashrate L{L}")
     rctl, _ = emit_rate(EDIT, TARGET, L=L, donor_fn=lambda r, i, LL=L: edit_donor_for(r, i)[LL], tag=f"ctl L{L}")
     H2[f"suppress_editrate_L{L}"] = rsup; H2[f"suppress_bashrate_L{L}"] = rbash; H2[f"ctl_editrate_L{L}"] = rctl
     log(f"  L{L}: edit-rate {rE:.2f}->{rsup:.2f} (brake) | bash-rate {rbash:.2f} | edit-donor ctl {rctl:.2f}")
+    checkpoint("H2_suppress", H2)
 
 log("dense one-token profile")
 dPe = {}; dPn = {}
@@ -284,6 +305,7 @@ for L in ALLP:
     dPe[L] = float(e); dPn[L] = float(n); log(f"  L{L:2d}: edit-donor {e:+.3f}  bash-null {n:+.3f}")
     gc.collect(); torch.cuda.empty_cache()
 lever_layer = max(ALLP, key=lambda L: dPe[L] - dPn[L])
+checkpoint("dense_dP", {"edit_donor": dPe, "bash_null": dPn, "lever_layer": lever_layer})
 
 out = {"fidelity": fid, "locate": {"edit": edit_lens, "bash": bash_lens},
        "H1_elicit": H1, "H2_suppress": H2,
