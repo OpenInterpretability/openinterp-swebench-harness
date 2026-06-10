@@ -67,7 +67,7 @@ def decision_ids(task_text, mode):
         msgs = [{"role": "system", "content": SYS},
                 {"role": "user", "content": task_text[:5500]},
                 {"role": "assistant", "content": '{"tool": "bash", "args": {"command": "grep -rn failing_symbol; sed -n 1,80p src/file.py"}}'},
-                {"role": "user", "content": "[tool result] Reproduced the failure and located the root cause in the source file. The one-line fix is clear; nothing left to explore."}]
+                {"role": "user", "content": "[tool result] Reproduced the failure for this task and located the root cause: " + task_text[:260] + " ... The fix is clear; nothing left to explore."}]
     try:
         prefix = tok.apply_chat_template(msgs, add_generation_prompt=True, tokenize=False)
     except Exception:
@@ -111,17 +111,19 @@ tasks = [task_text(r) for r in list(ds)[:N * 2]][:N]
 # ---- collect edit-context + bash-context decision points (task-matched)
 all_layers = sorted(set(SWEEP) | {NL - 1})
 late = [L for L in all_layers if L >= int(NL * 0.72)]
+mid = [L for L in all_layers if int(NL * 0.25) <= L <= int(NL * 0.5)][:3]
+PATCH = sorted(set(mid + late))
 E, B = [], []   # edit-context rows, bash-context rows (index-aligned by task)
 for i, t in enumerate(tasks):
-    rec = {}
     for mode, store in (("edit", E), ("bash", B)):
         ids = decision_ids(t, mode)
         logits, caps = caps_and_logits(ids, all_layers)
         store.append({"ids": ids.cpu(), "p_edit": p_tool(logits, "edit"),
                       "prof": {L: lens_gap(caps[L], "edit") for L in all_layers},
-                      "caps_last": {L: caps[L][0].float().cpu() for L in late}})
+                      "caps_last": {L: caps[L][0].float().cpu() for L in PATCH}})
         del caps, logits; torch.cuda.empty_cache()
     if (i + 1) % 10 == 0: log(f"  collected {i+1}/{len(tasks)}")
+log(f"patch layers: mid {mid} | late {late}")
 
 # H1 LOCATE — does the edit gap emerge LATE? (edit-context)
 mean_prof = {L: float(np.mean([r["prof"][L] for r in E])) for L in all_layers}
@@ -140,28 +142,29 @@ def _patch_hook(donor):
         return (hs, *o[1:]) if isinstance(o, tuple) else hs
     return h
 
-dP, dP_rand = {}, {}
-for L in late:
-    dl, rl = [], []
+dP_edit, dP_neutral = {}, {}   # edit-donor vs same-norm shuffled-neutral, per patch layer (mid + late)
+g = torch.Generator().manual_seed(0)
+for L in PATCH:
+    de, dn = [], []
     for j, rb in enumerate(B):
-        donor = E[j]["caps_last"][L]                       # task-matched edit donor
-        rdonor = E[(j + 7) % len(E)]["caps_last"][L]       # mismatched-task control
-        for store, dn in ((dl, donor), (rl, rdonor)):
-            hh = LAYERS[L].register_forward_hook(_patch_hook(dn))
+        donor = E[j]["caps_last"][L]                                  # task-matched edit donor
+        neutral = donor[torch.randperm(donor.numel(), generator=g)]  # same-norm random direction
+        for store, d in ((de, donor), (dn, neutral)):
+            hh = LAYERS[L].register_forward_hook(_patch_hook(d))
             try:
                 with torch.no_grad():
                     lg = model(input_ids=rb["ids"].to(model.device), use_cache=False).logits[0, -1]
             finally:
                 hh.remove()
             store.append(p_tool(lg, "edit") - rb["p_edit"]); torch.cuda.empty_cache()
-    dP[L] = float(np.mean(dl)); dP_rand[L] = float(np.mean(rl))
-log("H3 one-token ΔP(edit) injecting edit-donor into bash-context, late layers (matched | mismatched ctrl):")
-for L in late: log(f"  L{L:2d}: {dP[L]:+.3f}  |  {dP_rand[L]:+.3f}")
+    dP_edit[L] = float(np.mean(de)); dP_neutral[L] = float(np.mean(dn))
+log("H3 ΔP(edit) injecting into bash-context — edit-donor | shuffled-neutral (mid should be ~0, late should be +):")
+for L in PATCH: log(f"  L{L:2d}{'(mid)' if L in mid else '(late)'}: {dP_edit[L]:+.3f}  |  {dP_neutral[L]:+.3f}")
 
-out = {"model": MODEL_ID, "n": len(E), "num_layers": NL,
+out = {"model": MODEL_ID, "n": len(E), "num_layers": NL, "mid_layers": mid, "late_layers": late,
        "locate_mean_prof": mean_prof,
        "fidelity_p_edit": {"edit_context": pe, "bash_context": pb},
-       "writability_dP_late": {"matched": dP, "mismatched_ctrl": dP_rand}}
+       "writability_dP": {"edit_donor": dP_edit, "neutral_ctrl": dP_neutral}}
 path = os.path.join(OUT, f"cross_model_{SAFE}.json")
 json.dump(out, open(path, "w"), indent=1)
 log("saved", path)
