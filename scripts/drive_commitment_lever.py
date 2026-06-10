@@ -35,7 +35,9 @@ def ledger():
         return {}
 
 def pending_blocks(L):
-    done = set((L.get("blocks") or {}).keys())
+    blocks = L.get("blocks") or {}
+    # a block counts as done only once it has per-point outcomes (for exact paired McNemar)
+    done = {b for b, v in blocks.items() if v.get("per_point")}
     return [b for b in BLOCKS if b not in done]
 
 def ex(sess, code, timeout):
