@@ -73,7 +73,7 @@ routinely fail to \emph{control} it. The arc's first positive, \emph{The Lever I
 mid-layer verdict, and only when steered with a \emph{task-matched} donor. We released
 \texttt{decision-locator}, a model-agnostic tool implementing three primitives --- \textsc{locate} (logit-lens
 per layer), \textsc{sweep\_patch} (donor injection per layer), and \textsc{steer\_generate} (prefill-only patch
-of the decision position, then free decoding).
+of the decision position, then free decoding). This sits in the activation-steering / representation-engineering line~\cite{actadd,repe}, applied to a long-horizon agent's \emph{action channel} across turns rather than a single-turn attribute.
 
 This paper pre-registers and answers two questions that the single \texttt{finish} result could not
 (\texttt{PREREG\_commitment\_lever.md}, \texttt{PREREG\_cross\_model.md}). First, is the late lever a property of
@@ -93,7 +93,7 @@ action at its commit point --- the mechanism a safety \emph{circuit-breaker} wou
 \end{enumerate}
 
 \section{Setup}\label{sec:setup}
-\textbf{Data and decision points.} We reuse the public bundle of 99 SWE-bench Pro trajectories from
+\textbf{Data and decision points.} We reuse the public bundle of 99 SWE-bench Pro~\cite{swebench} trajectories from
 Qwen3.6-27B (success 40, locked 39, wandering 20). The agent's action space is three tools: \texttt{bash}
 (3250 calls; reversible exploration), \texttt{str\_replace\_editor} (1101 calls; commits a file edit;
 semi-irreversible), and \texttt{finish} (40). A \emph{commit decision point} is any turn poised between
@@ -137,7 +137,7 @@ At an \texttt{edit} (commit) decision point we inject an \emph{explore}-donor an
 emission is suppressed (Table~\ref{tab:h2}). The baseline edit rate is $0.48$; the explore-donor at L55
 collapses it to $0.02$ --- a 96\% suppression. The controls are clean: a same-class (edit-donor) patch at L55
 does \emph{not} suppress (0.55), and the opposite intervention --- a task-matched edit-donor at L59 --- pushes
-the rate \emph{up} to 0.92. Thus L55 is the brake point and L59 the power point ($0.03 \leftrightarrow 0.92$). A
+the rate \emph{up} to 0.92. Thus L55 is the brake point and L59 the power point ($0.03 \leftrightarrow 0.92$; Figure~\ref{fig:bidir}). A
 generation-confirmed, single late-layer patch blocks a real commit.
 
 \begin{table}[h]\centering\small
@@ -155,9 +155,16 @@ opposite (edit-donor) @L59 & 0.92 & --- \\
 \label{tab:h2}
 \end{table}
 
+\begin{figure}[h]\centering
+\includegraphics[width=0.74\textwidth]{figures/fig3_bidirectional.pdf}
+\caption{The same task-matched late lever elicits a real edit at an explore decision (left) and brakes a real
+edit at a commit decision (right), each against position / same-class and cross-task / opposite controls.}
+\label{fig:bidir}
+\end{figure}
+
 \section{The mechanism is monotonic and bidirectional}\label{sec:stats}
-We logged the per-point binary outcome for all 14 conditions and computed exact two-sided paired McNemar
-tests. All seven pre-registered contrasts survive Holm--Bonferroni ($m{=}7$; worst, task-specificity,
+We logged the per-point binary outcome for all 14 conditions and computed exact two-sided paired McNemar~\cite{mcnemar}
+tests. All seven pre-registered contrasts survive Holm--Bonferroni~\cite{holm} ($m{=}7$; worst, task-specificity,
 $p{=}7.6\mathrm{e}{-}5$). The discordance structure is the result: every elicit contrast has $\mathbf{c{=}0}$
 (the edit-donor turns commits \emph{on}, $b{=}23$--$41$, and \emph{never} silences one that already fired),
 and every brake contrast has $\mathbf{b{=}0}$ (the explore-donor turns commits \emph{off}, $c{=}27$--$32$, and
@@ -232,5 +239,19 @@ next step is to demonstrate it on a genuinely irreversible action and at scale-m
 \paragraph{Artifacts.} \texttt{decision-locator} (model-agnostic), the pre-registrations, the per-point data
 and deterministic decision-point state, the exact-statistics script, and the adversarial evaluation are
 released at \href{https://openinterp.org/research}{openinterp.org/research} and on the public data bundle.
+
+\begin{thebibliography}{99}
+\bibitem{leverislate} C.~Vicentino. The Lever Is Late: Causal Control of Long-Horizon Agent Termination Lives in a Task-Matched, Late Action-Commitment Block. OpenInterpretability, 2026. DOI:10.5281/zenodo.20534219.
+\bibitem{toolentropy} C.~Vicentino. Tool-Entropy Collapse: A Cross-Architecture Signature of Agent WANDERING Failure. OpenInterpretability, 2026. DOI:10.5281/zenodo.20368600.
+\bibitem{rightlocus} C.~Vicentino. Causal Localization of Agent WANDERING to Edge-Layer L11: The Right Locus Is Still Not a Rescue Lever. OpenInterpretability, 2026. DOI:10.5281/zenodo.20490278.
+\bibitem{modality} C.~Vicentino. Modality Matters: A Transient Behavioral Interruption Rescues Agent WANDERING Where Residual Steering Does Not. OpenInterpretability, 2026. DOI:10.5281/zenodo.20490286.
+\bibitem{verdict} C.~Vicentino. The Verdict Is Not the Lever: An Interpretable Task-Completion Feature Predicts but Does Not Cause Long-Horizon Agent Termination. OpenInterpretability, 2026. DOI:10.5281/zenodo.20532769.
+\bibitem{actadd} A.~M.~Turner, L.~Thiergart, G.~Leech, D.~Udell, J.~J.~Vazquez, U.~Mini, M.~MacDiarmid. Activation Addition: Steering Language Models Without Optimization. arXiv:2308.10248, 2023.
+\bibitem{repe} A.~Zou et al. Representation Engineering: A Top-Down Approach to AI Transparency. arXiv:2310.01405, 2023.
+\bibitem{swebench} C.~E.~Jimenez, J.~Yang, A.~Wettig, S.~Yao, K.~Pei, O.~Press, K.~Narasimhan. SWE-bench: Can Language Models Resolve Real-World GitHub Issues? ICLR 2024. arXiv:2310.06770.
+\bibitem{logitlens} nostalgebraist. Interpreting GPT: the Logit Lens. LessWrong, 2020.
+\bibitem{mcnemar} Q.~McNemar. Note on the sampling error of the difference between correlated proportions or percentages. Psychometrika, 12(2):153--157, 1947.
+\bibitem{holm} S.~Holm. A Simple Sequentially Rejective Multiple Test Procedure. Scandinavian Journal of Statistics, 6(2):65--70, 1979.
+\end{thebibliography}
 
 \end{document}
