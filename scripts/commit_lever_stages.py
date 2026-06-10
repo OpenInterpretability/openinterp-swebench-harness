@@ -116,13 +116,24 @@ def _emits(cont, name):
 # ---------------------------------------------------------------- capture (resumable)
 def capture():
     tok = S["tok"]
-    # resume path: state already on HF?
+    # resume path 1: FULL state already on HF?
     try:
         p = hf_hub_download(DATA_REPO, "results/commit_lever_state.pt", repo_type="dataset",
                             token=_tok(), force_download=True)
         st = torch.load(p, map_location="cpu", weights_only=False)
         S.update(EDIT=st["EDIT"], BASH=st["BASH"], E_res=st["E_res"], B_res=st["B_res"])
         log(f"CAPTURE_RESUMED from HF: edit={len(S['EDIT'])} bash={len(S['BASH'])}")
+        return
+    except Exception:
+        pass
+    # resume path 2: POINTS-only state on HF (a prior session died mid-capture)?
+    try:
+        p = hf_hub_download(DATA_REPO, "results/commit_lever_points.pt", repo_type="dataset",
+                            token=_tok(), force_download=True)
+        st = torch.load(p, map_location="cpu", weights_only=False)
+        S.update(EDIT=st["EDIT"], BASH=st["BASH"])
+        log(f"points resumed from HF ({len(S['EDIT'])}/{len(S['BASH'])}) — computing residuals only")
+        _capture_resids_and_upload()
         return
     except Exception:
         log("no state on HF — capturing fresh (deterministic order)")
@@ -186,6 +197,14 @@ def capture():
            "edit_meanturn": float(np.mean([r["turn"] for r in S["EDIT"]])),
            "bash_meanturn": float(np.mean([r["turn"] for r in S["BASH"]]))}
     P["fidelity"] = fid; log("FIDELITY:", json.dumps(fid))
+    # upload points IMMEDIATELY — a mid-capture VM death now only costs the residuals
+    torch.save({"EDIT": S["EDIT"], "BASH": S["BASH"]}, "/content/points.pt")
+    upload_file(path_or_fileobj="/content/points.pt", path_in_repo="results/commit_lever_points.pt",
+                repo_id=DATA_REPO, repo_type="dataset", token=_tok())
+    save_partial(); log("points uploaded to HF")
+    _capture_resids_and_upload()
+
+def _capture_resids_and_upload():
     def resids(rows):
         acc = {L: [] for L in LAYERS_NEEDED}
         for r in rows:
