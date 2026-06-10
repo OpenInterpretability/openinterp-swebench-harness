@@ -79,23 +79,25 @@ shared-points design: with `b−c = k₂−k₁` fixed by the marginals, McNemar
 maximum discordance, so evaluating that worst case gives an **upper bound on the paired p-value from the
 marginals alone**. The true paired p (realistic overlap) is smaller.
 
-H1 contrasts use **exact** paired McNemar from the per-point vectors (`results/commit_lever_partial.json`);
-H2 contrasts are the worst-case marginal bound pending the per-point re-run (in progress). Notable: every
-H1 donor contrast has **c=0** — the patch is *monotonic*, it never silences a point that already emitted
-`edit`, it only adds (b new emissions). That is a clean mechanistic signature: the late lever pushes one
-direction without breaking what already worked.
+All 7 contrasts use **exact** paired McNemar from the per-point 0/1 vectors (14/14 blocks,
+`results/commit_lever_partial.json`). The (b,c) discordance structure is the headline: **elicit is c=0**
+(the edit-donor never *silences* a commit, only turns on b=23–41 new ones) and **the brake is b=0** (the
+bash-donor never *turns on* a commit, only switches off c=27–32). The late lever is **bidirectional and
+monotonic** — it moves exactly in the donor's direction with zero off-direction noise. This is a strong
+mechanistic claim, not just a rate shift.
 
-| contrast | rate→rate | risk diff | Fisher (unpaired) | **paired McNemar** | (b, c) |
+| contrast | rate→rate | risk diff | Fisher (unpaired) | **exact paired McNemar** | (b, c) |
 |---|---|---|---|---|---|
-| H1 edit-donor@L59 vs baseline | 0.23→0.77 | +0.53 | 6.8e-09 | **4.7e-10** (exact) | 32, 0 |
-| H1 edit-donor@L55 vs baseline | 0.23→0.62 | +0.38 | 3.9e-05 | 2.4e-07 (exact) | 23, 0 |
-| H1 edit-donor@L59 vs bash-null@L59 (position) | 0.08→0.77 | +0.68 | 7.7e-15 | **9.1e-13** (exact) | 41, 0 |
-| H1 edit-donor@L59 vs cross-task@L59 (specificity) | 0.48→0.77 | +0.28 | 2.4e-03 | **7.6e-05** (exact) | 18, 1 |
-| H2 brake suppress@L55 vs baseline | 0.48→0.02 | −0.47 | 8.2e-10 | ≤5.8e-08 (worst-case) | — |
-| H2 suppress@L59 vs baseline | 0.48→0.03 | −0.45 | 8.5e-09 | ≤4.6e-07 (worst-case) | — |
-| H2 suppress@L55 vs edit-donor ctl@L55 | 0.55→0.02 | −0.53 | 1.1e-11 | ≤4.1e-09 (worst-case) | — |
+| H1 edit-donor@L59 vs baseline | 0.23→0.77 | +0.53 | 6.8e-09 | **4.7e-10** | 32, **0** |
+| H1 edit-donor@L55 vs baseline | 0.23→0.62 | +0.38 | 3.9e-05 | 2.4e-07 | 23, **0** |
+| H1 edit-donor@L59 vs bash-null@L59 (position) | 0.08→0.77 | +0.68 | 7.7e-15 | **9.1e-13** | 41, **0** |
+| H1 edit-donor@L59 vs cross-task@L59 (specificity) | 0.48→0.77 | +0.28 | 2.4e-03 | **7.6e-05** | 18, 1 |
+| H2 brake suppress@L55 vs baseline | 0.48→0.02 | −0.47 | 8.2e-10 | **7.5e-09** | **0**, 28 |
+| H2 suppress@L59 vs baseline | 0.48→0.03 | −0.45 | 8.5e-09 | 1.5e-08 | **0**, 27 |
+| H2 suppress@L55 vs edit-donor ctl@L55 | 0.55→0.02 | −0.53 | 1.1e-11 | **4.7e-10** | **0**, 32 |
 
-**All 7 contrasts survive Holm–Bonferroni (m=7)** (H1 on exact p, H2 on the worst-case bound) — including the two
+**All 7 contrasts survive Holm–Bonferroni (m=7) on the exact paired p** (worst is the task-specificity
+contrast at 7.6e-5 ≪ its 0.05 threshold) — including the two
 load-bearing specificity/position controls and the brake-vs-control. Wilson 95% CIs: baseline edit
 0.23 [0.14,0.35]; edit-donor@L59 0.77 [0.65,0.86]; brake suppress@L55 0.02 [0.003,0.089]; non-overlapping.
 
