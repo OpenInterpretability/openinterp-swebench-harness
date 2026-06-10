@@ -57,12 +57,21 @@ def norm():
 NORM = norm(); LMH = model.get_output_embeddings()
 SWEEP = list(range(1, NL, max(1, NL // 16)))  # ~16 layers spread
 
-def decision_ids(task_text):
-    msgs = [{"role": "system", "content": SYS}, {"role": "user", "content": task_text[:6000]}]
+def decision_ids(task_text, mode):
+    """mode='bash' -> first-action explore context (P(edit) low); mode='edit' -> bug-located context (P(edit) high)."""
+    if mode == "bash":
+        msgs = [{"role": "system", "content": SYS},
+                {"role": "user", "content": task_text[:5500] +
+                 "\n\n[This is your FIRST action. You have NOT explored the repository or reproduced the failure yet.]"}]
+    else:  # edit
+        msgs = [{"role": "system", "content": SYS},
+                {"role": "user", "content": task_text[:5500]},
+                {"role": "assistant", "content": '{"tool": "bash", "args": {"command": "grep -rn failing_symbol; sed -n 1,80p src/file.py"}}'},
+                {"role": "user", "content": "[tool result] Reproduced the failure and located the root cause in the source file. The one-line fix is clear; nothing left to explore."}]
     try:
         prefix = tok.apply_chat_template(msgs, add_generation_prompt=True, tokenize=False)
     except Exception:
-        prefix = SYS + "\n\nTask:\n" + task_text[:6000] + "\n\nAssistant: "
+        prefix = SYS + "\n\nTask:\n" + task_text[:5500] + "\n\nAssistant: "
     ids = tok(prefix + FORCE, add_special_tokens=False).input_ids
     return torch.tensor([ids[-3500:]])
 
@@ -99,34 +108,31 @@ def task_text(r):
     return json.dumps(r)[:4000]
 tasks = [task_text(r) for r in list(ds)[:N * 2]][:N]
 
-# ---- LOCATE + fidelity
-rows = []
+# ---- collect edit-context + bash-context decision points (task-matched)
 all_layers = sorted(set(SWEEP) | {NL - 1})
+late = [L for L in all_layers if L >= int(NL * 0.72)]
+E, B = [], []   # edit-context rows, bash-context rows (index-aligned by task)
 for i, t in enumerate(tasks):
-    ids = decision_ids(t)
-    logits, caps = caps_and_logits(ids, all_layers)
-    choice = max(("bash", "edit", "finish"), key=lambda n: float(logits[TOK[n]]))
-    prof = {L: lens_gap(caps[L], "edit") for L in all_layers}
-    rows.append({"ids": ids.cpu(), "choice": choice, "prof": prof,
-                 "p_edit": p_tool(logits, "edit"), "caps_last": {L: caps[L][0].float().cpu() for L in all_layers}})
-    del caps, logits; torch.cuda.empty_cache()
-    if (i + 1) % 10 == 0: log(f"  located {i+1}/{len(tasks)}")
+    rec = {}
+    for mode, store in (("edit", E), ("bash", B)):
+        ids = decision_ids(t, mode)
+        logits, caps = caps_and_logits(ids, all_layers)
+        store.append({"ids": ids.cpu(), "p_edit": p_tool(logits, "edit"),
+                      "prof": {L: lens_gap(caps[L], "edit") for L in all_layers},
+                      "caps_last": {L: caps[L][0].float().cpu() for L in late}})
+        del caps, logits; torch.cuda.empty_cache()
+    if (i + 1) % 10 == 0: log(f"  collected {i+1}/{len(tasks)}")
 
-choices = [r["choice"] for r in rows]
-log("model tool-choice distribution:", {c: choices.count(c) for c in set(choices)})
-mean_prof = {L: float(np.mean([r["prof"][L] for r in rows])) for L in all_layers}
-log("LOCATE edit-gap per layer (flat early -> rises late = generalizes):")
+# H1 LOCATE — does the edit gap emerge LATE? (edit-context)
+mean_prof = {L: float(np.mean([r["prof"][L] for r in E])) for L in all_layers}
+log("LOCATE edit-gap per layer (edit-context; flat early -> rises late = generalizes):")
 for L in all_layers: log(f"  L{L:2d}: {mean_prof[L]:+.3f}")
-# fidelity: edit-gap on edit-choosers vs bash-choosers (late layers)
-late = [L for L in all_layers if L >= int(NL * 0.75)]
-def gap_late(sub):
-    if not sub: return float("nan")
-    return float(np.mean([np.mean([r["prof"][L] for L in late]) for r in sub]))
-edit_rows = [r for r in rows if r["choice"] == "edit"]
-bash_rows = [r for r in rows if r["choice"] == "bash"]
-log(f"fidelity late-gap: edit-choosers {gap_late(edit_rows):+.3f}  bash-choosers {gap_late(bash_rows):+.3f}")
 
-# ---- one-token ΔP: inject an edit-donor into a bash decision at late layers
+# H2 fidelity — P(edit) higher in edit-context than bash-context
+pe = float(np.mean([r["p_edit"] for r in E])); pb = float(np.mean([r["p_edit"] for r in B]))
+log(f"fidelity P(edit): edit-context {pe:.3f}  bash-context {pb:.3f}  (gate: edit >> bash)")
+
+# H3 writability — inject the task-matched edit-context donor into the bash-context decision, late layers
 def _patch_hook(donor):
     def h(m, i, o):
         hs = o[0] if isinstance(o, tuple) else o
@@ -134,29 +140,28 @@ def _patch_hook(donor):
         return (hs, *o[1:]) if isinstance(o, tuple) else hs
     return h
 
-dP = {}
-if edit_rows and bash_rows:
-    def patch_dP(L):
-        donor = edit_rows[0]["caps_last"][L]  # task-matched-ish single edit donor
-        ds_ = []
-        for r in bash_rows:
-            hh = LAYERS[L].register_forward_hook(_patch_hook(donor))
+dP, dP_rand = {}, {}
+for L in late:
+    dl, rl = [], []
+    for j, rb in enumerate(B):
+        donor = E[j]["caps_last"][L]                       # task-matched edit donor
+        rdonor = E[(j + 7) % len(E)]["caps_last"][L]       # mismatched-task control
+        for store, dn in ((dl, donor), (rl, rdonor)):
+            hh = LAYERS[L].register_forward_hook(_patch_hook(dn))
             try:
                 with torch.no_grad():
-                    lg = model(input_ids=r["ids"].to(model.device), use_cache=False).logits[0, -1]
+                    lg = model(input_ids=rb["ids"].to(model.device), use_cache=False).logits[0, -1]
             finally:
                 hh.remove()
-            ds_.append(p_tool(lg, "edit") - r["p_edit"]); torch.cuda.empty_cache()
-        return float(np.mean(ds_))
-    for L in late: dP[L] = patch_dP(L)
-    log("one-token ΔP(edit) injecting edit-donor at bash decisions, late layers:")
-    for L in late: log(f"  L{L:2d}: {dP[L]:+.3f}")
+            store.append(p_tool(lg, "edit") - rb["p_edit"]); torch.cuda.empty_cache()
+    dP[L] = float(np.mean(dl)); dP_rand[L] = float(np.mean(rl))
+log("H3 one-token ΔP(edit) injecting edit-donor into bash-context, late layers (matched | mismatched ctrl):")
+for L in late: log(f"  L{L:2d}: {dP[L]:+.3f}  |  {dP_rand[L]:+.3f}")
 
-out = {"model": MODEL_ID, "n": len(rows), "num_layers": NL,
-       "choice_dist": {c: choices.count(c) for c in set(choices)},
+out = {"model": MODEL_ID, "n": len(E), "num_layers": NL,
        "locate_mean_prof": mean_prof,
-       "fidelity_late_gap": {"edit_choosers": gap_late(edit_rows), "bash_choosers": gap_late(bash_rows)},
-       "one_token_dP_late": dP}
+       "fidelity_p_edit": {"edit_context": pe, "bash_context": pb},
+       "writability_dP_late": {"matched": dP, "mismatched_ctrl": dP_rand}}
 path = os.path.join(OUT, f"cross_model_{SAFE}.json")
 json.dump(out, open(path, "w"), indent=1)
 log("saved", path)
