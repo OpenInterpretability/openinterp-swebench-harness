@@ -40,6 +40,16 @@ def fisher_2x2(a, b, c, d):
         if pr <= p0 + 1e-9: tot += math.exp(pr)
     return min(1.0, tot)
 
+def mcnemar_exact(base_pp, treat_pp):
+    """Exact two-sided paired McNemar from per-point 0/1 vectors (same points, same order)."""
+    b = sum(1 for x, y in zip(base_pp, treat_pp) if x == 0 and y == 1)
+    c = sum(1 for x, y in zip(base_pp, treat_pp) if x == 1 and y == 0)
+    bc = b + c
+    if bc == 0: return 1.0, (b, c)
+    lo = min(b, c)
+    p = 2 * sum(comb(bc, i) for i in range(0, lo + 1)) / (2 ** bc)
+    return min(1.0, p), (b, c)
+
 def mcnemar_worstcase(k1, k2, n):
     """Upper bound on the paired two-sided exact McNemar p, from marginals only."""
     delta = k2 - k1
@@ -71,15 +81,19 @@ def main():
     for nm in B:
         k, n = kn(nm); lo, hi = wilson(k, n)
         print(f"  {k:>2}/{n} ={k/n:.3f}  [{lo:.3f},{hi:.3f}]  {nm}")
-    print("\nContrasts (RD, Fisher unpaired, worst-case paired McNemar):")
+    have_pp = all(B[nm].get("per_point") for nm in B)
+    print(f"\nContrasts ({'EXACT paired McNemar' if have_pp else 'worst-case paired McNemar'}):")
     rows = []
     for label, t, b in CONTRASTS:
         k2, n = kn(t); k1, _ = kn(b)
         fp = fisher_2x2(k2, n - k2, k1, n - k1)
-        mp, (bb, cc) = mcnemar_worstcase(k1, k2, n)
+        if have_pp:
+            mp, (bb, cc) = mcnemar_exact(B[b]["per_point"], B[t]["per_point"]); kind = "exact"
+        else:
+            mp, (bb, cc) = mcnemar_worstcase(k1, k2, n); kind = "<="
         rows.append((label, (k2 - k1) / n, fp, mp))
-        print(f"  {label:50} RD={(k2-k1)/n:+.2f}  Fisher={fp:.1e}  McNemar<= {mp:.1e}")
-    print("\nHolm-Bonferroni on worst-case McNemar (m=7):")
+        print(f"  {label:50} RD={(k2-k1)/n:+.2f}  Fisher={fp:.1e}  McNemar{kind} {mp:.1e}  (b={bb},c={cc})")
+    print(f"\nHolm-Bonferroni on paired McNemar (m={len(CONTRASTS)}):")
     ps = sorted((mp, l) for l, _, _, mp in rows)
     for i, (p, l) in enumerate(ps):
         thr = 0.05 / (len(ps) - i)

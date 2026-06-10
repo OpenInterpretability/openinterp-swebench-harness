@@ -250,8 +250,9 @@ BLOCKS = {
 }
 
 def block(name):
-    if P.get("blocks", {}).get(name) is not None:
-        log(f"BLOCK_SKIP {name} (already done: {P['blocks'][name]['rate']:.2f})"); return
+    existing = P.get("blocks", {}).get(name)
+    if existing is not None and existing.get("per_point") is not None:
+        log(f"BLOCK_SKIP {name} (done w/ per-point: {existing['rate']:.2f})"); return
     rows_key, action, L, donor_fn = BLOCKS[name]
     rows = S[rows_key]; hits = 0; ex = []; outcomes = []
     for i, r in enumerate(rows):
