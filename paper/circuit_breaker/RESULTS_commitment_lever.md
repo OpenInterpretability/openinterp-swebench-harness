@@ -16,9 +16,16 @@ public N=99 SWE-bench Pro bundle. n=60 per condition, greedy generation (16 toke
 |---|---|---|
 | Behavioral fidelity | baseP(edit) 0.474 at edit-points ≫ 0.299 at bash-points | ✅ |
 | LOCATE — edit readable late, like `finish` | flat/negative L3–L51, explodes L55–L63 (L63: edit +1.81 vs bash −0.32)¹ | ✅ |
-| H1 ELICIT — late patch elicits a real second action | 0.23 → **0.77** (L59), donor-specific | ✅ |
-| H2 SUPPRESS — the brake blocks a real commit | 0.48 → **0.02** (96%), redirects to exploration | ✅ |
-| H3 — lever layer inside `finish`'s block (L51–63) | dense ΔP monotonic to **L63 +0.685**, mid inert, null *negative* late | ✅ |
+| H1 ELICIT — late patch elicits a second action | 0.23 → **0.77** edit-intent (L59), donor-specific | ✅ |
+| H2 SUPPRESS — the brake blocks a real commit | 0.48 → **0.02** (96%); `bash` dominant under brake (0.60) | ✅ |
+| H3 — lever inside `finish`'s block (L51–63) | one-token ΔP monotonic to **L63 +0.685**; generations at L55/L59 | ✅ |
+
+> **Two measurement caveats (per EVAL_commitment_lever.md), applied throughout:** (1) emission = tool-name
+> *prefix* match in 16 greedy tokens, so H1's 0.77 is the **edit-token-onset / intent** rate (an upper bound
+> on valid-call elicitation; some onsets are malformed, e.g. `=str><|im_end|>`). (2) Under the brake `bash`
+> is the dominant action (0.60), but the **no-brake bash baseline at edit points was not measured**, so the
+> *redirect magnitude* is uncontrolled — we report the brake-state composition, not a measured "routes to
+> exploration." Both are cheap follow-ups (`h2_bash_baseline`, well-formed re-parse, L63 generation).
 
 ¹ LOCATE numbers from the 2026-06-09 G4 session (non-deterministic point order; consistent with the
 deterministic fidelity gap).
@@ -109,13 +116,19 @@ imply the conclusion is not in doubt).
 
 ## What this means
 
-1. **The late action-commitment lever is a general property of the action channel** on this agent — not a
-   quirk of termination. Same geometry (late emergence), same writability (late block), second action.
-2. **A mechanistic circuit-breaker is feasible**: a single residual patch at the commit point, at the right
-   late layer, blocks ~96% of real commits and routes the agent back to reversible exploration. This is the
-   core mechanism for intervening on *irreversible* actions (`send_tx`/`delete`) — **Tier-2 unlocked.**
-3. Combined law across the arc: knowledge consolidates mid-stream, control lives late, and the late lever
-   both elicits and suppresses — with per-action graded task-specificity.
+1. **The late action-commitment lever generalizes from `finish` to a second committal action** (`edit`) on
+   this agent — an existence proof that it is *not* termination-specific. Same geometry (late emergence),
+   same late writability. This is generality across **two** actions on one model/one task family, not yet a
+   universal law (remaining axes: more actions, models, task families).
+2. **A mechanistic circuit-breaker is feasible:** a single late-layer residual patch at the commit point
+   blocks ~96% of real commits (and is bidirectional — the same lever elicits). Demonstrated on
+   `str_replace_editor`, which is state-mutating but **undoable** (semi-irreversible); the genuinely
+   irreversible case (`send_tx`/`delete`) is **Tier-2, untested**. So: the mechanism is shown on a proxy,
+   not yet on an irreversible action.
+3. **The headline mechanistic result is the monotonic, bidirectional discordance:** the edit-donor *only
+   turns commits on* (c=0, b=23–41) and the bash-donor *only turns them off* (b=0, c=27–32). The late lever
+   moves exactly in the donor's direction with ~zero off-direction noise — a structural claim, not a rate
+   shift.
 
 ## Caveats (for the eval pass)
 
