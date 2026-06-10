@@ -51,9 +51,21 @@ All generated programmatically from the released JSON; no hand-drawn numbers.
 - Cross-model uses "bash"→"b" generic token (noted in RESULTS, not load-bearing); the paper's cross-model
   claim rests on the edit-direction and the neutral control, both clean.
 
-## F. Verdict
-**Numerically clean, citations all verified, overclaims controlled, figures data-grounded — paper #7 is
-mint-ready as a workshop draft.** Recommended before submission (not blocking the draft): (1) the cheap GPU
-follow-ups from `EVAL_commitment_lever.md` (h2_bash_baseline, valid-call re-parse) to retire the two
-remaining caveats; (2) a scale-matched cross-model; (3) choose an OpenReview MI workshop (the indexing path).
-Optional: a fourth figure for the cross-model writability bars if a venue allows more.
+## F. Strengtheners — ALL FOUR LANDED (2026-06-10), caveats retired
+The four pre-specified follow-ups ran (checkpointed, on HF `results/strengtheners.json` +
+`cross_model_Mistral-Small-24B-Instruct-2501.json`) and are now integrated:
+1. **Scale-matched cross-model (Mistral-24B):** mid inert (L11/13/15 ≈ −0.003) → late write (L29–39 +0.95→0.98),
+   fidelity 0.955 vs 0.007 — the *cleanest* mid/late dissociation, sharper than the 7B. Retires "7B-only".
+   → §6 scale paragraph + Table `tab:scale`.
+2. **Valid-call re-parse (n=30 subsample):** lift survives on the FULL `str_replace_editor` call —
+   elicit 0.23→0.37, brake 0.40→0.07. Retires the onset-only caveat B2. → §7 caveat reworded.
+3. **`h2_bash_baseline` = 0.43:** under-brake bash 0.60 is **+0.17 above** the no-brake floor → the brake
+   genuinely *re-routes to reversible exploration*, not merely stalls. Retires caveat B1. → §7 caveat reworded.
+4. **4th figure (`fig4_xmodel_writability.pdf`):** cross-model edit-donor-vs-shuffled writability. → `fig:xwrite`.
+
+Both versions recompiled clean (public 7pp; anon 7pp article-format, 0 overfull, 0 identifier leak).
+
+## G. Verdict
+**Numerically clean, citations all verified, overclaims controlled, figures data-grounded, all four
+strengtheners landed and integrated — paper #7 is mint-ready and submission-ready.** Remaining (human): port
+the anon body into the ACL/EMNLP Overleaf template and submit at the BlackboxNLP OpenReview; mint a Zenodo DOI.

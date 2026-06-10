@@ -1,0 +1,148 @@
+{
+  "planted": {
+    "label": "synthetic-planted",
+    "n_traj": 60,
+    "n_by_class": {
+      "success": 40,
+      "wandering": 20,
+      "locked": 0
+    },
+    "metrics": {
+      "norm": {
+        "early_window": [
+          0,
+          9
+        ],
+        "n_success": 40,
+        "n_fail": 20,
+        "success_mean": 18.077768123670694,
+        "fail_mean": 15.494715600594938,
+        "early_divergence_MW_p": 3.7364008822032e-10,
+        "partial_r_given_length": -0.5790488274551591,
+        "trend_signconsistency_p": 1.9073486328125e-06,
+        "GATE_pass": true
+      },
+      "velocity": {
+        "early_window": [
+          1,
+          10
+        ],
+        "n_success": 40,
+        "n_fail": 20,
+        "success_mean": 0.19571101408313002,
+        "fail_mean": 0.202932702624054,
+        "early_divergence_MW_p": 0.14691475414147642,
+        "partial_r_given_length": 0.12574450594173467,
+        "trend_signconsistency_p": 1.9073486328125e-06,
+        "GATE_pass": false
+      },
+      "drift": {
+        "early_window": [
+          0,
+          9
+        ],
+        "n_success": 40,
+        "n_fail": 20,
+        "success_mean": 0.8228982785760142,
+        "fail_mean": 0.8156109386978587,
+        "early_divergence_MW_p": 0.10798238069543967,
+        "partial_r_given_length": -0.16405000809407838,
+        "trend_signconsistency_p": 1.9073486328125e-06,
+        "GATE_pass": false
+      },
+      "eff_dim": {
+        "early_window": [
+          2,
+          11
+        ],
+        "n_success": 40,
+        "n_fail": 20,
+        "success_mean": 3.6413441164228737,
+        "fail_mean": 3.6172057136725693,
+        "early_divergence_MW_p": 2.9272489364854195e-05,
+        "partial_r_given_length": -0.07359664979993326,
+        "trend_signconsistency_p": 1.9073486328125e-06,
+        "GATE_pass": false
+      }
+    },
+    "GATE": {
+      "verdict": "GO",
+      "passing_metrics": [
+        "norm"
+      ],
+      "note": "GO (prereg \u00a74) = P1 within-traj monotone trend (sign-consistency p<0.05) AND P2 per-TRAJECTORY early-window success-vs-failure divergence (MW p<0.05) SURVIVING the length control (|partial r| > 0.15). Trend-without-discrimination and pure length artifacts are NULL. NOTE: uncorrected; cross-check vs Bonferroni/FDR over the full metric\u00d7layer grid before headlining."
+    }
+  },
+  "null": {
+    "label": "synthetic-null",
+    "n_traj": 60,
+    "n_by_class": {
+      "success": 40,
+      "wandering": 20,
+      "locked": 0
+    },
+    "metrics": {
+      "norm": {
+        "early_window": [
+          0,
+          9
+        ],
+        "n_success": 40,
+        "n_fail": 20,
+        "success_mean": 17.945581518156597,
+        "fail_mean": 17.898559464102654,
+        "early_divergence_MW_p": 0.7360061631491024,
+        "partial_r_given_length": 0.10004904119863996,
+        "trend_signconsistency_p": 0.5034446716308594,
+        "GATE_pass": false
+      },
+      "velocity": {
+        "early_window": [
+          1,
+          10
+        ],
+        "n_success": 40,
+        "n_fail": 20,
+        "success_mean": 0.1987870661015667,
+        "fail_mean": 0.2001952967424677,
+        "early_divergence_MW_p": 0.8201297149837077,
+        "partial_r_given_length": -0.012770526028580698,
+        "trend_signconsistency_p": 1.0,
+        "GATE_pass": false
+      },
+      "drift": {
+        "early_window": [
+          0,
+          9
+        ],
+        "n_success": 40,
+        "n_fail": 20,
+        "success_mean": 0.8206558005795579,
+        "fail_mean": 0.8193766871588682,
+        "early_divergence_MW_p": 0.5253692792455908,
+        "partial_r_given_length": -0.031073065601581146,
+        "trend_signconsistency_p": 1.9073486328125e-06,
+        "GATE_pass": false
+      },
+      "eff_dim": {
+        "early_window": [
+          2,
+          11
+        ],
+        "n_success": 40,
+        "n_fail": 20,
+        "success_mean": 3.6395096226351904,
+        "fail_mean": 3.6367685545639232,
+        "early_divergence_MW_p": 0.46589267607369655,
+        "partial_r_given_length": -0.03756106600112067,
+        "trend_signconsistency_p": 1.9073486328125e-06,
+        "GATE_pass": false
+      }
+    },
+    "GATE": {
+      "verdict": "NO-GO (honest negative)",
+      "passing_metrics": [],
+      "note": "GO (prereg \u00a74) = P1 within-traj monotone trend (sign-consistency p<0.05) AND P2 per-TRAJECTORY early-window success-vs-failure divergence (MW p<0.05) SURVIVING the length control (|partial r| > 0.15). Trend-without-discrimination and pure length artifacts are NULL. NOTE: uncorrected; cross-check vs Bonferroni/FDR over the full metric\u00d7layer grid before headlining."
+    }
+  }
+}

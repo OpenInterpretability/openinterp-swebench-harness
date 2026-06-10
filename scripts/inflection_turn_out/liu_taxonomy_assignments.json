@@ -1,0 +1,1289 @@
+{
+  "instance_ansible__ansible-0ea40e09d1b35bcb69ff4d9cecf3d0defa4b36e8-v30a923fb5c164d6cd18280c02422f75e611e8fb2": {
+    "primary_category": "NONE_SUCCESS",
+    "secondary_category": null,
+    "confidence": 0.8,
+    "rationale": "Trajectory marked success with a small targeted patch fixing the | operator TypeError in combine_vars by coercing operands to dict; no clear dysfunction observed.",
+    "_sub_class": "success",
+    "_n_turns": 21,
+    "_repo": "ansible",
+    "_usage": {
+      "in": 3214,
+      "out": 103
+    }
+  },
+  "instance_ansible__ansible-11c1777d56664b1acb56b387a1ad6aeadef1391d-v0f01c69f1e2528b935359cfe578530722bca2c59": {
+    "primary_category": "C1.2",
+    "secondary_category": "C2.1",
+    "confidence": 0.55,
+    "rationale": "Agent emitted a patch adding ipv4/ipv6_local_routes fields but spent the final turns repeatedly running test scripts (T44-T49 same bash bigram, entropy 0.72) without converging on a validated fix; verification capability was insufficient and iteration became non-progressive, leaving the task locked without finishing.",
+    "_sub_class": "locked",
+    "_n_turns": 50,
+    "_repo": "ansible",
+    "_usage": {
+      "in": 3507,
+      "out": 155
+    }
+  },
+  "instance_ansible__ansible-185d41031660a676c43fbb781cd1335902024bfe-vba6da65a0f3baefda7a058ebbd0a8dcafb8512f5": {
+    "primary_category": "NONE_SUCCESS",
+    "secondary_category": null,
+    "confidence": 0.85,
+    "rationale": "Outcome is success with a clean refactor patch extracting the duplicated host-label logic into _get_host_label, matching the issue's stated goal. No clear dysfunction observed despite some repetitive bash calls at the end (likely verification).",
+    "_sub_class": "success",
+    "_n_turns": 22,
+    "_repo": "ansible",
+    "_usage": {
+      "in": 3362,
+      "out": 127
+    }
+  },
+  "instance_ansible__ansible-1b70260d5aa2f6c9782fd2b848e8d16566e50d85-vba6da65a0f3baefda7a058ebbd0a8dcafb8512f5": {
+    "primary_category": "C1.1",
+    "secondary_category": "C2.1",
+    "confidence": 0.6,
+    "rationale": "Agent never emits a patch over 50 turns, ending stuck on environment/import issues (six.moves configparser at T49), indicating inability to set up a valid test environment. Repeated bash/view cycles with high bigram-repeat (1.0) and low tool diversity show non-progressive iteration.",
+    "_sub_class": "locked",
+    "_n_turns": 50,
+    "_repo": "ansible",
+    "_usage": {
+      "in": 2984,
+      "out": 153
+    }
+  },
+  "instance_ansible__ansible-1ee70fc272aff6bf3415357c6e13c5de5b928d9b-v1055803c3a812189a1133297f7f5468579283f86": {
+    "primary_category": "C2.1",
+    "secondary_category": "B1.1",
+    "confidence": 0.7,
+    "rationale": "Last 10 turns show zero tool diversity and bigram-repeat rate 1.0 \u2014 agent looped on identical bash commands without progressing, never emitting finish_tool. The patch only handles non-ASCII via isascii() but never addresses the True/False/None keyword requirement, indicating non-progressive iteration stuck on partial fix.",
+    "_sub_class": "locked",
+    "_n_turns": 50,
+    "_repo": "ansible",
+    "_usage": {
+      "in": 3178,
+      "out": 156
+    }
+  },
+  "instance_ansible__ansible-3b823d908e8a5d17674f8c26d337d3114b7493b1-v0f01c69f1e2528b935359cfe578530722bca2c59": {
+    "primary_category": "NONE_SUCCESS",
+    "secondary_category": null,
+    "confidence": 0.9,
+    "rationale": "Outcome is success with a minimal, targeted patch removing cache=False in vars/manager.py that directly addresses the described caching regression. No obvious dysfunction beyond exploratory bash commands.",
+    "_sub_class": "success",
+    "_n_turns": 31,
+    "_repo": "ansible",
+    "_usage": {
+      "in": 3218,
+      "out": 123
+    }
+  },
+  "instance_ansible__ansible-3db08adbb1cc6aa9941be5e0fc810132c6e1fa4b-vba6da65a0f3baefda7a058ebbd0a8dcafb8512f5": {
+    "primary_category": "B2.3",
+    "secondary_category": "C2.2",
+    "confidence": 0.55,
+    "rationale": "Agent located the correct file (mathstuff.py) but struggled with Jinja2 API compatibility (environmentfilter vs pass_environment), reflecting insufficient domain/library knowledge; it then made tangential edits to six/__init__.py and switched strategies (try/except imports, test class additions) without converging on a working patch.",
+    "_sub_class": "wandering",
+    "_n_turns": 50,
+    "_repo": "ansible",
+    "_usage": {
+      "in": 3473,
+      "out": 155
+    }
+  },
+  "instance_ansible__ansible-415e08c2970757472314e515cb63a51ad825c45e-v7eee2454f617569fd6889f2211f75bc02a35f9f8": {
+    "primary_category": "NONE_SUCCESS",
+    "secondary_category": null,
+    "confidence": 0.8,
+    "rationale": "Outcome is success with a coherent patch that replaces the 'C' fallback with UTF-8 locale detection as the issue requested. No clear dysfunction observed despite high bigram repeat (which reflects repeated cd prefixes in bash commands, not iteration loops).",
+    "_sub_class": "success",
+    "_n_turns": 28,
+    "_repo": "ansible",
+    "_usage": {
+      "in": 3591,
+      "out": 137
+    }
+  },
+  "instance_ansible__ansible-42355d181a11b51ebfc56f6f4b3d9c74e01cb13b-v1055803c3a812189a1133297f7f5468579283f86": {
+    "primary_category": "C2.1",
+    "secondary_category": "B1.2",
+    "confidence": 0.55,
+    "rationale": "Last 10 turns show repeated sed/str_replace cycles on the same line ranges (bigram-repeat 1.0, low diversity) without converging \u2014 classic non-progressive iteration. The emitted patch also wraps logic in a try/except returning failure, suggesting evasive defensive coding rather than a clean fix.",
+    "_sub_class": "locked",
+    "_n_turns": 50,
+    "_repo": "ansible",
+    "_usage": {
+      "in": 3337,
+      "out": 160
+    }
+  },
+  "instance_ansible__ansible-4c5ce5a1a9e79a845aff4978cfeb72a0d4ecf7d6-v1055803c3a812189a1133297f7f5468579283f86": {
+    "primary_category": "C2.2",
+    "secondary_category": "B1.3",
+    "confidence": 0.55,
+    "rationale": "Agent tackles two loosely-related issue points (respawning + selinux fallback) with fragmented edits across many turns, low tool diversity (0.2) and high bigram repeat (0.947), and never converges/emits finish; final patch re-implements selinux operations via shelling out to getfattr/matchpathcon rather than using existing extension points, indicating blind strategy switching and redundant reimplementation.",
+    "_sub_class": "wandering",
+    "_n_turns": 50,
+    "_repo": "ansible",
+    "_usage": {
+      "in": 3482,
+      "out": 188
+    }
+  },
+  "instance_ansible__ansible-502270c804c33d3bc963930dc85e0f4ca359674d-v7eee2454f617569fd6889f2211f75bc02a35f9f8": {
+    "primary_category": "C2.1",
+    "secondary_category": "B4",
+    "confidence": 0.6,
+    "rationale": "High bigram repeat rate (0.944) and low tool diversity in last 10 turns show the agent stuck in a non-progressive bash/str_replace loop (T40-T49 repeatedly cd'ing and re-editing). Additionally, the agent appears misled by the issue's suggestion to rename GenericStrategy to BaseStrategy rather than fixing the test, indicative of issue interference.",
+    "_sub_class": "wandering",
+    "_n_turns": 50,
+    "_repo": "ansible",
+    "_usage": {
+      "in": 3456,
+      "out": 176
+    }
+  },
+  "instance_ansible__ansible-5260527c4a71bfed99d803e687dd19619423b134-vba6da65a0f3baefda7a058ebbd0a8dcafb8512f5": {
+    "primary_category": "NONE_SUCCESS",
+    "secondary_category": null,
+    "confidence": 0.9,
+    "rationale": "Trajectory succeeded with a minimal, correct patch changing _DEFAULT_PERM from 0o0666 to 0o0600 addressing CVE-2020-1736, with no observed dysfunction.",
+    "_sub_class": "success",
+    "_n_turns": 42,
+    "_repo": "ansible",
+    "_usage": {
+      "in": 3228,
+      "out": 116
+    }
+  },
+  "instance_ansible__ansible-5d253a13807e884b7ce0b6b57a963a45e2f0322c-v1055803c3a812189a1133297f7f5468579283f86": {
+    "primary_category": "C2.1",
+    "secondary_category": "C3",
+    "confidence": 0.8,
+    "rationale": "Last 10 turns are all identical bash invocations (bigram-repeat 1.0, tool-diversity 0.1) with no patch emitted, indicating the agent got trapped in non-progressive iteration re-examining the same code without making changes.",
+    "_sub_class": "wandering",
+    "_n_turns": 50,
+    "_repo": "ansible",
+    "_usage": {
+      "in": 3072,
+      "out": 121
+    }
+  },
+  "instance_ansible__ansible-5e88cd9972f10b66dd97e1ee684c910c6a2dd25e-v906c969b551b346ef54a2c0b41e04f632b7b73c2": {
+    "primary_category": "C1.1",
+    "secondary_category": "C2.1",
+    "confidence": 0.55,
+    "rationale": "Agent spent 50 turns mostly running repetitive bash/view commands without emitting a patch, suggesting it got stuck trying to set up/validate the environment (e.g., six.moves import issue on Python 3.12 at T48) rather than progressing. High bigram-repeat (0.84) and low tool diversity in last 10 turns indicate a non-progressive iteration loop centered on environment/reproduction issues.",
+    "_sub_class": "locked",
+    "_n_turns": 50,
+    "_repo": "ansible",
+    "_usage": {
+      "in": 2935,
+      "out": 193
+    }
+  },
+  "instance_ansible__ansible-6cc97447aac5816745278f3735af128afb255c81-v0f01c69f1e2528b935359cfe578530722bca2c59": {
+    "primary_category": "C2.1",
+    "secondary_category": "B1.1",
+    "confidence": 0.55,
+    "rationale": "Agent ran 50 turns without emitting finish_tool, with the last 10 turns dominated by repeated str_replace edits to the same _AnsibleUnicode/objects.py file (bigram-repeat 1.0, low tool diversity), indicating a non-progressive iteration loop on the same fragment. The issue contains 6 sub-problems but the patch only narrowly addresses 2, suggesting it also overfits to specific cases.",
+    "_sub_class": "locked",
+    "_n_turns": 50,
+    "_repo": "ansible",
+    "_usage": {
+      "in": 3699,
+      "out": 191
+    }
+  },
+  "instance_ansible__ansible-709484969c8a4ffd74b839a673431a8c5caa6457-vba6da65a0f3baefda7a058ebbd0a8dcafb8512f5": {
+    "primary_category": "NONE_SUCCESS",
+    "secondary_category": null,
+    "confidence": 0.8,
+    "rationale": "Outcome is success with a coherent patch adding uptime gathering to FreeBSD hardware facts module, including proper imports, docstring update, and get_uptime_facts() implementation. No clear dysfunction observed despite high bigram-repeat rate (typical of file-viewing exploration).",
+    "_sub_class": "success",
+    "_n_turns": 37,
+    "_repo": "ansible",
+    "_usage": {
+      "in": 3753,
+      "out": 145
+    }
+  },
+  "instance_ansible__ansible-748f534312f2073a25a87871f5bd05882891b8c4-v0f01c69f1e2528b935359cfe578530722bca2c59": {
+    "primary_category": "NONE_SUCCESS",
+    "secondary_category": null,
+    "confidence": 0.8,
+    "rationale": "Outcome is success with a coherent patch adding dnf5/microdnf entries and Fedora 39+ logic. Despite high bigram repeat in last turns (verification commands), the agent emitted a working fix without observable dysfunction.",
+    "_sub_class": "success",
+    "_n_turns": 37,
+    "_repo": "ansible",
+    "_usage": {
+      "in": 3423,
+      "out": 126
+    }
+  },
+  "instance_ansible__ansible-7e1a347695c7987ae56ef1b6919156d9254010ad-v390e508d27db7a51eece36bb6d9698b63a5b638a": {
+    "primary_category": "C2.1",
+    "secondary_category": "C1.1",
+    "confidence": 0.75,
+    "rationale": "The last 10 turns are identical bash invocations (bigram-repeat 1.0, tool-diversity 0.1) with no patch emitted, indicating the agent is trapped in a non-progressive iteration loop rather than making code changes. No finish_tool and zero-byte patch confirm it got stuck repeating the same exploratory command.",
+    "_sub_class": "locked",
+    "_n_turns": 50,
+    "_repo": "ansible",
+    "_usage": {
+      "in": 2884,
+      "out": 166
+    }
+  },
+  "instance_ansible__ansible-83fb24b923064d3576d473747ebbe62e4535c9e3-vba6da65a0f3baefda7a058ebbd0a8dcafb8512f5": {
+    "primary_category": "C2.1",
+    "secondary_category": "C1.1",
+    "confidence": 0.7,
+    "rationale": "Last 10 turns show zero tool diversity (all bash with identical 'cd ...' prefix) and bigram-repeat rate 1.0, indicating the agent is trapped in non-progressive iteration making trivial repeated commands rather than advancing. A partial patch exists but agent never reached finish, consistent with iteration loop rather than a repair-strategy flaw.",
+    "_sub_class": "locked",
+    "_n_turns": 50,
+    "_repo": "ansible",
+    "_usage": {
+      "in": 3399,
+      "out": 169
+    }
+  },
+  "instance_ansible__ansible-942424e10b2095a173dbd78e7128f52f7995849b-v30a923fb5c164d6cd18280c02422f75e611e8fb2": {
+    "primary_category": "NONE_SUCCESS",
+    "secondary_category": null,
+    "confidence": 0.7,
+    "rationale": "Outcome is success with a finish_tool emitted and a substantive 12KB patch to the WinRM connection plugin; trajectory shows normal explore-edit-test flow without obvious looping or dysfunction.",
+    "_sub_class": "success",
+    "_n_turns": 48,
+    "_repo": "ansible",
+    "_usage": {
+      "in": 3367,
+      "out": 116
+    }
+  },
+  "instance_ansible__ansible-9759e0ca494de1fd5fc2df2c5d11c57adbe6007c-v1055803c3a812189a1133297f7f5468579283f86": {
+    "primary_category": "C1.1",
+    "secondary_category": "C2.1",
+    "confidence": 0.6,
+    "rationale": "Last 10 turns are entirely bash commands repeatedly probing Python paths, uninstalling ansible-core, and checking sys.path (T40-T49), indicating the agent got stuck trying to set up/validate the test environment rather than progressing the fix. Tool-entropy 0 and bigram-repeat 1.0 over identical bash invocations confirm a non-progressive verification loop.",
+    "_sub_class": "locked",
+    "_n_turns": 50,
+    "_repo": "ansible",
+    "_usage": {
+      "in": 3346,
+      "out": 185
+    }
+  },
+  "instance_ansible__ansible-a02e22e902a69aeb465f16bf03f7f5a91b2cb828-vba6da65a0f3baefda7a058ebbd0a8dcafb8512f5": {
+    "primary_category": "C2.1",
+    "secondary_category": "B3.2",
+    "confidence": 0.6,
+    "rationale": "Trajectory hits 50-turn cap without emitting finish_tool; last-10-turn bigram-repeat rate 0.944 and low tool diversity show the agent looping on str_replace edits to install_collections / _resolve_depenency_map signatures (T42, T43, T46, T48) trying to thread an 'offline' parameter through multiple call sites \u2014 non-progressive iteration on the same fragments. Secondary B3.2: it had to propagate the new parameter across semantically dependent call chains and never finished doing so consistently.",
+    "_sub_class": "locked",
+    "_n_turns": 50,
+    "_repo": "ansible",
+    "_usage": {
+      "in": 3365,
+      "out": 221
+    }
+  },
+  "instance_ansible__ansible-a1569ea4ca6af5480cf0b7b3135f5e12add28a44-v0f01c69f1e2528b935359cfe578530722bca2c59": {
+    "primary_category": "NONE_SUCCESS",
+    "secondary_category": null,
+    "confidence": 0.9,
+    "rationale": "Outcome is success with a coherent patch adding the missing chain-creation branch in iptables.py and updated tests; no obvious dysfunction observed in the trajectory.",
+    "_sub_class": "success",
+    "_n_turns": 22,
+    "_repo": "ansible",
+    "_usage": {
+      "in": 3516,
+      "out": 104
+    }
+  },
+  "instance_ansible__ansible-a26c325bd8f6e2822d9d7e62f77a424c1db4fbf6-v0f01c69f1e2528b935359cfe578530722bca2c59": {
+    "primary_category": "C1.2",
+    "secondary_category": "C2.1",
+    "confidence": 0.55,
+    "rationale": "Agent emitted a plausible patch adding use_netrc parameter but spent the last 10 turns repeatedly running bash test commands (low tool diversity 0.2, bigram repeat 0.947) trying to validate, including editing test call expectations (T42) rather than progressing \u2014 indicates verification loop where tests don't confirm the fix and agent iterates trivially on the same fragment.",
+    "_sub_class": "wandering",
+    "_n_turns": 50,
+    "_repo": "ansible",
+    "_usage": {
+      "in": 3485,
+      "out": 172
+    }
+  },
+  "instance_ansible__ansible-be59caa59bf47ca78a4760eb7ff38568372a8260-v1055803c3a812189a1133297f7f5468579283f86": {
+    "primary_category": "C2.1",
+    "secondary_category": "C3",
+    "confidence": 0.7,
+    "rationale": "Last 10 turns show zero tool-entropy and 1.0 bigram-repeat rate with the agent repeatedly running near-identical `cd` bash commands (T43-T48), indicating it became trapped in a non-progressive iteration loop without producing a finished patch.",
+    "_sub_class": "locked",
+    "_n_turns": 50,
+    "_repo": "ansible",
+    "_usage": {
+      "in": 3425,
+      "out": 134
+    }
+  },
+  "instance_ansible__ansible-cd9c4eb5a6b2bfaf4a6709f001ce3d0c92c1eed2-v0f01c69f1e2528b935359cfe578530722bca2c59": {
+    "primary_category": "C2.1",
+    "secondary_category": "C1.1",
+    "confidence": 0.6,
+    "rationale": "Last 10 turns show tool-entropy 0 and bigram-repeat 1.0 with the agent repeatedly running bash cat/cd commands re-editing the same patch fragment without progressing or emitting finish_tool, indicative of a non-progressive iteration loop rather than a localization error (correct file linux.py was found early).",
+    "_sub_class": "wandering",
+    "_n_turns": 50,
+    "_repo": "ansible",
+    "_usage": {
+      "in": 3546,
+      "out": 153
+    }
+  },
+  "instance_ansible__ansible-d9f1866249756efc264b00ff7497e92c11a9885f-v0f01c69f1e2528b935359cfe578530722bca2c59": {
+    "primary_category": "NONE_SUCCESS",
+    "secondary_category": null,
+    "confidence": 0.8,
+    "rationale": "Outcome is success with a coherent patch adding deprecation warnings to safe_eval as requested; trajectory shows exploration then targeted edits with finish_tool emitted and no obvious dysfunction.",
+    "_sub_class": "success",
+    "_n_turns": 49,
+    "_repo": "ansible",
+    "_usage": {
+      "in": 3433,
+      "out": 114
+    }
+  },
+  "instance_ansible__ansible-de01db08d00c8d2438e1ba5989c313ba16a145b0-vba6da65a0f3baefda7a058ebbd0a8dcafb8512f5": {
+    "primary_category": "C2.1",
+    "secondary_category": "B3.2",
+    "confidence": 0.6,
+    "rationale": "Across the last 10 turns the agent loops with bash/sed/grep on the same _get_pip region (bigram-repeat 1.0, tool-diversity 0.2) making trivial edits without converging, and never emits finish_tool. The patch also changes _get_pip's return type to a list while only partially updating callers, suggesting unresolved semantic dependencies driving the iteration loop.",
+    "_sub_class": "wandering",
+    "_n_turns": 50,
+    "_repo": "ansible",
+    "_usage": {
+      "in": 3517,
+      "out": 182
+    }
+  },
+  "instance_ansible__ansible-e0c91af45fa9af575d10fd3e724ebc59d2b2d6ac-v30a923fb5c164d6cd18280c02422f75e611e8fb2": {
+    "primary_category": "NONE_SUCCESS",
+    "secondary_category": null,
+    "confidence": 0.92,
+    "rationale": "Trajectory ended with finish_tool and a clean patch replacing py3compat.environ with os.environ plus updated tests; agent reported 4/4 tests passing with no observed dysfunction.",
+    "_sub_class": "success",
+    "_n_turns": 13,
+    "_repo": "ansible",
+    "_usage": {
+      "in": 3674,
+      "out": 113
+    }
+  },
+  "instance_ansible__ansible-e64c6c1ca50d7d26a8e7747d8eb87642e767cd74-v0f01c69f1e2528b935359cfe578530722bca2c59": {
+    "primary_category": "B1.2",
+    "secondary_category": "NONE_SUCCESS",
+    "confidence": 0.6,
+    "rationale": "The patch wraps the failing strptime call in a try/except ValueError instead of validating/normalizing the timestamp data \u2014 a classic evasive defensive-construct repair. Although marked success, the fix avoids the underlying invalid-timestamp logic rather than addressing it.",
+    "_sub_class": "success",
+    "_n_turns": 15,
+    "_repo": "ansible",
+    "_usage": {
+      "in": 3496,
+      "out": 138
+    }
+  },
+  "instance_ansible__ansible-eea46a0d1b99a6dadedbb6a3502d599235fa7ec3-v390e508d27db7a51eece36bb6d9698b63a5b638a": {
+    "primary_category": "C3",
+    "secondary_category": "C2.2",
+    "confidence": 0.55,
+    "rationale": "Over 50 turns the agent only ran bash exploration commands (tool-entropy 0, bigram-repeat 0.947) and never emitted a patch, losing track of the original objective of implementing ECCLI support and drifting into Python/six environment troubleshooting by the final turn \u2014 classic context amnesia in a long interaction.",
+    "_sub_class": "locked",
+    "_n_turns": 50,
+    "_repo": "ansible",
+    "_usage": {
+      "in": 3008,
+      "out": 160
+    }
+  },
+  "instance_ansible__ansible-f02a62db509dc7463fab642c9c3458b9bc3476cc-v390e508d27db7a51eece36bb6d9698b63a5b638a": {
+    "primary_category": "C2.1",
+    "secondary_category": "C1.1",
+    "confidence": 0.78,
+    "rationale": "The last 10 turns show near-zero tool entropy with identical repeated bash 'cd' commands (bigram-repeat 0.947), no patch emitted, and no finish_tool \u2014 classic non-progressive iteration loop stuck on the same fragment rather than a localization or repair-strategy issue.",
+    "_sub_class": "locked",
+    "_n_turns": 50,
+    "_repo": "ansible",
+    "_usage": {
+      "in": 2863,
+      "out": 153
+    }
+  },
+  "instance_ansible__ansible-f327e65d11bb905ed9f15996024f857a95592629-vba6da65a0f3baefda7a058ebbd0a8dcafb8512f5": {
+    "primary_category": "NONE_SUCCESS",
+    "secondary_category": null,
+    "confidence": 0.85,
+    "rationale": "Outcome is success with a clean, targeted patch adding keyword.iskeyword() check to is_valid_collection_name; no looping, validation retreat, or misdirection evident despite some repeated bash exploration.",
+    "_sub_class": "success",
+    "_n_turns": 38,
+    "_repo": "ansible",
+    "_usage": {
+      "in": 3346,
+      "out": 118
+    }
+  },
+  "instance_internetarchive__openlibrary-03095f2680f7516fca35a58e665bf2a41f006273-v8717e18970bcdc4e0d2cea3b1527752b21e74866": {
+    "primary_category": "C2.1",
+    "secondary_category": "B3.1",
+    "confidence": 0.55,
+    "rationale": "Agent ran 50 turns without emitting finish_tool, with high bigram-repeat (1.0) and low tool diversity in last 10 turns, repeatedly viewing/editing the same data_provider.py region (T44-T47 alternating sed/str_replace) \u2014 a non-progressive iteration loop. Secondarily, it was adding the method to multiple sibling DataProvider subclasses (parent + LegacyDataProvider + BetterDataProvider), suggesting incomplete handling of explicit class dependencies.",
+    "_sub_class": "locked",
+    "_n_turns": 50,
+    "_repo": "internetarchive",
+    "_usage": {
+      "in": 3435,
+      "out": 218
+    }
+  },
+  "instance_internetarchive__openlibrary-09865f5fb549694d969f0a8e49b9d204ef1853ca-ve8c8d62a2b60610a3c4631f5f23ed866bada9818": {
+    "primary_category": "C2.1",
+    "secondary_category": "B2.3",
+    "confidence": 0.6,
+    "rationale": "The last 10 turns are dominated by repetitive bash 'cd ...' invocations (tool-diversity 0.2, bigram-repeat 0.947) without converging on a verified fix or emitting finish_tool, indicating a non-progressive iteration loop. The patch reimplements dataclass __init__ with extra-field handling, suggesting some domain/library convention struggles, but the dominant failure is the stuck iteration.",
+    "_sub_class": "wandering",
+    "_n_turns": 50,
+    "_repo": "internetarchive",
+    "_usage": {
+      "in": 3475,
+      "out": 184
+    }
+  },
+  "instance_internetarchive__openlibrary-0a90f9f0256e4f933523e9842799e39f95ae29ce-v76304ecdb3a5954fcf13feb710e8c40fcf24b73c": {
+    "primary_category": "NONE_SUCCESS",
+    "secondary_category": null,
+    "confidence": 0.9,
+    "rationale": "Outcome marked success with a focused, correct patch to get_publisher_and_place that splits places by ';' and adds a doctest. No looping or misdirection observed across the 20 turns.",
+    "_sub_class": "success",
+    "_n_turns": 20,
+    "_repo": "internetarchive",
+    "_usage": {
+      "in": 3464,
+      "out": 109
+    }
+  },
+  "instance_internetarchive__openlibrary-1894cb48d6e7fb498295a5d3ed0596f6f603b784-v0f5aece3601a5b4419f7ccec1dbda2071be28ee4": {
+    "primary_category": "C1.2",
+    "secondary_category": "C2.1",
+    "confidence": 0.55,
+    "rationale": "Agent emitted a patch modifying compare_isbn/compare_authors scoring but the last 10 turns show repeated bash sed/view loops (bigram-repeat 1.0, diversity 0.2) attempting to verify/tweak the same region without converging, indicating insufficient verification capability and non-progressive iteration rather than a clean fix.",
+    "_sub_class": "locked",
+    "_n_turns": 50,
+    "_repo": "internetarchive",
+    "_usage": {
+      "in": 3377,
+      "out": 161
+    }
+  },
+  "instance_internetarchive__openlibrary-1be7de788a444f6255e89c10ef6aa608550604a8-v29f82c9cf21d57b242f8d8b0e541525d259e2d63": {
+    "primary_category": "NONE_SUCCESS",
+    "secondary_category": null,
+    "confidence": 0.7,
+    "rationale": "Outcome is success with a finish_tool emitted and a coherent patch addressing the three named functions (editions_match, expand_record, add_db_name). No clear dysfunction observed despite high bigram-repeat rate, which reflects routine file viewing.",
+    "_sub_class": "success",
+    "_n_turns": 40,
+    "_repo": "internetarchive",
+    "_usage": {
+      "in": 3436,
+      "out": 131
+    }
+  },
+  "instance_internetarchive__openlibrary-308a35d6999427c02b1dbf5211c033ad3b352556-ve8c8d62a2b60610a3c4631f5f23ed866bada9818": {
+    "primary_category": "C1.1",
+    "secondary_category": "C2.1",
+    "confidence": 0.6,
+    "rationale": "In the last 10 turns the agent is stuck running bash commands trying to set up the test environment (pip install infogami, find/cat config files) rather than progressing the refactor; tool-entropy is 0 and bigram-repeat 0.947, indicating it cannot establish a valid test setup (C1.1) and is non-progressively iterating on the same environment-probing commands (C2.1).",
+    "_sub_class": "locked",
+    "_n_turns": 50,
+    "_repo": "internetarchive",
+    "_usage": {
+      "in": 3370,
+      "out": 182
+    }
+  },
+  "instance_internetarchive__openlibrary-30bc73a1395fba2300087c7f307e54bb5372b60a-v76304ecdb3a5954fcf13feb710e8c40fcf24b73c": {
+    "primary_category": "C2.1",
+    "secondary_category": "C1.1",
+    "confidence": 0.7,
+    "rationale": "Agent ran 50 turns with no patch emitted, looping on bash and str_replace_editor in the last 10 turns (bigram-repeat rate 1.0, tool diversity 0.2), repeatedly attempting trivial str_replace edits on the same file due to carriage-return mismatches without progressing.",
+    "_sub_class": "locked",
+    "_n_turns": 50,
+    "_repo": "internetarchive",
+    "_usage": {
+      "in": 2952,
+      "out": 145
+    }
+  },
+  "instance_internetarchive__openlibrary-322d7a46cdc965bfabbf9500e98fde098c9d95b2-v13642507b4fc1f8d234172bf8129942da2c2ca26": {
+    "primary_category": "C2.1",
+    "secondary_category": "C3",
+    "confidence": 0.6,
+    "rationale": "The last 10 turns show zero tool-entropy with the agent repeatedly running bash commands in the same directory (bigram-repeat 1.0) without progressing to a finish, indicating a non-progressive iteration loop on a large refactoring task that never converged on a complete patch.",
+    "_sub_class": "locked",
+    "_n_turns": 50,
+    "_repo": "internetarchive",
+    "_usage": {
+      "in": 3393,
+      "out": 144
+    }
+  },
+  "instance_internetarchive__openlibrary-3f7db6bbbcc7c418b3db72d157c6aed1d45b2ccf-v430f20c722405e462d9ef44dee7d34c41e76fe7a": {
+    "primary_category": "NONE_SUCCESS",
+    "secondary_category": "C1.2",
+    "confidence": 0.4,
+    "rationale": "Outcome marked success with finish_tool emitted and tests passing per final turn. However, patch size is 0 bytes which is suspicious; if a real fix was needed, verification capability could be questioned, but per coarse label this is treated as success.",
+    "_sub_class": "success",
+    "_n_turns": 40,
+    "_repo": "internetarchive",
+    "_usage": {
+      "in": 2888,
+      "out": 139
+    }
+  },
+  "instance_internetarchive__openlibrary-43f9e7e0d56a4f1d487533543c17040a029ac501-v0f5aece3601a5b4419f7ccec1dbda2071be28ee4": {
+    "primary_category": "NONE_SUCCESS",
+    "secondary_category": null,
+    "confidence": 0.8,
+    "rationale": "Outcome is success with a coherent patch in match.py that adds the Wikisource ID check as described in the issue, plus accompanying tests. No clear dysfunction observed despite high bigram-repeat rate (likely from repeated bash cd commands during test runs).",
+    "_sub_class": "success",
+    "_n_turns": 33,
+    "_repo": "internetarchive",
+    "_usage": {
+      "in": 3439,
+      "out": 135
+    }
+  },
+  "instance_internetarchive__openlibrary-4a5d2a7d24c9e4c11d3069220c0685b736d5ecde-v13642507b4fc1f8d234172bf8129942da2c2ca26": {
+    "primary_category": "NONE_SUCCESS",
+    "secondary_category": null,
+    "confidence": 0.9,
+    "rationale": "Outcome is success with a clean patch adding the requested get_property_values method in 15 turns, no observed looping or dysfunction worth labeling.",
+    "_sub_class": "success",
+    "_n_turns": 15,
+    "_repo": "internetarchive",
+    "_usage": {
+      "in": 3441,
+      "out": 96
+    }
+  },
+  "instance_internetarchive__openlibrary-53d376b148897466bb86d5accb51912bbbe9a8ed-v08d8e8889ec945ab821fb156c04c7d2e2810debb": {
+    "primary_category": "C1.1",
+    "secondary_category": "C2.1",
+    "confidence": 0.62,
+    "rationale": "Final turns (T40-T49) show the agent stuck trying to install/find infogami dependencies and repeatedly editing the same test fixture class with trivial changes (T48-T49 identical str_replace on TestFindEntityByAlternateNamesOrSurname), indicating test environment setup failure compounded by non-progressive iteration on the same fragment (bigram-repeat 0.947).",
+    "_sub_class": "locked",
+    "_n_turns": 50,
+    "_repo": "internetarchive",
+    "_usage": {
+      "in": 3374,
+      "out": 176
+    }
+  },
+  "instance_internetarchive__openlibrary-53e02a22972e9253aeded0e1981e6845e1e521fe-vfa6ff903cb27f336e17654595dd900fa943dcd91": {
+    "primary_category": "NONE_SUCCESS",
+    "secondary_category": null,
+    "confidence": 0.8,
+    "rationale": "Outcome is success: the agent identified the bare `return` returning None instead of a list in `update_author`, changed it to `return []`, and validated with 42 passing tests. No clear failure mode despite some bigram repetition during exploration.",
+    "_sub_class": "success",
+    "_n_turns": 45,
+    "_repo": "internetarchive",
+    "_usage": {
+      "in": 3408,
+      "out": 124
+    }
+  },
+  "instance_internetarchive__openlibrary-5c6c22f3d2edf2f1b10f5dc335e32cb6a5f40341-v76304ecdb3a5954fcf13feb710e8c40fcf24b73c": {
+    "primary_category": "C1.2",
+    "secondary_category": "C2.1",
+    "confidence": 0.55,
+    "rationale": "Agent emitted a patch but never called finish_tool; last 10 turns show extremely low tool diversity (0.2) and bigram-repeat rate of 1.0, indicating repetitive bash/view cycles editing the same fragment without progressing to a validated conclusion, suggesting insufficient verification capability and non-progressive iteration.",
+    "_sub_class": "wandering",
+    "_n_turns": 50,
+    "_repo": "internetarchive",
+    "_usage": {
+      "in": 3443,
+      "out": 158
+    }
+  },
+  "instance_internetarchive__openlibrary-5de7de19211e71b29b2f2ba3b1dff2fe065d660f-v08d8e8889ec945ab821fb156c04c7d2e2810debb": {
+    "primary_category": "C2.1",
+    "secondary_category": "B1.1",
+    "confidence": 0.7,
+    "rationale": "Last 10 turns show near-identical repeated bash `cd` commands (entropy 0.0, bigram-repeat 0.947), indicating the agent is trapped in a non-progressive iteration loop without emitting finish. A patch exists but the agent never converged/validated, also showing case-specific narrow handling of ASIN.",
+    "_sub_class": "wandering",
+    "_n_turns": 50,
+    "_repo": "internetarchive",
+    "_usage": {
+      "in": 3317,
+      "out": 163
+    }
+  },
+  "instance_internetarchive__openlibrary-630221ab686c64e75a2ce253c893c033e4814b2e-v93c53c13d5f9b383ebb411ee7750b49dcd1a34c6": {
+    "primary_category": "C1.1",
+    "secondary_category": "C2.1",
+    "confidence": 0.6,
+    "rationale": "Agent emitted a large patch but the final 7+ turns are repeated bash invocations in the same directory trying to validate, hitting environment/import issues (e.g., missing qrcode module) and never converging \u2014 characteristic of reproduction/validation environment setup failure compounded by non-progressive iteration (bigram-repeat rate 1.0, tool diversity 0.2).",
+    "_sub_class": "locked",
+    "_n_turns": 50,
+    "_repo": "internetarchive",
+    "_usage": {
+      "in": 3442,
+      "out": 169
+    }
+  },
+  "instance_internetarchive__openlibrary-6a117fab6c963b74dc1ba907d838e74f76d34a4b-v13642507b4fc1f8d234172bf8129942da2c2ca26": {
+    "primary_category": "NONE_SUCCESS",
+    "secondary_category": null,
+    "confidence": 0.85,
+    "rationale": "Outcome is success with a coherent patch added to build_identifiers and 74 tests passing per the final thinking snippet. The trajectory shows logical exploration, implementation, and verification without significant dysfunction.",
+    "_sub_class": "success",
+    "_n_turns": 31,
+    "_repo": "internetarchive",
+    "_usage": {
+      "in": 3463,
+      "out": 117
+    }
+  },
+  "instance_internetarchive__openlibrary-72321288ea790a3ace9e36f1c05b68c93f7eec43-v0f5aece3601a5b4419f7ccec1dbda2071be28ee4": {
+    "primary_category": "NONE_SUCCESS",
+    "secondary_category": null,
+    "confidence": 0.8,
+    "rationale": "Trajectory ended with finish_tool and a coherent patch adding a normalize_field_name helper applied in both is_search_field and transform_user_query, matching the issue's intent. No obvious looping or dysfunction in the final turns.",
+    "_sub_class": "success",
+    "_n_turns": 44,
+    "_repo": "internetarchive",
+    "_usage": {
+      "in": 3441,
+      "out": 125
+    }
+  },
+  "instance_internetarchive__openlibrary-7c8dc180281491ccaa1b4b43518506323750d1e4-v298a7a812ceed28c4c18355a091f1b268fe56d86": {
+    "primary_category": "NONE_SUCCESS",
+    "secondary_category": null,
+    "confidence": 0.85,
+    "rationale": "Trajectory completed successfully with finish_tool emitted, a substantial refactor patch (8772 bytes) extracting helper functions to reduce complexity as requested. No obvious dysfunction despite high bigram-repeat rate, which reflects routine bash verification commands.",
+    "_sub_class": "success",
+    "_n_turns": 35,
+    "_repo": "internetarchive",
+    "_usage": {
+      "in": 3482,
+      "out": 139
+    }
+  },
+  "instance_internetarchive__openlibrary-7f6b722a10f822171501d027cad60afe53337732-ve8c8d62a2b60610a3c4631f5f23ed866bada9818": {
+    "primary_category": "C2.1",
+    "secondary_category": "B1.1",
+    "confidence": 0.7,
+    "rationale": "Last 10 turns are all identical bash invocations (tool-entropy 0.0, bigram-repeat 0.947) indicating the agent got stuck in a non-progressive loop iterating on the same small regex tweak in fully_escape_query rather than progressing. The tiny patch only reorders the dash in a character class, a trivial difference characteristic of C2.1.",
+    "_sub_class": "wandering",
+    "_n_turns": 50,
+    "_repo": "internetarchive",
+    "_usage": {
+      "in": 3272,
+      "out": 167
+    }
+  },
+  "instance_internetarchive__openlibrary-7f7e53aa4cf74a4f8549a5bcd4810c527e2f6d7e-v13642507b4fc1f8d234172bf8129942da2c2ca26": {
+    "primary_category": "NONE_SUCCESS",
+    "secondary_category": null,
+    "confidence": 0.85,
+    "rationale": "Outcome is success with a coherent patch that addresses ISO-639-1, full language names, and deduplication using get_marc21_language; final test run reports all 94 tests passing with no observed dysfunction.",
+    "_sub_class": "success",
+    "_n_turns": 46,
+    "_repo": "internetarchive",
+    "_usage": {
+      "in": 3635,
+      "out": 124
+    }
+  },
+  "instance_internetarchive__openlibrary-910b08570210509f3bcfebf35c093a48243fe754-v0f5aece3601a5b4419f7ccec1dbda2071be28ee4": {
+    "primary_category": "NONE_SUCCESS",
+    "secondary_category": null,
+    "confidence": 0.8,
+    "rationale": "Outcome is success with a substantial 21KB patch emitted implementing the Google Books metadata source, finish_tool called with successful summary, and no clear signs of dysfunction in the trajectory.",
+    "_sub_class": "success",
+    "_n_turns": 43,
+    "_repo": "internetarchive",
+    "_usage": {
+      "in": 3360,
+      "out": 113
+    }
+  },
+  "instance_internetarchive__openlibrary-92db3454aeaa02f89b4cdbc3103f7e95c9759f92-v2c55207218fb8a0138425cbf7d9675272e240b90": {
+    "primary_category": "NONE_SUCCESS",
+    "secondary_category": null,
+    "confidence": 0.85,
+    "rationale": "Trajectory ended with finish_tool and a coherent patch aligning both values at 30000 in docker-compose.yml and bookshelves.py, matching the issue's intent without observable dysfunction.",
+    "_sub_class": "success",
+    "_n_turns": 37,
+    "_repo": "internetarchive",
+    "_usage": {
+      "in": 3726,
+      "out": 112
+    }
+  },
+  "instance_internetarchive__openlibrary-9bdfd29fac883e77dcbc4208cab28c06fd963ab2-v76304ecdb3a5954fcf13feb710e8c40fcf24b73c": {
+    "primary_category": "C2.1",
+    "secondary_category": "C1.1",
+    "confidence": 0.6,
+    "rationale": "Agent ran 50 turns with extremely high bigram-repeat rate (0.941) and low tool diversity, repeatedly issuing similar bash cd commands without converging on a patch (0 bytes emitted, no finish). This indicates a non-progressive iteration loop rather than a clear localization or repair-strategy failure.",
+    "_sub_class": "locked",
+    "_n_turns": 50,
+    "_repo": "internetarchive",
+    "_usage": {
+      "in": 2904,
+      "out": 154
+    }
+  },
+  "instance_internetarchive__openlibrary-b112069e31e0553b2d374abb5f9c5e05e8f3dbbe-ve8c8d62a2b60610a3c4631f5f23ed866bada9818": {
+    "primary_category": "NONE_SUCCESS",
+    "secondary_category": null,
+    "confidence": 0.8,
+    "rationale": "Outcome is success with a coherent patch modifying both the promise import staging and the load() augmentation for ISBN-10, matching the issue's intent. No obvious dysfunction in the trajectory warrants a failure label.",
+    "_sub_class": "success",
+    "_n_turns": 46,
+    "_repo": "internetarchive",
+    "_usage": {
+      "in": 3710,
+      "out": 120
+    }
+  },
+  "instance_internetarchive__openlibrary-b4f7c185ae5f1824ac7f3a18e8adf6a4b468459c-v08d8e8889ec945ab821fb156c04c7d2e2810debb": {
+    "primary_category": "B3.1",
+    "secondary_category": "C2.3",
+    "confidence": 0.55,
+    "rationale": "Agent changed update_key signatures to return tuples but then had to chase down all callers and tests (T49 modifies test setup rather than completing source fixes), indicating it ignored explicit interface dependencies across siblings/callers and resorted to editing tests. Turns end mid-test-modification without finishing, suggesting validation retreat as secondary.",
+    "_sub_class": "locked",
+    "_n_turns": 50,
+    "_repo": "internetarchive",
+    "_usage": {
+      "in": 3640,
+      "out": 159
+    }
+  },
+  "instance_internetarchive__openlibrary-bb152d23c004f3d68986877143bb0f83531fe401-ve8c8d62a2b60610a3c4631f5f23ed866bada9818": {
+    "primary_category": "C1.2",
+    "secondary_category": "C2.1",
+    "confidence": 0.55,
+    "rationale": "Agent emitted small patches (integer division, regex fix) but spent the last 8+ turns repeating bash invocations without progressing or finishing, indicating inability to validate the fix and non-progressive iteration (bigram-repeat 1.0, no finish_tool).",
+    "_sub_class": "wandering",
+    "_n_turns": 50,
+    "_repo": "internetarchive",
+    "_usage": {
+      "in": 3468,
+      "out": 144
+    }
+  },
+  "instance_internetarchive__openlibrary-c05ccf2cd8baa81609434e0e35c4a63bc0da5a25-v0f5aece3601a5b4419f7ccec1dbda2071be28ee4": {
+    "primary_category": "B1.3",
+    "secondary_category": "C2.1",
+    "confidence": 0.6,
+    "rationale": "Agent emitted a very large patch hardcoding a massive ISO-639-1 to MARC mapping table rather than leveraging existing library utilities or extension points, indicating a redundant/over-complex reimplementation. The last 10 turns also show low tool diversity and repeated bash edits (high bigram repeat) suggesting non-progressive iteration.",
+    "_sub_class": "wandering",
+    "_n_turns": 50,
+    "_repo": "internetarchive",
+    "_usage": {
+      "in": 3674,
+      "out": 163
+    }
+  },
+  "instance_internetarchive__openlibrary-c8996ecc40803b9155935fd7ff3b8e7be6c1437c-ve8fc82d8aae8463b752a211156c5b7b59f349237": {
+    "primary_category": "NONE_SUCCESS",
+    "secondary_category": null,
+    "confidence": 0.85,
+    "rationale": "Outcome is success with a coherent patch implementing source-aware year validation (constants, updated signature, message). Last turns show verification/test iteration but converge to finish_tool without signs of dysfunction.",
+    "_sub_class": "success",
+    "_n_turns": 38,
+    "_repo": "internetarchive",
+    "_usage": {
+      "in": 3409,
+      "out": 114
+    }
+  },
+  "instance_internetarchive__openlibrary-d109cc7e6e161170391f98f9a6fa1d02534c18e4-ve8c8d62a2b60610a3c4631f5f23ed866bada9818": {
+    "primary_category": "C2.1",
+    "secondary_category": "B1.3",
+    "confidence": 0.6,
+    "rationale": "Agent ran 50 turns without emitting finish_tool, with last-10-turn bigram-repeat rate of 1.0 and very low tool diversity (0.2), repeatedly editing the same model.py and template files via str_replace/bash cycles \u2014 indicative of non-progressive iteration on the same fragments. The patch also expands scope significantly (re-implementing seed init, normalize_input_seed, templates) suggesting redundant erroneous implementation alongside the loop.",
+    "_sub_class": "locked",
+    "_n_turns": 50,
+    "_repo": "internetarchive",
+    "_usage": {
+      "in": 3384,
+      "out": 202
+    }
+  },
+  "instance_internetarchive__openlibrary-dbbd9d539c6d4fd45d5be9662aa19b6d664b5137-v08d8e8889ec945ab821fb156c04c7d2e2810debb": {
+    "primary_category": "NONE_SUCCESS",
+    "secondary_category": null,
+    "confidence": 0.8,
+    "rationale": "Outcome is success with a coherent patch modifying ListRecord.from_input to explicitly handle the POST method precedence, addressing the underlying parameter-merging issue. No obvious dysfunction observed across 29 turns.",
+    "_sub_class": "success",
+    "_n_turns": 29,
+    "_repo": "internetarchive",
+    "_usage": {
+      "in": 3328,
+      "out": 123
+    }
+  },
+  "instance_internetarchive__openlibrary-f343c08f89c772f7ba6c0246f384b9e6c3dc0add-v08d8e8889ec945ab821fb156c04c7d2e2810debb": {
+    "primary_category": "B1.1",
+    "secondary_category": "C2.1",
+    "confidence": 0.55,
+    "rationale": "Agent emitted a small patch only addressing the honorific-empty-string edge case (one of four issues listed), narrowly tailored to a specific scenario while ignoring date format normalization and special character handling. Last 10 turns show repeated viewing/editing the same file region (bigram-repeat 1.0) without progressing to the broader fixes.",
+    "_sub_class": "locked",
+    "_n_turns": 50,
+    "_repo": "internetarchive",
+    "_usage": {
+      "in": 3472,
+      "out": 158
+    }
+  },
+  "instance_internetarchive__openlibrary-fad4a40acf5ff5f06cd7441a5c7baf41a7d81fe4-vfa6ff903cb27f336e17654595dd900fa943dcd91": {
+    "primary_category": "NONE_SUCCESS",
+    "secondary_category": null,
+    "confidence": 0.85,
+    "rationale": "Trajectory ended with finish_tool and a coherent refactor patch replacing urllib with requests in the targeted file; no clear dysfunction observed despite some repetitive viewing in last turns.",
+    "_sub_class": "success",
+    "_n_turns": 26,
+    "_repo": "internetarchive",
+    "_usage": {
+      "in": 3392,
+      "out": 111
+    }
+  },
+  "instance_qutebrowser__qutebrowser-01d1d1494411380d97cac14614a829d3a69cecaf-v2ef375ac784985212b1805e1d0431dc8f1b3c171": {
+    "primary_category": "C2.1",
+    "secondary_category": "C1.2",
+    "confidence": 0.6,
+    "rationale": "Last 10 turns show bigram-repeat rate 1.0 with the agent repeatedly running the same bash cd commands and making small str_replace edits to the same ModuleInfo region without progressing to a verified fix, indicative of non-progressive iteration on the same fragment. Verification capability also appears insufficient as no finish_tool was emitted.",
+    "_sub_class": "locked",
+    "_n_turns": 50,
+    "_repo": "qutebrowser",
+    "_usage": {
+      "in": 3394,
+      "out": 170
+    }
+  },
+  "instance_qutebrowser__qutebrowser-0aa57e4f7243024fa4bba8853306691b5dbd77b3-v5149fcda2a9a6fe1d35dfed1bade1444a11ef271": {
+    "primary_category": "C2.1",
+    "secondary_category": "C1.1",
+    "confidence": 0.6,
+    "rationale": "Trajectory shows 50 turns with very high bigram-repeat rate (0.947) and low tool diversity in the last 10 turns, with the agent repeatedly running bash test commands (T46-T49) and tweaking the same parametrize block (T42, T45) \u2014 classic non-progressive iteration loop on test verification rather than emitting a clean final fix.",
+    "_sub_class": "locked",
+    "_n_turns": 50,
+    "_repo": "qutebrowser",
+    "_usage": {
+      "in": 3624,
+      "out": 163
+    }
+  },
+  "instance_qutebrowser__qutebrowser-0b621cb0ce2b54d3f93d8d41d8ff4257888a87e5-v2ef375ac784985212b1805e1d0431dc8f1b3c171": {
+    "primary_category": "NONE_SUCCESS",
+    "secondary_category": null,
+    "confidence": 0.8,
+    "rationale": "Trajectory ended with finish_tool, a coherent patch modifying both error message sites in guiprocess.py to include the command name, and the final turn indicates tests pass. No clear dysfunction observed despite repetitive bash usage at the end.",
+    "_sub_class": "success",
+    "_n_turns": 49,
+    "_repo": "qutebrowser",
+    "_usage": {
+      "in": 3388,
+      "out": 126
+    }
+  },
+  "instance_qutebrowser__qutebrowser-0d2afd58f3d0e34af21cee7d8a3fc9d855594e9f-vnan": {
+    "primary_category": "C2.1",
+    "secondary_category": "C1.1",
+    "confidence": 0.7,
+    "rationale": "Last 10 turns show zero tool entropy and identical bash invocations (tool-diversity 0.1, bigram-repeat 0.895), indicating the agent is trapped re-running the same command without progress \u2014 classic non-progressive iteration, never emitting finish_tool despite having a patch.",
+    "_sub_class": "wandering",
+    "_n_turns": 50,
+    "_repo": "qutebrowser",
+    "_usage": {
+      "in": 3451,
+      "out": 141
+    }
+  },
+  "instance_qutebrowser__qutebrowser-0fc6d1109d041c69a68a896db87cf1b8c194cef7-v2ef375ac784985212b1805e1d0431dc8f1b3c171": {
+    "primary_category": "C2.1",
+    "secondary_category": "B1.3",
+    "confidence": 0.6,
+    "rationale": "Last 10 turns show extremely repetitive bash 'cd' invocations (bigram-repeat 0.895, tool-diversity 0.2) without progress, indicating non-progressive iteration on the same fragments. The agent never finished and emitted an incomplete patch attempting to add a new filepathmodel from scratch rather than leveraging existing completion infrastructure.",
+    "_sub_class": "wandering",
+    "_n_turns": 50,
+    "_repo": "qutebrowser",
+    "_usage": {
+      "in": 3472,
+      "out": 169
+    }
+  },
+  "instance_qutebrowser__qutebrowser-21b426b6a20ec1cc5ecad770730641750699757b-v363c8a7e5ccdf6968fc7ab84a2053ac78036691d": {
+    "primary_category": "NONE_SUCCESS",
+    "secondary_category": null,
+    "confidence": 0.85,
+    "rationale": "Outcome is success: agent located the Values class, converted _values from list to dict, updated __init__/__repr__/__iter__/add accordingly, and all 27 tests pass per the final think block. No significant dysfunction observed.",
+    "_sub_class": "success",
+    "_n_turns": 42,
+    "_repo": "qutebrowser",
+    "_usage": {
+      "in": 3608,
+      "out": 120
+    }
+  },
+  "instance_qutebrowser__qutebrowser-2dd8966fdcf11972062c540b7a787e4d0de8d372-v363c8a7e5ccdf6968fc7ab84a2053ac78036691d": {
+    "primary_category": "C1.1",
+    "secondary_category": "C2.1",
+    "confidence": 0.55,
+    "rationale": "After emitting a patch, the agent spent the last ~10 turns running nearly identical bash commands (bigram-repeat 0.94, tool-diversity 0.2) apparently trying to validate/run tests but unable to finalize \u2014 characteristic of reproduction/validation environment struggles with non-progressive iteration, never calling finish_tool.",
+    "_sub_class": "wandering",
+    "_n_turns": 50,
+    "_repo": "qutebrowser",
+    "_usage": {
+      "in": 3533,
+      "out": 155
+    }
+  },
+  "instance_qutebrowser__qutebrowser-2e961080a85d660148937ee8f0f6b3445a8f2c01-v363c8a7e5ccdf6968fc7ab84a2053ac78036691d": {
+    "primary_category": "C1.1",
+    "secondary_category": "C2.1",
+    "confidence": 0.6,
+    "rationale": "Agent emitted a plausible patch early but then spent the last 10+ turns repeatedly grepping for test fixtures (config_stub, test_settings_exist) with zero tool diversity (entropy 0.0, bigram-repeat 1.0), unable to set up/run the project tests to validate the fix and never reaching a finish state.",
+    "_sub_class": "locked",
+    "_n_turns": 50,
+    "_repo": "qutebrowser",
+    "_usage": {
+      "in": 3521,
+      "out": 156
+    }
+  },
+  "instance_qutebrowser__qutebrowser-305e7c96d5e2fdb3b248b27dfb21042fb2b7e0b8-v2ef375ac784985212b1805e1d0431dc8f1b3c171": {
+    "primary_category": "C1.1",
+    "secondary_category": "C2.1",
+    "confidence": 0.6,
+    "rationale": "Agent emitted a plausible patch early but spent the last many turns struggling with the test environment (addoption/--no-xvfb tweaks, missing DISPLAY, xvfb-run lookup) \u2014 a reproduction/validation setup failure. The repeated sed/str_replace edits to conftest options also show non-progressive iteration (bigram-repeat 1.0).",
+    "_sub_class": "locked",
+    "_n_turns": 50,
+    "_repo": "qutebrowser",
+    "_usage": {
+      "in": 3520,
+      "out": 177
+    }
+  },
+  "instance_qutebrowser__qutebrowser-394bfaed6544c952c6b3463751abab3176ad4997-vafb3e8e01b31319c66c4e666b8a3b1d8ba55db24": {
+    "primary_category": "C2.1",
+    "secondary_category": "C1.1",
+    "confidence": 0.6,
+    "rationale": "Last 10 turns show zero tool diversity and full bigram repetition: agent is stuck running bash commands (tail logs, grep tests, cd into dir) trying to validate the patch without progress, never emitting finish. The repeated tail/grep/check_display cycle suggests test-environment troubleshooting loops (C1.1) and non-progressive iteration (C2.1).",
+    "_sub_class": "locked",
+    "_n_turns": 50,
+    "_repo": "qutebrowser",
+    "_usage": {
+      "in": 3474,
+      "out": 171
+    }
+  },
+  "instance_qutebrowser__qutebrowser-44e64199ed38003253f0296badd4a447645067b6-v2ef375ac784985212b1805e1d0431dc8f1b3c171": {
+    "primary_category": "NONE_SUCCESS",
+    "secondary_category": null,
+    "confidence": 0.8,
+    "rationale": "Trajectory ends with finish_tool after a coherent refactor patch matching the issue's stated goal (splitting version detection by source). Despite high bigram-repeat rate in late turns (verification/inspection), the outcome is success and no clear dysfunction is evident.",
+    "_sub_class": "success",
+    "_n_turns": 37,
+    "_repo": "qutebrowser",
+    "_usage": {
+      "in": 3457,
+      "out": 136
+    }
+  },
+  "instance_qutebrowser__qutebrowser-473a15f7908f2bb6d670b0e908ab34a28d8cf7e2-v363c8a7e5ccdf6968fc7ab84a2053ac78036691d": {
+    "primary_category": "C2.1",
+    "secondary_category": "C1.2",
+    "confidence": 0.7,
+    "rationale": "Last 10 turns show near-zero tool diversity (bigram-repeat 0.944, entropy 0) with the agent repeatedly running nearly identical python -c debug snippets on _get_locale_arg without progressing to a working fix or finishing. This is a non-progressive iteration loop rather than a localization or clean repair failure.",
+    "_sub_class": "locked",
+    "_n_turns": 50,
+    "_repo": "qutebrowser",
+    "_usage": {
+      "in": 3385,
+      "out": 153
+    }
+  },
+  "instance_qutebrowser__qutebrowser-479aa075ac79dc975e2e949e188a328e95bf78ff-vc2f56a753b62a190ddb23cd330c257b9cf560d12": {
+    "primary_category": "NONE_SUCCESS",
+    "secondary_category": null,
+    "confidence": 0.8,
+    "rationale": "Outcome is success with a coherent patch that adds a fallback regex for Qt 6.4+ where the combined UA string is absent, matching the issue's described root cause. No clear dysfunction observed despite some repeated bash commands in the last turns.",
+    "_sub_class": "success",
+    "_n_turns": 37,
+    "_repo": "qutebrowser",
+    "_usage": {
+      "in": 3471,
+      "out": 129
+    }
+  },
+  "instance_qutebrowser__qutebrowser-54bcdc1eefa86cc20790973d6997b60c3bba884c-v2ef375ac784985212b1805e1d0431dc8f1b3c171": {
+    "primary_category": "NONE_SUCCESS",
+    "secondary_category": null,
+    "confidence": 0.7,
+    "rationale": "Trajectory marked success with a small, targeted patch addressing the zipfile.Path vs pathlib.Path incompatibility in preload_resources; no clear dysfunction observed despite high bigram repeat from repeated bash cd-prefixes.",
+    "_sub_class": "success",
+    "_n_turns": 35,
+    "_repo": "qutebrowser",
+    "_usage": {
+      "in": 3270,
+      "out": 131
+    }
+  },
+  "instance_qutebrowser__qutebrowser-5e0d6dc1483cb3336ea0e3dcbd4fe4aa00fc1742-v5149fcda2a9a6fe1d35dfed1bade1444a11ef271": {
+    "primary_category": "NONE_SUCCESS",
+    "secondary_category": null,
+    "confidence": 0.8,
+    "rationale": "Outcome is success with a coherent patch adding the array_at quirk and corresponding tests, matching the issue's intent. No clear dysfunction observed despite high bigram repetition (typical of bash exploration).",
+    "_sub_class": "success",
+    "_n_turns": 30,
+    "_repo": "qutebrowser",
+    "_usage": {
+      "in": 3337,
+      "out": 116
+    }
+  },
+  "instance_qutebrowser__qutebrowser-66cfa15c372fa9e613ea5a82d3b03e4609399fb6-v363c8a7e5ccdf6968fc7ab84a2053ac78036691d": {
+    "primary_category": "C2.1",
+    "secondary_category": "B2.3",
+    "confidence": 0.55,
+    "rationale": "High bigram-repeat rate (0.941) and low tool diversity in the last 10 turns indicate the agent looped on str_replace edits to the same init_envvars/qtargs area without progressing to a finished patch (no finish_tool emitted at turn 50). The repeated micro-edits to the same code fragment match Non-Progressive Iteration; secondary B2.3 since the locale workaround requires Qt/Chromium-specific domain knowledge the agent appears to be fumbling.",
+    "_sub_class": "locked",
+    "_n_turns": 50,
+    "_repo": "qutebrowser",
+    "_usage": {
+      "in": 3414,
+      "out": 207
+    }
+  },
+  "instance_qutebrowser__qutebrowser-70248f256f93ed9b1984494d0a1a919ddd774892-v2ef375ac784985212b1805e1d0431dc8f1b3c171": {
+    "primary_category": "NONE_SUCCESS",
+    "secondary_category": null,
+    "confidence": 0.85,
+    "rationale": "Trajectory ended with finish_tool and a coherent patch implementing _parse_time with unit support in utilcmds.py, matching the issue's request. No obvious dysfunction despite high bigram-repeat rate (mostly cd prefixes in bash commands).",
+    "_sub_class": "success",
+    "_n_turns": 49,
+    "_repo": "qutebrowser",
+    "_usage": {
+      "in": 3433,
+      "out": 136
+    }
+  },
+  "instance_qutebrowser__qutebrowser-7b603dd6bf195e3e723ce08ff64a82b406e3f6b6-v9f8e9d96c85c85a605e382f1510bd08563afc566": {
+    "primary_category": "NONE_SUCCESS",
+    "secondary_category": null,
+    "confidence": 0.8,
+    "rationale": "Outcome is success with a coherent patch refactoring the extra_suffixes_workaround as required by the issue; no clear dysfunction observed despite high bigram repetition from repeated bash exploration.",
+    "_sub_class": "success",
+    "_n_turns": 49,
+    "_repo": "qutebrowser",
+    "_usage": {
+      "in": 3385,
+      "out": 114
+    }
+  },
+  "instance_qutebrowser__qutebrowser-85b867fe8d4378c8e371f055c70452f546055854-v2ef375ac784985212b1805e1d0431dc8f1b3c171": {
+    "primary_category": "C2.1",
+    "secondary_category": "B3.1",
+    "confidence": 0.55,
+    "rationale": "The last 10 turns show near-identical repeated bash 'cd' commands (bigram-repeat 0.895, tool-diversity 0.2), indicating a non-progressive iteration loop where the agent keeps tweaking/exploring without converging. A new parse_pos helper was added but call-site integrations across the app were not consistently updated, suggesting ignored explicit dependencies as a secondary issue.",
+    "_sub_class": "wandering",
+    "_n_turns": 50,
+    "_repo": "qutebrowser",
+    "_usage": {
+      "in": 3470,
+      "out": 188
+    }
+  },
+  "instance_qutebrowser__qutebrowser-99029144b5109bb1b2a53964a7c129e009980cd9-va0fd88aac89cde702ec1ba84877234da33adce8a": {
+    "primary_category": "C2.1",
+    "secondary_category": "B1.2",
+    "confidence": 0.6,
+    "rationale": "Last 10 turns show very low tool diversity (0.2) and high bigram repeat (0.947) with the agent repeatedly running bash/str_replace cycles on the same file without progress, never emitting finish_tool. The patch itself wraps additions in try/except defensively (B1.2), but the dominant failure is the non-progressive iteration loop.",
+    "_sub_class": "wandering",
+    "_n_turns": 50,
+    "_repo": "qutebrowser",
+    "_usage": {
+      "in": 3288,
+      "out": 161
+    }
+  },
+  "instance_qutebrowser__qutebrowser-9b71c1ea67a9e7eb70dd83214d881c2031db6541-v363c8a7e5ccdf6968fc7ab84a2053ac78036691d": {
+    "primary_category": "C1.1",
+    "secondary_category": "B1.1",
+    "confidence": 0.6,
+    "rationale": "Agent emitted a patch but in the final turns (T41-T49) repeatedly ran the same bash test commands that failed due to missing display/Xvfb setup, unable to validate the fix in the project-specific test environment, and never reached finish_tool. The patch itself appears narrowly tailored to specific locale pak resolution mimicking Chromium behavior, suggesting case-specific repair, but the dominant failure mode is the iteration loop on unvalidated test runs.",
+    "_sub_class": "wandering",
+    "_n_turns": 50,
+    "_repo": "qutebrowser",
+    "_usage": {
+      "in": 3639,
+      "out": 210
+    }
+  },
+  "instance_qutebrowser__qutebrowser-c0be28ebee3e1837aaf3f30ec534ccd6d038f129-v9f8e9d96c85c85a605e382f1510bd08563afc566": {
+    "primary_category": "C2.1",
+    "secondary_category": "C1.1",
+    "confidence": 0.6,
+    "rationale": "The last 10 turns show near-identical repeated bash 'cd ...' invocations (bigram-repeat 0.947, tool-diversity 0.2) indicating the agent was stuck in non-progressive iteration, only emitting a real edit at T49 without ever finishing. This looping behavior, likely tied to environment/test setup struggles, points to C2.1 with C1.1 as secondary.",
+    "_sub_class": "locked",
+    "_n_turns": 50,
+    "_repo": "qutebrowser",
+    "_usage": {
+      "in": 3506,
+      "out": 186
+    }
+  },
+  "instance_qutebrowser__qutebrowser-cf06f4e3708f886032d4d2a30108c2fddb042d81-v2ef375ac784985212b1805e1d0431dc8f1b3c171": {
+    "primary_category": "C2.1",
+    "secondary_category": "C1.2",
+    "confidence": 0.6,
+    "rationale": "Last 10 turns show extremely low tool diversity (0.2) and high bigram repeat (0.889) with the agent repeatedly running `cd` bash commands without progressing; a patch exists but no finish_tool was emitted, indicating the agent got stuck iterating on the same fragment/validation rather than completing. Secondary C1.2 because it appears unable to validate its fix via tests (xvfb-run mention).",
+    "_sub_class": "wandering",
+    "_n_turns": 50,
+    "_repo": "qutebrowser",
+    "_usage": {
+      "in": 3538,
+      "out": 185
+    }
+  },
+  "instance_qutebrowser__qutebrowser-deeb15d6f009b3ca0c3bd503a7cef07462bd16b4-v363c8a7e5ccdf6968fc7ab84a2053ac78036691d": {
+    "primary_category": "C2.1",
+    "secondary_category": "B1.3",
+    "confidence": 0.6,
+    "rationale": "Agent ran 50 turns without emitting finish_tool, last 10 turns show repeated bash+str_replace cycles (bigram-repeat 1.0, low tool diversity) editing the same urlutils.py area, indicating non-progressive iteration. The emitted patch adds a large redundant _parse_encoded_url helper re-implementing URL parsing rather than using existing tooling (B1.3).",
+    "_sub_class": "locked",
+    "_n_turns": 50,
+    "_repo": "qutebrowser",
+    "_usage": {
+      "in": 3589,
+      "out": 181
+    }
+  },
+  "instance_qutebrowser__qutebrowser-e34dfc68647d087ca3175d9ad3f023c30d8c9746-v363c8a7e5ccdf6968fc7ab84a2053ac78036691d": {
+    "primary_category": "C2.1",
+    "secondary_category": "B1.1",
+    "confidence": 0.6,
+    "rationale": "Last 10 turns show extremely low tool diversity (0.2) and high bigram-repeat (0.95) with the agent repeatedly running bash verification commands on the same file without progressing; patch only partially addresses the multi-part issue (empty/space cases) and never finalizes, indicating a non-progressive iteration loop.",
+    "_sub_class": "locked",
+    "_n_turns": 50,
+    "_repo": "qutebrowser",
+    "_usage": {
+      "in": 3778,
+      "out": 153
+    }
+  },
+  "instance_qutebrowser__qutebrowser-e57b6e0eeeb656eb2c84d6547d5a0a7333ecee85-v2ef375ac784985212b1805e1d0431dc8f1b3c171": {
+    "primary_category": "NONE_SUCCESS",
+    "secondary_category": null,
+    "confidence": 0.85,
+    "rationale": "Outcome is success with a coherent patch refactoring BlocklistDownloads to use Qt signals and updating both consumers (adblock.py and braveadblock.py). Trajectory shows methodical exploration and editing with finish_tool emitted; no obvious dysfunction warrants a failure code.",
+    "_sub_class": "success",
+    "_n_turns": 38,
+    "_repo": "qutebrowser",
+    "_usage": {
+      "in": 3581,
+      "out": 147
+    }
+  },
+  "instance_qutebrowser__qutebrowser-e70f5b03187bdd40e8bf70f5f3ead840f52d1f42-v02ad04386d5238fe2d1a1be450df257370de4b6a": {
+    "primary_category": "C1.2",
+    "secondary_category": "C2.1",
+    "confidence": 0.55,
+    "rationale": "Agent emitted a patch but spent the last 10 turns repeatedly editing the test file and re-running bash (bigram-repeat 1.0, low tool diversity), unable to get verification to validate the fix, never reaching finish_tool. This indicates insufficient verification capability combined with non-progressive iteration on the same test fragment.",
+    "_sub_class": "locked",
+    "_n_turns": 50,
+    "_repo": "qutebrowser",
+    "_usage": {
+      "in": 3566,
+      "out": 156
+    }
+  },
+  "instance_qutebrowser__qutebrowser-ec2dcfce9eee9f808efc17a1b99e227fc4421dea-v5149fcda2a9a6fe1d35dfed1bade1444a11ef271": {
+    "primary_category": "NONE_SUCCESS",
+    "secondary_category": null,
+    "confidence": 0.7,
+    "rationale": "Outcome is success with a coherent patch adding the new config option and filtering logic in shared.py; no clear dysfunction evident despite some repeated bash calls in last turns.",
+    "_sub_class": "success",
+    "_n_turns": 43,
+    "_repo": "qutebrowser",
+    "_usage": {
+      "in": 3612,
+      "out": 103
+    }
+  },
+  "instance_qutebrowser__qutebrowser-ef5ba1a0360b39f9eff027fbdc57f363597c3c3b-v363c8a7e5ccdf6968fc7ab84a2053ac78036691d": {
+    "primary_category": "C3",
+    "secondary_category": "C2.1",
+    "confidence": 0.6,
+    "rationale": "Agent spent 50 turns repeatedly grep-searching for locale/QLibraryInfo keywords (bigram-repeat 0.889, tool-diversity 0.2 in last 10 turns) without ever emitting a patch, indicating it lost track of progressing toward implementation and stayed stuck in exploratory loops despite having articulated the plan.",
+    "_sub_class": "locked",
+    "_n_turns": 50,
+    "_repo": "qutebrowser",
+    "_usage": {
+      "in": 3074,
+      "out": 162
+    }
+  },
+  "instance_qutebrowser__qutebrowser-f631cd4422744160d9dcf7a0455da532ce973315-v35616345bb8052ea303186706cec663146f0f184": {
+    "primary_category": "C1.1",
+    "secondary_category": "C2.1",
+    "confidence": 0.6,
+    "rationale": "Last 10 turns are all bash with bigram-repeat 1.0, repeatedly pip-installing test dependencies (pytest-bdd, hypothesis, PyQt5) trying to set up the test environment without success, never finalizing/verifying the patch. This matches reproduction/validation environment setup failure compounded by non-progressive iteration on the same install commands.",
+    "_sub_class": "locked",
+    "_n_turns": 50,
+    "_repo": "qutebrowser",
+    "_usage": {
+      "in": 3436,
+      "out": 167
+    }
+  },
+  "instance_qutebrowser__qutebrowser-f7753550f2c1dcb2348e4779fd5287166754827e-v059c6fdc75567943479b23ebca7c07b5e9a7f34c": {
+    "primary_category": "NONE_SUCCESS",
+    "secondary_category": null,
+    "confidence": 0.8,
+    "rationale": "Outcome is success with a coherent patch centralizing key handling via a new append(KeyInfo) method and updating basekeyparser to use it; no obvious dysfunction beyond some repeated view/bash exploration.",
+    "_sub_class": "success",
+    "_n_turns": 40,
+    "_repo": "qutebrowser",
+    "_usage": {
+      "in": 3736,
+      "out": 128
+    }
+  },
+  "instance_qutebrowser__qutebrowser-fcfa069a06ade76d91bac38127f3235c13d78eb1-v5fc38aaf22415ab0b70567368332beee7955b367": {
+    "primary_category": "C2.1",
+    "secondary_category": "B2.1",
+    "confidence": 0.62,
+    "rationale": "Across 50 turns the agent kept editing the same version-handling code in history.py with trivial variations (T43, T47 str_replace on _run_migrations) and re-greping the same regions (T41, T42, T49) without making progress, indicating non-progressive iteration. The underlying logic for major/minor packing/migration was also incorrect, as evidenced by the final-turn reasoning about minor-version comparison flaws.",
+    "_sub_class": "locked",
+    "_n_turns": 50,
+    "_repo": "qutebrowser",
+    "_usage": {
+      "in": 3740,
+      "out": 183
+    }
+  },
+  "instance_qutebrowser__qutebrowser-fd6790fe8c02b144ab2464f1fc8ab3d02ce3c476-v2ef375ac784985212b1805e1d0431dc8f1b3c171": {
+    "primary_category": "C2.1",
+    "secondary_category": "C3",
+    "confidence": 0.55,
+    "rationale": "With 50 turns, very low tool diversity (0.2) and bigram-repeat rate 0.947, the agent is stuck iteratively editing the same documentation/command sections (repeated sed/view/str_replace on commands.asciidoc and commands.py) without converging to a complete fix, characteristic of non-progressive iteration.",
+    "_sub_class": "locked",
+    "_n_turns": 50,
+    "_repo": "qutebrowser",
+    "_usage": {
+      "in": 3547,
+      "out": 150
+    }
+  }
+}

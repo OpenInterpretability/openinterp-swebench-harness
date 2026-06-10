@@ -34,9 +34,25 @@ random vector *destroys* P(edit), so the effect is NOT "any injection raises it"
 donor-specific and writes the decision**, inert at L9/L11 and positive from L13 on. The inert→writable
 transition reproduces qualitatively.
 
+## Scale-matched replication — Mistral-Small-24B-Instruct-2501 (2026-06-10)
+Re-ran the same lite test on a **24B** model (Mistral family; scale-comparable to Qwen-27B), retiring the
+"7B only" caveat. The result is **cleaner** than the 7B and matches Qwen-27B more closely:
+- **Geometry:** flat/negative L1–L17, explodes L19→L37 (+1.8 → +6.4). Late emergence ✅.
+- **Fidelity:** P(edit) edit-context **0.955** vs bash-context **0.007** — a far sharper context separation
+  than the 7B (0.84 vs 0.74).
+- **Writability — clean mid-vs-late dissociation:** the edit-donor is **inert in the mid layers
+  (L11/L13/L15: −0.003/−0.002/−0.005)** and **writes almost fully in the late block (L29–L39: +0.95 to
+  +0.98)**, donor-specific (edit-donor +0.97 vs shuffled-neutral ~+0.5 at late). This is the *exact*
+  mid-inert / late-write shape of the Qwen-27B Tier-1 result — sharper than the 7B (which wrote from L13).
+
+**The late lever now replicates across two families and two scales** (Qwen-27B full; Mistral-7B + 24B lite),
+with the mid/late dissociation cleanest at the scale-matched 24B. Raw:
+`results/cross_model_Mistral-Small-24B-Instruct-2501.json`.
+
 ## Honest caveats (for the paper)
-- **Scale:** 7B vs the 27B of Tier-1; the writable window starts mid (~L13, 40% depth) in Mistral-7B vs
-  late-only in Qwen-27B — expected with depth/scale; report as "shape replicates, exact band shifts."
+- **Scale:** the lite tests (7B, 24B) use LOCATE + one-token ΔP, not generation-confirmed brakes; the
+  Qwen-27B result is the full generation-confirmed one. The 24B retires the "7B-only" concern. In the 7B the
+  writable window starts mid (~L13); in the 24B it is cleanly late-only (mid inert), closer to Qwen.
 - **Lite scope:** LOCATE + one-token ΔP only; no generation-confirmation, no full brake (that is the
   follow-up if scaled). Single-turn, context-seeded decision points (not real multi-turn trajectories).
 - **Tool tokens:** Mistral tokenizes `bash`→`b` (generic); the edit/finish tokens are clean, so the

@@ -1,0 +1,132 @@
+{
+  "n_samples": 20,
+  "n_features": 62,
+  "y_distribution": {
+    "flipped": 7,
+    "stayed": 13
+  },
+  "l1_logistic": {
+    "observed_auc": 0.7252747252747253,
+    "observed_acc": 0.7,
+    "null_mean": 0.4565934065934066,
+    "null_std": 0.1924738685475579,
+    "null_n": 1000,
+    "z_score": 1.3959366053627733,
+    "p_value": 0.0959040959040959
+  },
+  "random_forest": {
+    "observed_auc": 0.3626373626373626,
+    "observed_acc": 0.55,
+    "null_mean": 0.39887362637362633,
+    "null_std": 0.1792397447405975,
+    "null_n": 200,
+    "z_score": -0.20216645470404004,
+    "p_value": 0.5522388059701493
+  },
+  "top_l1_features": [
+    [
+      "L11_cosine_consec_late",
+      -1.7645565215435215
+    ],
+    [
+      "tool_entropy_full",
+      -0.7436013222651259
+    ],
+    [
+      "probe_score_first",
+      -0.6424986093018592
+    ],
+    [
+      "L55_cosine_consec_mean",
+      0.23038633332443917
+    ],
+    [
+      "detector_v4_fire_turn",
+      -0.23034665771098933
+    ],
+    [
+      "tool_repetition_max_run",
+      0.14753096380169234
+    ],
+    [
+      "text_doubt_density_late",
+      -0.11404913101560844
+    ],
+    [
+      "probe_score_trajectory_mean",
+      0.10001160170809607
+    ],
+    [
+      "rtx6000_probe_final",
+      0.005176030809376602
+    ],
+    [
+      "probe_score_final",
+      0.005176030809376602
+    ]
+  ],
+  "feature_names": [
+    "text_doubt_density",
+    "text_exploration_density",
+    "text_completion_density",
+    "text_thinking_length_mean",
+    "text_thinking_length_std",
+    "text_thinking_length_final",
+    "text_content_length_mean",
+    "text_content_length_final",
+    "text_thinking_to_content_ratio_mean",
+    "text_doubt_density_late",
+    "text_ngram_overlap_late",
+    "tool_entropy_full",
+    "tool_entropy_first10",
+    "tool_entropy_last10",
+    "tool_diversity_count",
+    "tool_top_fraction",
+    "tool_switching_rate",
+    "tool_repetition_max_run",
+    "tool_calls_per_turn_mean",
+    "tool_total_calls",
+    "L11_norm_mean",
+    "L11_norm_std",
+    "L11_norm_late_mean",
+    "L11_cosine_consec_mean",
+    "L11_cosine_consec_late",
+    "L11_drift_first_last",
+    "L23_norm_mean",
+    "L23_norm_std",
+    "L23_norm_late_mean",
+    "L23_cosine_consec_mean",
+    "L23_cosine_consec_late",
+    "L23_drift_first_last",
+    "L31_norm_mean",
+    "L31_norm_std",
+    "L31_norm_late_mean",
+    "L31_cosine_consec_mean",
+    "L31_cosine_consec_late",
+    "L31_drift_first_last",
+    "L43_norm_mean",
+    "L43_norm_std",
+    "L43_norm_late_mean",
+    "L43_cosine_consec_mean",
+    "L43_cosine_consec_late",
+    "L43_drift_first_last",
+    "L55_norm_mean",
+    "L55_norm_std",
+    "L55_norm_late_mean",
+    "L55_cosine_consec_mean",
+    "L55_cosine_consec_late",
+    "L55_drift_first_last",
+    "cross_layer_norm_range_late_mean",
+    "cross_layer_norm_cv_late_mean",
+    "n_turns",
+    "patch_n_bytes",
+    "probe_score_final",
+    "probe_score_first",
+    "probe_score_trajectory_mean",
+    "probe_score_trajectory_late_mean",
+    "probe_score_volatility",
+    "probe_first_threshold_cross_turn",
+    "detector_v4_fire_turn",
+    "rtx6000_probe_final"
+  ]
+}

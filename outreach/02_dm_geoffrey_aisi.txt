@@ -1,0 +1,24 @@
+TARGET: @geoffreyirving (UK AISI, Chief Scientist)
+CHANNEL: Twitter DM
+ANGLE: ship-ready SDK + mech grounding, asks for technical feedback (not grant)
+
+---
+
+Hi Geoffrey — independent interp researcher (openinterp.org). Shipped a probe-gated agent monitoring SDK that may be in scope for AISI's white-box control work and wanted to put it on your radar.
+
+agent-probe-guard v0.1: detect-only by design, three triggers (skip / escalate / proceed) with auditable thresholds. Local eval on Qwen3.6-27B agent traces shows skip 21.2% @ 86% accuracy → ~18% inference-budget reduction at default thresholds. Apache-2.0, pip install openinterp.
+
+Mech grounding behind the SDK is a paper trio:
+- Two Forms of Epiphenomenal Probes (template-lock + softmax-temp false-positives)
+- Saturation-Direction Lever (5 empirical classes of probe causality)
+- SWE-bench Phase 6c: L43 pre_tool probe survives long-horizon agent traces (gap +0.27 over random baseline at K=10 PCA)
+
+The methodology framing — random-feature baseline + control-token normalization + structural-rigidity α-sweep as mandatory checks before declaring a probe useful — may be the more durable contribution.
+
+Would value 15-30 min of technical feedback on the SDK + whether the threshold-auditing angle is something AISI's eval framework could integrate. Not asking for a grant — just whether this shape is useful.
+
+- Landing: openinterp.org/products/agent-probe-guard
+- SDK: pypi.org/project/openinterp/
+- Papers: openinterp.org/research
+
+— Caio Vicentino

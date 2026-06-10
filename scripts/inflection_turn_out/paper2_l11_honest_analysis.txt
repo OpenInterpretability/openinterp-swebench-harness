@@ -1,0 +1,27 @@
+Exp B no-hook baseline: 20 iids, 7 flip finish_tool (35%)
+
+Rescued at either alpha: 6/20  -> CLEAN (no-hook=max_turns): 4  |  CONTAMINATED (no-hook already finish_tool): 2
+
+=== PRIMARY (honest): paired McNemar, no-hook baseline vs hook alpha=0.70 ===
+  both flip=2  baseline-only=5  hook-only=3
+  McNemar exact p=0.727  direction=HOOK HURTS/NULL
+  hook flip total = 5/20  vs  baseline flip total = 7/20
+
+  [for transparency] notebook's Fisher vs definitional 0/20: 6/20 vs 0/20, p=0.0202 (WRONG baseline — ignores run-instability)
+
+=== Dose-response (robust L11-specific effect) ===
+  alpha=0.70: rescue 5/20, crash 0/20
+  alpha=1.15: rescue 2/20, crash 12/20
+  -> 0/20 -> 12/20 invalid_tools: L11 injection reaches behavior (L55 was inert), but produces INCOHERENCE, not completion.
+
+=== Random-direction control (SELECTION-BIASED: only on rescued subset) ===
+  ansible-502270c804c33d3bc963930dc85e0f4ca359674d alpha=0.7 RANDOM -> max_turns
+  openlibrary-09865f5fb549694d969f0a8e49b9d204ef1853ca alpha=0.7 RANDOM -> max_turns
+  openlibrary-5de7de19211e71b29b2f2ba3b1dff2fe065d660f alpha=0.7 RANDOM -> max_turns
+  openlibrary-7f6b722a10f822171501d027cad60afe53337732 alpha=0.7 RANDOM -> max_turns
+  qutebrowser-0d2afd58f3d0e34af21cee7d8a3fc9d855594e9f alpha=1.15 RANDOM -> invalid_tools
+  qutebrowser-2dd8966fdcf11972062c540b7a787e4d0de8d372 alpha=0.7 RANDOM -> finish_tool
+  qutebrowser-2dd8966fdcf11972062c540b7a787e4d0de8d372 alpha=1.15 RANDOM -> invalid_tools
+  Note: at alpha=1.15 random ALSO crashes (invalid_tools) -> crash is direction-AGNOSTIC. At alpha=0.70 n is too small + biased to claim direction-specificity.
+
+VERDICT: NULL on the rescue axis (McNemar p=0.73). L11 is causally LIVE (dose-dependent crash) but the SUCCESS direction is not a rescue lever, even at the locus paper #3 identifies as WANDERING's best discriminator.

@@ -1,0 +1,32 @@
+{
+  "partial_correlation": {
+    "wandering_l11drift_raw": {
+      "rho": -0.2773062101309943,
+      "p": 0.005455353593235636
+    },
+    "wandering_l11drift_partial_thinking": {
+      "rho": -0.2887505934062417,
+      "p": 0.0037488812974442827
+    },
+    "locked_l11drift_raw": {
+      "rho": 0.18156970081285737,
+      "p": 0.07207668438108217
+    },
+    "locked_l11drift_partial_thinking": {
+      "rho": 0.18591001238607308,
+      "p": 0.06541883674163325
+    }
+  },
+  "post_residualize_L11drift_coefs": {
+    "LOCKED": 0.7920001438371452,
+    "SUCCESS": 0.0,
+    "WANDERING": -0.6856379468534186
+  },
+  "matched_subset": {
+    "n_pairs": 19,
+    "median_W_l11": 0.9563557505607604,
+    "median_L_l11": 0.9740400314331056,
+    "median_paired_diff_W_minus_L": -0.003438293933868408,
+    "wilcoxon_p": 0.07987594604492188
+  }
+}

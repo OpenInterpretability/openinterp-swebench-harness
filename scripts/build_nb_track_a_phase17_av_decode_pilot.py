@@ -476,7 +476,7 @@ def probe_categorical(X: np.ndarray, labels_str: list, n_splits: int = 5):
         Xte_s = scaler.transform(Xte)
         clf = LogisticRegression(
             max_iter=2000, C=1.0, solver='lbfgs',
-            multi_class='multinomial', class_weight='balanced',
+            class_weight='balanced',
             random_state=42,
         )
         clf.fit(Xtr_s, ytr)

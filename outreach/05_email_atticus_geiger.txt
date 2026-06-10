@@ -1,0 +1,23 @@
+To: atticus@goodfire.ai
+From: caio@openinterp.org
+Subject: Two probes where causal-abstraction predictions fail empirically — independent researcher
+
+Hi Atticus,
+
+I'm Caio Vicentino, creator and maintainer of OpenInterpretability (openinterp.org). Your causal abstraction framework (JMLR 2025) is the cleanest lens I've found for distinguishing when a linear probe levers a model's behavior from when it merely detects a correlate of it. I'm writing because two probes I trained on Qwen3.6-27B fail that distinction in structurally different ways, and I'd value your read on whether they fit the formalism or expose a gap.
+
+The two cases:
+
+1. L43 capability probe (CV AUROC 0.83). Steering at α ∈ {±2, ±5} appears causal — raw Δlog-prob(finish) +0.479. But under control-token normalization (Δrel = Δ(target) − mean(Δ(controls))), the effect collapses to ≈ 0. The probe direction shifts softmax temperature uniformly across all tool tokens; it lives in a subspace orthogonal to the per-tool decision.
+
+2. L55 CoT-integrity probe (CV AUROC 0.91, N=240). Bidirectional α-sweep to multiples of residual norm (α ∈ [−200, +200]), probe direction and random direction both: zero behavioral change. Diagnosis: enable_thinking=False injects `<think></think>` token pair before generation. The thinking decision is in input tokens, not in the residual stream the probe reads.
+
+I wrote both up as "Two Forms of Epiphenomenal Probes in Code Agents" (workshop draft, openinterp.org/research). The two methodology contributions — random-feature baseline at low N and control-token normalization for steering — are both straightforward checks that the over-parameterization regime causal abstraction studies seems to invite.
+
+My question: do these failures sit inside the causal abstraction taxonomy as two known regimes, or is one (especially the template-lock case) outside what the framework currently formalizes? I'm specifically interested in whether the input-token-locked decision is a case the theory already handles via input-level intervention, or whether it requires a separate construct.
+
+Would you have 15 min in the next 2–3 weeks for input? Happy to share the paper draft and the experiment code in advance so the call is concrete.
+
+Best,
+Caio Vicentino
+openinterp.org · github.com/OpenInterpretability · @0xCVYH

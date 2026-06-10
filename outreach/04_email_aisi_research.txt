@@ -1,0 +1,35 @@
+TO: research@aisi.gov.uk
+FROM: caio@openinterp.org
+BCC: satoshimemes79@gmail.com
+SUBJECT: Probe-gated agent monitoring SDK + methodology — request for technical feedback
+
+---
+
+Hello AISI team,
+
+I'm an independent interpretability researcher (openinterp.org) reaching out because the work below appears to overlap with the white-box control direction your team has been publishing on. All Apache-2.0.
+
+Shipped artifact:
+
+agent-probe-guard v0.1 — probe-gated agent monitoring SDK, detect-only by design. Three auditable triggers (skip / escalate / proceed) on Qwen3.6-27B. Local eval shows skip 21.2% at 86% accuracy on hold-out agent traces, corresponding to ~18% inference-budget reduction at default thresholds.
+
+Methodology backing it (three published drafts):
+
+1. SWE-bench Phase 6c: L43 pre_tool probe survives long-horizon SWE-bench agent traces — PCA-10 AUROC 0.764 vs random-feature baseline 0.495 (gap +0.27 at N=42). Paper-grade replication scheduled at N=100.
+
+2. Two Forms of Epiphenomenal Probes: two false-positive mechanisms (template-lock + softmax-temp shift) documented with concrete diagnostic checks. Three mandatory checks proposed before declaring a probe causal.
+
+3. Saturation-Direction Lever: 5 empirical classes of probe causality across reasoning, capability, persona, and reasoning-quality axes on Qwen3.6-27B.
+
+The threshold-auditing angle — every gating decision tied to a specific probe direction, sample size, and random-feature baseline — may be the most relevant piece for control-style frameworks.
+
+- SDK landing: openinterp.org/products/agent-probe-guard
+- PyPI: pypi.org/project/openinterp/
+- Papers: openinterp.org/research
+
+Would value 15-30 minutes of technical feedback on the SDK's design, particularly whether the auditable-threshold model fits how AISI's eval framework expects probes to be presented. Not requesting a grant or partnership at this stage — just whether the shape is useful.
+
+Best regards,
+Caio Vicentino
+caio@openinterp.org
+openinterp.org

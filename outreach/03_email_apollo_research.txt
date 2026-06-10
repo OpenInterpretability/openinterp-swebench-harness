@@ -1,0 +1,33 @@
+TO: research@apolloresearch.ai
+FROM: caio@openinterp.org
+BCC: satoshimemes79@gmail.com
+SUBJECT: Probe causality methodology on Qwen3.6-27B — two negative results + one positive lever
+
+---
+
+Hi Apollo team,
+
+I'm an independent interpretability researcher (openinterp.org) and wanted to share three findings from probe-causality work on Qwen3.6-27B that may be in scope for your scheming and long-horizon agent eval work. All artifacts Apache-2.0.
+
+Two negative results, one positive lever:
+
+1. Phase 7 (SWE-bench L43 pre_tool, AUROC 0.83): looked causal under naive log-prob proxy (Δ +0.479), collapsed to Δrel ≈ 0 with control-token normalization. Pure softmax-temperature shift. Probe is detection-only.
+
+2. Phase 8 (CoT-Integrity L55, AUROC 0.91): α-sweep up to ‖residual‖×3 produced zero behavioral change for both probe direction AND random direction. Diagnosis: enable_thinking=False chat template injects <think></think> into input tokens — decision is in input, not residual.
+
+3. Phase 11 (capability locus, 4 sites): pushdown-asymmetric levers at decision-bottleneck positions (pre_tool / turn_end), +60pp behavioral flip at α=-200. Saturation-direction principle (paper-5) explains the asymmetry.
+
+The methodology angle — three mandatory checks before declaring a probe causal (random-feature baseline at small N, control-token normalization for steering, structural-rigidity α-sweep) — may have more durability than any individual finding.
+
+Drafts:
+- openinterp.org/research/papers/two-forms-epiphenomenal-probes
+- openinterp.org/research/papers/saturation-direction-probe-levers
+
+Would welcome 30 minutes to discuss whether any of this is useful for Apollo's direction. Happy to share raw data, code, or run additional experiments if there's a specific test that would help.
+
+Thanks for your work.
+
+Best,
+Caio Vicentino
+caio@openinterp.org
+@0xCVYH

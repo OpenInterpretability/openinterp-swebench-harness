@@ -1,0 +1,97 @@
+\relax 
+\providecommand\hyper@newdestlabel[2]{}
+\providecommand\HyField@AuxAddToFields[1]{}
+\providecommand\HyField@AuxAddToCoFields[2]{}
+\citation{apollo_deception_2025}
+\citation{anthropic_sleeper_2024}
+\citation{lugoloobi_2026}
+\@writefile{toc}{\contentsline {section}{\numberline {1}Problem}{1}{section.1}\protected@file@percent }
+\citation{multilayer_ensemble_2026}
+\citation{entropy_tool_use_2026}
+\citation{aepo_2025}
+\citation{mast_2025}
+\citation{jetbrains_2025}
+\citation{malt_2025}
+\citation{canonical_path_2026}
+\citation{elpo_2026}
+\citation{swebench_pro_2025}
+\citation{swe_agent_2024}
+\citation{swe_smith_2025}
+\@writefile{toc}{\contentsline {section}{\numberline {2}Related work and our position}{2}{section.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {3}Setup}{2}{section.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {4}Results}{3}{section.4}\protected@file@percent }
+\newlabel{sec:results}{{4}{3}{Results}{section.4}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.1}Baseline probe performance}{3}{subsection.4.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.2}Inflection-turn distribution}{3}{subsection.4.2}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {1}{\ignorespaces Lock-in turn distribution across outcome classes.}}{3}{table.caption.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.3}The WANDERING sub-class}{3}{subsection.4.3}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {2}{\ignorespaces Statistics for the 20 WANDERING failures vs 39 LOCKED failures.}}{3}{table.caption.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.4}Bootstrap CI on the WANDERING rate}{3}{subsection.4.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.5}Cross-layer robustness}{4}{subsection.4.5}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {3}{\ignorespaces Per-layer CV AUROC and WANDERING rate.}}{4}{table.caption.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {5}Six detector designs}{4}{section.5}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.1}v1: Post-hoc text monitor (Tier 1 forensics)}{4}{subsection.5.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.2}v2: Naive early-warning (FP unacceptable)}{4}{subsection.5.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.3}v3: Persistence hypothesis (refuted)}{4}{subsection.5.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.4}v4: Cross-layer probe disagreement (Tier 2 advisory)}{4}{subsection.5.4}\protected@file@percent }
+\newlabel{sec:v4}{{5.4}{4}{v4: Cross-layer probe disagreement (Tier 2 advisory)}{subsection.5.4}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {5.4.1}Mid-layer ablation: signal depends on edge-layer inclusion}{4}{subsubsection.5.4.1}\protected@file@percent }
+\newlabel{sec:v4-midlayer}{{5.4.1}{4}{Mid-layer ablation: signal depends on edge-layer inclusion}{subsubsection.5.4.1}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {4}{\ignorespaces Late-half cross-layer disagreement, WANDERING vs SUCCESS.}}{5}{table.caption.4}\protected@file@percent }
+\providecommand*\caption@xref[2]{\@setref\relax\@undefined{#1}}
+\newlabel{tab:v4}{{4}{5}{Late-half cross-layer disagreement, WANDERING vs SUCCESS}{table.caption.4}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {5.4.2}Complementarity with v1}{5}{subsubsection.5.4.2}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {5}{\ignorespaces Detector orthogonality on WANDERING captures (v1 $\cup $ v4).}}{5}{table.caption.5}\protected@file@percent }
+\newlabel{tab:venn}{{5}{5}{Detector orthogonality on WANDERING captures (v1 $\cup $ v4)}{table.caption.5}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.5}v5: Tool-use entropy (best Tier-3 candidate in this work)}{5}{subsection.5.5}\protected@file@percent }
+\newlabel{sec:v5}{{5.5}{5}{v5: Tool-use entropy (best Tier-3 candidate in this work)}{subsection.5.5}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {6}{\ignorespaces v5 tool-entropy stats (medians).}}{5}{table.caption.6}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.6}v6: Residual stability (null at Tier 3)}{6}{subsection.5.6}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.7}Combined Tier 3 detector: v1 $\cup $ v5}{6}{subsection.5.7}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {7}{\ignorespaces Tier 3 combined detector at \texttt  {tool\_entropy<0.50}.}}{6}{table.caption.7}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {6}Cross-architecture and cross-task validation}{6}{section.6}\protected@file@percent }
+\newlabel{sec:cross-arch}{{6}{6}{Cross-architecture and cross-task validation}{section.6}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces Tool-entropy distributions by sub-class across three model families. Dashed vertical lines mark medians. Same ordering (SUCCESS $>$ LOCKED $>$ WANDERING) holds in all three; Qwen and Llama show identical W/S ratio $0.41$, GPT-5 router gives $0.71$.}}{6}{figure.caption.8}\protected@file@percent }
+\newlabel{fig:cross-arch}{{1}{6}{Tool-entropy distributions by sub-class across three model families. Dashed vertical lines mark medians. Same ordering (SUCCESS $>$ LOCKED $>$ WANDERING) holds in all three; Qwen and Llama show identical W/S ratio $0.41$, GPT-5 router gives $0.71$}{figure.caption.8}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.1}Llama-70b on \texttt  {nebius/SWE-agent-trajectories}}{6}{subsection.6.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.2}Four-lab validation: 3 of 4 confirm}{6}{subsection.6.2}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {8}{\ignorespaces Cross-architecture validation across 4 labs.}}{7}{table.caption.9}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.3}Cross-task validation on METR MALT: honest negative}{7}{subsection.6.3}\protected@file@percent }
+\newlabel{sec:malt}{{6.3}{7}{Cross-task validation on METR MALT: honest negative}{subsection.6.3}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {9}{\ignorespaces MALT cross-task results.}}{7}{table.caption.10}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {7}Deployment guidance}{7}{section.7}\protected@file@percent }
+\newlabel{sec:deployment}{{7}{7}{Deployment guidance}{section.7}{}}
+\@writefile{toc}{\contentsline {paragraph}{Tier 1 — Forensics / log analysis.}{7}{section*.11}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Tier 2 — Advisory escalation.}{7}{section*.12}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Tier 3 — Autonomous termination.}{8}{section*.13}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {10}{\ignorespaces Three-tier deployment map. All three tiers shippable.}}{8}{table.caption.14}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces Detector comparison: 6 designs across 3 signal channels (text, residual cross-layer, action entropy). Shaded regions show deployment tier admissibility (FP-bounded). Combined detectors $v1 \cup v4$ (Tier 2) and $v1 \cup v5$ (Tier 3) are starred.}}{8}{figure.caption.15}\protected@file@percent }
+\newlabel{fig:detectors}{{2}{8}{Detector comparison: 6 designs across 3 signal channels (text, residual cross-layer, action entropy). Shaded regions show deployment tier admissibility (FP-bounded). Combined detectors $v1 \cup v4$ (Tier 2) and $v1 \cup v5$ (Tier 3) are starred}{figure.caption.15}{}}
+\@writefile{toc}{\contentsline {paragraph}{What the deployment map does NOT solve.}{8}{section*.16}\protected@file@percent }
+\bibstyle{plainnat}
+\bibcite{apollo_deception_2025}{1}
+\@writefile{toc}{\contentsline {section}{\numberline {8}Limitations and future work}{9}{section.8}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {9}Conclusion}{9}{section.9}\protected@file@percent }
+\bibcite{anthropic_sleeper_2024}{2}
+\bibcite{lugoloobi_2026}{3}
+\bibcite{multilayer_ensemble_2026}{4}
+\bibcite{entropy_tool_use_2026}{5}
+\bibcite{aepo_2025}{6}
+\bibcite{mast_2025}{7}
+\bibcite{jetbrains_2025}{8}
+\bibcite{malt_2025}{9}
+\bibcite{canonical_path_2026}{10}
+\bibcite{elpo_2026}{11}
+\bibcite{swebench_pro_2025}{12}
+\bibcite{swe_agent_2024}{13}
+\bibcite{swe_smith_2025}{14}
+\bibcite{probguard_2025}{15}
+\bibcite{safety_probes_fanatics_2026}{16}
+\bibcite{lad_2026}{17}
+\bibcite{failure_modes_taxonomy_2025}{18}
+\bibcite{issue_solving_failures_2025}{19}
+\bibcite{long_horizon_mirage_2026}{20}
+\bibcite{nebius_traj_2025}{21}
+\bibcite{anon_prior_a_2026}{22}
+\bibcite{anon_prior_b_2026}{23}
+\gdef \@abspage@last{11}

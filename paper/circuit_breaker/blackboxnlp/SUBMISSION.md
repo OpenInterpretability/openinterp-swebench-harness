@@ -31,14 +31,15 @@ networks, co-located with EMNLP 2026 (Oct 28–29, Hungary).
 3. Upload the PDF (+ optional supplementary: the per-point data, pre-registrations, EVAL) at the OpenReview
    group above, Full Papers track.
 
-## Recommended before submitting (the ~5-week runway — these answer the likely reviews)
-1. **Scale-matched cross-model** (Mistral-Small-24B or Llama-70B-4bit) — retires the "7B only" caveat; the
-   single biggest strengthener. (`scripts/cross_model_lite.py`, set `MODEL=`.)
-2. **Valid-call re-parse** — re-run the H1/H2 blocks logging full continuations; report valid-tool-call rate
-   alongside onset rate, retiring caveat B2. (`scripts/commit_lever_stages.py` already logs per-point.)
-3. **`h2_bash_baseline`** block — measures the no-brake bash rate at edit points, retiring the redirect
-   caveat B1 (lets us state the redirect magnitude).
-4. Optional 4th figure: cross-model writability (edit-donor vs shuffled-neutral) bars.
+## Strengtheners — ALL FOUR DONE (2026-06-10), integrated into the draft
+1. ✅ **Scale-matched cross-model (Mistral-Small-24B):** mid-inert / late-write, fidelity 0.955 vs 0.007 —
+   cleanest dissociation, sharper than the 7B. "7B-only" caveat retired. → §6 + Table `tab:scale`.
+2. ✅ **Valid-call re-parse:** lift survives on the full `str_replace_editor` call (elicit 0.23→0.37,
+   brake 0.40→0.07). Onset-only caveat B2 retired. → §7.
+3. ✅ **`h2_bash_baseline` = 0.43:** under-brake bash 0.60 = +0.17 above the floor → the brake re-routes to
+   reversible exploration. Redirect caveat B1 retired. → §7.
+4. ✅ **4th figure** (`fig4_xmodel_writability.pdf`): cross-model edit-donor-vs-shuffled writability. → `fig:xwrite`.
 
-All four are cheap (one GPU session each) and are pre-specified in `EVAL_commitment_lever.md` /
-`EVAL_paper7.md`. None is required for a valid submission; each strengthens it.
+Both `.tex` recompiled clean (7pp each; anon leak-checked). Data on HF
+(`results/strengtheners.json`, `cross_model_Mistral-Small-24B-Instruct-2501.json`). The draft is now
+submission-ready; only the OpenReview upload (you) + Zenodo DOI mint remain.

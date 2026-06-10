@@ -1,0 +1,23 @@
+TARGET: @MariusHobbhahn (Apollo Research, CEO/Research)
+CHANNEL: Twitter DM
+ANGLE: negative-result methodology + 1 positive lever, asks for 30-min call
+
+---
+
+Hey Marius — independent interp researcher here (openinterp.org). Been working on probe causality on Qwen3.6-27B and ran into two clean negative results worth sharing with Apollo.
+
+Phase 7: SWE-bench L43 pre_tool probe AUROC 0.83 — looked causal, but with control-token normalization the steering effect collapsed to Δrel ≈ 0. Pure softmax-temperature shift.
+
+Phase 8: L55 CoT-Integrity probe AUROC 0.91 — α-sweep up to ‖residual‖×3 produced zero behavioral change. Diagnosis: enable_thinking=False template injects <think></think> in input tokens. Decision is in input, not residual.
+
+Wrote it up as "Two Forms of Epiphenomenal Probes" (template-lock + softmax-temp). Methodology contributions are the 3 mandatory checks: random-feature baseline, control-token norm, structural-rigidity α-sweep.
+
+But Phase 11 found 4/4 capability sites at decision-bottleneck positions (pre_tool/turn_end) DO lever — pushdown-asymmetric, +60pp at α=-200. Saturation-direction principle (paper-5) explains why some lever and others don't.
+
+Would value 30 min on whether this methodology angle has legs for Apollo's scheming/long-horizon work. All Apache-2.0, code+probes on HF.
+
+Papers:
+- openinterp.org/research/papers/two-forms-epiphenomenal-probes
+- openinterp.org/research/papers/saturation-direction-probe-levers
+
+— Caio
