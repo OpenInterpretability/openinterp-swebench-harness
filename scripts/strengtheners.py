@@ -24,8 +24,26 @@ tok = AutoTokenizer.from_pretrained(MODEL_ID, trust_remote_code=True)
 model = AutoModelForCausalLM.from_pretrained(MODEL_ID, dtype=torch.bfloat16, device_map="auto", trust_remote_code=True).eval()
 st = torch.load(hf_hub_download(REPO, "results/commit_lever_state.pt", repo_type="dataset", token=os.environ.get("HF_TOKEN")),
                 map_location="cpu", weights_only=False)
-EDIT, BASH, E_res, B_res = st["EDIT"], st["BASH"], st["E_res"], st["B_res"]
-log(f"state: edit {len(EDIT)} bash {len(BASH)}")
+SUBN = int(os.environ.get("SUBN", "30"))   # subsample to fit the VM-death window
+EDIT, BASH, E_res, B_res = st["EDIT"][:SUBN], st["BASH"][:SUBN], st["E_res"], st["B_res"]
+log(f"state: edit {len(EDIT)} bash {len(BASH)} (SUBN={SUBN})")
+
+# resume from HF + checkpoint after every piece (the VM dies ~25-40min; keep-alive 403 bug)
+res = {}
+try:
+    res = json.load(open(hf_hub_download(REPO, "results/strengtheners.json", repo_type="dataset",
+                                         token=os.environ.get("HF_TOKEN"), force_download=True)))
+    log("resumed:", list(res.keys()), list((res.get("validcall") or {}).keys()))
+except Exception:
+    log("no prior strengtheners.json — fresh")
+def save():
+    json.dump(res, open(os.path.join(OUT, "strengtheners.json"), "w"), indent=1)
+    try:
+        upload_file(path_or_fileobj=os.path.join(OUT, "strengtheners.json"),
+                    path_in_repo="results/strengtheners.json", repo_id=REPO, repo_type="dataset",
+                    token=os.environ.get("HF_TOKEN"))
+    except Exception as e:
+        log("save upload skip:", str(e)[:60])
 
 def layer(idx):
     for p in ("model.language_model.layers", "model.model.layers", "model.layers"):
@@ -71,18 +89,18 @@ def bash_donor(erow, i, L):
     same = [j for j, b in enumerate(BASH) if b["repo"] == erow["repo"]]; j = same[0] if same else i % len(BASH)
     return B_res[L][j]
 
-res = {}
 # ---- #3 h2_bash_baseline: bash-emission at EDIT points, NO patch
-hits = 0
-for r in EDIT:
-    c = gen(r["ids"], maxnew=16)
-    hits += int(onset(c, "bash"))
-    torch.cuda.empty_cache()
-res["h2_bash_baseline_rate"] = hits / len(EDIT)
-log(f"#3 h2_bash_baseline (bash-emit at edit pts, no patch) = {res['h2_bash_baseline_rate']:.2f}  (under-brake bash was 0.60)")
+if "h2_bash_baseline_rate" not in res:
+    hits = 0
+    for r in EDIT:
+        hits += int(onset(gen(r["ids"], maxnew=16), "bash")); torch.cuda.empty_cache()
+    res["h2_bash_baseline_rate"] = hits / len(EDIT); save()
+    log(f"#3 h2_bash_baseline = {res['h2_bash_baseline_rate']:.2f}  (under-brake bash was 0.60) [saved]")
+else:
+    log(f"#3 skip (done {res['h2_bash_baseline_rate']:.2f})")
 
-# ---- #2 valid-call re-parse on the 4 headline conditions
-def rate(rows, name, L=None, donor_fn=None, maxnew=48):
+# ---- #2 valid-call re-parse on the 4 headline conditions (checkpoint each)
+def rate(rows, name, L=None, donor_fn=None, maxnew=40):
     o = v = 0
     for i, r in enumerate(rows):
         d = None if donor_fn is None else donor_fn(r, i, L)
@@ -95,17 +113,13 @@ conds = [
     ("h2_baseline", EDIT, "str_replace_editor", None, None),
     ("h2_suppress_L55", EDIT, "str_replace_editor", 55, bash_donor),
 ]
-res["validcall"] = {}
+res.setdefault("validcall", {})
 for nm, rows, name, L, fn in conds:
+    if nm in res["validcall"]:
+        log(f"#2 {nm} skip (done)"); continue
     o, v = rate(rows, name, L, fn)
-    res["validcall"][nm] = {"onset": o, "valid": v}
-    log(f"#2 {nm}: onset {o:.2f} | valid-call {v:.2f}")
+    res["validcall"][nm] = {"onset": o, "valid": v}; save()
+    log(f"#2 {nm}: onset {o:.2f} | valid-call {v:.2f} [saved]")
 
-json.dump(res, open(os.path.join(OUT, "strengtheners.json"), "w"), indent=1)
-try:
-    upload_file(path_or_fileobj=os.path.join(OUT, "strengtheners.json"),
-                path_in_repo="results/strengtheners.json", repo_id=REPO, repo_type="dataset", token=os.environ.get("HF_TOKEN"))
-    log("uploaded to HF")
-except Exception as e: log("upload skip:", str(e)[:80])
 print("OILAB_JSON_BEGIN"); print(json.dumps(res)); print("OILAB_JSON_END", flush=True)
 log("STRENGTHENERS_DONE")
