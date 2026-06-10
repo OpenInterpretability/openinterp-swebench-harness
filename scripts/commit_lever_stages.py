@@ -268,8 +268,12 @@ def block(name):
 
 def dense():
     if P.get("dense_dP"): log("DENSE_SKIP (done)"); return
-    dPe, dPn = {}, {}
+    part = P.get("dense_partial", {})           # resume layer-by-layer across VM deaths
+    dPe = {int(k): v for k, v in part.get("edit_donor", {}).items()}
+    dPn = {int(k): v for k, v in part.get("bash_null", {}).items()}
     for L in sorted(set(PATCH_MID + PATCH_LATE)):
+        if L in dPe:
+            log(f"  L{L:2d}: skip (done)"); continue
         e, n = [], []
         for i, r in enumerate(S["BASH"]):
             hh = _layer(L).register_forward_hook(_patch := _mkpatch(_edit_donor(r, i, L)))
@@ -287,6 +291,8 @@ def dense():
             gc.collect(); torch.cuda.empty_cache()
         dPe[L] = float(np.mean(e)); dPn[L] = float(np.mean(n))
         log(f"  L{L:2d}: edit-donor {dPe[L]:+.3f}  bash-null {dPn[L]:+.3f}")
+        P["dense_partial"] = {"edit_donor": dPe, "bash_null": dPn}
+        save_partial()                                  # per-layer checkpoint
     P["dense_dP"] = {"edit_donor": dPe, "bash_null": dPn}
     save_partial(); log("DENSE_OK")
 
