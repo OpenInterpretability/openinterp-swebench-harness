@@ -71,6 +71,34 @@ The brake gate (pre-set ≥30% suppression) passes at **96%**, and the L55 brake
 (0.55) and the L59 edit-donor nearly guarantees the commit (0.92). **L55 = the brake point (suppress +
 clean redirect); L59 = the power point (0.03 ↔ 0.92 swing, messier redirect).**
 
+## Statistics (n=60/condition; `scripts/commit_lever_stats.py`)
+
+The ledger stores per-block rates, not per-point outcomes, so the exact paired discordance table is
+unavailable. We report two valid analyses. **Worst-case McNemar** is the rigorous one for the
+shared-points design: with `b−c = k₂−k₁` fixed by the marginals, McNemar's statistic is *minimized* at
+maximum discordance, so evaluating that worst case gives an **upper bound on the paired p-value from the
+marginals alone**. The true paired p (realistic overlap) is smaller.
+
+| contrast | rate→rate | risk diff | Fisher (unpaired) | **worst-case McNemar (paired) ≤** |
+|---|---|---|---|---|
+| H1 edit-donor@L59 vs baseline | 0.23→0.77 | +0.53 | 6.8e-09 | **4.2e-05** |
+| H1 edit-donor@L55 vs baseline | 0.23→0.62 | +0.38 | 3.9e-05 | 1.8e-03 |
+| H1 edit-donor@L59 vs bash-null@L59 (position) | 0.08→0.77 | +0.68 | 7.7e-15 | **2.3e-09** |
+| H1 edit-donor@L59 vs cross-task@L59 (specificity) | 0.48→0.77 | +0.28 | 2.4e-03 | 1.6e-02 |
+| H2 brake suppress@L55 vs baseline | 0.48→0.02 | −0.47 | 8.2e-10 | **5.8e-08** |
+| H2 suppress@L59 vs baseline | 0.48→0.03 | −0.45 | 8.5e-09 | 4.6e-07 |
+| H2 suppress@L55 vs edit-donor ctl@L55 | 0.55→0.02 | −0.53 | 1.1e-11 | **4.1e-09** |
+
+**All 7 contrasts survive Holm–Bonferroni (m=7) on the worst-case paired p** — including the two
+load-bearing specificity/position controls and the brake-vs-control. Wilson 95% CIs: baseline edit
+0.23 [0.14,0.35]; edit-donor@L59 0.77 [0.65,0.86]; brake suppress@L55 0.02 [0.003,0.089]; non-overlapping.
+
+The weakest contrast is task-specificity (edit-donor 0.77 vs cross-task 0.48, worst-case McNemar
+≤1.6e-2, Holm-significant) — consistent with the honest nuance that for `edit` the late lever carries a
+substantial *generic* component, unlike `finish`. Even so, task-matching adds a Holm-significant
+increment. **For an exact (not worst-case) paired p, re-run with per-point logging** (the rates already
+imply the conclusion is not in doubt).
+
 ## What this means
 
 1. **The late action-commitment lever is a general property of the action channel** on this agent — not a

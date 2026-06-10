@@ -253,16 +253,16 @@ def block(name):
     if P.get("blocks", {}).get(name) is not None:
         log(f"BLOCK_SKIP {name} (already done: {P['blocks'][name]['rate']:.2f})"); return
     rows_key, action, L, donor_fn = BLOCKS[name]
-    rows = S[rows_key]; hits = 0; ex = []
+    rows = S[rows_key]; hits = 0; ex = []; outcomes = []
     for i, r in enumerate(rows):
         donor = None if donor_fn is None else donor_fn(r, i, L)
         cont = _gen(r["ids"], L=(None if donor is None else L), donor=donor)
-        ok = _emits(cont, action); hits += int(ok)
+        ok = _emits(cont, action); hits += int(ok); outcomes.append(int(ok))   # per-point for exact McNemar
         if len(ex) < 2: ex.append(cont[:30].replace(chr(10), " "))
         gc.collect(); torch.cuda.empty_cache()
         if (i + 1) % 20 == 0: log(f"  {name} {i+1}/{len(rows)} rate {hits/(i+1):.2f}")
     rate = hits / len(rows)
-    P.setdefault("blocks", {})[name] = {"rate": rate, "n": len(rows), "eg": ex}
+    P.setdefault("blocks", {})[name] = {"rate": rate, "n": len(rows), "eg": ex, "per_point": outcomes}
     save_partial()
     log(f"BLOCK_OK {name}: rate={rate:.2f} (n={len(rows)}) — checkpointed to HF")
 
