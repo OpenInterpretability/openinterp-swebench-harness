@@ -18,12 +18,27 @@ public N=99 SWE-bench Pro bundle. n=60 per condition, greedy generation (16 toke
 | LOCATE — edit readable late, like `finish` | flat/negative L3–L51, explodes L55–L63 (L63: edit +1.81 vs bash −0.32)¹ | ✅ |
 | H1 ELICIT — late patch elicits a real second action | 0.23 → **0.77** (L59), donor-specific | ✅ |
 | H2 SUPPRESS — the brake blocks a real commit | 0.48 → **0.02** (96%), redirects to exploration | ✅ |
-| H3 — lever layer inside `finish`'s block (L51–63) | levers at L55/L59 (generation); dense profile pending² | ✅ (partial) |
+| H3 — lever layer inside `finish`'s block (L51–63) | dense ΔP monotonic to **L63 +0.685**, mid inert, null *negative* late | ✅ |
 
 ¹ LOCATE numbers from the 2026-06-09 G4 session (non-deterministic point order; consistent with the
-deterministic fidelity gap). ² dense one-token profile lost to a VM death twice; per-layer-checkpointed
-re-run pending GPU quota. The prior (non-deterministic-points) profile: L23 −0.02 / L31 +0.00 / L48 +0.09 /
-L55 +0.34 / L59 +0.39 / L63 +0.48 (edit-donor), ~2.5× the bash-null at L55–63, mid layers inert.
+deterministic fidelity gap).
+
+### Dense one-token lever profile (deterministic points, completed 2026-06-10)
+
+| L | edit-donor ΔP(edit) | bash-null ΔP(edit) |
+|---|---|---|
+| 23 | −0.003 | +0.013 |
+| 31 | +0.019 | +0.034 |
+| 48 | +0.093 | +0.023 |
+| 52 | +0.125 | −0.149 |
+| 55 | +0.320 | −0.200 |
+| 59 | +0.519 | −0.192 |
+| 63 | **+0.685** | **−0.277** |
+
+Three facts in one table: (1) the verdict/mid layers (L23/L31) are **inert** — exactly as for `finish`;
+(2) the edit-donor effect rises **monotonically** through the late block, peaking at L63 (+0.685),
+inside `finish`'s L51-63; (3) the bash-null goes **negative** in the late block — the explore-donor
+actively *writes suppression*, which is the one-token signature of the H2 brake. Lever layer = L63.
 
 ## H1 — ELICIT (at bash/explore decision points, n=60 each)
 
@@ -81,6 +96,14 @@ clean redirect); L59 = the power point (0.03 ↔ 0.92 swing, messier redirect).*
 
 ## Next
 
-1. Finish dense profile (per-layer-checkpointed; pending GPU quota).
-2. EVAL pass (`EVAL_commitment_lever.md`) → paper #7 candidate: *"The Lever Generalizes — and It Brakes"*.
-3. **Tier-2:** self-hosted crypto-agent with simulated `send_transaction`; port locate→sweep→brake; AgentGuard core.
+1. ~~Finish dense profile~~ ✅ done 2026-06-10 (browser session; full results JSON finalized on HF).
+2. Per-point statistics (binomial CIs / exact McNemar from state.pt) — required before publishing.
+3. EVAL pass (`EVAL_commitment_lever.md`) → paper #7 candidate: *"The Lever Generalizes — and It Brakes"*.
+4. **Tier-2:** self-hosted crypto-agent with simulated `send_transaction`; port locate→sweep→brake; AgentGuard core.
+
+### Additional caveat from the final examples
+Several elicited emissions are near-miss tool names (`=str_replace>` instead of `=str_replace_editor>`,
+truncated `=str>`), and baseline generations include hallucinated tools (`=search_replace>`). The prefix
+detector counts edit-INTENT, not valid-call rate; report both (intent vs well-formed) in the paper.
+Under the L55 brake, redirected actions include `bash` (0.60) and occasionally `finish` — the brake
+routes to *other* actions, predominantly exploration.
