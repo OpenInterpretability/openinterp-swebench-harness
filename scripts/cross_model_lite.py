@@ -81,8 +81,8 @@ def caps_and_logits(ids, layers_):
 
 def lens_gap(vec, name="edit"):
     with torch.no_grad():
-        h = vec.to(model.device).to(next(model.parameters()).dtype).unsqueeze(0)
-        lg = LMH(NORM(h))[0].float()
+        h = vec.reshape(1, -1).to(model.device).to(next(model.parameters()).dtype)
+        lg = LMH(NORM(h)).reshape(-1).float()   # [vocab]
     alts = [TOK[n] for n in TOK if n != name]
     return float(lg[TOK[name]] - lg[alts].mean())
 
