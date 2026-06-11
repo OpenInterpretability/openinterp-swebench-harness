@@ -260,6 +260,21 @@ next step is to demonstrate it on a genuinely irreversible action and at further
 deterministic decision-point state, the exact-statistics script, and the adversarial pre-publication
 evaluation are provided in the supplementary material and will be released publicly upon acceptance.
 
+\section*{Limitations}
+Our generalization claim is an \emph{existence proof}, not a universal law: the generation-confirmed result
+holds for two actions (\texttt{finish} and \texttt{edit}) on a single model (Qwen3.6-27B) and a single task
+family (SWE-bench Pro). The demonstrated action is \emph{semi-irreversible} --- \texttt{str\_replace\_editor}
+mutates state but is undoable --- so the circuit-breaker is shown on a proxy; a genuinely irreversible action
+(e.g.\ \texttt{send\_transaction}, \texttt{delete}) is untested and is the central next step. The
+cross-architecture evidence is \emph{lite}: it uses LOCATE plus a one-token $\Delta P$ probe on
+context-seeded single-turn decision points, not generation-confirmed brakes on full multi-turn rollouts.
+Effects are estimated at $n{=}60$ deterministic decision points per condition; while the per-point discordance
+structure is exact, the rates themselves are point estimates on a modest sample. Emission counts the tool-name
+onset in a short greedy continuation; we validate the direction with a full valid-call re-parse, but onset is
+an upper bound on valid-call elicitation. Finally, we measure the immediate post-intervention action (the brake
+re-routes to reversible exploration) but not the long-horizon trajectory outcome --- whether a braked agent
+ultimately recovers or succeeds is left to future work.
+
 \bibliography{refs}
 
 \end{document}
