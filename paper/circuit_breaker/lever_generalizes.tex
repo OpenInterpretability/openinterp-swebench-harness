@@ -262,10 +262,17 @@ These caveats were produced by an adversarial pre-publication evaluation (\textt
 that recomputed every number from the released per-point data (determinism confirmed) and corrected two
 earlier overclaims; we release it alongside the paper.
 
-\paragraph{Relation to prior work.} This extends activation steering / patching from single-turn
-representations to a long-horizon agent's action channel, and operationalizes the knowledge--action gap as a
-\emph{layer} gap with a \emph{bidirectional} late lever --- consistent with the arc's detection$\neq$control
-thesis and with mechanistic-corrigibility framings of pausing before irreversible actions.
+\paragraph{Relation to prior work.} This extends activation steering / patching~\cite{actadd,repe} from
+single-turn representations to a long-horizon agent's action channel, and operationalizes the knowledge--action
+gap as a \emph{layer} gap with a \emph{bidirectional} late lever. Our use of \emph{circuit-breaker} is a
+safety-interlock metaphor and is methodologically distinct from the training-time \emph{Representation
+Rerouting} of Zou et al.~\cite{circuitbreakers}, which fine-tunes a model so harmful \emph{content}
+representations become incoherent; we instead apply a single \emph{inference-time}, late-layer patch at an
+agent's \emph{action}-commitment point, with no fine-tuning. The brake direction is related to the refusal
+direction~\cite{refusaldir} but the steered quantity is the agent's \emph{action commitment} (redirecting a
+committal action to a reversible one) rather than a generic refusal. The result is consistent with the arc's
+detection$\neq$control thesis and with mechanistic-corrigibility framings of pausing before irreversible
+actions.
 
 \section{Conclusion}
 The late action-commitment lever is not specific to termination and is not one-directional: a single
@@ -289,6 +296,8 @@ released at \href{https://openinterp.org/research}{openinterp.org/research} and 
 \bibitem{logitlens} nostalgebraist. Interpreting GPT: the Logit Lens. LessWrong, 2020.
 \bibitem{mcnemar} Q.~McNemar. Note on the sampling error of the difference between correlated proportions or percentages. Psychometrika, 12(2):153--157, 1947.
 \bibitem{holm} S.~Holm. A Simple Sequentially Rejective Multiple Test Procedure. Scandinavian Journal of Statistics, 6(2):65--70, 1979.
+\bibitem{circuitbreakers} A.~Zou et al. Improving Alignment and Robustness with Circuit Breakers. NeurIPS 2024. arXiv:2406.04313.
+\bibitem{refusaldir} A.~Arditi, O.~Obeso, A.~Syed, D.~Paleka, N.~Panickssery, W.~Gurnee, N.~Nanda. Refusal in Language Models Is Mediated by a Single Direction. NeurIPS 2024. arXiv:2406.11717.
 \end{thebibliography}
 
 \end{document}

@@ -246,7 +246,14 @@ overclaims; we release it alongside the paper.
 
 \paragraph{Relation to prior work.} This extends activation steering / patching~\cite{actadd,repe} from
 single-turn representations to a long-horizon agent's action channel, and operationalizes the knowledge--action
-gap as a \emph{layer} gap with a \emph{bidirectional} late lever --- consistent with recent work's
+gap as a \emph{layer} gap with a \emph{bidirectional} late lever. Our use of the term \emph{circuit-breaker}
+is a safety-interlock metaphor and is methodologically distinct from the training-time
+\emph{Representation Rerouting} of \citet{circuitbreakers}, which fine-tunes a model so that harmful
+\emph{content} representations become incoherent; we instead apply a single \emph{inference-time}, late-layer
+patch at an agent's \emph{action}-commitment point, with no fine-tuning. The brake direction is related to the
+refusal direction of \citet{refusaldir} --- erasing/adding a single direction to suppress or elicit a behavior
+--- but here the steered quantity is the agent's \emph{action commitment} (redirecting a committal action to a
+reversible one) rather than a generic refusal of harmful text. The result is consistent with the
 detection$\neq$control thesis and with mechanistic-corrigibility framings of pausing before irreversible
 actions.
 
