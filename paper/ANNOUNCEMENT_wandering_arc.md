@@ -9,6 +9,7 @@ Permanent links:
 - companion note ("No Better Than Behavioral") https://doi.org/10.5281/zenodo.20500053
 - #5 capstone ("The Verdict Is Not the Lever") https://doi.org/10.5281/zenodo.20532769
 - **#6 first positive ("The Lever Is Late") https://doi.org/10.5281/zenodo.20534219**
+- **#7 circuit-breaker capstone ("The Lever Generalizes — and It Brakes") https://doi.org/10.5281/zenodo.20634838**
 - 🛠 tool `decision-locator` (pip-installable) https://github.com/OpenInterpretability/decision-locator
 - arc mirror https://huggingface.co/datasets/caiovicentino1/wandering-arc-papers
 - code https://github.com/OpenInterpretability/openinterp-swebench-harness
@@ -62,6 +63,11 @@ doi.org/10.5281/zenodo.20534219
 🛠 tool: github.com/OpenInterpretability/decision-locator  (`pip install` + `decision-locator demo`)
 💻 code: github.com/OpenInterpretability/openinterp-swebench-harness
 Honest nulls + the positive that resolves them, all pre-registered. Feedback welcome.
+
+**14/** (addendum, 2026-06-10) Paper #7 — "The Lever Generalizes — and It Brakes" (the circuit-breaker capstone).
+Is the late lever specific to `finish`, or the action channel? We test a 2nd decision — commit an edit vs keep exploring. The same task-matched late patch **elicits** a real edit (0.23→0.77) AND **brakes** one (0.48→**0.02**, 96% off). Monotonic + bidirectional (elicit c=0, brake b=0; 7/7 Holm-sig). Geometry replicates on Mistral-7B + 24B.
+The mechanism a safety circuit-breaker needs: one late patch blocks an action at its commit point. (Proxy = undoable edit; irreversible send_tx is next.)
+doi.org/10.5281/zenodo.20634838
 
 ---
 
