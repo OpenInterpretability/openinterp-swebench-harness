@@ -94,6 +94,25 @@ def capture_z():
 def _WO():
     return _oproj().weight.detach().float().cpu()
 
+def _oproj_apply(dz_masked):
+    """Σ_{h∈mask} c_h = o_proj(mask·Δz)  (o_proj linear, no bias) — offload-robust (calls the module,
+    so accelerate's hook materializes an offloaded weight; avoids reading a meta tensor)."""
+    op = _oproj()
+    with torch.no_grad():
+        out = op(dz_masked.to(S.S["model"].device, torch.bfloat16).unsqueeze(0))
+    return out[0].detach().float().cpu()
+
+def _mask_dz(heads, j, i):
+    hd = H["head_dim"]
+    dz = (S.S["E_z"][j] - S.S["B_z"][i]).clone()
+    m = torch.zeros_like(dz)
+    for h in heads:
+        m[h * hd:(h + 1) * hd] = 1.0
+    return dz * m
+
+def _delta_heads(heads, j, i):
+    return _oproj_apply(_mask_dz(heads, j, i))
+
 # donor=same-repo edit (elicit); point=bash
 def _meanΔz():
     dz = []
@@ -123,7 +142,7 @@ def _head_delta(WO, hd, h, j, i):
 
 # ----------------------------------------------------- causal ΔP per head (elicit, all heads)
 def run_heads():
-    nh, hd = H["n_heads"], H["head_dim"]; WO = _WO()
+    nh = H["n_heads"]
     H.setdefault("dp_head", {})
     for h in range(nh):
         key = str(h)
@@ -131,24 +150,17 @@ def run_heads():
         dps = []
         for i, r in enumerate(S.S["BASH"]):
             j = D._edit_idx(r, i)
-            dps.append(D._dp(r["ids"], LH, _head_delta(WO, hd, h, j, i)) - r["baseP_edit"])
+            dps.append(D._dp(r["ids"], LH, _delta_heads([h], j, i)) - r["baseP_edit"])
         H["dp_head"][key] = {"mean": float(np.mean(dps)), "per": [float(x) for x in dps]}
         save_h(); log(f"head {h:2d}: meanΔP {np.mean(dps):+.3f}")
     log("RUN_HEADS_OK")
-
-def _cum_delta(WO, hd, heads, j, i):
-    d = torch.zeros(WO.shape[0])
-    for h in heads:
-        sl = slice(h * hd, (h + 1) * hd)
-        d = d + WO[:, sl] @ (S.S["E_z"][j][sl] - S.S["B_z"][i][sl])
-    return d
 
 def _ranked_heads():
     return [int(k) for k, _ in sorted(H["dp_head"].items(), key=lambda kv: -kv[1]["mean"])]
 
 # ----------------------------------------------------- cumulative top-k + all (sanity) + random ctl
 def run_cumulative():
-    nh, hd = H["n_heads"], H["head_dim"]; WO = _WO()
+    nh = H["n_heads"]
     order = _ranked_heads()
     H.setdefault("dp_cum", {})
     sets = {f"top{k}": order[:k] for k in (1, 2, 3, 5, 8)}
@@ -158,7 +170,7 @@ def run_cumulative():
         dps = []
         for i, r in enumerate(S.S["BASH"]):
             j = D._edit_idx(r, i)
-            dps.append(D._dp(r["ids"], LH, _cum_delta(WO, hd, heads, j, i)) - r["baseP_edit"])
+            dps.append(D._dp(r["ids"], LH, _delta_heads(heads, j, i)) - r["baseP_edit"])
         H["dp_cum"][name] = {"mean": float(np.mean(dps)), "per": [float(x) for x in dps], "heads": heads}
         save_h(); log(f"cum {name} ({len(heads)} heads): meanΔP {np.mean(dps):+.3f}")
     # direction control: top head with cross-repo donor
@@ -166,13 +178,13 @@ def run_cumulative():
         htop = order[0]; dps = []
         for i, r in enumerate(S.S["BASH"]):
             j = D._xt_edit_idx(r, i)
-            dps.append(D._dp(r["ids"], LH, _head_delta(WO, hd, htop, j, i)) - r["baseP_edit"])
+            dps.append(D._dp(r["ids"], LH, _delta_heads([htop], j, i)) - r["baseP_edit"])
         H["dp_cum"]["topctl"] = {"mean": float(np.mean(dps)), "per": [float(x) for x in dps], "head": htop}
         save_h(); log(f"cum topctl (head {htop}, cross-repo donor): meanΔP {np.mean(dps):+.3f}")
     log("RUN_CUM_OK")
 
 def run_emit():
-    nh, hd = H["n_heads"], H["head_dim"]; WO = _WO()
+    nh = H["n_heads"]
     order = _ranked_heads()
     H.setdefault("emit", {})
     for name, heads in (("top3", order[:3]), ("top5", order[:5]), ("all", list(range(nh)))):
@@ -180,7 +192,7 @@ def run_emit():
         hits = 0; per = []
         for i, r in enumerate(S.S["BASH"]):
             j = D._edit_idx(r, i)
-            cont = D._gen_add(r["ids"], LH, _cum_delta(WO, hd, heads, j, i))
+            cont = D._gen_add(r["ids"], LH, _delta_heads(heads, j, i))
             ok = int(S._emits(cont, TARGET)); hits += ok; per.append(ok)
         H["emit"][name] = {"rate": hits / len(S.S["BASH"]), "per": per, "heads": heads}
         save_h(); log(f"emit {name}: rate {hits/len(S.S['BASH']):.2f}")
