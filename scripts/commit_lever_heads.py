@@ -158,6 +158,29 @@ def run_heads():
 def _ranked_heads():
     return [int(k) for k, _ in sorted(H["dp_head"].items(), key=lambda kv: -kv[1]["mean"])]
 
+# ----------------------------------------------------- brake per-head control (EDIT pts, bash donor)
+def _delta_heads_brake(heads, bdj, i):
+    hd = H["head_dim"]
+    dz = (S.S["B_z"][bdj] - S.S["E_z"][i]).clone()
+    m = torch.zeros_like(dz)
+    for h in heads:
+        m[h * hd:(h + 1) * hd] = 1.0
+    return _oproj_apply(dz * m)
+
+def run_heads_brake():
+    nh = H["n_heads"]
+    H.setdefault("dp_head_brake", {})
+    for h in range(nh):
+        key = str(h)
+        if key in H["dp_head_brake"]: log(f"brake head {h} skip"); continue
+        dps = []
+        for i, r in enumerate(S.S["EDIT"]):
+            bdj = D._bash_idx(r, i)
+            dps.append(D._dp(r["ids"], LH, _delta_heads_brake([h], bdj, i)) - r["baseP_edit"])
+        H["dp_head_brake"][key] = {"mean": float(np.mean(dps)), "per": [float(x) for x in dps]}
+        save_h(); log(f"brake head {h:2d}: meanΔP {np.mean(dps):+.3f}")
+    log("RUN_HEADS_BRAKE_OK")
+
 # ----------------------------------------------------- cumulative top-k + all (sanity) + random ctl
 def run_cumulative():
     nh = H["n_heads"]
