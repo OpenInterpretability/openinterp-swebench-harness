@@ -22,7 +22,7 @@ does not saturate).
 | **gpt-oss-20b** | 0.86 / 0.08 | 0.79 (late, unsaturated) | **+0.218** | +0.050 | ~8/64 heads = 0.228≈all | **clear, attn≫mlp 4:1** |
 | Llama-3.1-8B | 1.00 / 0.04 | 0.96 (saturates) | +0.033 | +0.000 | head27=0.047>all; top3=0.074 | faint, structure-consistent |
 | Mistral-Small-24B | 0.95 / 0.01 | 0.95 (saturates early) | +0.003 | +0.001 | all ~0 | nil (decision upstream) |
-| gemma-4-31B-it | **0.00 / 0.00** | 0.00 | 0.00 | 0.00 | — | **fidelity gate FAILED** |
+| gemma-4-31B-it | **0.00 / 0.00** | 0.00 | 0.00 | 0.00 | — | always-`bash` (no contrast) |
 
 ## Findings (honest)
 1. **The LEVER replicates broadly.** In Mistral, Llama, and gpt-oss the edit/explore fidelity gate passes and
@@ -43,9 +43,12 @@ does not saturate).
 ## Honest verdict
 **Partial, structure-consistent cross-model corroboration, not a clean universal law.** The lever generalizes
 to 4 families (already published); the sparse attention-head *circuit* replicates clearly in gpt-oss and faintly
-in Llama, is untestable in Mistral (synthetic decision upstream), and **could not be measured in Gemma 4**
-(its reasoning-channel chat template + bash-prone behavior fail the fidelity gate; the synthetic edit-context
-does not induce an edit, so there is no edit/explore contrast to decompose). A full cross-model circuit claim
+in Llama, is untestable in Mistral (synthetic decision upstream), and **could not be measured in Gemma 4**. For Gemma 4
+we adapted the harness to its native reasoning format (`tools=` template + `<|tool_call>call:` force; after the
+fix `bash` is the clean top tool token, so the *format* probe works), but Gemma 4 predicts **`bash` in both the
+edit- and explore-context** — it is exploration-conservative and does not commit an edit in the synthetic
+single-turn setup, so there is no edit/explore contrast to decompose (a behavioral, not format, limitation).
+A full cross-model circuit claim
 needs **real per-model agent-trajectory decision points** (the late-decision regime), not synthetic contexts —
 the named next step.
 
