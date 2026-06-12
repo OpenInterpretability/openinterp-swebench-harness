@@ -24,7 +24,7 @@ MODEL_ID = os.environ.get("MODEL", "mistralai/Mistral-Small-24B-Instruct-2501")
 N = int(os.environ.get("N", "20"))
 SAFE = MODEL_ID.split("/")[-1]
 REPO = "caiovicentino1/swebench-phase6-verdict-circuit"
-RFILE = f"results/cross_circuit_{SAFE}.json"
+RFILE = f"results/cross_circuit_v2_{SAFE}.json"
 def log(*a): print(f"[{time.strftime('%H:%M:%S')}]", *a, flush=True)
 def _tok(): return os.environ.get("HF_TOKEN") or None
 
@@ -77,9 +77,11 @@ def mlpmod(L): return lyr(L).mlp
 
 def decision_ids(t, mode):
     if mode == "bash":
+        # on-the-fence: model has explored a bit, has a plausible-but-unconfirmed cause -> genuinely deciding LATE
         msgs = [{"role": "system", "content": SYS},
-                {"role": "user", "content": t[:5500] +
-                 "\n\n[This is your FIRST action. You have NOT explored the repository or reproduced the failure yet.]"}]
+                {"role": "user", "content": t[:5500]},
+                {"role": "assistant", "content": '{"tool": "bash", "args": {"command": "grep -rn failing_symbol src/"}}'},
+                {"role": "user", "content": "[tool result] The failing symbol appears in 3 files; a root cause is plausible but NOT yet confirmed. You could edit a likely spot now, or run one more check first."}]
     else:
         msgs = [{"role": "system", "content": SYS},
                 {"role": "user", "content": t[:5500]},
@@ -166,12 +168,15 @@ E, B = globals()["_E"], globals()["_B"]
 # ---------------- LOCATE late layer L* by residual-donor writability
 late = [L for L in range(int(NL * 0.66), NL) if L % max(1, (NL - int(NL * 0.66)) // 6) == 0]
 if "locate" not in R:
-    loc = {}
+    loc_full, loc_attn = {}, {}
     for L in late:
-        zE = [cap_zmy(E[j]["ids"], L)[2] for j in range(N)]  # y_edit donors
-        d = [dP_with(B[j]["ids"], B[j]["pe"], (lambda L=L, j=j, y=zE[j]: lambda: _set_layer_out(L, y))()) for j in range(N)]
-        loc[L] = float(np.mean(d)); log(f"  locate L{L}: full-residual dP {loc[L]:+.3f}")
-    R["locate"] = loc; R["L_star"] = int(max(loc, key=loc.get)); save()
+        caps = [cap_zmy(E[j]["ids"], L) for j in range(N)]  # (z,m,y) edit donors
+        df = [dP_with(B[j]["ids"], B[j]["pe"], (lambda L=L, y=caps[j][2]: lambda: _set_layer_out(L, y))()) for j in range(N)]
+        da = [dP_with(B[j]["ids"], B[j]["pe"], (lambda L=L, z=caps[j][0]: lambda: _set_oproj_in(L, z))()) for j in range(N)]
+        loc_full[L] = float(np.mean(df)); loc_attn[L] = float(np.mean(da))
+        log(f"  locate L{L}: full {loc_full[L]:+.3f} | attn-channel {loc_attn[L]:+.3f}")
+    R["locate"] = {"full": loc_full, "attn": loc_attn}
+    R["L_star"] = int(max(loc_attn, key=loc_attn.get)); save()   # where ATTENTION writes, not where full saturates
 Ls = R["L_star"]; log("L* =", Ls)
 
 # capture z,m,y at L* for all rows
