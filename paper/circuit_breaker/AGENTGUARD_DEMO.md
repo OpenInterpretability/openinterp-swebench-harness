@@ -56,8 +56,14 @@ attacker-controlled page that hides `send_transaction(to=0xATTACKER...)`.
   irreversible crypto-agent action**, packaged as a reproducible demo, plus the **dual-use** framing.
 - **The attack** (activation steering to force a harmful action) is in the line of *The Rogue Scalpel*
   (steering compromises safety) / refusal-direction work — applied here to an *irreversible tool call*.
-- **AUROC 1.0 is in-distribution** on constructed scenarios (the same templates seed the detector). Real-world
-  injections vary → an honest benchmark + n-scaling + a 2nd model is the next step before any product claim.
+- **The detector is credible, not an in-distribution artifact** (InjectionDetect eval, `scripts/injectiondetect_eval.py`,
+  n=100/condition, 5 injection styles, `scripts/injectiondetect_fig.png`): **leave-one-injection-style-out AUROC
+  0.99 @L43** (train on 4 styles, catch the unseen 5th: html 1.0 / email 0.98 / discord 1.0 / contract 0.998 /
+  memory 0.99 → it reads provenance, not one template's surface), **surface-controlled AUROC 1.0** (legit-with-
+  pasted-content vs injected), **TPR 0.98 @ 1% FPR** (deployable). Best layer L43 (mid-stack), consistent with
+  the pilots. Remaining honest caveats: **single model** (cross-model untested — the direction is model-specific);
+  **adaptive / activation-obfuscation attacks untested** (cf. *Obfuscated Activations Bypass Latent-Space
+  Defenses*, 2412.09565) — a static held-out-style probe is not an adaptive-attacker guarantee.
 - **The mechanistic brake is fragile** (it degenerates — the paper-#2 dose-crash), so the deployable defense is
   **detect → hard gate**, not activation braking. The brake stays a research curiosity.
 - **Threat is white-box** (open weights + activation access) → the relevant segment is **self-hosted /
