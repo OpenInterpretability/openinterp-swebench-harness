@@ -62,9 +62,9 @@ alone (head-split reconstruction relative error $0.0015$). The result is \emph{s
 $+0.122,+0.119,+0.083$ while the rest are $\approx 0$ or negative, and the top three together
 ($\Delta P{=}{+}0.262$) \emph{exceed} all 24 heads jointly ($+0.224$) because an opposing set ($16,19,21,\dots$,
 each $-0.01$ to $-0.03$) partially cancels them --- a small push--pull circuit, not a diffuse sum
-(Figure~\ref{fig:heads}). Behaviorally the three heads alone lift emission $0.23\!\to\!0.42$ ($\sim$89\% of the
-full attention channel's $0.45$), and they are direction-specific (head 8 task-matched $+0.121$ vs.\ cross-repo
-$+0.077$). Geometric write-magnitude \emph{misleads}: the largest writer along the attention direction (head 21,
+(Figure~\ref{fig:heads}). Behaviorally the three heads alone lift emission $0.23\!\to\!0.42$ --- $89\%$ of the
+all-24-heads rate ($0.47$) and near the attention channel's $0.45$ --- and they are direction-specific (head 8
+task-matched $+0.121$ vs.\ cross-repo $+0.077$). Geometric write-magnitude \emph{misleads}: the largest writer along the attention direction (head 21,
 projection $14.0$) is causally an \emph{opponent} ($-0.014$) --- only the patch tells the truth. The brake,
 re-scanned per head, has \emph{no} head locus and is not a cancellation either (all 24 heads in $[-0.005,+0.012]$),
 so the elicit/brake asymmetry holds all the way down to head resolution.
@@ -96,8 +96,8 @@ push, a few oppose. Right: cumulative recovery; three heads reach (and exceed) t
 At the decision token the commit heads attend \emph{globally} (low locality, $\sim$0.10--0.16 of mass in the last
 128 keys) to the trajectory's \emph{tool-call history} --- the tool names \texttt{bash} and
 \texttt{str\_replace\_editor} and the call's JSON scaffold --- not to any semantic ``task done'' verdict. This is
-an induction/copy signature~\cite{induction}: the late decision promotes a tool name from the pattern of prior
-calls. We tested necessity by ablation~\cite{ioi}. The ideal head-edge knockout (recomputing $o_h=a_h V_h$) is
+the attention signature of an induction/copy mechanism~\cite{induction}: the late decision promotes a tool name
+from the pattern of prior calls. We tested necessity by ablation~\cite{ioi}. The ideal head-edge knockout (recomputing $o_h=a_h V_h$) is
 blocked here: Qwen3.6's full attention is \emph{output-gated} ($z_h = g_h\!\odot\!(a_h V_h)$; the ungated
 reconstruction fails, relerr $1.7$--$2.4$), so we instead ablate the \emph{source content}, mean-patching the L59
 key/value at the tool-name positions. The agent's tool choice is then causally specific to each tool's name
