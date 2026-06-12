@@ -24,7 +24,17 @@ MODEL_ID = os.environ.get("MODEL", "mistralai/Mistral-Small-24B-Instruct-2501")
 N = int(os.environ.get("N", "20"))
 SAFE = MODEL_ID.split("/")[-1]
 REPO = "caiovicentino1/swebench-phase6-verdict-circuit"
-RFILE = f"results/cross_circuit_v2_{SAFE}.json"
+RFILE = f"results/cross_circuit_v3_{SAFE}.json" if "gemma" in MODEL_ID.lower() else f"results/cross_circuit_v2_{SAFE}.json"
+IS_GEMMA = "gemma" in MODEL_ID.lower()
+TOOLS_SPEC = [
+    {"type": "function", "function": {"name": "bash", "description": "Run a shell command (reversible exploration).",
+        "parameters": {"type": "object", "properties": {"command": {"type": "string"}}, "required": ["command"]}}},
+    {"type": "function", "function": {"name": "edit", "description": "Modify a file. This COMMITS a change.",
+        "parameters": {"type": "object", "properties": {"path": {"type": "string"}}, "required": ["path"]}}},
+    {"type": "function", "function": {"name": "finish", "description": "Submit the solution.",
+        "parameters": {"type": "object", "properties": {}, "required": []}}},
+]
+GEMMA_FORCE = "<|tool_call>call:"   # Gemma 4 native tool-call format (after the empty thought channel)
 def log(*a): print(f"[{time.strftime('%H:%M:%S')}]", *a, flush=True)
 def _tok(): return os.environ.get("HF_TOKEN") or None
 
@@ -76,6 +86,22 @@ def oproj(L): return lyr(L).self_attn.o_proj
 def mlpmod(L): return lyr(L).mlp
 
 def decision_ids(t, mode):
+    if IS_GEMMA:
+        sysmsg = "You are an autonomous coding agent solving a software issue. Decide the single next tool to call."
+        if mode == "bash":
+            msgs = [{"role": "system", "content": sysmsg}, {"role": "user", "content": t[:5500]},
+                    {"role": "assistant", "tool_calls": [{"type": "function", "function": {"name": "bash", "arguments": {"command": "grep -rn failing_symbol src/"}}}]},
+                    {"role": "tool", "name": "bash", "content": "The failing symbol appears in 3 files; a root cause is plausible but NOT yet confirmed. You could edit a likely spot now, or run one more check first."}]
+        else:
+            msgs = [{"role": "system", "content": sysmsg}, {"role": "user", "content": t[:5500]},
+                    {"role": "assistant", "tool_calls": [{"type": "function", "function": {"name": "bash", "arguments": {"command": "grep -rn failing_symbol; sed -n 1,80p src/file.py"}}}]},
+                    {"role": "tool", "name": "bash", "content": "Reproduced the failure and located the root cause: " + t[:200] + " ... The fix is clear; nothing left to explore."}]
+        try:
+            prefix = tok.apply_chat_template(msgs, tools=TOOLS_SPEC, add_generation_prompt=True, tokenize=False)
+        except Exception:
+            prefix = tok.apply_chat_template(msgs, add_generation_prompt=True, tokenize=False)
+        ids = tok(prefix + GEMMA_FORCE, add_special_tokens=False).input_ids
+        return torch.tensor([ids[-3500:]])
     if mode == "bash":
         # on-the-fence: model has explored a bit, has a plausible-but-unconfirmed cause -> genuinely deciding LATE
         msgs = [{"role": "system", "content": SYS},
