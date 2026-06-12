@@ -1,5 +1,12 @@
 # AgentGuard — white-box attack & defense on a self-hosted wallet agent (demo)
 
+> **🔴 HELD — DO NOT PUBLISH (decided 2026-06-11).** The adaptive-attack red-team (§ below) turned the
+> "robust defense" thesis into a **null product result**: the model self-defends against text injection
+> (hijack 0/12) and the only attacker that drains (white-box activations) trivially evades the single linear
+> probe (1.0→0.0). A null doesn't get a demo. This file is kept **only as an honest internal record** of the
+> walk-back. The X thread below was **never posted** and stays unposted. The science that survives is the
+> paper-#7 lever, not this product line.
+
 A runnable, narratable demo (not a novelty claim). Code: `scripts/agentguard_demo.py`. Figure:
 `scripts/agentguard_demo_fig.png`. Model: Qwen/Qwen3.6-27B (open-weight, self-hosted on one Colab G4).
 
