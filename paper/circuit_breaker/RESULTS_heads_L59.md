@@ -49,8 +49,20 @@ is, one level deeper, written by a **sparse ~3-head push circuit (heads 8/6/3)**
 counter-set, in a single full-attention layer of a hybrid linear/full stack. This is a concrete, sparse,
 causally-verified circuit for an agent's decision to commit an action.
 
+## Brake control (per-head, all 24, EDIT points × bash donor)
+Mirror scan on the **brake** direction: **every head ≈ 0** — range [−0.005, +0.012], max |ΔP| = 0.012,
+mean ≈ 0.0004 (vs elicit top heads +0.122/+0.119/+0.083). So the brake has **no head locus and is not a
+cancellation** of large opposing heads either (no head exceeds ±0.012). This confirms, at head resolution,
+the sublayer-level finding that the brake is a distributed/upstream residual effect — the elicit/brake
+asymmetry holds all the way down: **elicit = a sparse 3-head push circuit; brake = no attention-head locus.**
+
+## What the commit heads attend to (companion: RESULTS_attn_L59.md)
+At the decision token, heads 8/6/3 attend **globally** (low locality) to the trajectory's **tool-call history**
+— the tool names `bash` / `str_replace_editor` and the function-call JSON scaffold — *not* a semantic "task
+done" verdict. Induction/copy-style promotion of a tool name. Opponents read slightly different syntactic
+targets. (Honest caveat: graded, top-token aggregate, not an attention-knockout.)
+
 ## Caveats
 Single model, single decision position, n=60. Heads ranked by mean ΔP (per-row variance not modeled into the
-ranking). We did not decompose Q/K/V or trace what heads 8/6/3 attend to (the natural next step: do they read
-the consolidated verdict tokens?). The brake direction has no attention locus (prior level), so no head circuit
-there. Figure: `figures/fig_heads_L59.png`.
+ranking). Q/K/V not decomposed; attention characterized by top-token aggregate, not causal attention-knockout.
+Figure: `figures/fig_heads_L59.png`.
