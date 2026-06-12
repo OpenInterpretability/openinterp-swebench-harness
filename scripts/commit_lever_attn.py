@@ -53,13 +53,23 @@ def setup_eager():
         attn_implementation="eager").eval()
     S.load_partial(); log("SETUP_EAGER_OK")
 
+def _attn_idx():
+    """Index of L59 within out.attentions — the hybrid stack only emits attentions for full-attention layers."""
+    tc = getattr(S.S["model"].config, "text_config", S.S["model"].config)
+    lt = list(tc.layer_types)
+    full = [i for i, t in enumerate(lt) if t == "full_attention"]
+    A["_layer_types_len"] = len(lt); A["_n_full"] = len(full); A["_LH_full_idx"] = full.index(LH)
+    return full.index(LH), len(lt), len(full)
+
 def _attn_last(ids):
     """Return L59 attention of the last query row: [n_heads, k_len] (float cpu)."""
+    fidx, n_all, n_full = _attn_idx()
     with torch.no_grad():
         out = S.S["model"](input_ids=ids.to(S.S["model"].device), use_cache=False, output_attentions=True)
-    att = out.attentions[LH]
+    natt = len(out.attentions)
+    att = out.attentions[LH] if natt == n_all else out.attentions[fidx]   # full-list vs compact-list
     if att is None:
-        raise RuntimeError(f"out.attentions[{LH}] is None — eager/output_attentions not exposing weights")
+        raise RuntimeError(f"attention for L{LH} is None — eager/output_attentions not exposing weights")
     a = att[0, :, -1, :].detach().float().cpu()
     del out
     torch.cuda.empty_cache()
