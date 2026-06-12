@@ -23,6 +23,29 @@ attacker-controlled page that hides `send_transaction(to=0xATTACKER...)`.
   flags the injected transfer, and the harness gates (refuses) the call before execution. The legit
   authorized send is not flagged and proceeds.
 
+## ⚠️ Adaptive-attack result (2026-06-11) — the honest walk-back on "defense"
+We red-teamed the detector (`scripts/adaptive_attack.py`). Two findings deflate the strong "AgentGuard stops
+the drain" claim:
+1. **The model resists text injection.** Across a stealth ladder (obvious → admin → authorization-mimic →
+   natural-embedded), **natural-hijack rate = 0/12 at every level** — Qwen3.6-27B did not take the bait on any
+   indirect-injection phrasing. So the demo's "wallet DRAINED" came **only from the white-box activation
+   attack**, not from text injection. Against text injection on this model, the agent self-defends; the
+   detector isn't even exercised.
+2. **The only attacker that drains (white-box) trivially evades the probe.** Projecting out the probe direction
+   `w` at L43 drops detection **1.0 → 0.0** (the *Obfuscated Activations* limit, 2412.09565, confirmed here).
+**Net:** a single linear probe is **not a robust defense against an adaptive adversary** — it helps only
+against an attacker who can't evade it (text-space), but that attacker can't drain this model anyway; the
+attacker who can drain (white-box activations) evades the probe. **Reframe what survives:**
+- The white-box ATTACK is a real, visceral **red-team demonstration** (the drain works) — a security-awareness
+  artifact, not "we invented an attack."
+- The detector (cross-style AUROC 0.99) survives as a **forensic / observability signal** — "was an injection
+  *attempted* in this trajectory?" for logging/alerting against **non-adaptive** adversaries — NOT a real-time
+  kill-switch against an adaptive one.
+- Honest threat-model note: an attacker who can patch activations already has host/supply-chain access deeper
+  than a same-host detector can defend. So "white-box activation defense" lacks a clean threat model.
+Caveats on the test: single model + my injection phrasings + single-turn — a stronger injection or weaker model
+might hijack via text; "hijack=0" is for *this* setup, not "text injection never works."
+
 ## The 60-second clip script
 1. **Hook (0–10s):** "AI agents now hold crypto. Prompt injection already drained $245M+ in 2026. But there's
    a worse attack no guardrail is watching for — editing the agent's *mind* directly."
