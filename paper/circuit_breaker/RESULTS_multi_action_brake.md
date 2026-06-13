@@ -33,9 +33,11 @@ locate, brake-sweep (safe-donor @ L51/55/59/63 → generation-confirmed action-e
    does not (email 0.75, approve 0.69, db_drop 0.38 still commit) it fails to brake — whereas the safe donor
    always yields a **coherent safe redirect**. So the brake steers to a specific safe action; it does not just
    break the model.
-3. **The brake locus varies by action.** `send_transaction` and `delete_file` only brake at the **final layer
-   L63** (L55/L59 do not); the other four brake already at **L55**. Some irreversible actions are committed
-   later in the stack and admit only a last-layer brake — a thin margin worth noting for any real-time use.
+3. **The brake locus varies by action.** `send_transaction` and `delete_file` are the **latest**-braking:
+   `send` is already 94% braked by L59 (emit 0.06) but only **fully** suppressed (0.00) at the **final layer
+   L63**, and `delete` needs L63 outright (L59 still 0.81); the other four **fully** brake already at **L55**.
+   Some irreversible actions are committed later in the stack and admit only a last-layer **full** brake — a
+   thin margin worth noting for any real-time use.
 
 ## Verdict
 **The late action-commitment brake generalizes across six diverse irreversible agent actions** (crypto transfer
