@@ -8,7 +8,8 @@ the residual AT the tool-name decision token during free generation, multi-step 
 tools executed + fed back), and sample logging. Real os.remove in a throwaway sandbox; live L2
 interception + black-box LLM-judge. Pre-reg: PREREG_realtest_fs.md.
 """
-import os, re, json, time, shutil, tempfile
+import os, re, json, time, shutil, tempfile, subprocess, sys
+subprocess.run([sys.executable, "-m", "pip", "install", "-q", "bitsandbytes"], check=False)  # for 4-bit on L4/T4
 import torch, numpy as np
 from transformers import AutoModelForCausalLM, AutoTokenizer
 from huggingface_hub import upload_file
