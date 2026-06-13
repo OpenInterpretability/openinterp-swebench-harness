@@ -52,6 +52,18 @@ A full cross-model circuit claim
 needs **real per-model agent-trajectory decision points** (the late-decision regime), not synthetic contexts —
 the named next step.
 
+## Real-decision-points attempt (gpt-oss-20b) — honest null
+We tried to give gpt-oss **real** decision points by reconstructing the released Qwen SWE-bench trajectories
+(real tool-call history) and re-rendering them in gpt-oss's context (`scripts/cross_model_realpts.py`). The
+**fidelity gate failed and reversed**: edit-points P(edit) 0.132 < bash-points 0.169 (both low). Reason: the
+edit/bash *labels* come from **Qwen's** choices, but gpt-oss, reading the same transcript, is bash-prone and
+does not reproduce that split — **decision-point labels do not transfer across models**. So there is no clean
+edit/explore contrast and the donor-swap is invalid (a stray +0.087 attn-channel with sparse heads appears but
+on a broken contrast → not counted). **Doing real points right requires the target model's OWN agent
+trajectories** (run gpt-oss as the agent on SWE-bench), so the labels reflect its decisions — the expensive
+path. The *synthetic* gpt-oss result above (fidelity 0.86/0.08, attn 0.218) remains the cleaner evidence,
+because there the contrast was deliberately induced.
+
 ## Caveats
 N=20 synthetic contexts/model; within-model donors; the head-sparsity is read off the o_proj-input swap (not a
 generation-confirmed emit like Qwen); Gemma 4 needs per-model format adaptation. Ledgers + script released.
