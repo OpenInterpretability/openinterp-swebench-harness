@@ -16,7 +16,7 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import StratifiedKFold
 from sklearn.metrics import roc_auc_score
 
-MODEL_ID = os.environ.get("MODEL", "meta-llama/Meta-Llama-3.1-8B-Instruct")
+MODEL_ID = os.environ.get("MODEL", "openai/gpt-oss-20b")  # non-gated, different family (MoE); colab run does not pass env to VM so change this default per model
 SAFE = MODEL_ID.split("/")[-1]; REPO = "caiovicentino1/swebench-phase6-verdict-circuit"
 RFILE = f"results/agentguard_xmodel_{SAFE}.json"; NPER = 20
 def log(*a): print(f"[{time.strftime('%H:%M:%S')}]", *a, flush=True)
