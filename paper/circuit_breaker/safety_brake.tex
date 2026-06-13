@@ -115,7 +115,12 @@ it does not (\texttt{email\_send} $0.75$, \texttt{approve} $0.69$, \texttt{drop\
 fails to brake --- whereas the safe donor always yields a coherent safe redirect. \textbf{The brake locus
 varies by action:} \texttt{send\_transaction} and \texttt{delete\_file} are the \emph{latest}-braking actions
 --- \texttt{send} is already $94\%$ braked by L59 (emit $0.06$) but only \emph{fully} suppressed ($0.00$) at the
-final layer L63, and \texttt{delete} needs L63 outright --- while the other four already fully brake at L55.
+final layer L63,\footnote{The dedicated $n{=}24$ \texttt{send} test of \S\ref{sec:send} uses a different
+safe-donor construction (its own matched check-balance contexts), under which L59 does \emph{not} yet suppress
+(emission $1.00$); the per-domain battery here uses each domain's own safe-donor and already brakes \texttt{send}
+$94\%$ by L59. Both agree that \emph{full} suppression of \texttt{send} requires the final layer L63 --- the
+point of the claim --- and differ only in how much the next-to-last layer already does.} and \texttt{delete}
+needs L63 outright --- while the other four already fully brake at L55.
 Some irreversible actions are committed later in the stack and admit only a last-layer \emph{full} brake.
 
 \begin{table}[h]\centering\small
