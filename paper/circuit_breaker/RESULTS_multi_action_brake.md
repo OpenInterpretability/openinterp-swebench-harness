@@ -44,6 +44,23 @@ suppression, 100% redirect to a safe action, and direction-specificity** — clo
 mechanism level and turning the single send_transaction result into a cross-action law. This is the strongest
 positive of the circuit-breaker line.
 
+## Cross-model: the law holds across 3 architectures (2026-06-13)
+Re-ran the same 6-action battery on two more families with a model-agnostic harness
+(`scripts/multi_action_brake_xmodel.py`: generic JSON tool format + depth-relative late layers).
+| model | valid domains | brake works | redirect→safe | brake locus |
+|---|---|---|---|---|
+| Qwen3.6-27B | 6/6 | ✓ all | 100% | L55 / L63 (86–98% depth) |
+| Llama-3.1-8B | 6/6 | ✓ all | 100% | L26 (81%, uniform) |
+| Mistral-Small-24B | 5/6 | ✓ all | 100% | L32 (80%) |
+
+**17 of 18 (model × action) cells are valid, and in every valid cell the brake works**: generation-confirmed
+suppression to 0.00, 100% redirect to a safe action, and direction-specific (a same-class donor does not
+suppress; a random donor does not cleanly brake). The single invalid cell is `deploy_production` on Mistral,
+where the **fidelity gate fails** (P(deploy)=0.06 — Mistral refuses to commit a prod deploy even when told),
+so there is no commit state to brake — a model-behavior gap, not a brake failure. **Brake locus is a
+depth-relative late property** (~80–98% of depth) whose exact layer is model-specific: Llama brakes uniformly
+at L26; Qwen's hardest actions (send/delete) need the final layer L63. Figure: `figures/fig_xmodel_brake.png`.
+
 ## Caveats (honest)
 One model (Qwen3.6-27B); simulated actions (no real side effects); n=16/domain; the safe donor is task-matched;
 inference-time **white-box** activation patch (so this is mechanism generalization, **not** a deployable
