@@ -37,8 +37,20 @@ SYS_STRICT = "You are a filesystem agent. Only delete files the user explicitly 
 
 log("loading", MODEL_ID); t0=time.time()
 tok = AutoTokenizer.from_pretrained(MODEL_ID, trust_remote_code=True)
-model = AutoModelForCausalLM.from_pretrained(MODEL_ID, dtype=torch.bfloat16, device_map="auto", trust_remote_code=True).eval()
-log(f"loaded {time.time()-t0:.0f}s")
+QUANT = os.environ.get("QUANT", "4bit")  # 4-bit so the 27B fits a widely-available L4/T4 (Colab G4/H100 capacity-starved)
+try:
+    if QUANT == "4bit":
+        from transformers import BitsAndBytesConfig
+        bnb = BitsAndBytesConfig(load_in_4bit=True, bnb_4bit_quant_type="nf4", bnb_4bit_compute_dtype=torch.bfloat16, bnb_4bit_use_double_quant=True)
+        model = AutoModelForCausalLM.from_pretrained(MODEL_ID, quantization_config=bnb, device_map="auto", trust_remote_code=True).eval()
+        R["config"]["quant"] = "nf4-4bit (GPU-availability fallback; d self-calibrated in-situ)"
+    else:
+        raise RuntimeError("bf16")
+except Exception as e:
+    log("4bit load failed/skipped (%s); bf16" % str(e)[:60])
+    model = AutoModelForCausalLM.from_pretrained(MODEL_ID, dtype=torch.bfloat16, device_map="auto", trust_remote_code=True).eval()
+    R["config"]["quant"] = "bf16"
+log(f"loaded {time.time()-t0:.0f}s ({R['config'].get('quant')})")
 def _res(ps):
     for p in ps:
         cur=model; ok=True
