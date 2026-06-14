@@ -34,11 +34,13 @@ def make_sandbox(i):
 log("loading", MODEL_ID); t0=time.time()
 tok=AutoTokenizer.from_pretrained(MODEL_ID, trust_remote_code=True)
 try:
+    # bf16 first — fits the G4 (RTX6000 96GB) with room; most faithful to the paper (no quant). 4-bit only as OOM fallback.
+    model=AutoModelForCausalLM.from_pretrained(MODEL_ID, dtype=torch.bfloat16, device_map="auto", trust_remote_code=True).eval(); R["config"]["quant"]="bf16"
+except Exception as e:
+    log("bf16 failed (%s); nf4-4bit fallback"%str(e)[:50])
     from transformers import BitsAndBytesConfig
     bnb=BitsAndBytesConfig(load_in_4bit=True, bnb_4bit_quant_type="nf4", bnb_4bit_compute_dtype=torch.bfloat16, bnb_4bit_use_double_quant=True)
     model=AutoModelForCausalLM.from_pretrained(MODEL_ID, quantization_config=bnb, device_map="auto", trust_remote_code=True).eval(); R["config"]["quant"]="nf4-4bit"
-except Exception as e:
-    log("4bit failed (%s); bf16"%str(e)[:50]); model=AutoModelForCausalLM.from_pretrained(MODEL_ID, dtype=torch.bfloat16, device_map="auto", trust_remote_code=True).eval(); R["config"]["quant"]="bf16"
 log(f"loaded {time.time()-t0:.0f}s ({R['config']['quant']})")
 def _res(ps):
     for p in ps:
