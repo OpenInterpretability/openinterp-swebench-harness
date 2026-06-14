@@ -114,11 +114,12 @@ def cal(kind,i):
     return cap_prefill(build_prompt(m)+lead+'<tool_call>\n<function=')
 Xa=torch.stack([cal("auth",i) for i in range(16)]); Xu=torch.stack([cal("unauth",i) for i in range(16)])
 dvec=(Xa.mean(0)-Xu.mean(0)); dvec=dvec/dvec.norm(); thr=float(((Xa@dvec).mean()+(Xu@dvec).mean())/2)
-# recon sanity
+# recon sanity (W_dec is [d_sae, d_in]; want xhat = z @ W_dec + b_dec)
 xs=Xa[0]; z=sae_encode(xs.unsqueeze(0))[0]
-xhat=(z@W_dec.T if (W_dec is not None and W_dec.shape[0]==DSAE) else (z@W_dec if W_dec is not None else None))
-if xhat is not None:
-    xhat=xhat+b_dec; relerr=float(((xs-xhat).norm()/xs.norm()).cpu()); R["config"]["sae_recon_relerr"]=round(relerr,4); log("recon relerr",round(relerr,4))
+if W_dec is not None:
+    Wd = W_dec if W_dec.shape[0]==DSAE else W_dec.T   # -> [d_sae, d_in]
+    xhat = z@Wd + b_dec
+    relerr=float(((xs-xhat).norm()/xs.norm()).cpu()); R["config"]["sae_recon_relerr"]=round(relerr,4); log("recon relerr",round(relerr,4))
 log("calib thr",round(thr,3)); save()
 
 def scn_auth(i):
