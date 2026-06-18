@@ -1,0 +1,198 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true, linkcolor=blue, citecolor=blue, urlcolor=blue,
+  pdftitle={The Late Channel}, pdfauthor={Caio Vicentino}}
+\emergencystretch=3em \sloppy \hyphenpenalty=2000 \exhyphenpenalty=0 \hbadness=10000
+\usepackage{booktabs}\usepackage{amsfonts}\usepackage{amsmath}\usepackage{amssymb}
+\usepackage{xcolor}\usepackage{array}\usepackage{graphicx}
+
+\title{The Late Channel: A Single Late Layer Band Carries the Causal\\
+Content of Action \emph{and} Reasoning in a 27B Agent\\[2pt]
+\large Mechanistic chain-of-thought faithfulness as a monitoring signal}
+\author{%
+  Caio Vicentino \\ OpenInterpretability \\ Fortaleza, Brazil \\
+  ORCID: 0009-0003-4331-6259 \\ \texttt{caio@openinterp.org}}
+\date{June 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Chain-of-thought (CoT) monitorability is a leading safety bet for reasoning agents, but the question is
+\emph{behavioral}: does the written CoT predict behavior? We ask the \emph{mechanistic} version on an
+open-weight 27B reasoning model (Qwen3.6-27B) with a full-stack sparse autoencoder (SAE; 11 layers,
+$d_{\text{sae}}{=}40960$): are the SAE features active at the post-reasoning decision point \emph{causal}
+for what the model does, and \emph{where} do they live? Using a single causal-patch test
+(decode--re-encode of the CoT decision-state into a no-CoT run, controlled for SAE reconstruction error and
+against a random-feature baseline), we find a consistent picture across three decisions. (i) For the
+final \emph{answer} to hard multi-step problems ($n{=}60$, 16 CoT-flips), patching the CoT features recovers
+the reasoned answer with $\Delta\log p = +2.72\,[+2.18,+3.28]$ at L59, with the effect $\approx 0$ through
+L47 (\textsc{late} $+2.13$ vs \textsc{early} $-0.02$, disjoint 95\% CIs; 16/16 consistent). (ii) For an
+\emph{agent action} (tool call) in trap scenarios ($n{=}32$, 10 flips), the same test gives \textsc{late}
+$+1.65\,[+1.17,+2.12]$ vs \textsc{early} $+0.08$, peaking at L63. (iii) The same late band (L51--63) is where
+a prior result localizes \emph{action commitment} itself. Faithfulness is \textbf{conditional}: causal when
+the CoT changes the outcome, $\approx 0$ (performative) when the model already knew (44/60 correct with no
+CoT). We argue the late band is the natural locus for mechanistic action/answer monitoring---answering
+DeepMind's call to ``inspect the model's inner workings''---while noting (from a companion result) that this
+locus is \emph{not} adversarially robust as a control point.
+\end{abstract}
+
+\section{Introduction}
+Reasoning models expose a chain of thought, and a growing safety program proposes to \emph{monitor} it: read
+the CoT, flag bad behavior \cite{cotmon2025,baker2025}. But the CoT is text, and the field's own results show it
+is an unreliable readout of the underlying computation: models can be unfaithful \cite{turpin2023,anthropic2025},
+and monitorability degrades under optimization pressure \cite{cotmon2025,baker2025}. The position paper that
+defines the agenda explicitly defers the mechanistic route as ``requiring further breakthroughs''
+\cite{cotmon2025}. Concurrently, Google DeepMind's agent-security roadmap states that ``reading their verbalized
+reasoning will not be enough'' and that securing agents ``will need to \ldots inspect the model's inner
+workings'' \cite{deepmind2026}.
+
+This paper takes the mechanistic route. We ask, on a single open-weight 27B reasoning model with a full-stack
+SAE: \emph{are the features active during/after reasoning causal for the model's answer and action, and where
+do they live?} Our contribution is a unifying empirical law---\textbf{the late channel}---and a method.
+
+\paragraph{Contributions.}
+\begin{itemize}
+  \item A single causal-patch test (\S\ref{sec:method}) for mechanistic faithfulness that controls for SAE
+  reconstruction error and a random-feature baseline---an application of a causal-rigor protocol from prior work.
+  \item \textbf{Reasoning faithfulness is causal and late} (\S\ref{sec:tierA}): CoT decision-state features
+  causally drive the answer (peak $+2.72\log p$ at L59), $\approx 0$ before L51, and \emph{conditional}---causal
+  only when the CoT changes the answer; performative otherwise.
+  \item \textbf{It holds for agent actions} (\S\ref{sec:tierB}): the same late, causal pattern governs tool-call
+  decisions in agent-trap scenarios.
+  \item \textbf{The three-faced law} (\S\ref{sec:unified}): the same late band (L51--63) carries the causal
+  content of action commitment, reasoned answers, and reasoned agent actions---a single monitoring locus.
+  \item An honest boundary (\S\ref{sec:disc}): the late band is a good \emph{monitor} but, per a companion
+  result, \emph{not} an adversarially-robust \emph{control} point.
+\end{itemize}
+
+\section{Related work}
+\textbf{Behavioral CoT faithfulness} is well studied and behavioral-only: unfaithfulness via input-perturbation
+\cite{turpin2023}, reasoning-model hint-omission \cite{anthropic2025}, in-the-wild measurement, and the
+monitorability position \cite{cotmon2025}---none open the model. \textbf{Mechanistic faithfulness} via
+SAEs+activation patching has been shown on \emph{Pythia-2.8B base} \cite{chen2025}, finding causality is
+scale-dependent (null at 70M, causal at 2.8B); we extend this to a 27B native \emph{reasoning} model.
+\textbf{Internal monitoring beats text}: residual-stream probes match/beat a full-trace CoT monitor
+\cite{mirtaheri2026}, and attention probes predict the answer early (``performative reasoning'')
+\cite{goodfire2026}---both \emph{correlational}; we test \emph{causally} with named SAE features and on agent
+\emph{actions}. \textbf{The action lever} (this arc): control of the \texttt{finish}/commit decision lives in a
+late action-commitment band, not the mid-layer verdict \cite{leverlate,levergen}.
+
+\section{Method}\label{sec:method}
+\textbf{Model \& SAE.} Qwen3.6-27B (64 layers, reasoning/``thinking'' mode), bf16. A full-stack TopK SAE
+($d_{\text{sae}}{=}40960$, $k{=}128$) trained on 11 layers $\{15,19,23,27,35,39,43,47,51,59,63\}$; encode
+$z=\mathrm{TopK}(\mathrm{ReLU}((x-b_{\text{dec}})W_{\text{enc}}+b_{\text{enc}}))$, decode $\hat x=zW_{\text{dec}}+b_{\text{dec}}$.
+
+\textbf{The causal-patch test.} For a decision, we run the model \emph{with} CoT (it thinks, then a forced slot
+elicits the answer/tool token) and \emph{without} CoT (direct answer). We keep items where the CoT
+\emph{flips} the no-CoT outcome (so the reasoning does work). At each SAE layer $L$, we encode the residual at
+the CoT decision point to $z_{\text{cot}}$, and in the \emph{no-CoT} forward replace the decision-point residual
+with $\hat x(z_{\text{cot}})$; we measure $\Delta\log p$ of the CoT-outcome token. The clean causal signal is
+$d_{\text{cot}}-d_{\text{self}}$, where $d_{\text{self}}$ patches the no-CoT features' own reconstruction
+(controls for SAE recon error); the noise control is $d_{\text{rnd}}-d_{\text{self}}$ with a random
+top-$k$ feature set of matched magnitude. Outcomes are confirmed behaviorally (forced-slot argmax), paired per
+item, with bootstrap 95\% CIs over flipped items. This is the causal-rigor protocol of \cite{leverlate} applied
+to features.
+
+\section{Reasoning faithfulness is causal and late}\label{sec:tierA}
+We use 60 hard multi-step problems (serial arithmetic / counterintuitive / code traps) as MCQs with options
+shuffled per item; 16 flip the no-CoT answer; in 44/60 the model is \emph{already correct without any CoT}.
+Table~\ref{tab:tierA} reports the per-layer causal signal over the 16 flipped items.
+
+\begin{table}[h]\centering\small
+\begin{tabular}{lrr}
+\toprule
+Layer & causal $d_{\text{cot}}-d_{\text{self}}$ [95\% CI] & noise $d_{\text{rnd}}-d_{\text{self}}$\\
+\midrule
+L15--L43 & $\approx 0$ (CIs cross 0) & $-8$ to $-10$\\
+L47 & $+0.17\,[+0.03,+0.29]$ & $-10.5$\\
+L51 & $+1.55\,[+1.28,+1.85]$ & $-11.3$\\
+\textbf{L59} & $\mathbf{+2.72\,[+2.18,+3.28]}$ & $-10.5$\\
+L63 & $+2.12\,[+1.62,+2.61]$ & $-12.1$\\
+\midrule
+\textsc{late} (L51--63) & $+2.13\,[+1.83,+2.41]$ & \\
+\textsc{early} (L15--27) & $-0.02\,[-0.05,+0.01]$ & \\
+\bottomrule
+\end{tabular}
+\caption{Tier-A (answers, $n{=}60$, 16 flips). The causal signal is $\approx 0$ through L47 and concentrates in
+L51--63 (\textsc{late} vs \textsc{early} CIs disjoint); L59 causal $>0$ in 16/16 flipped items (min $+0.60$, max
+$+4.81$). Random patches destroy the answer at every layer.}\label{tab:tierA}
+\end{table}
+
+\textbf{Faithfulness is conditional.} The patch only matters where the CoT changes the answer. In the 44/60
+items the model already answers correctly without thinking, the late causal signal is small---the written CoT is
+\emph{performative}, the mechanistic version of \cite{goodfire2026}'s ``reasoning theater'', now measured causally.
+
+\section{It holds for agent actions}\label{sec:tierB}
+We repeat the test where the ``answer'' is a committed tool call. 32 agent-trap scenarios across four domains
+(crypto/files/db/deploy): the surface instruction suggests an irreversible action
+(\texttt{send/delete/drop/deploy}); a detail suggests a safe one. 10 flip. Table~\ref{tab:tierB} shows the same
+late, causal pattern.
+
+\begin{table}[h]\centering\small
+\begin{tabular}{lr}
+\toprule
+Layer & causal $d_{\text{cot}}-d_{\text{self}}$ (10 flips)\\
+\midrule
+L15--L47 & $\approx 0$ ($-0.14$ to $+0.27$)\\
+L51 & $+0.84$ \\
+L59 & $+1.89$ \\
+L63 & $+2.21$ \\
+\midrule
+\textsc{late} (L51--63) & $+1.65\,[+1.17,+2.12]$\\
+\textsc{early} (L15--27) & $+0.08\,[-0.14,+0.32]$\\
+\bottomrule
+\end{tabular}
+\caption{Tier-B (agent actions, $n{=}32$, 10 flips). Same late-band concentration; CIs disjoint.}\label{tab:tierB}
+\end{table}
+
+\textbf{Behavioral side-finding.} With CoT the agent chose the \emph{cautious} (safe) action in 27/32 traps
+(only 5 irreversible)---honest reasoning acts as a safeguard on these scenarios. We note a limitation: because
+the irreversible class is small (5/32), the per-layer action-\emph{prediction} AUROC, although late-dominant and
+above a random-feature baseline, rests on too few positives to be conclusive (future work).
+
+\section{The three-faced law}\label{sec:unified}
+The same late band (L51--63) carries the causal content of three distinct things on this model: (i) action
+commitment itself \cite{leverlate,levergen}; (ii) the reasoned answer (\S\ref{sec:tierA}); (iii) the reasoned
+agent action (\S\ref{sec:tierB}). Decision-relevant information consolidates in a narrow late window, $\approx 0$
+in mid layers---a single, consistent locus for reading what the model is about to do.
+
+\section{Discussion}\label{sec:disc}
+\textbf{A monitoring locus, not a control point.} The late channel is where mechanistic monitoring should read:
+it carries the causal content and (per \cite{mirtaheri2026,goodfire2026}) predicts behavior earlier and more
+reliably than CoT text. This directly instantiates DeepMind's ``inspect inner workings'' \cite{deepmind2026} for
+a reasoning agent. \emph{However}, monitoring is not control: a companion experiment shows the same late
+action-commitment band, used as a brake, collapses under an adaptive white-box adversary (attack success
+$0\to1.0$ at a small budget that knows the locus, while a norm-matched random perturbation does nothing). The
+honest reading: the late channel is a strong \emph{auditing} signal under a non-adversarial threat model, not an
+adversarially-robust safeguard.
+
+\section{Limitations}\label{sec:lim}
+Curated stimulus sets (serial-computation MCQs; hand-built agent traps), not standard benchmarks; modest flip
+counts ($16$ and $10$)---though effects are large and 16/16 consistent in Tier-A. Single model. The patch
+substitutes the last-token decision residual. The prediction/monitoring AUROC (Tier-B) is underpowered
+(5 positives). Causal results are conditional on the CoT changing the outcome; the performative regime is the
+common case here.
+
+\section{Conclusion}
+On a 27B reasoning agent, a single late layer band carries the causal content of what the model answers and
+what it does, and that content is faithful (causal) exactly when the reasoning changes the outcome. The late
+channel is the natural locus for mechanistic monitoring of reasoning agents---and a sharper target than CoT
+text---while remaining, as a control point, adversarially brittle.
+
+\begin{thebibliography}{99}\small
+\bibitem{turpin2023} Turpin et al. Language Models Don't Always Say What They Think. NeurIPS 2023. arXiv:2305.04388.
+\bibitem{anthropic2025} Chen et al. (Anthropic). Reasoning Models Don't Always Say What They Think. 2025. arXiv:2505.05410.
+\bibitem{cotmon2025} Korbak et al. Chain-of-Thought Monitorability. 2025. arXiv:2507.11473.
+\bibitem{baker2025} Baker et al. (OpenAI). Monitoring Reasoning Models for Misbehavior\dots 2025. arXiv:2503.11926.
+\bibitem{chen2025} Chen, Plaat, van Stein. How Does Chain-of-Thought Think? \dots SAE+patching. 2025. arXiv:2507.22928.
+\bibitem{mirtaheri2026} Mirtaheri \& Belkin. Detecting motivated reasoning from internal representations. 2026. arXiv:2603.17199.
+\bibitem{goodfire2026} Goodfire. Reasoning Theater\dots performative reasoning. 2026. arXiv:2603.05488.
+\bibitem{deepmind2026} Google DeepMind. Securing the Future of AI Agents. 2026.
+\bibitem{leverlate} Vicentino. The Lever Is Late. 2026. Zenodo 10.5281/zenodo.20534219.
+\bibitem{levergen} Vicentino. The Lever Generalizes---and It Brakes. 2026. Zenodo 10.5281/zenodo.20634838.
+\end{thebibliography}
+\end{document}
