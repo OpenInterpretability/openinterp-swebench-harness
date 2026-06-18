@@ -9,9 +9,9 @@
 \usepackage{booktabs}\usepackage{amsfonts}\usepackage{amsmath}\usepackage{amssymb}
 \usepackage{xcolor}\usepackage{array}\usepackage{graphicx}
 
-\title{The Late Channel: A Single Late Layer Band Carries the Causal\\
-Content of Action \emph{and} Reasoning in a 27B Agent\\[2pt]
-\large Mechanistic chain-of-thought faithfulness as a monitoring signal}
+\title{The Late Channel: Chain-of-Thought Becomes Causal \emph{and}\\
+Decodable Only Late in a 27B Reasoning Agent\\[2pt]
+\large Mechanistic faithfulness of reasoned answers and agent actions,\\ by feature patching and logit-lens}
 \author{%
   Caio Vicentino \\ OpenInterpretability \\ Fortaleza, Brazil \\
   ORCID: 0009-0003-4331-6259 \\ \texttt{caio@openinterp.org}}
@@ -22,22 +22,24 @@ Content of Action \emph{and} Reasoning in a 27B Agent\\[2pt]
 
 \begin{abstract}
 Chain-of-thought (CoT) monitorability is a leading safety bet for reasoning agents, but the question is
-\emph{behavioral}: does the written CoT predict behavior? We ask the \emph{mechanistic} version on an
+usually \emph{behavioral}: does the written CoT predict behavior? We ask the \emph{mechanistic} version on an
 open-weight 27B reasoning model (Qwen3.6-27B) with a full-stack sparse autoencoder (SAE; 11 layers,
-$d_{\text{sae}}{=}40960$): are the SAE features active at the post-reasoning decision point \emph{causal}
-for what the model does, and \emph{where} do they live? Using a single causal-patch test
-(decode--re-encode of the CoT decision-state into a no-CoT run, controlled for SAE reconstruction error and
-against a random-feature baseline), we find a consistent picture across three decisions. (i) For the
-final \emph{answer} to hard multi-step problems ($n{=}60$, 16 CoT-flips), patching the CoT features recovers
-the reasoned answer with $\Delta\log p = +2.72\,[+2.18,+3.28]$ at L59, with the effect $\approx 0$ through
-L47 (\textsc{late} $+2.13$ vs \textsc{early} $-0.02$, disjoint 95\% CIs; 16/16 consistent). (ii) For an
-\emph{agent action} (tool call) in trap scenarios ($n{=}32$, 10 flips), the same test gives \textsc{late}
-$+1.65\,[+1.17,+2.12]$ vs \textsc{early} $+0.08$, peaking at L63. (iii) The same late band (L51--63) is where
-a prior result localizes \emph{action commitment} itself. Faithfulness is \textbf{conditional}: causal when
-the CoT changes the outcome, $\approx 0$ (performative) when the model already knew (44/60 correct with no
-CoT). We argue the late band is the natural locus for mechanistic action/answer monitoring---answering
-DeepMind's call to ``inspect the model's inner workings''---while noting (from a companion result) that this
-locus is \emph{not} adversarially robust as a control point.
+$d_{\text{sae}}{=}40960$): are the features at the post-reasoning decision point \emph{causal} for what the
+model decides, and \emph{where} do they live? A single causal-patch test (decode--re-encode of the CoT
+decision-state into a no-CoT run, controlled for SAE reconstruction error and a random-feature baseline) gives
+a consistent answer for two outcomes. (i) For the \emph{answer} to hard multi-step problems ($n{=}60$, 16
+CoT-flips), patching the CoT features recovers the reasoned answer with $\Delta\log p = +2.72\,[+2.18,+3.28]$
+at L59, effect $\approx 0$ through L47 (\textsc{late} $+2.13$ vs \textsc{early} $-0.02$, disjoint 95\% CIs;
+16/16 consistent). (ii) For an \emph{agent action} (tool call) in trap scenarios ($n{=}32$, 10 flips), the
+same test gives \textsc{late} $+1.65\,[+1.17,+2.12]$ vs \textsc{early} $+0.08$. A method-independent control
+rules out the obvious confound (that late-layer patches simply survive while early ones are washed out): a
+logit-lens of the decision token shows the reasoned answer is \emph{anti}-decodable early (margin
+$-0.9$ at mid layers, the model leaning to the System-1 answer) and only becomes decodable at L51, reaching
+$+6.6$ at L63---i.e.\ the deciding information genuinely \emph{consolidates} late, it is not present earlier.
+Faithfulness is \textbf{conditional}: causal when the CoT changes the outcome, $\approx 0$ (performative) when
+the model already knew (44/60 correct with no CoT). The late band is thus a readable, causal locus for
+mechanistic monitoring---instantiating DeepMind's call to ``inspect the model's inner workings''---while, per
+a companion result, the same band is \emph{not} adversarially robust if used as a control point.
 \end{abstract}
 
 \section{Introduction}
@@ -63,10 +65,13 @@ do they live?} Our contribution is a unifying empirical law---\textbf{the late c
   only when the CoT changes the answer; performative otherwise.
   \item \textbf{It holds for agent actions} (\S\ref{sec:tierB}): the same late, causal pattern governs tool-call
   decisions in agent-trap scenarios.
-  \item \textbf{The three-faced law} (\S\ref{sec:unified}): the same late band (L51--63) carries the causal
-  content of action commitment, reasoned answers, and reasoned agent actions---a single monitoring locus.
-  \item An honest boundary (\S\ref{sec:disc}): the late band is a good \emph{monitor} but, per a companion
-  result, \emph{not} an adversarially-robust \emph{control} point.
+  \item \textbf{Consolidation, not artifact} (\S\ref{sec:control}): an independent logit-lens control shows the
+  reasoned answer is anti-decodable early ($-0.9$) and consolidates late ($+6.6$ at L63), ruling out the
+  patch-dilution confound and corroborating the patch result.
+  \item \textbf{One late band} (\S\ref{sec:unified}): reasoned answers and agent actions become causal in the
+  same late band a prior result localizes action commitment to---a single, readable locus for monitoring.
+  \item An honest boundary (\S\ref{sec:disc}): the band is a good \emph{monitor} but, per a companion result,
+  \emph{not} an adversarially-robust \emph{control} point.
 \end{itemize}
 
 \section{Related work}
@@ -154,17 +159,43 @@ L63 & $+2.21$ \\
 the irreversible class is small (5/32), the per-layer action-\emph{prediction} AUROC, although late-dominant and
 above a random-feature baseline, rests on too few positives to be conclusive (future work).
 
-\section{The three-faced law}\label{sec:unified}
-The same late band (L51--63) carries the causal content of three distinct things on this model: (i) action
-commitment itself \cite{leverlate,levergen}; (ii) the reasoned answer (\S\ref{sec:tierA}); (iii) the reasoned
-agent action (\S\ref{sec:tierB}). Decision-relevant information consolidates in a narrow late window, $\approx 0$
-in mid layers---a single, consistent locus for reading what the model is about to do.
+\section{Consolidation, not patch-dilution}\label{sec:control}
+A natural objection: a last-token activation patch might simply \emph{survive} in late layers (few layers remain
+to overwrite it) and be \emph{washed out} early---a late profile that says nothing about where information
+lives. We rule this out with a method-independent control. On the same 16 flipped items we logit-lens the
+decision token in the run-CoT and measure the margin $\log p(\text{ans}_{\text{CoT}})-\log p(\text{ans}_{\text{noCoT}})$
+per layer (Fig.~\ref{fig:late}, dashed). The margin is \emph{negative} through L43---the decision token leans to
+the no-CoT (System-1) answer, e.g.\ $-0.93$ at L35---crosses zero at L47, then rises steeply: $+1.57$ (L51),
+$+5.18$ (L59), $+6.64$ (L63), first exceeding $+0.5$ at L51. So the information that distinguishes the reasoned
+answer is \emph{absent (indeed opposed) early and consolidates late}: there is nothing for an early patch to
+transfer. The two independent signals---feature-patch causality and logit-lens decodability---rise together at
+L51, mutually corroborating.
+
+\begin{figure}[h]\centering
+\includegraphics[width=0.74\textwidth]{fig_late_channel.pdf}
+\caption{The late channel. Solid (left axis): causal patch signal $d_{\text{cot}}-d_{\text{self}}$ per SAE layer
+for the reasoned answer (Tier-A) and agent action (Tier-B), bootstrap 95\% CIs. Dashed (right axis): the
+logit-lens consolidation margin (\S\ref{sec:control}). Both are $\approx 0$ or negative through mid layers and
+concentrate in L51--63 (shaded).}\label{fig:late}
+\end{figure}
+
+\section{One late band, several decisions}\label{sec:unified}
+On this model the same late band (L51--63) is where reasoned decisions become causal: the reasoned answer
+(\S\ref{sec:tierA}) and the reasoned agent action (\S\ref{sec:tierB}), both measured here; and---connecting to
+prior work, not re-measured here---\emph{action commitment} itself, which an earlier result of this arc
+localizes to the same band \cite{leverlate,levergen}. Decision-relevant information is $\approx 0$ (or opposed)
+in mid layers and consolidates in this narrow late window---a single, consistent locus for reading what the
+model is about to do.
 
 \section{Discussion}\label{sec:disc}
 \textbf{A monitoring locus, not a control point.} The late channel is where mechanistic monitoring should read:
-it carries the causal content and (per \cite{mirtaheri2026,goodfire2026}) predicts behavior earlier and more
-reliably than CoT text. This directly instantiates DeepMind's ``inspect inner workings'' \cite{deepmind2026} for
-a reasoning agent. \emph{However}, monitoring is not control: a companion experiment shows the same late
+it carries the causal content and the decision is linearly decodable from the late state (logit-lens margin
+$+6.6$), a concrete read-out signal, consistent with internals beating CoT-text monitors
+\cite{mirtaheri2026,goodfire2026}. This instantiates DeepMind's ``inspect inner workings'' \cite{deepmind2026}
+for a reasoning agent. We are careful, though, to separate \emph{decodability} (strong here) from
+\emph{class prediction}: our attempt to predict the irreversible-action class from features (Tier-B) was
+underpowered (5 positives), so action-level monitoring \emph{at scale} remains to be demonstrated.
+\emph{However}, monitoring is not control: a companion experiment shows the same late
 action-commitment band, used as a brake, collapses under an adaptive white-box adversary (attack success
 $0\to1.0$ at a small budget that knows the locus, while a norm-matched random perturbation does nothing). The
 honest reading: the late channel is a strong \emph{auditing} signal under a non-adversarial threat model, not an

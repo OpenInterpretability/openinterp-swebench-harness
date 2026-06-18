@@ -42,6 +42,19 @@ earlyB=[np.mean([it['layers'][f'L{L}']['d_cot']-it['layers'][f'L{L}']['d_self'] 
 bm,blo,bhi=boot(lateB); ebm,eblo,ebhi=boot(earlyB)
 chk("B: LATE mean", bm,1.65,0.10); chk("B: EARLY mean", ebm,0.08,0.10)
 
+# ---- Control: logit-lens consolidation (rules out patch-dilution) ----
+import os
+if os.path.exists("data/logit_lens_control.json"):
+    LL=json.load(open("data/logit_lens_control.json")); pm=LL["per_layer_margin"]
+    chk("LL: L35 margin (neg early)", pm["35"], -0.93, 0.05)
+    chk("LL: L47 margin (~0)", pm["47"], 0.02, 0.05)
+    chk("LL: L51 margin", pm["51"], 1.57, 0.05)
+    chk("LL: L59 margin", pm["59"], 5.18, 0.06)
+    chk("LL: L63 margin", pm["63"], 6.64, 0.06)
+    chk_int("LL: onset layer", LL["onset"], 51)
+else:
+    FAIL.append(("LL: control json missing","-","-",False))
+
 # ---- report ----
 print(f"{'CLAIM':<32}{'RECOMPUTED':>12}{'PAPER':>10}  OK")
 for n,g,c,ok in PASS+FAIL: print(f"{n:<32}{str(g):>12}{str(c):>10}  {'PASS' if ok else 'XXXX FAIL'}")
