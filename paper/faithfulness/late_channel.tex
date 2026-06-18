@@ -127,9 +127,18 @@ L51--63 (\textsc{late} vs \textsc{early} CIs disjoint); L59 causal $>0$ in 16/16
 $+4.81$). Random patches destroy the answer at every layer.}\label{tab:tierA}
 \end{table}
 
-\textbf{Faithfulness is conditional.} The patch only matters where the CoT changes the answer. In the 44/60
-items the model already answers correctly without thinking, the late causal signal is small---the written CoT is
-\emph{performative}, the mechanistic version of \cite{goodfire2026}'s ``reasoning theater'', now measured causally.
+\textbf{Faithfulness is conditional} (Fig.~\ref{fig:cond}). The patch only matters where the CoT changes the
+answer. In the 44/60 items the model already answers correctly without thinking, the late causal signal is small
+(mean $+0.28$ at L59); when the CoT flips the answer it strongly recovers it (mean $+2.72$). The written CoT is
+\emph{performative} when the model already knew---the mechanistic version of \cite{goodfire2026}'s ``reasoning
+theater'', now measured causally---and \emph{faithful} only when the reasoning does work.
+
+\begin{figure}[h]\centering
+\includegraphics[width=0.52\textwidth]{fig_conditional.pdf}
+\caption{Conditional faithfulness. Causal signal at L59 per item, split by whether the CoT changes the answer.
+Already-correct-without-CoT ($n{=}44$): CoT features non-causal (mean $+0.28$). CoT flips the answer ($n{=}16$):
+features strongly recover it (mean $+2.72$). Bars are group means.}\label{fig:cond}
+\end{figure}
 
 \section{It holds for agent actions}\label{sec:tierB}
 We repeat the test where the ``answer'' is a committed tool call. 32 agent-trap scenarios across four domains

@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026) (preloaded format=pdflatex 2026.3.1)  18 JUN 2026 17:06
+This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026) (preloaded format=pdflatex 2026.3.1)  18 JUN 2026 17:10
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -439,13 +439,23 @@ File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 
 {/usr/local/texlive/2026basic/texmf-var/fonts/map/pdftex/updmap/pdftex.map}] [2
 ]
-[3]
-<fig_late_channel.pdf, id=118, 448.07399pt x 289.08pt>
+<fig_conditional.pdf, id=109, 361.35pt x 260.17201pt>
+File: fig_conditional.pdf Graphic file (type pdf)
+<use fig_conditional.pdf>
+Package pdftex.def Info: fig_conditional.pdf  used on input line 137.
+(pdftex.def)             Requested size: 244.27461pt x 175.87846pt.
+
+[3 <./fig_conditional.pdf>]
+<fig_late_channel.pdf, id=174, 448.07399pt x 289.08pt>
 File: fig_late_channel.pdf Graphic file (type pdf)
 <use fig_late_channel.pdf>
-Package pdftex.def Info: fig_late_channel.pdf  used on input line 175.
+Package pdftex.def Info: fig_late_channel.pdf  used on input line 184.
 (pdftex.def)             Requested size: 347.62129pt x 224.27287pt.
- [4 <./fig_late_channel.pdf>] [5] [6] (./late_channel.aux)
+
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+[4] [5 <./fig_late_channel.pdf>] [6] (./late_channel.aux)
  ***********
 LaTeX2e <2025-11-01>
 L3 programming layer <2026-01-19>
@@ -454,13 +464,13 @@ Package rerunfilecheck Info: File `late_channel.out' has not changed.
 (rerunfilecheck)             Checksum: AFA70C6EA2BCE78DF167539E66B5C877;1445.
  ) 
 Here is how much of TeX's memory you used:
- 11079 strings out of 469006
- 166424 string characters out of 5454814
- 589648 words of memory out of 5000000
- 39594 multiletter control sequences out of 15000+600000
+ 11088 strings out of 469006
+ 166647 string characters out of 5454814
+ 589950 words of memory out of 5000000
+ 39602 multiletter control sequences out of 15000+600000
  651078 words of font info for 98 fonts, out of 8000000 for 9000
  319 hyphenation exceptions out of 8191
- 75i,13n,79p,510b,590s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 75i,13n,79p,510b,448s stack positions out of 10000i,1000n,20000p,200000b,200000s
  </Users/caiovicentino/Library/texlive/2026basic/texmf-var/fonts/pk/ljfour/jk
 nappen/ec/eccc1095.600pk> </Users/caiovicentino/Library/texlive/2026basic/texmf
 -var/fonts/pk/ljfour/jknappen/ec/ecrm0800.600pk> </Users/caiovicentino/Library/
@@ -488,10 +498,10 @@ b></usr/local/texlive/2026basic/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi1
 0.pfb></usr/local/texlive/2026basic/texmf-dist/fonts/type1/public/amsfonts/cm/c
 mr10.pfb></usr/local/texlive/2026basic/texmf-dist/fonts/type1/public/amsfonts/c
 m/cmsy10.pfb>
-Output written on late_channel.pdf (6 pages, 213795 bytes).
+Output written on late_channel.pdf (6 pages, 230279 bytes).
 PDF statistics:
- 729 PDF objects out of 1000 (max. 8388607)
- 210 compressed objects within 3 object streams
- 32 named destinations out of 1000 (max. 500000)
- 86 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 786 PDF objects out of 1000 (max. 8388607)
+ 221 compressed objects within 3 object streams
+ 33 named destinations out of 1000 (max. 500000)
+ 91 words of extra memory for PDF output out of 10000 (max. 10000000)
 
