@@ -8,6 +8,7 @@
 \emergencystretch=3em \sloppy \hyphenpenalty=2000 \exhyphenpenalty=0 \hbadness=10000
 \usepackage{booktabs}\usepackage{amsfonts}\usepackage{amsmath}\usepackage{amssymb}
 \usepackage{xcolor}\usepackage{array}\usepackage{graphicx}
+\usepackage{tikz}\usetikzlibrary{arrows.meta,positioning,calc}
 
 \title{The Late Channel: Chain-of-Thought Becomes Causal \emph{and}\\
 Decodable Only Late in a 27B Reasoning Agent\\[2pt]
@@ -87,6 +88,31 @@ scale-dependent (null at 70M, causal at 2.8B); we extend this to a 27B native \e
 late action-commitment band, not the mid-layer verdict \cite{leverlate,levergen}.
 
 \section{Method}\label{sec:method}
+
+\begin{figure}[h]\centering
+\begin{tikzpicture}[font=\scriptsize,>={Stealth[]},node distance=5mm and 6mm,
+  box/.style={draw,rounded corners,align=center,inner sep=3pt,minimum height=8mm}]
+\node[box,fill=blue!6] (cm) {Reasoning model\\ \emph{with} \texttt{<think>{\ldots}</think>}};
+\node[box,fill=blue!6,right=of cm] (cd) {decision\\ token};
+\node[box,fill=blue!14,right=of cd] (cz) {SAE encode\\ $\to z_{\mathrm{cot}}$};
+\draw[->] (cm)--(cd); \draw[->] (cd)--(cz) node[midway,above]{$x^{L}$};
+\node[left=2mm of cm,blue!50!black]{\textbf{(a) Run-CoT}};
+\node[box,fill=gray!8,below=13mm of cm] (nm) {Reasoning model\\ \emph{no} thinking};
+\node[box,fill=red!8,right=of nm] (nd) {layer $L$: \textbf{replace} decision\\ residual $\leftarrow$ SAE decode};
+\node[box,fill=gray!8,right=of nd] (nl) {$\log p(\text{ans}_{\mathrm{cot}})$};
+\draw[->] (nm)--(nd); \draw[->] (nd)--(nl);
+\node[left=2mm of nm]{\textbf{(b) Run-noCoT}};
+\draw[->,thick,blue!55] (cz) -- node[right=1pt,align=left]{patch: $z_{\mathrm{cot}}$ (causal)\\ $z_{\mathrm{self}}$ (recon ctrl)\\ $z_{\mathrm{rand}}$ (noise ctrl)} (nd);
+\node[box,fill=green!10,below=7mm of nl] (mm) {causal signal $=d_{\mathrm{cot}}-d_{\mathrm{self}}$};
+\draw[->] (nl)--(mm);
+\end{tikzpicture}
+\caption{The causal-patch test. (a) Run-CoT produces the decision state, encoded to SAE features $z_{\mathrm{cot}}$.
+(b) Run-noCoT is forced to the same answer slot; at SAE layer $L$ we replace the decision-token residual with the
+SAE decode of $z_{\mathrm{cot}}$ and read $\log p$ of the CoT answer. Patching $z_{\mathrm{cot}}$ gives the causal
+effect; $z_{\mathrm{self}}$ (the no-CoT features' own reconstruction) controls for SAE error; $z_{\mathrm{rand}}$
+is the noise baseline. Reported signal $=d_{\mathrm{cot}}-d_{\mathrm{self}}$.}\label{fig:method}
+\end{figure}
+
 \textbf{Model \& SAE.} Qwen3.6-27B (64 layers, reasoning/``thinking'' mode), bf16. A full-stack TopK SAE
 ($d_{\text{sae}}{=}40960$, $k{=}128$) trained on 11 layers $\{15,19,23,27,35,39,43,47,51,59,63\}$; encode
 $z=\mathrm{TopK}(\mathrm{ReLU}((x-b_{\text{dec}})W_{\text{enc}}+b_{\text{enc}}))$, decode $\hat x=zW_{\text{dec}}+b_{\text{dec}}$.
