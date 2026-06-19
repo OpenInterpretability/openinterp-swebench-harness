@@ -11,6 +11,6 @@ for b in b1: ax.text(b.get_x()+b.get_width()/2,b.get_height()+0.02,f"{b.get_heig
 for b in b2: ax.text(b.get_x()+b.get_width()/2,b.get_height()+0.02,f"{b.get_height():.2f}",ha="center",fontsize=8,color="#d62728")
 ax.set_xticks(x); ax.set_xticklabels(limits,fontsize=8.5)
 ax.set_ylim(0,1.30); ax.set_ylabel("metric (0–1)")
-ax.set_title("Located, not secured: every control promise collapses under scrutiny",fontsize=10.5)
+ax.set_title("Located, not secured: control promises collapse under scrutiny",fontsize=10.5)
 ax.legend(loc="upper center",ncol=2,fontsize=8.5,frameon=False,bbox_to_anchor=(0.5,1.0))
 plt.tight_layout(); plt.savefig("fig_located.pdf"); print("saved fig_located.pdf")

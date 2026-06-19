@@ -55,7 +55,7 @@ flips a real \texttt{finish} (42\%, $p{=}0.031$) while the verdict layer is iner
 irreversible actions: a simulated \texttt{send\_transaction} collapses $0.998\to0.00$ with 100\% redirect to a safe
 action, replicating across six action domains and three architectures~\cite{levergen,brake}. A single late-layer
 ``authorization direction'' both detects \emph{and} controls an agent's commitment to unauthorized irreversible
-actions~\cite{authdir}. \textbf{Interpretability locates a real, causal, generalizing control surface.} The rest
+actions in a synthetic setting~\cite{authdir} (Limit~2 below qualifies what this control does \emph{not} cover). \textbf{Interpretability locates a real, causal, generalizing control surface.} The rest
 of the paper is about what that surface does \emph{not} give us.
 
 \section{Limit 1 --- Detect $\neq$ control}
@@ -80,9 +80,10 @@ naming + structure-matched gate in the protocol.
 \section{Limit 4 --- Control $\neq$ robust control}
 The same late action-commitment brake that suppresses \texttt{send\_transaction} ($1.00\to0.00$) is reopened by an
 adaptive white-box adversary that knows the brake layer and donor: a budget-4 signed-Adam embedding-space attack
-takes attack success $0\to1.0$, while a norm-matched random perturbation does nothing (companion result, this
-arc). The locus that \emph{controls} in the benign regime is not adversarially robust --- mirroring the broader
-finding that representation- and detection-level defenses fall to adaptive attacks.
+takes attack success $0\to1.0$ (8/8 emit at budget $\varepsilon{=}4$), while a norm-matched random perturbation
+does nothing~\cite{latechannel}. The locus that \emph{controls} in the benign regime is not adversarially robust
+--- mirroring the broader finding that representation- and detection-level defenses fall to adaptive white-box
+attacks~\cite{cb2024,schwinn2024,bailey2024}.
 
 \section{Limit 5 --- Intervention is easy where unneeded}
 Finally, even granting a working detector, the act it triggers is caught in a bind. On 32 agent-trap scenarios,
@@ -117,8 +118,8 @@ Act on the trigger & inject or re-prompt & easy where unneeded, fragile where ne
 do not follow it.}\label{tab:syn}
 \end{table}
 Locating \emph{where} behavior is decided is necessary but nowhere near sufficient for \emph{securing} it. The
-limits are orthogonal: error-blindness, confoundability, non-robustness, and the easy-where-unneeded bind are
-different holes, none closed by a better localization.
+limits are orthogonal: detection-without-control, error-blindness, confoundability, non-robustness, and the
+easy-where-unneeded bind are different holes, none closed by a better localization.
 
 \section{Implication: a regime split}
 Why does interpretability-based control lose here? The adversarial-control regime lets an optimizer move
@@ -151,5 +152,8 @@ claims here are the limits, which are robust.
 \bibitem{felt} Vicentino. Felt, Not Granted. 2026. Zenodo 10.5281/zenodo.20685264.
 \bibitem{form} Vicentino. Form, Not Granted. 2026. Zenodo 10.5281/zenodo.20724650.
 \bibitem{latechannel} Vicentino. The Late Channel. 2026. Zenodo 10.5281/zenodo.20752896.
+\bibitem{cb2024} Zou et al. Improving Alignment and Robustness with Circuit Breakers. NeurIPS 2024 (arXiv:2406.04313).
+\bibitem{schwinn2024} Schwinn and Geisler. Revisiting the Robust Alignment of Circuit Breakers. arXiv:2407.15902, 2024.
+\bibitem{bailey2024} Bailey, Casper, et al. Obfuscated Activations Bypass LLM Latent-Space Defenses. ICLR 2026 (arXiv:2412.09565).
 \end{thebibliography}
 \end{document}
