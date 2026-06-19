@@ -1,8 +1,8 @@
 import numpy as np, matplotlib; matplotlib.use("Agg")
 import matplotlib.pyplot as plt
-limits=["Detect $\\to$ control\n(AUROC / $\\Delta P$)","Felt $\\to$ granted\n(external / internal)",
-        "Form\n(raw / struct-matched)","Brake $\\to$ robust\n(benign / adversarial)"]
-fav=[0.91,1.00,0.838,1.00]; surv=[0.00,0.00,0.08,0.00]
+limits=["Detect $\\to$ control\n(AUROC / $\\Delta P$)",
+        "Form\n(raw / struct-matched AUROC)","Brake $\\to$ robust\n(benign / adversarial)"]
+fav=[0.91,0.838,1.00]; surv=[0.00,0.08,0.00]
 x=np.arange(len(limits)); w=0.38
 fig,ax=plt.subplots(figsize=(6.4,3.7))
 b1=ax.bar(x-w/2,fav,w,color="#1f77b4",label="favorable view")
