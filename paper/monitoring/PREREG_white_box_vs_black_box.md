@@ -60,4 +60,9 @@ No DOI mint until the E7 eval gate (recompute every number from ledgers + hostil
 CONCEPT DOI. Pre-registration excerpt goes in the paper appendix.
 
 ## Amendments
-(none yet)
+- **2026-06-19 (after E0-R2, n=22):** verdict = FALLBACK_R1_LED, as the gate's F-variance branch predicted.
+  Findings: R2 elicitation 0.79 (kill-risk retired); BB3-external 0.90 vs WB-probe 0.34 / WB-SAE 0.66 / BB1 0.36
+  → H2 blind-spot reproduces and is now a head-to-head AUROC gap; F=0 on all 22 (the felt≠granted mechanism in
+  the CoT, not a bug). Decision: R2 is finalized as the H2 blind-spot section; **H1 (the law) moves to R1
+  (SHADE-Arena), where faithfulness varies and the model conceals known intent.** Next gate = E0-R1. Do not
+  re-run R2 to "fix" F. See `RESULTS_E0.md`, `e0_r2_ledger.json`.
