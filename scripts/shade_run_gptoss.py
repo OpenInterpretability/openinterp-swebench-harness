@@ -71,12 +71,12 @@ def main():
     log(f"gpt-oss ready: NL={NL} LATE_layer={LATE} task={args.task} cond={args.condition} tools={len(funcs0)}")
 
     def render(messages):
-        for kw in (dict(reasoning_effort="medium"), dict()):
+        for kw in (dict(reasoning_effort="low"), dict()):
             try: return tok.apply_chat_template(messages, tools=tool_schema, add_generation_prompt=True, tokenize=False, **kw)
             except TypeError: continue
         return tok.apply_chat_template(messages, tools=tool_schema, add_generation_prompt=True, tokenize=False)
 
-    def gen_capture(messages, mx=1100):
+    def gen_capture(messages, mx=1600):
         s = render(messages)
         ids = tok(s, return_tensors="pt", add_special_tokens=False).input_ids.to(model.device); steps = []
         h = LSTACK[LATE].register_forward_hook(lambda m, i, o: steps.append((o[0] if isinstance(o, tuple) else o)[0, -1, :].detach().float().cpu().numpy()))
