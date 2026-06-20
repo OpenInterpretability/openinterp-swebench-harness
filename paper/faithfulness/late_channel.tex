@@ -84,7 +84,11 @@ scale-dependent (null at 70M, causal at 2.8B); we extend this to a 27B native \e
 \textbf{Internal monitoring beats text}: residual-stream probes match/beat a full-trace CoT monitor
 \cite{mirtaheri2026}, and attention probes predict the answer early (``performative reasoning'')
 \cite{goodfire2026}---both \emph{correlational}; we test \emph{causally} with named SAE features and on agent
-\emph{actions}. \textbf{The action lever} (this arc): control of the \texttt{finish}/commit decision lives in a
+\emph{actions}. \textbf{Concurrent faithfulness work measures other axes}: thinking-vs-answer \emph{text}-channel
+divergence (``know but don't say,'' keyword-matched, explicitly not causal) \cite{young2026}, and a ``reasoning
+horizon'' at 70--85\% of \emph{chain length} beyond which steps lose causal influence \cite{ye2026}; both are
+orthogonal to our \emph{layer-depth} localization, and \cite{ye2026}'s anti-faithful regime (corrupting the chain
+\emph{raises} confidence) independently corroborates our performative case. \textbf{The action lever} (this arc): control of the \texttt{finish}/commit decision lives in a
 late action-commitment band, not the mid-layer verdict \cite{leverlate,levergen}.
 
 \section{Method}\label{sec:method}
@@ -257,6 +261,8 @@ text---while remaining, as a control point, adversarially brittle.
 \bibitem{chen2025} Chen, Plaat, van Stein. How Does Chain-of-Thought Think? \dots SAE+patching. 2025. arXiv:2507.22928.
 \bibitem{mirtaheri2026} Mirtaheri \& Belkin. Detecting motivated reasoning from internal representations. 2026. arXiv:2603.17199.
 \bibitem{goodfire2026} Goodfire. Reasoning Theater\dots performative reasoning. 2026. arXiv:2603.05488.
+\bibitem{young2026} Young. Why Models Know But Don't Say: CoT Faithfulness Divergence Between Thinking Tokens and Answers. 2026. arXiv:2603.26410.
+\bibitem{ye2026} Ye, Loffgren, Kotadia, Wong. Mechanistic Evidence for Faithfulness Decay in Chain-of-Thought Reasoning. 2026. arXiv:2602.11201.
 \bibitem{deepmind2026} Google DeepMind. Securing the Future of AI Agents. 2026.
 \bibitem{leverlate} Vicentino. The Lever Is Late. 2026. Zenodo 10.5281/zenodo.20534219.
 \bibitem{levergen} Vicentino. The Lever Generalizes---and It Brakes. 2026. Zenodo 10.5281/zenodo.20634838.

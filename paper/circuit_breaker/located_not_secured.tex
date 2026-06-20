@@ -126,7 +126,11 @@ Why does interpretability-based control lose here? The adversarial-control regim
 activations against a known locus; activation malleability then makes it a losing game by construction. But the
 same internal access \emph{wins} in the non-adversarial \emph{auditing} regime --- a fixed model examined as a
 scientific object, with no optimizer fighting the probe. ``Detect $\neq$ control'' stops mattering when the goal
-is detect/understand, not control-under-attack. The companion result \emph{The Late Channel}~\cite{latechannel}
+is detect/understand, not control-under-attack. This regime is not hypothetical: production probe cascades now
+monitor a fixed, non-adversarial input stream at both major labs~\cite{kramar2026}, justified on \emph{cost} ---
+and they leave open exactly the two questions this arc answers, whether internals offer a \emph{qualitative} edge
+over black-box monitors (they do, and they also carry a disjoint blind spot --- Limits 1--2) and how probes fare
+under adversarial optimization (they collapse --- Limit 4). The companion result \emph{The Late Channel}~\cite{latechannel}
 shows this concretely: the same late band that fails as a robust control point is a readable, causal locus for
 \emph{monitoring} a reasoning agent. The recommendation that falls out of the whole arc: use interpretability to
 audit and monitor, not to defend.
@@ -155,5 +159,6 @@ claims here are the limits, which are robust.
 \bibitem{cb2024} Zou et al. Improving Alignment and Robustness with Circuit Breakers. NeurIPS 2024 (arXiv:2406.04313).
 \bibitem{schwinn2024} Schwinn and Geisler. Revisiting the Robust Alignment of Circuit Breakers. arXiv:2407.15902, 2024.
 \bibitem{bailey2024} Bailey, Casper, et al. Obfuscated Activations Bypass LLM Latent-Space Defenses. ICLR 2026 (arXiv:2412.09565).
+\bibitem{kramar2026} Kram\'ar, Engels, Wang, Chughtai, Shah, Nanda, Conmy (Google DeepMind). Building Production-Ready Probes for Gemini. 2026. arXiv:2601.11516.
 \end{thebibliography}
 \end{document}
