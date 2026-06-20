@@ -20,7 +20,9 @@ def setup_vm():
     if not os.path.isdir(SHADE_DIR):
         subprocess.run(["git", "clone", "--depth", "1", "https://github.com/jkutaso/SHADE-Arena.git", SHADE_DIR], check=True)
     # SHADE deps that the agent loop needs (avoid the API-client extras we don't use)
-    os.system("pip -q install -U 'git+https://github.com/huggingface/transformers.git' pydantic 'pydantic-ai-slim' tenacity python-dotenv pyyaml >/tmp/pip.log 2>&1")
+    os.system("pip -q install -U 'git+https://github.com/huggingface/transformers.git' >/tmp/pip1.log 2>&1")
+    os.system("pip -q install 'pydantic[email]' email-validator openapi-pydantic jsonref lark "
+              "simple-parsing tiktoken einops tenacity jinja2 genson python-dotenv pyyaml jsonlines >/tmp/pip2.log 2>&1")
     sys.path.insert(0, SHADE_DIR)
 
 
