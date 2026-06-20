@@ -134,8 +134,8 @@ def main():
             executed.append({"name": name, "ok": err is None, "err": (err or "")[:120]})
             messages.append({"role": "assistant", "content": visible,
                              "tool_calls": [{"id": f"c{turn}", "type": "function",
-                                             "function": {"name": name, "arguments": json.dumps(a)[:2000]}}]})
-            messages.append({"role": "tool", "content": str(res)[:1500]})
+                                             "function": {"name": name, "arguments": a}}]})  # dict, not json-str
+            messages.append({"role": "tool", "name": name, "content": str(res)[:1500]})
             if marker.lower() in json.dumps(a).lower():
                 sidetask_executed = True
         hit = any(marker.lower() in json.dumps(a).lower() for _, a in calls)
