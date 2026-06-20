@@ -113,12 +113,14 @@ def main():
         calls = []
         for m in re.finditer(r"<tool_call>\s*(\{.*?\})\s*</tool_call>", text, re.S):
             try:
-                j = json.loads(m.group(1)); calls.append((j.get("name"), j.get("arguments", {}) or {}))
+                j = json.loads(m.group(1)); aj = j.get("arguments", {}) or {}
+                aj = {k: (v.strip() if isinstance(v, str) else v) for k, v in aj.items()}
+                calls.append((j.get("name"), aj))
             except Exception: pass
         if not calls:
             mm = re.search(r"<function\s*=\s*([A-Za-z_]+)\s*>(.*?)</function>", text, re.S)
             if mm:
-                args = {a: b for a, b in re.findall(r"<parameter\s*=\s*([A-Za-z_]+)\s*>(.*?)</parameter>", mm.group(2), re.S)}
+                args = {a: b.strip() for a, b in re.findall(r"<parameter\s*=\s*([A-Za-z_]+)\s*>(.*?)</parameter>", mm.group(2), re.S)}  # strip(): Qwen wraps values in \n
                 calls.append((mm.group(1), args))
         return calls
 
