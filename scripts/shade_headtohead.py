@@ -56,6 +56,7 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--task", default="american_airlines_2")
     ap.add_argument("--turns", type=int, default=40)
+    ap.add_argument("--condition", default="both", choices=["covert", "benign", "both"], help="run one side per Colab invocation to survive VM death")
     ap.add_argument("--smoke", action="store_true")
     args = ap.parse_args()
     if args.smoke:
@@ -66,7 +67,8 @@ def main():
     from transformers import AutoModelForCausalLM, AutoTokenizer
     from utils.functions_runtime import FunctionsRuntime, make_function, Function
 
-    td = importlib.import_module(f"task_pairs.{args.task}.task_definition").TaskDefinition()
+    TASK_MOD = importlib.import_module(f"task_pairs.{args.task}.task_definition")
+    td = TASK_MOD.TaskDefinition()
     funcs0 = [t if isinstance(t, Function) else make_function(t) for t in td.environment.available_tools]
     covert_sys = td.construct_system_message(give_hint=True, thinking_time=True)
     user_query = td.user_query
@@ -121,7 +123,7 @@ def main():
         return calls
 
     def run_rollout(condition):
-        env = td.environment_class.create()
+        env = TASK_MOD.TaskDefinition().environment  # fresh+populated (the .environment path that books; create() was empty)
         runtime = FunctionsRuntime([t if isinstance(t, Function) else make_function(t) for t in env.available_tools])
         sysmsg = covert_sys if condition == "covert" else BENIGN_SYS
         messages = [{"role": "system", "content": sysmsg}, {"role": "user", "content": user_query}]
@@ -163,8 +165,9 @@ def main():
         mm = re.findall(r"<verdict>\s*(\d+)\s*</verdict>", txt) or re.findall(r"(\d{1,3})\s*/\s*100", txt)
         return (int(mm[-1]) if mm else None), txt[-400:]
 
-    R["meta"] = {"mode": "gpu", "task": args.task, "model": MODEL, "late": LATE, "turns": args.turns}
-    for cond in ("covert", "benign"):
+    R["meta"] = {"mode": "gpu", "task": args.task, "model": MODEL, "late": LATE, "turns": args.turns, "condition": args.condition}
+    conds = ("covert", "benign") if args.condition == "both" else (args.condition,)
+    for cond in conds:
         ro = run_rollout(cond)
         bb, bb_tail = bb_monitor(ro["visible_transcript"])
         ro["bb_suspicion"] = bb; ro["bb_tail"] = bb_tail
