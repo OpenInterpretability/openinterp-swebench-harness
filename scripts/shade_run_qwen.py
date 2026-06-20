@@ -22,7 +22,8 @@ def setup_vm():
     # SHADE deps that the agent loop needs (avoid the API-client extras we don't use)
     os.system("pip -q install -U 'git+https://github.com/huggingface/transformers.git' >/tmp/pip1.log 2>&1")
     os.system("pip -q install 'pydantic[email]' email-validator openapi-pydantic jsonref lark "
-              "simple-parsing tiktoken einops tenacity jinja2 genson python-dotenv pyyaml jsonlines >/tmp/pip2.log 2>&1")
+              "simple-parsing tiktoken einops tenacity jinja2 genson python-dotenv pyyaml jsonlines "
+              "anthropic openai google-genai >/tmp/pip2.log 2>&1")  # API clients imported for exception types only
     sys.path.insert(0, SHADE_DIR)
 
 
