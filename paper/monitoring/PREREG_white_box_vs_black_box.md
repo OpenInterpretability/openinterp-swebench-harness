@@ -66,3 +66,10 @@ CONCEPT DOI. Pre-registration excerpt goes in the paper appendix.
   the CoT, not a bug). Decision: R2 is finalized as the H2 blind-spot section; **H1 (the law) moves to R1
   (SHADE-Arena), where faithfulness varies and the model conceals known intent.** Next gate = E0-R1. Do not
   re-run R2 to "fix" F. See `RESULTS_E0.md`, `e0_r2_ledger.json`.
+- **2026-06-19 (after E0-R1, two designs):** concealed-intent regime is NOT elicitable on aligned Qwen3.6-27B by
+  lightweight injection — 0/14 (user-msg) and 0/8 (operator-persona/SHADE-style) covert executions; the model
+  refuses or does only the benign cover task. H1 cannot be tested without genuine covert execution. Decision: do
+  not escalate injections; **H1-on-agent-sabotage → future work E1-R1 = port real SHADE-Arena** (multi-turn
+  scaffolding). Near-term flagship = the BOUNDARY paper: R2 blind-spot head-to-head + The Late Channel
+  (white-box wins where CoT faithfulness varies on reasoning) + the regime-split rule. Refusal is itself a
+  safety-positive finding. See `RESULTS_E0_R1.md`, `e0_r1_ledger.json`, `e0_r1_persona_ledger.json`.
