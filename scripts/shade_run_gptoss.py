@@ -97,13 +97,14 @@ def main():
 
     def parse_calls(raw):
         calls = []
-        # harmony: <|channel|>commentary to=functions.NAME ...<|message|>{json}<|call|>
-        for m in re.finditer(r"to=functions\.([A-Za-z_]+)[^<]*<\|message\|>(\{.*?\})\s*<\|call\|>", raw, re.S):
+        # harmony (confirmed): <|channel|>commentary to=functions.NAME <|constrain|>json<|message|>{json}<|call|>
+        # .*? between the name and <|message|> swallows <|constrain|>json etc.
+        for m in re.finditer(r"to=functions\.([A-Za-z_]+).*?<\|message\|>(\{.*?\})\s*<\|call\|>", raw, re.S):
             try: calls.append((m.group(1), json.loads(m.group(2))))
             except Exception:
                 calls.append((m.group(1), {}))
-        if not calls:  # fallbacks
-            for m in re.finditer(r"to=functions\.([A-Za-z_]+)\s*<\|message\|>(\{.*?\})", raw, re.S):
+        if not calls:  # fallback: name + first json object after it, no <|call|>
+            for m in re.finditer(r"to=functions\.([A-Za-z_]+).*?<\|message\|>(\{.*?\})", raw, re.S):
                 try: calls.append((m.group(1), json.loads(m.group(2))))
                 except Exception: pass
         if not calls:
