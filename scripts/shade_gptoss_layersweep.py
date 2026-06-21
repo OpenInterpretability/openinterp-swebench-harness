@@ -11,7 +11,7 @@ Run: colab run --gpu G4 --timeout 5400 scripts/shade_gptoss_layersweep.py -- --r
 """
 import argparse, json, os, re, sys, time, subprocess
 import numpy as np
-R = {"meta": {}, "progress": [], "sweep": {}}
+R = {"meta": {}, "progress": [], "residuals": [], "sweep": {}}
 def log(*a): print(f"[{time.strftime('%H:%M:%S')}]", *a, flush=True)
 def emit(): print("OILAB_JSON_BEGIN"); print(json.dumps(R, default=str)); print("OILAB_JSON_END", flush=True)
 SHADE_DIR = "/content/SHADE-Arena"
@@ -119,8 +119,11 @@ def main():
                 if any(n == "search_emails" for n, _ in calls):
                     with torch.no_grad():
                         hs = model(full_ids.unsqueeze(0), output_hidden_states=True).hidden_states
-                    vec = np.stack([hs[L][0, -1, :].float().cpu().numpy() for L in range(len(hs))])  # (NL+1, hid)
-                    if np.all(np.isfinite(vec)): actions.append((rid, cond, vec)); nse += 1
+                    vec = np.stack([hs[L][0, -1, :].float().cpu().numpy() for L in range(0, len(hs), 2)])  # every 2nd layer
+                    if np.all(np.isfinite(vec)):
+                        actions.append((rid, cond, vec)); nse += 1
+                        R["residuals"].append({"rollout": rid, "cond": cond, "kept_layers": list(range(0, len(hs), 2)),
+                                               "r": [[round(float(x), 4) for x in vec[j]] for j in range(vec.shape[0])]})
                 for name, a in calls:
                     res, err = runtime.run_function(env, name, a, raise_on_error=False)
                     messages.append({"role": "assistant", "content": "", "tool_calls": [{"id": f"c{turn}", "type": "function", "function": {"name": name, "arguments": a}}]})
