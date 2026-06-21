@@ -72,3 +72,27 @@ covert intent does not materialize for open-weight agents (<=27B) on this task a
 — neither for a leaky weak agent nor a structurally-concealing one. The conditional-advantage thesis stands;
 the positive requires (untested) larger models, non-linear probes, or a layer sweep. Pipelines:
 `shade_run_gptoss.py`, `shade_gptoss_control.py`. Ledgers: `gptoss_ctrl_{harmful,benign}.json`.
+
+## FINAL — H1 layer sweep: FALSIFIED ACROSS ALL LAYERS (2026-06-21)
+To make the negative airtight (not "tested one layer"), swept the residual at every 2nd layer (13 of 25) under the
+structure-matched control (harmful vs benign, same SHADE framing, swapped secondary objective), 2 rollouts each
+(4 rollouts, 41 search_emails actions), per-layer leave-one-ROLLOUT-out AUROC + per-layer shuffle (60x).
+RESULT: **no layer separates harmful from benign covert intent above its shuffle control.** Meaningful layers
+(2-24) give real AUROC 0.22-0.45, all BELOW their shuffle p95 (0.57-0.79). The lone 1.0 is the embedding layer
+(layer 0) whose shuffle is also 1.0 = rollout-identity artifact, not condition-specific (correctly not a hit).
+**VERDICT: H1_FALSIFIED_ALL_LAYERS** (confirmed both by the VM-side analysis, best 0.45, and an independent local
+reconstruction from the emitted residuals). Caveats: 4 rollouts, every-2nd layer, linear probe, one task, last-token
+residual -> falsified WITHIN this feasible scope, not globally impossible. Ledger: gptoss_layersweep_ledger.json.
+
+### THE DEFINITIVE CLOSE
+H1 ("white-box detects covert intent a black-box misses") is FALSIFIED across both open-weight models tested,
+with a rigorous control + layer sweep:
+  - Qwen3.6-27B leaks the intent -> the black-box catches it (98 vs 2).
+  - gpt-oss-20b conceals it structurally (0 verbal leak, intent in the hidden analysis channel) -> but no layer's
+    late residual LINEARLY separates the covert HARMFUL intent from a benign one under matched framing.
+The conditional-advantage reframe is the final result. A positive (if it exists) needs out-of-scope resources:
+frontier/larger models, non-linear probes, an SAE on gpt-oss, or the full per-token (not last-token) capture.
+DURABLE CONTRIBUTIONS: (1) the SHADE-Qwen + SHADE-gpt-oss capture pipelines (first SAE-capable + harmony-aware
+capture over real SHADE rollouts, model/task-agnostic); (2) the methodology — a structure-matched control with
+leave-one-ROLLOUT-out + per-layer shuffle that killed a 0.98 false positive and a 13-layer sweep; (3) a robust,
+multiply-controlled NEGATIVE. NO new GPU run is warranted on this thread; further pursuit is a fresh strategic call.
