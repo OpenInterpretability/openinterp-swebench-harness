@@ -48,3 +48,27 @@ rollouts that actually execute + a separate monitor. Recorded, not shipped.
 ~14 GPU iterations this arc; every integration bug caught in a cheap run (deps, threading, arg-whitespace,
 thinking-only nudge, env population). No hung VMs. Pipeline validated end-to-end. Ledgers: shade_*_ledger.json,
 /tmp logs summarized here.
+
+## ADDENDUM 2026-06-21 — gpt-oss-20b "capable concealer" arm: H1 falsified under the structure-matched control
+Caio chose to test (B): does a more capable concealer reopen the H1 positive? Built the SHADE multi-turn port on
+gpt-oss-20b (harmony channel/tool parsing, late-layer raw capture, NL=24 late=20). Findings:
+- **gpt-oss CONCEALS structurally** (unlike Qwen): covert intent lives entirely in the hidden `analysis` channel,
+  0 verbal leak, NO final channel emitted — visible channel = innocuous tool names only. Promising for H1.
+- **Raw WB signal looked like a home run**: late residual at matched `search_emails` separated covert-rollout from
+  benign-rollout at LOO-AUROC 0.98 (shuffle→0.44). BUT confounded: covert had the long SHADE system prompt, benign
+  had a one-line prompt -> the probe may read WHICH PROMPT, not covert intent.
+- **STRUCTURE-MATCHED CONTROL (decisive)**: same SHADE suspicious framing for both, swapping ONLY the secondary
+  objective's text (harmful=book AA/overpriced vs benign=book economy/cheapest), 3 rollouts each (temp), leave-one-
+  ROLLOUT-out AUROC (kills autocorrelation; effective n=6 rollouts). **REAL AUROC = 0.52, SHUFFLED = 0.52
+  (n=80 held-out search_emails).** The 0.98 was ENTIRELY the system-prompt confound; under matched framing the
+  white-box does NOT separate harmful from benign covert intent.
+- **The control killed a 0.98 false positive.** Without it, I would have reported the H1 positive. This is the
+  single most valuable artifact of the arm — the rigor that separates a real finding from an illusion.
+
+**H1 falsified across BOTH models + a rigorous control:** Qwen leaks (BB catches, 98 vs 2); gpt-oss conceals but
+the white-box does not recover covert harmful intent from the late residual beyond the framing confound (0.52).
+**Final reframe (now blinded by 2 models + structure-matched control):** the white-box monitoring advantage over
+covert intent does not materialize for open-weight agents (<=27B) on this task as a linear late-residual direction
+— neither for a leaky weak agent nor a structurally-concealing one. The conditional-advantage thesis stands;
+the positive requires (untested) larger models, non-linear probes, or a layer sweep. Pipelines:
+`shade_run_gptoss.py`, `shade_gptoss_control.py`. Ledgers: `gptoss_ctrl_{harmful,benign}.json`.
