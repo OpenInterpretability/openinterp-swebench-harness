@@ -305,8 +305,8 @@ and neither can its benchmarks.
 \paragraph{Reproducibility.} All numbers recompute from the public ledger
 (\texttt{results/hydra\_audit\_ie.json}, HF \texttt{swebench-phase6-verdict-circuit}) via
 \texttt{scripts/eval\_hydra\_audit.py} (59/59 checks); pre-registration, results log, and code in
-\texttt{openinterp-swebench-harness}. $\sim$9h single-GPU (Colab G4), $\sim$15 VM incarnations, zero data
-loss via per-stage checkpointing.
+\texttt{openinterp-swebench-harness}. under 6 GPU-hours on a single Colab G4 (block-time sum from run logs), across $\sim$15
+short-lived VM incarnations over two days, zero data loss via per-stage checkpointing.
 
 \begin{thebibliography}{99}
 \bibitem[Tan et al.(2026)]{tan2026hydrahead} Z.~Tan, W.~Chen, J.~Shen, Y.~Liu, X.~Shen, Y.~Wu, J.~Ye.

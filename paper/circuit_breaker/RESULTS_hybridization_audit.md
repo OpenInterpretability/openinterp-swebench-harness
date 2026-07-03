@@ -162,8 +162,9 @@ budget, identifiable only by causal circuit analysis — the criterion scores th
 behavior. Capability-causal ≠ safety-causal: audit the transformation with the circuit you care about,
 because the criterion cannot see what it does not measure — and neither can its benchmarks.
 
-**Compute:** ~7h Colab G4 (RTX PRO 6000 96GB) across ~12 VM incarnations (keep-alive deaths), zero data
-loss via per-stage HF checkpointing + detached autonomous driver. Ledger: `results/hydra_audit_ie.json`.
+**Compute:** <6 GPU-hours total on Colab G4 (RTX PRO 6000 96GB; block-time sum: 16 layers ×~7.5min +
+16 H3/H5 blocks ×~7min + expansion + setup overhead across ~15 VM incarnations), zero data loss via
+per-stage HF checkpointing + detached autonomous driver. Ledger: `results/hydra_audit_ie.json`.
 
 ## Stage 4 — red-team controls (COMPLETE 2026-07-03). Both confounds closed.
 
@@ -200,5 +201,5 @@ collapse 0.183); keeping the 2 named writers restores baseline exactly. Paired k
 commitment when the rest of the band's redundancy is stripped — and they are exactly the heads the
 capability criterion scores κ=0.**
 
-**Final compute:** ~9h Colab G4 total, ~15 VM incarnations, zero data loss. All numbers recomputed from
-the public ledger by `scripts/eval_hydra_audit.py` (52 checks expected post-Stage-4).
+**Final compute:** <6 GPU-hours total (Colab G4), ~15 VM incarnations, zero data loss. All numbers
+recomputed from the public ledger by `scripts/eval_hydra_audit.py` (59/59 checks).
