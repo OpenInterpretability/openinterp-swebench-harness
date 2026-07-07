@@ -581,6 +581,48 @@ def _gen_swapped(ids, Vpair, layers, sigma):
         for h in hs: h.remove()
     return cont
 
+# --------------------------------------------------------------- H2 via validated steer (deviation, disclosed)
+def h2_steer(band):
+    """DEVIATION from pre-registered swap (which failed as a near-no-op; see g0prime/steer_control):
+    steer the action commitment along (g_other - g_taken) at the decision points, band-wise, with the
+    SAME specificity controls (random direction). Decisive contrast: does the action flip @workspace
+    vs @motor, compared with answers (which the validated steer flips at both bands)?"""
+    key = f"h2steer_{band}"
+    if key in A: log(f"{key}_SKIP"); return
+    load_vecs()
+    layers = BANDS[band]
+    ge = G["actions"]["str_replace_editor"]; gb = G["actions"]["bash"]
+    gen = torch.Generator().manual_seed(23)
+    def run(rows, taken, other, alpha):
+        # steer along (g_other - g_taken): try to flip the commitment away from the taken action
+        gt = ge if taken == "edit" else gb; go = gb if taken == "edit" else ge
+        pe, flip, rnd_flip = [], 0, 0
+        tgt = S.ALT if taken == "edit" else S.TARGET       # token we hope it flips TO
+        tgt_id = S.ACTION_TOK["bash" if taken == "edit" else "str_replace_editor"]
+        for r in rows:
+            dirs = {L: (go[L] - gt[L]) for L in layers}
+            hs = _steer_hooks(dirs, layers, alpha)
+            try: lg = _logits_last(r["ids"])
+            finally:
+                for h in hs: h.remove()
+            pe.append(S._p_action(lg, S.TARGET)); flip += int(int(lg.argmax()) == tgt_id)
+            rd = {L: torch.randn(gt[L].shape, generator=gen) for L in layers}
+            hs = _steer_hooks(rd, layers, alpha)
+            try: lgr = _logits_last(r["ids"])
+            finally:
+                for h in hs: h.remove()
+            rnd_flip += int(int(lgr.argmax()) == tgt_id)
+            gc.collect(); torch.cuda.empty_cache()
+        return {"P_edit_mean": float(np.mean(pe)), "flip_to_other": flip,
+                "random_flip_to_other": rnd_flip, "n": len(rows)}
+    out = {"layers": layers, "alpha": 0.5}
+    out["edit_pts"] = run(S.S["EDIT"], "edit", "bash", 0.5)     # steer edit->bash
+    out["bash_pts"] = run(S.S["BASH"], "bash", "edit", 0.5)     # steer bash->edit
+    A[key] = out; save_a()
+    log(f"{key}_OK edit->bash flip {out['edit_pts']['flip_to_other']}/{out['edit_pts']['n']} "
+        f"(rand {out['edit_pts']['random_flip_to_other']}) | bash->edit flip {out['bash_pts']['flip_to_other']}/{out['bash_pts']['n']} "
+        f"(rand {out['bash_pts']['random_flip_to_other']})")
+
 # --------------------------------------------------------------- H3 top-10 workspace ablation
 def h3():
     if "h3" in A: log("H3_SKIP"); return
