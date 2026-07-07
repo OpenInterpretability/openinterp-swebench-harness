@@ -176,6 +176,7 @@ def _load_est():
 
 # --------------------------------------------------------------- J-lens estimator (scalar-row)
 CHUNK = 15                                                        # prompts per HF checkpoint (VM-death safe)
+N_USE = {"actions": 40, "answers": 30}                            # final-pos readout is stable w/ fewer prompts
 
 def _enable_ckpt_train():
     """Gradient checkpointing only fires when model.training is True (HF guards on self.training).
@@ -203,15 +204,13 @@ def _grad_one(ids, vocab_ids, layers):
         for L in layers: hs.append(S._layer(L).register_forward_hook(mk(L)))
         try:
             out = m(input_ids=x, use_cache=False)
-            lg = out.logits[0].float(); T = lg.shape[0]
-            loss = lg[:, v].sum()
+            lg = out.logits[0].float()
+            loss = lg[-1, v]                                       # J-lens diagonal: FINAL-position readout only
             m.zero_grad(set_to_none=True); loss.backward()
             for L in layers:
                 if store[L].grad is None:
                     raise RuntimeError(f"grad None at L{L} — reentrant checkpointing; call prep_no_ckpt()")
-                g = store[L].grad[0].float()
-                fut = torch.arange(T, 0, -1, dtype=torch.float32, device=g.device).clamp(min=1).unsqueeze(1)
-                outrow[v][L] = (g / fut).mean(0).cpu()
+                outrow[v][L] = store[L].grad[0][-1].float().cpu()  # grad at the final-position hidden state
         finally:
             heh.remove()
             for h in hs: h.remove()
@@ -238,6 +237,7 @@ def jlens(group):
         vocab = _qa_pool()[0]; ids_list = est["generic"]
     else:
         raise ValueError(group)
+    ids_list = ids_list[:N_USE[group]]                            # cap for faster re-estimation
     vids = list(vocab.values()); inv = {tid: name for name, tid in vocab.items()}
     m = S.S["model"]; d = m.config.hidden_size
     _enable_ckpt_train()                                          # OOM fix: checkpointing needs train()
