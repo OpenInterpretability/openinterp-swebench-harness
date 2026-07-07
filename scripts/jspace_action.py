@@ -395,6 +395,38 @@ def steer_control():
             f"random->alt {rand_alt}/20  random-moved {rand_moved}/20")
     A["steer_control"] = rows; save_a(); log("STEER_CONTROL_OK")
 
+def answer_bands():
+    """Decisive control for the dissociation: does the ANSWER steer flip at midW-ALONE (L27-43),
+    parallel to the action h2steer bands? (steer_control used WS_BAND=L27-55 which includes the tail.)
+    If answers flip @midW but actions don't -> clean workspace-vs-motor dissociation."""
+    if "answer_bands" in A: log("ANSWER_BANDS_SKIP"); return
+    load_vecs()
+    pool, items = _qa_pool(); tok = S.S["tok"]
+    gen = torch.Generator().manual_seed(31)
+    bands = {"midW": BANDS["midW"], "tail": BANDS["tail"], "motor": BANDS["motor"]}
+    out = {}
+    for bname, band in bands.items():
+        contrast, rand = 0, 0
+        for it in items:
+            ids = torch.tensor([tok(it["prompt"], add_special_tokens=False).input_ids])
+            aid = pool[it["alt"]]
+            d1 = {L: (G["answers"][it["alt"]][L] - G["answers"][it["correct"]][L]) for L in band}
+            hs = _steer_hooks(d1, band, 0.5)
+            try: lg = _logits_last(ids)
+            finally:
+                for h in hs: h.remove()
+            contrast += int(int(lg.argmax()) == aid)
+            d3 = {L: torch.randn(G["answers"][it["alt"]][L].shape, generator=gen) for L in band}
+            hs = _steer_hooks(d3, band, 0.5)
+            try: lgr = _logits_last(ids)
+            finally:
+                for h in hs: h.remove()
+            rand += int(int(lgr.argmax()) == aid)
+            gc.collect(); torch.cuda.empty_cache()
+        out[bname] = {"layers": band, "contrast_to_alt": contrast, "random_to_alt": rand, "n": len(items)}
+        log(f"  ANSWER_BANDS {bname} L{band}: contrast->alt {contrast}/{len(items)} (random {rand})")
+    A["answer_bands"] = out; save_a(); log("ANSWER_BANDS_OK")
+
 def g0prime_diag():
     """Potency diagnostic: is the swap weak, or is the workspace not causally there? Steer along
     (g_alt - g_correct), normalized, scaled to alpha*||h||, swept, at WS band AND motor band.
