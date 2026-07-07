@@ -22,8 +22,8 @@ OpenInterpretability \quad \href{https://orcid.org/0009-0003-4331-6259}{ORCID 00
 \citet{anthropic2026workspace} show that language models carry an emergent, verbalizable
 \emph{global workspace} (``J-space''): a few dozen concepts, read out by a Jacobian lens, whose
 coordinate interventions causally reroute multi-hop \emph{answers} at mid-network depth. Their study
-contains no agentic content, and the public review of the paper explicitly names as unexamined
-whether an agent's \emph{action} selection routes through this workspace or bypasses it. We test this
+contains no agentic content, leaving open whether an agent's \emph{action} selection routes through
+this workspace or bypasses it. We test this
 on Qwen3.6-27B, an open-weights reasoning coding agent, using a row-restricted J-lens estimator whose
 readout directions we validate with a specificity control (a steer along the estimated direction
 flips a held answer to a designated alternative $17/20$ at half the residual norm, while random and
@@ -51,9 +51,8 @@ committed to that action. Where? \citet{anthropic2026workspace} give a sharp new
 verbalizable concepts occupying a middle band of depth, whose coordinates can be swapped to causally
 change a model's multi-hop \emph{answer}. Ablating the top workspace directions destroys multi-hop
 reasoning while sparing surface parsing. The paper studies pretrained-style completions; it contains
-no agent, tool-use, or action content, and the public review of the work notes that whether
-\emph{action selection or tool routing bypasses the workspace} is a significant unexamined question
-for deployed agents.
+no agent, tool-use, or action content, leaving whether \emph{action selection or tool routing
+bypasses the workspace} an open question for deployed agents.
 
 Our prior arc supplies the exact complementary prior. For a long-horizon coding agent we showed the
 control of an action lives not at the mid-layer ``task is done'' verdict but in a late, task-matched
@@ -222,16 +221,18 @@ numbers are model-dependent and were verified present in the public ledger step-
 
 \small
 \begin{thebibliography}{99}
-\bibitem[Anthropic(2026)]{anthropic2026workspace} Anthropic Interpretability Team. A Global Workspace
-in Language Models. \emph{Transformer Circuits Thread}, 2026. transformer-circuits.pub/2026/workspace.
-\bibitem[Basu et al.(2026)]{basu2026gap} S.~Basu et al. Interpretability Without Actionability: The
-Knowledge--Action Gap in Language Models. \emph{arXiv:2603.18353}, 2026.
-\bibitem[Anonymous(2026a)]{when2tool2026} LLM Agents Already Know When to Call Tools: Probing
-Tool-Necessity in Residual Streams. \emph{arXiv:2605.09252}, 2026.
-\bibitem[Anonymous(2026b)]{tooldep2026} Tool-Call Dependency Structure is Linearly Decodable in LLM
-Agent Residual Streams. \emph{arXiv:2605.25310}, 2026.
-\bibitem[Anonymous(2026c)]{planning2026} Do Agents Think Deeper? Layer-Wise Dynamics in Sequential
-Planning. \emph{arXiv:2605.27935}, 2026.
+\bibitem[Anthropic Interpretability Team(2026)]{anthropic2026workspace} Anthropic Interpretability
+Team. Verbalizable Representations Form a Global Workspace in Language Models. \emph{Transformer
+Circuits Thread}, 2026. transformer-circuits.pub/2026/workspace.
+\bibitem[Basu et al.(2026)]{basu2026gap} S.~Basu et al. Interpretability Without Actionability:
+Mechanistic Methods Cannot Correct Language Model Errors Despite Near-Perfect Internal
+Representations. \emph{arXiv:2603.18353}, 2026.
+\bibitem[Sun et al.(2026)]{when2tool2026} C.-E.~Sun, L.~Liu, G.~Yan, Z.~Wang, T.-W.~Weng. LLM Agents
+Already Know When to Call Tools --- Even Without Reasoning. \emph{arXiv:2605.09252}, 2026.
+\bibitem[Sun \& Kazakov(2026)]{tooldep2026} T.~Sun and D.~Kazakov. Tool-Call Dependency Structure is
+Linearly Decodable in LLM Agent Residual Streams. \emph{arXiv:2605.25310}, 2026.
+\bibitem[Cui \& Luo(2026)]{planning2026} Z.~Cui and X.~Luo. Do Agents Think Deeper? A Mechanistic
+Investigation of Layer-Wise Dynamics in Sequential Planning. \emph{arXiv:2605.27935}, 2026.
 \bibitem[Goyal et al.(2021)]{goyal2021gwt} A.~Goyal et al. Coordination Among Neural Modules Through a
 Shared Global Workspace. \emph{arXiv:2103.01197}, 2021.
 \bibitem[VanRullen \& Kanai(2021)]{vanrullen2021gwt} R.~VanRullen and R.~Kanai. Deep Learning and the
