@@ -49,7 +49,7 @@ ACTIONS = {"str_replace_editor": 15462, "bash": 21402, "finish": 28}   # verifie
 # candidate control words (single-token verified at runtime in prep())
 CTRL_WORDS = [" file", " data", " value", " number", " result", " system",
               " code", " error", " path", " name", " test", " line"]
-EST_CTX = 1536                                       # estimation context cap (OOM fallback 1024)
+EST_CTX = 1024                                       # estimation context cap (memory/speed for overnight autonomy)
 N_AGENT = 150; N_GENERIC = 50
 LAM_ID = "sigma"                                     # swap tag
 TOPK_ABL = 10                                        # their top-k J-space ablation
@@ -175,69 +175,82 @@ def _load_est():
     return torch.load(p)
 
 # --------------------------------------------------------------- J-lens estimator (scalar-row)
-def _grad_rows(ids_list, vocab_ids, layers):
-    """One backward per (prompt, v): returns {v: {L: mean-over-t normalized row}} averaged over prompts."""
+CHUNK = 15                                                        # prompts per HF checkpoint (VM-death safe)
+
+def _grad_one(ids, vocab_ids, layers):
+    """One prompt: sum over v of one backward each. Returns {v:{L: normalized row}}."""
     m = S.S["model"]; emb = _emb()
-    acc = {v: {L: torch.zeros(m.config.hidden_size, dtype=torch.float32) for L in layers} for v in vocab_ids}
-    cnt = 0
-    for pi, ids in enumerate(ids_list):
-        x = torch.tensor([ids], device=_dev())
-        for v in vocab_ids:
-            store = {}
-            heh = emb.register_forward_hook(lambda mod, i, o: o.requires_grad_(True))
-            hs = []
-            def mk(L):
-                def h(mod, i, o):
-                    t = o[0] if isinstance(o, tuple) else o
-                    t.retain_grad(); store[L] = t
-                return h
-            for L in layers: hs.append(S._layer(L).register_forward_hook(mk(L)))
-            try:
-                out = m(input_ids=x, use_cache=False)
-                lg = out.logits[0].float()                         # [T, V]
-                T = lg.shape[0]
-                loss = lg[:, v].sum()                              # sum over positions of logit_v
-                m.zero_grad(set_to_none=True)
-                loss.backward()
-                for L in layers:
-                    if store[L].grad is None:
-                        raise RuntimeError(f"grad is None at L{L} — reentrant gradient-checkpointing "
-                                           "swallowed retained grads; call prep_no_ckpt() and lower EST_CTX")
-                    g = store[L].grad[0].float()                  # [T, d]
-                    fut = torch.arange(T, 0, -1, dtype=torch.float32, device=g.device).clamp(min=1).unsqueeze(1)
-                    row = (g / fut).mean(0).cpu()                  # per-t normalize by future-count, mean over t
-                    acc[v][L] += row
-            finally:
-                heh.remove()
-                for h in hs: h.remove()
-                for L in list(store): store[L] = None
-                del out, lg
-                gc.collect(); torch.cuda.empty_cache()
-        cnt += 1
-        if (pi + 1) % 20 == 0: log(f"  est {pi+1}/{len(ids_list)}")
+    x = torch.tensor([ids], device=_dev())
+    outrow = {v: {} for v in vocab_ids}
     for v in vocab_ids:
-        for L in layers: acc[v][L] /= max(cnt, 1)
-    return acc
+        store = {}
+        heh = emb.register_forward_hook(lambda mod, i, o: o.requires_grad_(True))
+        hs = []
+        def mk(L):
+            def h(mod, i, o):
+                t = o[0] if isinstance(o, tuple) else o
+                t.retain_grad(); store[L] = t
+            return h
+        for L in layers: hs.append(S._layer(L).register_forward_hook(mk(L)))
+        try:
+            out = m(input_ids=x, use_cache=False)
+            lg = out.logits[0].float(); T = lg.shape[0]
+            loss = lg[:, v].sum()
+            m.zero_grad(set_to_none=True); loss.backward()
+            for L in layers:
+                if store[L].grad is None:
+                    raise RuntimeError(f"grad None at L{L} — reentrant checkpointing; call prep_no_ckpt()")
+                g = store[L].grad[0].float()
+                fut = torch.arange(T, 0, -1, dtype=torch.float32, device=g.device).clamp(min=1).unsqueeze(1)
+                outrow[v][L] = (g / fut).mean(0).cpu()
+        finally:
+            heh.remove()
+            for h in hs: h.remove()
+            del out, lg; gc.collect(); torch.cuda.empty_cache()
+    return outrow
+
+def _pfile(group): return f"results/jspace_vecpartial_{group}.pt"
+
+def _load_partial(group):
+    try:
+        p = hf_hub_download(S.DATA_REPO, _pfile(group), repo_type="dataset", token=_tok(), force_download=True)
+        return torch.load(p)
+    except Exception:
+        return None
 
 def jlens(group):
-    """group='actions' -> action+control tokens over agent set; 'answers' -> QA-pool tokens over generic set."""
+    """Chunk-resumable estimation. group='actions' (agent set) | 'answers' (generic set)."""
     load_vecs()
-    if group in G: log(f"JLENS_SKIP {group}"); return
+    if group in G and group in A.get("jlens_done", []): log(f"JLENS_SKIP {group}"); return
     est = _load_est()
     if group == "actions":
-        vocab = {**{k: v for k, v in ACTIONS.items()}, **A["ctrl"]}
-        ids_list = est["agent"]
+        vocab = {**{k: v for k, v in ACTIONS.items()}, **A["ctrl"]}; ids_list = est["agent"]
     elif group == "answers":
-        vocab = _qa_pool()[0]                                     # {word: tokid}
-        ids_list = est["generic"]
+        vocab = _qa_pool()[0]; ids_list = est["generic"]
     else:
         raise ValueError(group)
-    inv = {tid: name for name, tid in vocab.items()}
-    rows = _grad_rows(ids_list, list(vocab.values()), JLENS_L)
-    G[group] = {inv[tid]: {L: rows[tid][L] for L in JLENS_L} for tid in vocab.values()}
+    vids = list(vocab.values()); inv = {tid: name for name, tid in vocab.items()}
+    m = S.S["model"]; d = m.config.hidden_size
+    part = _load_partial(group)
+    if part is None:
+        summ = {v: {L: torch.zeros(d, dtype=torch.float32) for L in JLENS_L} for v in vids}
+        done = 0
+    else:
+        summ = part["sum"]; done = part["done"]; log(f"JLENS_RESUME {group} @ {done}/{len(ids_list)}")
+    for pi in range(done, len(ids_list)):
+        row = _grad_one(ids_list[pi], vids, JLENS_L)
+        for v in vids:
+            for L in JLENS_L: summ[v][L] += row[v][L]
+        if (pi + 1) % CHUNK == 0 or pi + 1 == len(ids_list):
+            torch.save({"sum": summ, "done": pi + 1}, "/content/vp.pt")
+            upload_file(path_or_fileobj="/content/vp.pt", path_in_repo=_pfile(group),
+                        repo_id=S.DATA_REPO, repo_type="dataset", token=_tok())
+            log(f"  JLENS {group} chunk -> {pi+1}/{len(ids_list)} checkpointed")
+    n = len(ids_list)
+    G[group] = {inv[tid]: {L: summ[tid][L] / max(n, 1) for L in JLENS_L} for tid in vids}
     _save_vecs()
     A.setdefault("jlens_done", []).append(group); save_a()
-    log(f"JLENS_OK {group} tokens={list(vocab)}")
+    log(f"JLENS_OK {group} tokens={list(vocab)} n={n}")
 
 # --------------------------------------------------------------- 2-hop QA positive control (G0')
 def _qa_pool():
