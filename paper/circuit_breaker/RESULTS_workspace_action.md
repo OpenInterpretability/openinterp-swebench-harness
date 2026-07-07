@@ -96,14 +96,41 @@ apples-to-apples we steer the **answer** per-band, exactly parallel to H2:
 At mid-workspace the verbalizable direction **specifically reroutes answers (11/20 vs random 0) but
 not actions (0/60, worse than random)**. Both converge at the tail/motor.
 
-## Headline
+## Headline (scoped per lit-scan)
 **The agent's action commitment bypasses the mid-workspace where the answer is already steerable.**
-Verbalizable content (a 2-hop answer) is causally reroutable from L27 (42% depth); the action only
-becomes readable (H1) and specifically steerable (H2) at the workspace→motor boundary (L47+, 73%+),
-and the commitment survives ablation of the verbalizable subspace (H3). The knowledge–action gap is a
-**workspace→motor gap**: a J-lens-style verbalizable monitor reads reasoning/answers but not action
-commitments. This translates the arc (lever-is-late, the late channel) into the global-workspace
-vocabulary, on the week of that paper's release.
+Verbalizable content (a 2-hop answer) is causally reroutable via the verbalizable direction from L27
+(42% depth); the same-magnitude, same-layer intervention does NOT specifically reroute the agent's
+action there (0/60, worse than random), and the action becomes specifically steerable only at the
+workspace→motor boundary (L47+, 73%+); ablating the verbalizable subspace at the decision point
+leaves the commitment intact (H3). We **localize** the (previously documented) knowledge–action gap
+as a **workspace→motor** transition: a J-lens-style verbalizable monitor reads reasoning/answers but
+not the action commitment (shown on one open-weights coding agent; not claimed architecture-general).
+The novelty is the **dissociation + null ablation**, not the depth ordering (tool signals are
+decodable early; outputs stabilize late — both known). This translates the arc (lever-is-late, the
+late channel) into the global-workspace vocabulary, on the week of that paper's release.
+
+## Novelty and related work (post-result lit-scan, verdict CLEAR — no direct hit)
+No published work tests whether an agent's action/tool-choice commitment routes through the EMERGENT
+global workspace; the review of the Anthropic paper explicitly names this as unexamined (the Nanda
+replication covers completions/reasoning only). But three component claims are partially pre-empted
+and are **softened accordingly** — the contribution is the **workspace dissociation** (answer
+steerable in-workspace at mid-depth while the action is not) + the **null ablation**, NOT the raw
+depth ordering or the existence of a knowledge–action gap:
+- **vs Basu (arXiv:2603.18353, knowledge–action gap).** Prior work shows internal probes separate
+  cases the model fails to act on (98% vs 45%) but treats it as an actionability limit; we do not
+  claim to discover the gap — we **localize** it to a workspace→motor depth transition and show the
+  verbalizable workspace where the *answer* is causally steerable (L27–43) is bypassed by the
+  *action* commitment (specifically steerable only at L47+).
+- **vs "LLM Agents Already Know When to Call Tools" (arXiv:2605.09252).** They read *whether* a tool
+  is needed (linear probe); we study *which* tool is committed and its causal routing — dissociated
+  from the mid-network workspace direction, with ablation leaving the commitment intact.
+- **vs "Tool-Call Dependency ... Linearly Decodable" (arXiv:2605.25310, decodable ~L14) and
+  construction-refinement depth dynamics (arXiv:2605.27935).** Tool-related signals are linearly
+  *readable* early and outputs stabilize late in general; we therefore scope our claim to **specific
+  causal steerability of the which-tool commitment via the verbalizable direction**, not readability
+  in general. The load-bearing evidence is the ablation-leaves-action-intact result (H3) and the
+  answer-vs-action steering contrast (H2 + answer_bands), foregrounded to rebut "you are re-reading
+  an early-decodable tool signal."
 
 ## Honest scope
 Single model (Qwen3.6-27B), single behavior family (edit vs bash), n=60 action / 20 answer points,
