@@ -355,6 +355,46 @@ def _steer_hooks(dirs, layers, alpha):
     for L in layers: hs.append(S._layer(L).register_forward_hook(mk(L)))
     return hs
 
+def steer_control():
+    """Specificity of the readout direction: does the (g_alt-g_correct) steer flip to ALT specifically,
+    vs (a) a random unit direction and (b) an UNRELATED token-pair contrast, at equal magnitude?
+    Settles 'blind instrument' vs 'directions specific but swap-semantics do not reproduce'."""
+    load_vecs()
+    pool, items = _qa_pool(); tok = S.S["tok"]
+    words = list(pool)
+    gen = torch.Generator().manual_seed(7)
+    rows = {}
+    for a in [0.5, 1.0]:
+        contrast_alt = other_alt = rand_alt = rand_moved = 0
+        for it in items:
+            ids = torch.tensor([tok(it["prompt"], add_special_tokens=False).input_ids])
+            cid, aid = pool[it["correct"]], pool[it["alt"]]
+            # (1) contrast direction g_alt - g_correct
+            d1 = {L: (G["answers"][it["alt"]][L] - G["answers"][it["correct"]][L]) for L in WS_BAND}
+            # (2) UNRELATED pair: two other pool words, not correct/alt
+            ow = [w for w in words if w not in (it["correct"], it["alt"])]
+            wa, wb = ow[0], ow[1]
+            d2 = {L: (G["answers"][wa][L] - G["answers"][wb][L]) for L in WS_BAND}
+            # (3) random direction, magnitude-matched (unit inside _steer_hooks)
+            d3 = {L: torch.randn(G["answers"][it["alt"]][L].shape, generator=gen) for L in WS_BAND}
+            def flips(dirs):
+                hs = _steer_hooks(dirs, WS_BAND, a)
+                try: lg = _logits_last(ids)
+                finally:
+                    for h in hs: h.remove()
+                return int(lg.argmax()), lg
+            t1, _ = flips(d1); t2, _ = flips(d2); t3, _ = flips(d3)
+            contrast_alt += int(t1 == aid)
+            other_alt += int(t2 == aid)
+            rand_alt += int(t3 == aid)
+            rand_moved += int(t3 != cid)
+            gc.collect(); torch.cuda.empty_cache()
+        rows[a] = {"contrast_to_alt": contrast_alt, "unrelated_to_alt": other_alt,
+                   "random_to_alt": rand_alt, "random_moved_off_correct": rand_moved, "n": len(items)}
+        log(f"  STEER_CTL a={a}: contrast->alt {contrast_alt}/20  unrelated->alt {other_alt}/20  "
+            f"random->alt {rand_alt}/20  random-moved {rand_moved}/20")
+    A["steer_control"] = rows; save_a(); log("STEER_CONTROL_OK")
+
 def g0prime_diag():
     """Potency diagnostic: is the swap weak, or is the workspace not causally there? Steer along
     (g_alt - g_correct), normalized, scaled to alpha*||h||, swept, at WS band AND motor band.
