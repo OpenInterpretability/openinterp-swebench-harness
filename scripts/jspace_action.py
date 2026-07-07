@@ -708,6 +708,32 @@ def _abl_hook(Q):
         return (t, *o[1:]) if isinstance(o, tuple) else t
     return h
 
+def decode_midw():
+    """#3 (closes the softest red-team point): under the mid-workspace action steer that suppresses
+    P(edit) but whose global argmax is not a tool token, WHAT is that argmax? If varied/incoherent it
+    confirms the mid-workspace intervention disrupts rather than cleanly reroutes."""
+    if "decode_midw" in A: log("DECODE_MIDW_SKIP"); return
+    load_vecs()
+    from collections import Counter
+    tok = S.S["tok"]; band = [27, 31, 35, 39, 43]
+    ge = G["actions"]["str_replace_editor"]; gb = G["actions"]["bash"]
+    bash_id = S.ACTION_TOK["bash"]
+    toks = Counter(); n_tool = 0
+    for r in S.S["EDIT"]:
+        dirs = {L: (gb[L] - ge[L]) for L in band}                 # steer edit->bash at midW
+        hs = _steer_hooks(dirs, band, 0.5)
+        try: lg = _logits_last(r["ids"])
+        finally:
+            for h in hs: h.remove()
+        top = int(lg.argmax())
+        toks[tok.decode([top]).replace("\n", "\\n")] += 1
+        n_tool += int(top in S.ACTION_TOK.values())
+        gc.collect(); torch.cuda.empty_cache()
+    uniq = len(toks)
+    A["decode_midw"] = {"n": len(S.S["EDIT"]), "unique_argmax_tokens": uniq,
+                        "argmax_is_tool_token": n_tool, "top_tokens": toks.most_common(15)}
+    save_a(); log(f"DECODE_MIDW_OK unique={uniq}/{len(S.S['EDIT'])} tool={n_tool} top={toks.most_common(6)}")
+
 def verify():
     """INDEPENDENT recompute of the model-dependent load-bearing numbers, freshly re-implemented
     (own hooks/loops, not calling h2_steer/answer_bands/h3), compared to the ledger. Targeted flips
