@@ -177,6 +177,15 @@ def _load_est():
 # --------------------------------------------------------------- J-lens estimator (scalar-row)
 CHUNK = 15                                                        # prompts per HF checkpoint (VM-death safe)
 
+def _enable_ckpt_train():
+    """Gradient checkpointing only fires when model.training is True (HF guards on self.training).
+    Decoder LLMs have no active dropout, so train() is behaviorally identical here but lets the
+    backward recompute activations instead of storing all 64 layers (the OOM fix)."""
+    m = S.S["model"]
+    for attr in ("attention_dropout", "hidden_dropout", "dropout"):
+        if hasattr(m.config, attr): setattr(m.config, attr, 0.0)
+    m.train()
+
 def _grad_one(ids, vocab_ids, layers):
     """One prompt: sum over v of one backward each. Returns {v:{L: normalized row}}."""
     m = S.S["model"]; emb = _emb()
@@ -231,6 +240,7 @@ def jlens(group):
         raise ValueError(group)
     vids = list(vocab.values()); inv = {tid: name for name, tid in vocab.items()}
     m = S.S["model"]; d = m.config.hidden_size
+    _enable_ckpt_train()                                          # OOM fix: checkpointing needs train()
     part = _load_partial(group)
     if part is None:
         summ = {v: {L: torch.zeros(d, dtype=torch.float32) for L in JLENS_L} for v in vids}
@@ -246,6 +256,7 @@ def jlens(group):
             upload_file(path_or_fileobj="/content/vp.pt", path_in_repo=_pfile(group),
                         repo_id=S.DATA_REPO, repo_type="dataset", token=_tok())
             log(f"  JLENS {group} chunk -> {pi+1}/{len(ids_list)} checkpointed")
+    m.eval()                                                     # restore eval for readout/swap phases
     n = len(ids_list)
     G[group] = {inv[tid]: {L: summ[tid][L] / max(n, 1) for L in JLENS_L} for tid in vids}
     _save_vecs()
