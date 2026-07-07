@@ -152,18 +152,25 @@ consistent with the observed lag and with the commitment surviving ablation of t
 subspace. A clean head-level test is future work (L59 attention is output-gated → per-head write
 reconstruction is nontrivial).
 
-## Novelty and related work (post-result lit-scan, verdict CLEAR — no direct hit)
+## Novelty and related work (post-result lit-scan, verdict SOFTEN — no direct hit, nearest neighbor 2605.07990)
 No published work tests whether an agent's action/tool-choice commitment routes through the EMERGENT
 global workspace; the review of the Anthropic paper explicitly names this as unexamined (the Nanda
-replication covers completions/reasoning only). But three component claims are partially pre-empted
-and are **softened accordingly** — the contribution is the **workspace dissociation** (answer
-steerable in-workspace at mid-depth while the action is not) + the **null ablation**, NOT the raw
-depth ordering or the existence of a knowledge–action gap:
+replication covers completions/reasoning only). The load-bearing contribution is the **answer→action
+depth-lag dissociation via the shared verbalizable (J-space) direction, replicated dense-27B + MoE-20B**;
+the null ablation is an INSTANCE of the detect≠control pattern, not a standalone novelty; the raw
+depth ordering and the knowledge–action gap are NOT claimed. Components softened accordingly:
+- **vs "Tool Calling is Linearly Readable and Steerable" (arXiv:2605.07990, Wu et al., NEAREST NEIGHBOR).**
+  They causally steer *which tool* via a bespoke tool direction and report early-readable/late-steerable
+  ordering, in DENSE transformers (Gemma3/Qwen3/Qwen2.5/Llama3.1). We do NOT claim that ordering — it is
+  theirs. Our contribution is orthogonal: (a) the answer-vs-action dissociation (they never contrast the
+  two), (b) the shared EMERGENT verbalizable/J-space direction (not a bespoke tool direction), (c)
+  extension to an MoE architecture (gpt-oss-20b) not among their dense families, (d) null ablation of the
+  verbalizable subspace. Cite prominently; attribute the depth ordering to them + 2605.27935 (MoE).
 - **vs Basu (arXiv:2603.18353, knowledge–action gap).** Prior work shows internal probes separate
   cases the model fails to act on (98% vs 45%) but treats it as an actionability limit; we do not
-  claim to discover the gap — we **localize** it to a workspace→motor depth transition and show the
-  verbalizable workspace where the *answer* is causally steerable (L27–43) is bypassed by the
-  *action* commitment (specifically steerable only at L47+).
+  claim to discover the gap — we **localize** it as an answer→action depth lag and show the
+  verbalizable direction that steers the *answer* at a shallower depth (L27–43) is not yet reachable
+  by the *action* commitment there, which becomes specifically steerable only deeper (L47+).
 - **vs "LLM Agents Already Know When to Call Tools" (arXiv:2605.09252).** They read *whether* a tool
   is needed (linear probe); we study *which* tool is committed and its causal routing — dissociated
   from the mid-network workspace direction, with ablation leaving the commitment intact.

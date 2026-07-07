@@ -34,9 +34,10 @@ the mid-workspace (L27, 42\% depth; $11/20$ vs random $0$) where the action is n
 ($0/60$, \emph{worse} than random $21$), the action first steerable at the workspace tail (L47, 73\%,
 $60/60$). On gpt-oss the answer's onset is later (the tail, $14/20$ vs random $0$) and the action's
 later still (only the motor band, $40/40$ vs random $4$; not the tail, $0/40$). The absolute onset
-depths are model-dependent; the lag is invariant---on both models there is a band where the
-verbalizable answer is steerable and the action is not (the gpt-oss decision point is a weaker probe,
-edit-commit fidelity $0.14$ vs $0.23$, so it corroborates rather than leads). The action's readout also emerges late
+depths are model-dependent; the lag is consistent across the two architectures tested---on both there
+is a band where the verbalizable answer is steerable (vs.\ a magnitude-matched random-direction
+control) and the action is not (the gpt-oss decision point is a weaker probe, edit-commit fidelity
+$0.14$ vs $0.23$, so it corroborates rather than leads). The action's readout also emerges late
 (AUROC peaks $0.74$ at L47 in Qwen), and projecting out the top-10 verbalizable directions at the
 decision point leaves the commitment differential intact ($0.174 \rightarrow 0.167$). We
 \emph{localize} (not discover) the knowledge--action gap \citep{basu2026gap} as this
@@ -55,8 +56,8 @@ committed to that action. Where? \citet{anthropic2026workspace} give a sharp new
 verbalizable concepts occupying a middle band of depth, whose coordinates can be swapped to causally
 change a model's multi-hop \emph{answer}. Ablating the top workspace directions destroys multi-hop
 reasoning while sparing surface parsing. The paper studies pretrained-style completions; it contains
-no agent, tool-use, or action content, leaving whether \emph{action selection or tool routing
-bypasses the workspace} an open question for deployed agents.
+no agent, tool-use, or action content, leaving whether \emph{action selection or tool routing runs
+through the same workspace, and at the same depth,} an open question for deployed agents.
 
 Our prior arc supplies the exact complementary prior. For a long-horizon coding agent we showed the
 control of an action lives not at the mid-layer ``task is done'' verdict but in a late, task-matched
@@ -86,10 +87,16 @@ fails to act on ($98\%$ vs $45\%$)---but treat it as an actionability limit; we 
 we \emph{localize} it as an answer$\rightarrow$action depth lag and show the mid-workspace direction
 that reroutes the answer is not yet reachable through the action there. \citet{when2tool2026} read \emph{whether} a tool
 is needed with a linear probe; we study \emph{which} tool is committed and its causal routing, and
-show it is dissociated from the workspace direction and survives its ablation. \citet{tooldep2026}
-decode tool-call dependency topology from the residual stream while explicitly disclaiming behavioral
-control, and \citet{planning2026} show semantic direction forms early while deep layers stabilize
-outputs; because tool-related signals are linearly \emph{readable} early, we scope our claim to the
+show it is dissociated from the workspace direction and survives its ablation. Our nearest neighbor
+is \citet{toolsteer2026}, who show which-tool choice is linearly readable early and only causally
+\emph{steerable} at a late layer, in dense transformers (Gemma~3, Qwen~3, Qwen~2.5, Llama~3.1); we do
+not claim that early-readable/late-steerable ordering, which is theirs. Our contribution is orthogonal
+to it: the answer-vs-action \emph{depth lag} via the shared emergent \emph{verbalizable} (J-space)
+direction---not a bespoke tool direction---and its extension to an MoE architecture (gpt-oss-20b), not
+among the dense families they test. \citet{tooldep2026} decode tool-call dependency topology from the
+residual stream while explicitly disclaiming behavioral control, and \citet{planning2026} show
+semantic direction forms early while deep layers stabilize outputs in an MoE; because tool-related
+signals are linearly \emph{readable} early \citep{toolsteer2026,tooldep2026}, we scope our claim to the
 \emph{specific causal steerability of the which-tool commitment via the verbalizable direction}, not
 readability in general. Global-workspace models of cognition in networks
 \citep{goyal2021gwt,vanrullen2021gwt} \emph{impose} a workspace as an architectural module; we test an
@@ -114,9 +121,10 @@ $h \leftarrow h + V(\sigma(c)-c)$ is a near-no-op in this basis (the raw-gradien
 near-equal, $c_{\text{correct}}\approx c_{\text{alt}}$), so we validate and use a \emph{steer} along
 the normalized $(g_{\text{alt}}-g_{\text{correct}})$ direction scaled to $\alpha\lVert h\rVert$---a
 disclosed deviation to a second Anthropic-used intervention on the same directions. Table
-\ref{tab:spec} shows the steer is specific: at $\alpha{=}0.5$ it flips a held answer to the designated
-alternative $17/20$, while unrelated-pair and random directions flip $0/20$ and a random push of
-equal magnitude does not move the answer at all. (A readout-correlation check is uninformative here:
+\ref{tab:spec} shows the steer is specific: at $\alpha{=}0.5$ (aggregated over the L27--55 workspace
+band) it flips a held answer to the designated alternative $17/20$, while unrelated-pair and random
+directions flip $0/20$ and a random push of equal magnitude does not move the answer at all. (The
+per-band answer steer in Table~\ref{tab:dissoc} restricts this to each band separately.) (A readout-correlation check is uninformative here:
 RMSNorm is degree-0 homogeneous, so by Euler's theorem $g_v\!\cdot h \approx 0$ by construction.)
 
 \begin{table}[h]\centering\small
@@ -134,11 +142,12 @@ random pushes do not reroute (and at $\alpha{=}0.5$ do not even move) the answer
 \end{table}
 
 \section{Results}
-\paragraph{H1: the action is readable only in the workspace tail.}
+\paragraph{H1: the action's verbalizable readout emerges late (workspace tail).}
 Figure~\ref{fig:h1} plots the AUROC of $(g_{\text{edit}}-g_{\text{bash}})\!\cdot h$ separating edit-
 from bash-decision points by depth. It is near chance through most of mid-workspace, first exceeding
 chance only near L35, and rises to a peak of $0.74$ at layer 47 (73\%), sustaining $0.59$--$0.69$ into
-the motor band. The action's verbalizable readout emerges at the workspace tail, not mid-workspace.
+the motor band. The action's verbalizable readout only becomes usably discriminative at the tail; it
+is near chance through most of the mid-workspace where the answer is already steerable.
 (The curve recomputes offline from the
 public vectors and residuals to $10^{-6}$ at all 16 layers.)
 
@@ -150,7 +159,9 @@ the verbalizable direction \emph{specifically} reroutes answers ($11/20$ vs rand
 steer is \emph{worse than random} ($0/60$ vs $21/60$): no specific workspace-mediated rerouting of the
 commitment. Specific action control appears at the tail ($60/60$ vs random $23$) and completes at motor---so the
 action is not absent from the workspace, it is reachable only from the workspace \emph{tail} onward,
-strictly deeper than the answer. Because the identical magnitude at the identical layers reroutes the
+strictly deeper than the answer.\footnote{The dissociation column reports the edit$\rightarrow$bash
+direction; the reverse bash$\rightarrow$edit steer is weaker at the tail ($44/60$) and only completes
+at the motor band ($60/60$), consistent with the action requiring the deepest layers to fully commit.} Because the identical magnitude at the identical layers reroutes the
 answer but not the action, the mid-workspace action result is not a magnitude/disruption artifact.
 Decoding the mid-workspace action steer confirms this: the global argmax is dominated by structural
 tokens (\texttt{>} 47/60, newline 8/60; only 1/60 a tool token, 6 distinct tokens), i.e.\ the
@@ -177,7 +188,10 @@ the decision points leaves the task-appropriate commitment differential essentia
 $P(\text{edit})$ at edit points $0.474\rightarrow0.473$, at bash points $0.299\rightarrow0.306$;
 differential $0.174\rightarrow0.167$ (from unrounded values; Figure~\ref{fig:abl}). The commitment does not live in the
 verbalizable subspace at the decision position---the load-bearing rebuttal to ``you are re-reading an
-early-decodable tool signal.''
+early-decodable tool signal.'' This is an instance of the well-documented detect$\neq$control /
+knowledge--action pattern \citep{basu2026gap} for the verbalizable direction specifically, not a fresh
+discovery that the commitment is non-verbalizable; the novelty rests on the depth-lag dissociation and
+its cross-architecture consistency, not on this ablation alone.
 
 \paragraph{Cross-model: the lag replicates on an MoE architecture.}
 We repeat the instrument validation and the band-wise steer on gpt-oss-20b (24 layers, MoE), with
@@ -187,9 +201,9 @@ two-hop baseline $14/20$; answer flips $20/20$ at motor vs random $1$). The dept
 the tail the verbalizable direction reroutes the answer ($14/20$ vs random $0$) but not the action
 ($0/40$ vs random $0$), and the action becomes specifically steerable only at the motor band ($40/40$
 vs random $4$). The absolute onsets shift---on gpt-oss the answer consolidates later (tail, not
-mid-workspace) and the action later still (motor, not tail)---but the invariant is the same
-(Figure~\ref{fig:xmodel}): a band where the answer is steerable and the action is not, with the action
-strictly deeper. gpt-oss's
+mid-workspace) and the action later still (motor, not tail)---but the qualitative lag is the same
+across both architectures (Figure~\ref{fig:xmodel}): a band where the answer is steerable and the
+action is not, with the action strictly deeper. gpt-oss's
 generic-format decision points have weaker edit-commitment fidelity (edit-points $P(\text{edit}){=}0.14$
 vs bash-points $0.23$); the random-controlled steer specificity is nonetheless clean.
 
@@ -274,8 +288,8 @@ action / $20$ answer points on the primary model, prefill-only, single magnitude
 (controlled within each band by the random baseline). The depth lag replicates in both models but the
 \emph{absolute} onset depths are model-dependent: on the dense model the answer becomes steerable at
 mid-network and the action only at the tail, whereas on the MoE model both shift deeper (answer at the
-tail, action at the motor band), so we frame the invariant as depth-relative, not as a fixed
-``mid-workspace'' band. On the MoE model the synthetic decision point is a weaker probe of the
+tail, action at the motor band), so we frame the finding as a depth-relative lag that is consistent
+across the two architectures tested, not as a fixed ``mid-workspace'' band. On the MoE model the synthetic decision point is a weaker probe of the
 commit---baseline edit-commit fidelity $0.14$ vs.\ bash $0.23$---so its dissociation is corroborating
 rather than primary. The estimator is the row-restricted diagonal, not the full J-lens matrix, and we
 use a steer in place of the pre-registered coordinate swap (disclosed; the swap is a near-no-op in
@@ -286,8 +300,10 @@ via the verbalizable direction, not readability. No claim of architecture-genera
 models; the workspace paper's own agent generality is untested.
 
 \section{Reproducibility}
-Public HF ledgers (\texttt{results/jspace\_action.json} for the dense model,
-\texttt{results/jspace\_xmodel\_gpt-oss-20b.json} for the MoE), estimated vectors, and decision-point
+\sloppy
+Public HF ledgers (\texttt{results/jspace\_\allowbreak action.json} for the dense model,
+\texttt{results/jspace\_\allowbreak xmodel\_\allowbreak gpt-oss-20b.json} for the MoE), estimated
+vectors, and decision-point
 residuals; harnesses \texttt{scripts/jspace\_action.py}, \texttt{scripts/jspace\_xmodel.py} and
 pre-registration released. The evaluation \texttt{scripts/eval\_jspace.py} recomputes the H1 readout
 offline from the public vectors and residuals (16/16 layers to $10^{-6}$) and audits the dissociation
@@ -306,6 +322,9 @@ Representations. \emph{arXiv:2603.18353}, 2026.
 Already Know When to Call Tools --- Even Without Reasoning. \emph{arXiv:2605.09252}, 2026.
 \bibitem[Sun \& Kazakov(2026)]{tooldep2026} T.~Sun and D.~Kazakov. Tool-Call Dependency Structure is
 Linearly Decodable in LLM Agent Residual Streams. \emph{arXiv:2605.25310}, 2026.
+\bibitem[Wu et al.(2026)]{toolsteer2026} Z.~Wu, Z.~Wang, S.~Cho, Y.~Yang, A.~Koshiyama, S.~Bulathwela,
+M.~Perez-Ortiz. Tool Calling is Linearly Readable and Steerable in Language Models.
+\emph{arXiv:2605.07990}, 2026.
 \bibitem[Cui \& Luo(2026)]{planning2026} Z.~Cui and X.~Luo. Do Agents Think Deeper? A Mechanistic
 Investigation of Layer-Wise Dynamics in Sequential Planning. \emph{arXiv:2605.27935}, 2026.
 \bibitem[Goyal et al.(2021)]{goyal2021gwt} A.~Goyal et al. Coordination Among Neural Modules Through a
