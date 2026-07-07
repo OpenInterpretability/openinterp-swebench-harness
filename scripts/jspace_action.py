@@ -670,7 +670,8 @@ def _abl_hook(Q):
     def h(mod, i, o):
         t = o[0] if isinstance(o, tuple) else o
         t = t.clone(); x = t[:, -1, :].float()
-        x = x - (x @ Q) @ Q.T                                    # remove top-k subspace
+        Qd = Q.to(x.device)                                      # vectors are CPU; hidden is cuda
+        x = x - (x @ Qd) @ Qd.T                                  # remove top-k subspace
         t[:, -1, :] = x.to(t.dtype)
         return (t, *o[1:]) if isinstance(o, tuple) else t
     return h
