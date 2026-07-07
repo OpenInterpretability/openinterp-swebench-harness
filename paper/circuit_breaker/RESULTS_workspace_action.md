@@ -1,5 +1,8 @@
 # RESULTS — The Action Lags the Answer (beat 11)
 
+> **PUBLISHED 2026-07-07** — Zenodo concept DOI [10.5281/zenodo.21250691](https://doi.org/10.5281/zenodo.21250691)
+> (version 10.5281/zenodo.21250692), CC-BY-4.0. Part of the OpenInterpretability arc.
+
 PREREG: `PREREG_workspace_action.md`. Models: **Qwen3.6-27B (dense, primary)** and **gpt-oss-20b
 (MoE, cross-model)**. Ledgers (public): HF `caiovicentino1/swebench-phase6-verdict-circuit:`
 `results/jspace_action.json` (+ `jspace_vectors.pt`, `jspace_resid.pt`) and
