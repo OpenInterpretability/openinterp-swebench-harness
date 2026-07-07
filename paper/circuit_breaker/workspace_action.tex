@@ -165,7 +165,10 @@ at the motor band ($60/60$), consistent with the action requiring the deepest la
 answer but not the action, the mid-workspace action result is not a magnitude/disruption artifact.
 Decoding the mid-workspace action steer confirms this: the global argmax is dominated by structural
 tokens (\texttt{>} 47/60, newline 8/60; only 1/60 a tool token, 6 distinct tokens), i.e.\ the
-mid-workspace intervention perturbs emission without producing a clean committed tool call.
+mid-workspace intervention perturbs emission without producing a clean committed tool call. All
+positive dissociations are significant against their magnitude-matched random controls (Fisher exact:
+answer mid-workspace $p{=}1.5\times10^{-4}$; action tail $p{=}3.8\times10^{-15}$, motor
+$p{=}2.8\times10^{-16}$).
 
 \begin{table}[h]\centering\small
 \begin{tabular}{lcc}
@@ -200,7 +203,8 @@ bands mapped by depth-percentage (Table~\ref{tab:xmodel}). The specificity contr
 two-hop baseline $14/20$; answer flips $20/20$ at motor vs random $1$). The depth lag replicates: at
 the tail the verbalizable direction reroutes the answer ($14/20$ vs random $0$) but not the action
 ($0/40$ vs random $0$), and the action becomes specifically steerable only at the motor band ($40/40$
-vs random $4$). The absolute onsets shift---on gpt-oss the answer consolidates later (tail, not
+vs random $4$; Fisher exact for the answer-tail and action-motor dissociations $p{=}3.3\times10^{-6}$
+and $p{=}2.5\times10^{-18}$). The absolute onsets shift---on gpt-oss the answer consolidates later (tail, not
 mid-workspace) and the action later still (motor, not tail)---but the qualitative lag is the same
 across both architectures (Figure~\ref{fig:xmodel}): a band where the answer is steerable and the
 action is not, with the action strictly deeper. gpt-oss's
@@ -307,8 +311,11 @@ vectors, and decision-point
 residuals; harnesses \texttt{scripts/jspace\_action.py}, \texttt{scripts/jspace\_xmodel.py} and
 pre-registration released. The evaluation \texttt{scripts/eval\_jspace.py} recomputes the H1 readout
 offline from the public vectors and residuals (16/16 layers to $10^{-6}$) and audits the dissociation
-logic for both models. Steer and ablation numbers are model-dependent and were verified present in the
-public ledgers step-by-step.
+logic for both models. Steer and ablation numbers require GPU generation; an independent
+reimplementation of the steer/ablation pipeline, run with fresh random seeds, reproduced all six
+targeted dissociation counts exactly (answers $11/20/20$, actions $0/60/60$ at mid/tail/motor) and the
+ablated differential ($0.167$)---the targeted counts are seed-independent while only the random
+controls vary---and both are logged to the public ledger (\texttt{verify} field).
 
 \small
 \begin{thebibliography}{99}

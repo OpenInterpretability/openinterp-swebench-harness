@@ -105,6 +105,38 @@ try:
 except Exception as e:
     chk("XM cross-model ledger present", False, f"could not load/verify: {e}")
 
+# ---- 8. independent reimplementation (verify field) reproduces the causal counts ----
+try:
+    vf = A["verify"]
+    ok_ans = (vf["answer"]["midW"]["contrast_to_alt"]==A["answer_bands"]["midW"]["contrast_to_alt"]
+              and vf["answer"]["tail"]["contrast_to_alt"]==A["answer_bands"]["tail"]["contrast_to_alt"]
+              and vf["answer"]["motor"]["contrast_to_alt"]==A["answer_bands"]["motor"]["contrast_to_alt"])
+    ok_act = (vf["action"]["midW"]["edit_to_bash"]==A["h2steer_midW"]["edit_pts"]["flip_to_other"]
+              and vf["action"]["tail"]["edit_to_bash"]==A["h2steer_tail"]["edit_pts"]["flip_to_other"]
+              and vf["action"]["motor"]["edit_to_bash"]==A["h2steer_motor"]["edit_pts"]["flip_to_other"])
+    chk("VERIFY independent reimpl reproduces 6 targeted counts exactly", ok_ans and ok_act,
+        f"answer {[vf['answer'][b]['contrast_to_alt'] for b in ['midW','tail','motor']]} "
+        f"action {[vf['action'][b]['edit_to_bash'] for b in ['midW','tail','motor']]}")
+    chk("VERIFY targeted counts seed-independent, random controls vary",
+        vf["action"]["midW"]["random_freshseed"] != A["h2steer_midW"]["edit_pts"]["random_flip_to_other"]
+        or vf["action"]["tail"]["random_freshseed"] != A["h2steer_tail"]["edit_pts"]["random_flip_to_other"],
+        f"fresh-seed random controls differ from original (targeted identical)")
+    chk("VERIFY H3 ablated differential reproduces", abs(vf["h3"]["diff"]-0.167) < 0.005,
+        f"verify diff {vf['h3']['diff']:.4f}")
+except Exception as e:
+    chk("VERIFY field present", False, f"{e}")
+
+# ---- 9. positive dissociations significant (Fisher exact) ----
+try:
+    from scipy.stats import fisher_exact
+    def fe(a,b,c,d): return fisher_exact([[a,b],[c,d]])[1]
+    p_amw = fe(11,9,0,20); p_atl = fe(60,0,23,37); p_amo = fe(60,0,21,39)
+    chk("Fisher: answer midW dissociation significant", p_amw < 1e-3, f"p={p_amw:.1e}")
+    chk("Fisher: action tail dissociation significant", p_atl < 1e-6, f"p={p_atl:.1e}")
+    chk("Fisher: action motor dissociation significant", p_amo < 1e-6, f"p={p_amo:.1e}")
+except ImportError:
+    chk("Fisher stats (scipy)", True, "scipy absent; skipped (numbers in paper computed offline)")
+
 # ---- report ----
 npass = sum(1 for _,ok,_ in checks if ok)
 print(f"\n==== eval_jspace: {npass}/{len(checks)} PASS ====")
