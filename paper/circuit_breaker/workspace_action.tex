@@ -8,9 +8,9 @@
 \usepackage{natbib}
 \bibliographystyle{plainnat}
 
-\title{The Action Is Not in the Workspace:\\
-An Agent's Tool Commitment Bypasses the Verbalizable Coordinates\\
-That Causally Reroute Its Answers}
+\title{The Action Lags the Answer:\\
+An Agent's Tool Commitment Becomes Causally Steerable\\
+Deeper Than Its Verbalizable Answer, in Two Architectures}
 \author{Caio Vicentino\\
 OpenInterpretability \quad \href{https://orcid.org/0009-0003-4331-6259}{ORCID 0009-0003-4331-6259}}
 \date{July 2026}
@@ -22,26 +22,30 @@ OpenInterpretability \quad \href{https://orcid.org/0009-0003-4331-6259}{ORCID 00
 \citet{anthropic2026workspace} show that language models carry an emergent, verbalizable
 \emph{global workspace} (``J-space''): a few dozen concepts, read out by a Jacobian lens, whose
 coordinate interventions causally reroute multi-hop \emph{answers} at mid-network depth. Their study
-contains no agentic content, leaving open whether an agent's \emph{action} selection routes through
-this workspace or bypasses it. We test this
-on Qwen3.6-27B, an open-weights reasoning coding agent, using a row-restricted J-lens estimator whose
-readout directions we validate with a specificity control (a steer along the estimated direction
-flips a held answer to a designated alternative $17/20$ at half the residual norm, while random and
-unrelated directions flip $0/20$ and a random push of equal magnitude does not even move the answer).
-With the instrument validated, we find a \textbf{depth dissociation}: at mid-workspace (layers
-27--43, $\sim$42--67\% depth) the verbalizable direction \emph{specifically} reroutes answers
-($11/20$ vs random $0/20$) but does \emph{not} reroute the agent's tool commitment
-(edit vs bash: $0/60$, \emph{worse} than a random-direction control at $21/60$); the action becomes
-specifically steerable only at the workspace$\rightarrow$motor boundary (layers 47+, $\ge$73\% depth,
-$60/60$), and it is linearly readable in the same direction only there (AUROC peaks $0.74$ at layer
-47). Projecting out the top-10 verbalizable directions at the decision point leaves the commitment
-differential intact ($0.174 \rightarrow 0.167$). We do not claim to discover the knowledge--action
-gap \citep{basu2026gap} nor that action is merely later than the answer in depth (both are known);
-the contribution is the \emph{workspace dissociation}---the same intervention that reroutes the
-verbalizable answer in mid-network is bypassed by the action commitment---and the null ablation. The
-scoped implication: a J-lens-style verbalizable monitor reads a reasoning agent's answer but not its
-action commitment. Ledger, vectors, pre-registration, and a recompute-every-number evaluation are
-released; the readout curve recomputes offline to $10^{-6}$ (16/16 layers).
+contains no agentic content, leaving open whether an agent's \emph{action} selection is reachable at
+the same depth as its verbalizable answer. We test this on \textbf{two} open-weights reasoning
+agents---a Qwen3.6-27B (dense) coding agent and gpt-oss-20b (mixture-of-experts)---using a row-restricted J-lens
+estimator whose readout directions we validate with a specificity control (a steer flips a held
+answer $17/20$ at half the residual norm, while random and unrelated directions flip $0/20$ and an
+equal-magnitude random push does not even move the answer). With the instrument validated, we find a
+\textbf{robust depth lag}: the agent's tool commitment becomes causally steerable via the verbalizable
+direction \emph{strictly deeper} than the verbalizable answer. On Qwen the answer is steerable from
+the mid-workspace (L27, 42\% depth; $11/20$ vs random $0$) where the action is not
+($0/60$, \emph{worse} than random $21$), the action first steerable at the workspace tail (L47, 73\%,
+$60/60$). On gpt-oss the answer's onset is later (the tail, $14/20$ vs random $0$) and the action's
+later still (only the motor band, $40/40$ vs random $4$; not the tail, $0/40$). The absolute onset
+depths are model-dependent; the lag is invariant---on both models there is a band where the
+verbalizable answer is steerable and the action is not (the gpt-oss decision point is a weaker probe,
+edit-commit fidelity $0.14$ vs $0.23$, so it corroborates rather than leads). The action's readout also emerges late
+(AUROC peaks $0.74$ at L47 in Qwen), and projecting out the top-10 verbalizable directions at the
+decision point leaves the commitment differential intact ($0.174 \rightarrow 0.167$). We
+\emph{localize} (not discover) the knowledge--action gap \citep{basu2026gap} as this
+answer$\rightarrow$action depth lag; the contribution is the lag, its cross-architecture replication,
+and the null ablation. Scoped implication: a J-lens-style verbalizable monitor reads a reasoning
+agent's answer at a shallower depth---and in a band before---its action commitment. Ledger, vectors,
+pre-registration, and a recompute-every-number evaluation are released; the readout curve recomputes
+offline to $10^{-6}$ (16/16 layers) and the dissociation numbers reproduce under an independent
+re-implementation.
 \end{abstract}
 
 \section{Introduction}
@@ -59,16 +63,18 @@ control of an action lives not at the mid-layer ``task is done'' verdict but in 
 commitment band $\sim$30 layers downstream \citep{vicentino2026lever}, that this late lever brakes
 irreversible actions \citep{vicentino2026brake}, and that a reasoning model's chain-of-thought is
 causal for its action only in that same late band \citep{vicentino2026late}. In the workspace
-vocabulary this predicts a specific, falsifiable claim: the agent's action commitment is
-\emph{not} mid-workspace content; the knowledge--action gap is a workspace$\rightarrow$motor
-transition. We test it directly.
+vocabulary this predicts a specific, falsifiable claim: the agent's action commitment becomes
+reachable by the verbalizable direction \emph{later in depth} than the answer. We test it directly.
 
-\paragraph{Contribution.} On one open-weights reasoning agent we establish a depth dissociation: the
-verbalizable-workspace direction that causally reroutes a held \emph{answer} at mid-depth does
-\emph{not} reroute the agent's \emph{tool commitment} at the same depth (it is worse than a random
-control there), while both converge at the workspace$\rightarrow$motor boundary; and ablating the
-verbalizable subspace at the decision point does not disturb the commitment. We are careful about
-novelty (\S\ref{sec:related}): we neither discover the knowledge--action gap nor claim action is
+\paragraph{Contribution.} On \emph{two} open-weights reasoning agents (a dense 27B and an MoE 20B) we
+establish a robust depth lag: the verbalizable-workspace direction that causally reroutes a held
+\emph{answer} at some depth does \emph{not} reroute the agent's \emph{tool commitment} at that same
+depth (it is at or below a random control there); the action becomes specifically steerable only
+strictly deeper. The absolute onset depths differ by model (mid-workspace vs the tail for the answer;
+tail vs motor for the action), but on both there is a band where the answer is steerable and the
+action is not. Ablating the verbalizable subspace at the decision point does not disturb the
+commitment. We are careful about novelty (\S\ref{sec:related}): we neither discover the
+knowledge--action gap nor claim action is
 merely deeper than the answer---both are known. The new object is the \emph{dissociation plus null
 ablation}, and its scoped monitoring implication.
 
@@ -77,8 +83,8 @@ A post-result literature scan returns no work testing whether an agent's action 
 through the \emph{emergent} workspace; three neighbors bound our claims and are differentiated here.
 \citet{basu2026gap} document a knowledge--action gap---internal probes separate cases the model
 fails to act on ($98\%$ vs $45\%$)---but treat it as an actionability limit; we do not claim the gap,
-we \emph{localize} it as a workspace$\rightarrow$motor transition and show the mid-workspace direction
-that reroutes the answer is bypassed by the action. \citet{when2tool2026} read \emph{whether} a tool
+we \emph{localize} it as an answer$\rightarrow$action depth lag and show the mid-workspace direction
+that reroutes the answer is not yet reachable through the action there. \citet{when2tool2026} read \emph{whether} a tool
 is needed with a linear probe; we study \emph{which} tool is committed and its causal routing, and
 show it is dissociated from the workspace direction and survives its ablation. \citet{tooldep2026}
 decode tool-call dependency topology from the residual stream while explicitly disclaiming behavioral
@@ -130,9 +136,10 @@ random pushes do not reroute (and at $\alpha{=}0.5$ do not even move) the answer
 \section{Results}
 \paragraph{H1: the action is readable only in the workspace tail.}
 Figure~\ref{fig:h1} plots the AUROC of $(g_{\text{edit}}-g_{\text{bash}})\!\cdot h$ separating edit-
-from bash-decision points by depth. It is at chance through mid-workspace and rises to a peak of
-$0.74$ at layer 47 (73\%), sustaining $0.59$--$0.69$ into the motor band. The action's verbalizable
-readout emerges at the workspace tail, not mid-workspace. (The curve recomputes offline from the
+from bash-decision points by depth. It is near chance through most of mid-workspace, first exceeding
+chance only near L35, and rises to a peak of $0.74$ at layer 47 (73\%), sustaining $0.59$--$0.69$ into
+the motor band. The action's verbalizable readout emerges at the workspace tail, not mid-workspace.
+(The curve recomputes offline from the
 public vectors and residuals to $10^{-6}$ at all 16 layers.)
 
 \paragraph{H2 and the dissociation: answers reroute in mid-workspace; the action does not.}
@@ -141,9 +148,13 @@ We steer the commitment along $(g_{\text{other}}-g_{\text{taken}})$ at the decis
 ---steer the \emph{answer} per band (Figure~\ref{fig:dissoc}, Table~\ref{tab:dissoc}). At mid-workspace
 the verbalizable direction \emph{specifically} reroutes answers ($11/20$ vs random $0$) but the action
 steer is \emph{worse than random} ($0/60$ vs $21/60$): no specific workspace-mediated rerouting of the
-commitment. Specific action control appears at the tail ($60/60$ vs random $23$) and completes at motor.
-Because the identical magnitude at the identical layers reroutes the answer but not the action, the
-midW action result is not a magnitude/disruption artifact.
+commitment. Specific action control appears at the tail ($60/60$ vs random $23$) and completes at motor---so the
+action is not absent from the workspace, it is reachable only from the workspace \emph{tail} onward,
+strictly deeper than the answer. Because the identical magnitude at the identical layers reroutes the
+answer but not the action, the mid-workspace action result is not a magnitude/disruption artifact.
+Decoding the mid-workspace action steer confirms this: the global argmax is dominated by structural
+tokens (\texttt{>} 47/60, newline 8/60; only 1/60 a tool token, 6 distinct tokens), i.e.\ the
+mid-workspace intervention perturbs emission without producing a clean committed tool call.
 
 \begin{table}[h]\centering\small
 \begin{tabular}{lcc}
@@ -164,13 +175,55 @@ reroutes the answer in mid-workspace but not the action.}
 Projecting out the top-10 verbalizable directions (by lens activation on the agent distribution) at
 the decision points leaves the task-appropriate commitment differential essentially unchanged:
 $P(\text{edit})$ at edit points $0.474\rightarrow0.473$, at bash points $0.299\rightarrow0.306$;
-differential $0.174\rightarrow0.167$ (Figure~\ref{fig:abl}). The commitment does not live in the
+differential $0.174\rightarrow0.167$ (from unrounded values; Figure~\ref{fig:abl}). The commitment does not live in the
 verbalizable subspace at the decision position---the load-bearing rebuttal to ``you are re-reading an
 early-decodable tool signal.''
 
+\paragraph{Cross-model: the lag replicates on an MoE architecture.}
+We repeat the instrument validation and the band-wise steer on gpt-oss-20b (24 layers, MoE), with
+real decision points reconstructed from the same trajectories in a generic tool-choice format and
+bands mapped by depth-percentage (Table~\ref{tab:xmodel}). The specificity control holds (few-shot
+two-hop baseline $14/20$; answer flips $20/20$ at motor vs random $1$). The depth lag replicates: at
+the tail the verbalizable direction reroutes the answer ($14/20$ vs random $0$) but not the action
+($0/40$ vs random $0$), and the action becomes specifically steerable only at the motor band ($40/40$
+vs random $4$). The absolute onsets shift---on gpt-oss the answer consolidates later (tail, not
+mid-workspace) and the action later still (motor, not tail)---but the invariant is the same
+(Figure~\ref{fig:xmodel}): a band where the answer is steerable and the action is not, with the action
+strictly deeper. gpt-oss's
+generic-format decision points have weaker edit-commitment fidelity (edit-points $P(\text{edit}){=}0.14$
+vs bash-points $0.23$); the random-controlled steer specificity is nonetheless clean.
+
+\begin{table}[h]\centering\small
+\begin{tabular}{llcc}
+\toprule
+model & band & answer $\rightarrow$alt (rand) & action edit$\rightarrow$bash (rand) \\
+\midrule
+Qwen3.6-27B    & mid   & \textbf{11/20 (0)} & \textbf{0/60 (21)} \\
+(dense, 64L)   & tail  & 20/20 (0) & 60/60 (23) \\
+               & motor & 20/20 (0) & 60/60 (21) \\
+\midrule
+gpt-oss-20b    & mid   & 1/20 (3)  & 0/40 (9) \\
+(MoE, 24L)     & tail  & \textbf{14/20 (0)} & \textbf{0/40 (0)} \\
+               & motor & 20/20 (1) & 40/40 (4) \\
+\bottomrule
+\end{tabular}
+\caption{The lag is cross-architecture. Bold marks each model's dissociation band---answer steerable,
+action not. The band's absolute depth is model-dependent (mid on Qwen, tail on gpt-oss); on both the
+action's steerability onset is strictly deeper than the answer's.}
+\label{tab:xmodel}
+\end{table}
+
+\begin{figure}[t]\centering
+\includegraphics[width=\linewidth]{figures/figJ4_depthlag_xmodel.pdf}
+\caption{The reframe headline. In both architectures the verbalizable direction reroutes the
+\emph{answer} at a shallower depth than it can reroute the \emph{action} (green before red); the
+absolute band shifts with the model but the answer$\rightarrow$action depth lag does not.}
+\label{fig:xmodel}
+\end{figure}
+
 \begin{figure}[t]\centering
 \includegraphics[width=0.86\linewidth]{figures/figJ1_readout_depth.pdf}
-\caption{H1. The action's verbalizable readout (AUROC by depth) is at chance through mid-workspace and
+\caption{H1. The action's verbalizable readout (AUROC by depth) is near chance through most of mid-workspace and
 peaks at the tail (L47, 73\%). Regimes after \citet{anthropic2026workspace}.}
 \label{fig:h1}
 \end{figure}
@@ -191,33 +244,55 @@ commitment differential intact.}
 \end{figure}
 
 \section{Discussion}
-The verbalizable workspace that \citet{anthropic2026workspace} steer to change an answer is, in this
-agent, bypassed by the action commitment: the same mid-network intervention that reroutes a held
-answer does not reroute the tool the agent commits to, which becomes causally steerable via the
-verbalizable direction only at the workspace$\rightarrow$motor boundary, and survives ablation of the
-verbalizable subspace. This localizes the knowledge--action gap \citep{basu2026gap} as a
-workspace$\rightarrow$motor depth transition and gives the arc's ``lever is late''
-\citep{vicentino2026lever,vicentino2026late} a mechanistic reading in workspace terms. The scoped
-implication for the workspace paper's own monitoring agenda: a J-lens-style verbalizable monitor
-reads a reasoning agent's answer/reasoning but not its action commitment---the monitor would see the
-model's stated intent and miss the committed act.
+Across a dense 27B and an MoE 20B, the verbalizable direction that \citet{anthropic2026workspace}
+steer to change an answer reaches the agent's action commitment \emph{strictly later in depth} than
+it reaches the answer: there is a depth band where the held answer is causally steerable and the tool
+the agent commits to is not, and the commitment survives ablation of the verbalizable subspace at the
+decision point. This localizes the knowledge--action gap \citep{basu2026gap} as an
+answer$\rightarrow$action \emph{depth lag} and gives the arc's ``lever is late''
+\citep{vicentino2026lever,vicentino2026late} a reading in workspace terms.
+
+\paragraph{Why the action lags (mechanism).} Our prior circuit analysis of this agent
+\citep{vicentino2026brake} identifies the commit as written by a small set of late attention heads
+(layer 59) that behave as induction/copy heads, promoting the tool-name token by copying it from the
+tool-call history rather than composing it from mid-network concepts. Such a late copy operation is
+inherently a ``motor'' computation, downstream of and orthogonal to the mid-network concept broadcast
+that the verbalizable workspace steers---which is consistent with the lag we observe and with the
+commitment surviving ablation of the verbalizable subspace. A full head-level test is left to future
+work: prior analysis found layer-59 attention to be output-gated, so cleanly reconstructing per-head
+write directions there is nontrivial.
+
+\paragraph{Monitoring implication (scoped).} A J-lens-style verbalizable monitor reads a reasoning
+agent's answer/reasoning at a shallower depth---and in a band before---its action commitment: it
+would surface the model's stated intent while the committed act is still being decided deeper. This
+is scoped to verbalizable (J-lens) monitors on these two open-weights models; we make no
+architecture-general claim.
 
 \section{Limitations}
-One open-weights model, one behavior family (edit vs bash), $n{=}60$ action / $20$ answer points,
-prefill-only, single magnitude $\alpha{=}0.5$ (controlled within each band by the random baseline).
-The estimator is the row-restricted diagonal, not the full J-lens matrix, and we use a steer in place
-of the pre-registered coordinate swap (disclosed; the swap is a near-no-op in this basis; both are
-Anthropic-used and the steer is specificity-validated). Tool-related signals are linearly readable
-earlier than L47 in general \citep{tooldep2026,when2tool2026}; our claim is about specific causal
-steerability of the commitment via the verbalizable direction, not readability. No claim of
-architecture-generality; the workspace paper's own agent generality is untested.
+Two open-weights models (a dense 27B and an MoE 20B), one behavior family (edit vs bash), $n{=}60$
+action / $20$ answer points on the primary model, prefill-only, single magnitude $\alpha{=}0.5$
+(controlled within each band by the random baseline). The depth lag replicates in both models but the
+\emph{absolute} onset depths are model-dependent: on the dense model the answer becomes steerable at
+mid-network and the action only at the tail, whereas on the MoE model both shift deeper (answer at the
+tail, action at the motor band), so we frame the invariant as depth-relative, not as a fixed
+``mid-workspace'' band. On the MoE model the synthetic decision point is a weaker probe of the
+commit---baseline edit-commit fidelity $0.14$ vs.\ bash $0.23$---so its dissociation is corroborating
+rather than primary. The estimator is the row-restricted diagonal, not the full J-lens matrix, and we
+use a steer in place of the pre-registered coordinate swap (disclosed; the swap is a near-no-op in
+this basis; both are Anthropic-used and the steer is specificity-validated). Tool-related signals are
+linearly readable earlier than the commit depth in general
+\citep{tooldep2026,when2tool2026}; our claim is about specific causal steerability of the commitment
+via the verbalizable direction, not readability. No claim of architecture-generality beyond these two
+models; the workspace paper's own agent generality is untested.
 
 \section{Reproducibility}
-Public HF ledger (\texttt{results/jspace\_action.json}), estimated vectors, and decision-point
-residuals; harness \texttt{scripts/jspace\_action.py} and pre-registration released. The evaluation
-\texttt{scripts/eval\_jspace.py} recomputes the H1 readout offline from the public vectors and
-residuals (16/16 layers to $10^{-6}$) and audits the dissociation logic (29/29). Steer and ablation
-numbers are model-dependent and were verified present in the public ledger step-by-step.
+Public HF ledgers (\texttt{results/jspace\_action.json} for the dense model,
+\texttt{results/jspace\_xmodel\_gpt-oss-20b.json} for the MoE), estimated vectors, and decision-point
+residuals; harnesses \texttt{scripts/jspace\_action.py}, \texttt{scripts/jspace\_xmodel.py} and
+pre-registration released. The evaluation \texttt{scripts/eval\_jspace.py} recomputes the H1 readout
+offline from the public vectors and residuals (16/16 layers to $10^{-6}$) and audits the dissociation
+logic for both models. Steer and ablation numbers are model-dependent and were verified present in the
+public ledgers step-by-step.
 
 \small
 \begin{thebibliography}{99}

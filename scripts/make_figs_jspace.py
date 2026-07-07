@@ -69,4 +69,32 @@ ax.set_ylabel("P(edit)"); ax.set_ylim(0, 0.6)
 ax.set_title("H3: commitment survives\nworkspace-subspace ablation", fontsize=9)
 ax.legend(fontsize=7.5)
 fig.tight_layout(); fig.savefig(os.path.join(OUT, "figJ3_ablation.pdf")); plt.close(fig)
-print("wrote figJ1_readout_depth.pdf, figJ2_dissociation.pdf, figJ3_ablation.pdf to", os.path.abspath(OUT))
+# ---- Fig J4: the depth lag replicates across two architectures (reframe headline) ----
+X = json.load(open(dl("results/jspace_xmodel_gpt-oss-20b.json")))
+# dense bands (of 64 layers), MoE bands (of 24) -> depth% midpoints
+dense_mid = {"midW": 100*(27+43)/2/64, "tail": 100*(47+55)/2/64, "motor": 100*(59+63)/2/64}
+moe_mid   = {"midW": 100*(11+16)/2/24, "tail": 100*(18+20)/2/24, "motor": 100*(22+23)/2/24}
+fig, axes = plt.subplots(1, 2, figsize=(7.0, 3.1), sharey=True)
+for ax, (name, mid, ans_src, act_src, an, actn) in zip(axes, [
+    ("Qwen3.6-27B (dense)", dense_mid,
+     {b: A["answer_bands"][b]["contrast_to_alt"]/A["answer_bands"][b]["n"] for b in bands},
+     {b: A[f"h2steer_{b}"]["edit_pts"]["flip_to_other"]/A[f"h2steer_{b}"]["edit_pts"]["n"] for b in bands}, 20, 60),
+    ("gpt-oss-20b (MoE)", moe_mid,
+     {b: X["dissoc"]["answer"][b]["contrast_to_alt"]/X["dissoc"]["answer"][b]["n"] for b in bands},
+     {b: X["dissoc"]["action"][b]["edit_to_bash"]/X["dissoc"]["action"][b]["n"] for b in bands}, 20, 40)]):
+    dx = [mid[b] for b in bands]
+    ax.axvspan(38, 92, color="#e7f5e5", alpha=.5); ax.axvspan(92, 100, color="#f7e2e2", alpha=.5)
+    ax.plot(dx, [ans_src[b] for b in bands], "-o", color="#2f6b2a", ms=6, lw=1.8, label="answer")
+    ax.plot(dx, [act_src[b] for b in bands], "-s", color="#8a3030", ms=6, lw=1.8, label="action")
+    # annotate the lag: first band where answer is specific (>=0.4) vs where action is
+    a_on = next((mid[b] for b in bands if ans_src[b] >= 0.4), None)
+    c_on = next((mid[b] for b in bands if act_src[b] >= 0.4), None)
+    if a_on and c_on and c_on > a_on:
+        ax.annotate("", xy=(c_on, 0.5), xytext=(a_on, 0.5),
+                    arrowprops=dict(arrowstyle="->", color="#555", lw=1.4))
+        ax.text((a_on+c_on)/2, 0.56, "lag", ha="center", fontsize=8, color="#555")
+    ax.set_title(name, fontsize=9.5); ax.set_xlabel("depth (%)"); ax.set_xlim(30, 100); ax.set_ylim(0, 1.05)
+axes[0].set_ylabel("specific flip rate"); axes[0].legend(fontsize=8, loc="upper left", framealpha=.9)
+fig.suptitle("J4: the action lags the answer in depth, in both architectures", fontsize=10)
+fig.tight_layout(); fig.savefig(os.path.join(OUT, "figJ4_depthlag_xmodel.pdf")); plt.close(fig)
+print("wrote figJ1_readout_depth.pdf, figJ2_dissociation.pdf, figJ3_ablation.pdf, figJ4_depthlag_xmodel.pdf to", os.path.abspath(OUT))

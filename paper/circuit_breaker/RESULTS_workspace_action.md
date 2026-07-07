@@ -1,9 +1,16 @@
-# RESULTS — Is the Agent's Action in the Workspace? (beat 11)
+# RESULTS — The Action Lags the Answer (beat 11)
 
-PREREG: `PREREG_workspace_action.md`. Model: Qwen3.6-27B. Ledger (public):
-HF `caiovicentino1/swebench-phase6-verdict-circuit:results/jspace_action.json`
-(+ `jspace_vectors.pt`, `jspace_resid.pt`). Run: 2026-07-07, Colab CLI G4, detached-driver +
+PREREG: `PREREG_workspace_action.md`. Models: **Qwen3.6-27B (dense, primary)** and **gpt-oss-20b
+(MoE, cross-model)**. Ledgers (public): HF `caiovicentino1/swebench-phase6-verdict-circuit:`
+`results/jspace_action.json` (+ `jspace_vectors.pt`, `jspace_resid.pt`) and
+`results/jspace_xmodel_gpt-oss-20b.json`. Run: 2026-07-07, Colab CLI G4, detached-driver +
 HF-ledger discipline (many VM incarnations, zero data loss).
+
+**Reframed headline (depth-relative invariant):** the verbalizable direction reaches the agent's
+**action commitment strictly deeper than it reaches the answer**. In both models there is a depth band
+where the held answer is causally steerable and the committed tool is not; the *absolute* onset depths
+are model-dependent (dense: answer@mid, action@tail; MoE: answer@tail, action@motor), so the honest
+claim is the **answer→action depth lag**, not a fixed "mid-workspace" band.
 
 ## Question
 Anthropic's "A Global Workspace in Language Models" (transformer-circuits.pub/2026/workspace,
@@ -94,20 +101,56 @@ apples-to-apples we steer the **answer** per-band, exactly parallel to H2:
 | motor (L59–63) | 20/20 (0) | 60/60 (21) |
 
 At mid-workspace the verbalizable direction **specifically reroutes answers (11/20 vs random 0) but
-not actions (0/60, worse than random)**. Both converge at the tail/motor.
+not actions (0/60, worse than random)**. Both converge at the tail/motor. This is the depth lag on the
+dense model: the answer is steerable a full band before the action.
 
-## Headline (scoped per lit-scan)
-**The agent's action commitment bypasses the mid-workspace where the answer is already steerable.**
-Verbalizable content (a 2-hop answer) is causally reroutable via the verbalizable direction from L27
-(42% depth); the same-magnitude, same-layer intervention does NOT specifically reroute the agent's
-action there (0/60, worse than random), and the action becomes specifically steerable only at the
-workspace→motor boundary (L47+, 73%+); ablating the verbalizable subspace at the decision point
-leaves the commitment intact (H3). We **localize** the (previously documented) knowledge–action gap
-as a **workspace→motor** transition: a J-lens-style verbalizable monitor reads reasoning/answers but
-not the action commitment (shown on one open-weights coding agent; not claimed architecture-general).
-The novelty is the **dissociation + null ablation**, not the depth ordering (tool signals are
-decodable early; outputs stabilize late — both known). This translates the arc (lever-is-late, the
-late channel) into the global-workspace vocabulary, on the week of that paper's release.
+**#3 — What does the mid-workspace action steer actually produce?** Decoding the global argmax under
+the mid-workspace action steer confirms it is not a committed tool: the argmax is dominated by
+structural tokens (`>` 47/60, newline 8/60), only **1/60** is a tool token, across just 6 distinct
+tokens. So the midW intervention perturbs the among-tools balance (P(edit) 0.000/0.987) without
+producing a clean committed emission — consistent with "action not yet steerable here."
+
+## Cross-model replication (gpt-oss-20b, MoE, NL=24)
+Arch-agnostic port (`scripts/jspace_xmodel.py`) on OpenAI's gpt-oss-20b, bands by depth%: midW
+L11–16 (46–67%), tail L18–20 (75–83%), motor L22–23 (92–96%). Decision points built by the shared
+`cross_model_realpts` construction; baseline commit fidelity is **weaker than the dense model** (edit
+0.14 < bash 0.23), so this is a **corroborating** probe, not primary.
+
+| band | ANSWER flip→alt (random) | ACTION flip→other (random) |
+|---|---|---|
+| midW (L11–16) | 1/20 (3) | 0/40 (9) |
+| tail (L18–20) | **14/20 (0)** — specific | 0/40 (0) — not specific |
+| motor (L22–23) | 20/20 (1) | 40/40 (4) |
+
+**Same qualitative dissociation, shifted deeper:** on the MoE model the answer becomes specifically
+steerable at the **tail** (14/20 vs random 0) while the action is still not steerable there (0/40);
+both converge only at the motor band. The dense model's midW-answer/tail-action lag maps onto the
+MoE's tail-answer/motor-action lag — the **depth lag is the invariant**, the absolute band is not.
+
+## Headline (scoped per lit-scan, reframed)
+**The action lags the answer in depth.** In both models the verbalizable direction reroutes the held
+answer at a shallower depth than it can reroute the committed tool: there is a depth band where the
+answer flips specifically (vs random 0) and the action does not (≤ random). The action does become
+causally steerable via the *same* verbalizable direction deeper in the network (dense: tail L47+; MoE:
+motor L22+) — so the action is **not absent from the workspace**, it is reached later. Ablating the
+verbalizable subspace at the decision point leaves the commitment intact (H3). We **localize** the
+(previously documented) knowledge–action gap as an **answer→action depth lag**. A J-lens-style
+verbalizable monitor thus reads reasoning/answers a band *before* the action commitment is decided
+(shown on two open-weights coding agents; not claimed architecture-general). The novelty is the
+**depth-relative dissociation + null ablation, replicated across two architectures**, not the depth
+ordering (tool signals are decodable early; outputs stabilize late — both known). This translates the
+arc (lever-is-late, the late channel) into the global-workspace vocabulary, on the week of that
+paper's release.
+
+## Why the action lags (mechanism, #2 — from arc beat-7)
+Our prior circuit analysis of this agent (`vicentino2026brake`, DOI 10.5281/zenodo.20679287 and the
+L59 head decomposition) found the commit is written by ~3 late attention heads at L59 acting as
+induction/copy heads: they promote the tool-name token by **copying it from the tool-call history**,
+not composing it from mid-network concepts. A late copy is inherently a *motor* computation,
+downstream of and orthogonal to the mid-network concept broadcast the verbalizable workspace steers —
+consistent with the observed lag and with the commitment surviving ablation of the verbalizable
+subspace. A clean head-level test is future work (L59 attention is output-gated → per-head write
+reconstruction is nontrivial).
 
 ## Novelty and related work (post-result lit-scan, verdict CLEAR — no direct hit)
 No published work tests whether an agent's action/tool-choice commitment routes through the EMERGENT
@@ -133,15 +176,20 @@ depth ordering or the existence of a knowledge–action gap:
   an early-decodable tool signal."
 
 ## Honest scope
-Single model (Qwen3.6-27B), single behavior family (edit vs bash), n=60 action / 20 answer points,
-prefill-only, α=0.5 (magnitude controlled within each band by the random baseline). Disclosed
-deviation: steer in place of the pre-registered coordinate swap (the swap is a near-no-op in the
-raw-gradient basis; both are Anthropic-used; the steer is specificity-validated). The estimator is
-the row-restricted variant, not the full J_ℓ matrix. No claim about Claude-scale models. The
-"monitoring misses commitments" implication is scoped to J-lens-style verbalizable monitors.
+Two open-weights models (Qwen3.6-27B dense primary; gpt-oss-20b MoE corroborating), single behavior
+family (edit vs bash), n=60 action / 20 answer points on the primary, prefill-only, α=0.5 (magnitude
+controlled within each band by the random baseline). **The depth lag replicates in both models but the
+absolute onset depths are model-dependent** — hence the depth-relative framing, not a fixed
+mid-workspace band. On the MoE the synthetic decision point is a weaker probe (edit-commit fidelity
+0.14 < bash 0.23), so its dissociation corroborates rather than leads. Disclosed deviation: steer in
+place of the pre-registered coordinate swap (the swap is a near-no-op in the raw-gradient basis; both
+are Anthropic-used; the steer is specificity-validated). The estimator is the row-restricted variant,
+not the full J_ℓ matrix. No claim about Claude-scale models. The "monitoring reads the answer before
+the commitment" implication is scoped to J-lens-style verbalizable monitors.
 
 ## Reproducibility
-Public ledger + vectors + residuals on HF; harness `scripts/jspace_action.py` + PREREG public.
-H1 AUROC recomputes offline (CPU) from the vectors/residuals to 1e-6 (16/16 layers). Steer/ablation
-numbers are model-dependent; each pipeline step was verified present in the HF ledger (not
-string-matched) by the driver.
+Public ledgers + vectors + residuals on HF (dense: `results/jspace_action.json`; MoE:
+`results/jspace_xmodel_gpt-oss-20b.json`); harnesses `scripts/jspace_action.py`,
+`scripts/jspace_xmodel.py` + PREREG public. H1 AUROC recomputes offline (CPU) from the
+vectors/residuals to 1e-6 (16/16 layers). Steer/ablation numbers are model-dependent; each pipeline
+step was verified present in the HF ledger (not string-matched) by the driver.
