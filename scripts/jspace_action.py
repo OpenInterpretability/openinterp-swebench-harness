@@ -341,6 +341,61 @@ def g0():
                "null_swap_ok": d_noop < 1e-2}
     save_a(); log("G0:", json.dumps(A["g0"]))
 
+def _steer_hooks(dirs, layers, alpha):
+    """Add alpha * ||h_L|| * unit(dir_L) at the last position of each layer. Direction-potency test."""
+    hs = []
+    def mk(L):
+        u = dirs[L].to(_dev()).float(); u = u / (u.norm() + 1e-9)
+        def h(mod, i, o):
+            t = o[0] if isinstance(o, tuple) else o
+            t = t.clone(); hl = t[:, -1, :].float()
+            t[:, -1, :] = (hl + alpha * hl.norm(dim=-1, keepdim=True) * u).to(t.dtype)
+            return (t, *o[1:]) if isinstance(o, tuple) else t
+        return h
+    for L in layers: hs.append(S._layer(L).register_forward_hook(mk(L)))
+    return hs
+
+def g0prime_diag():
+    """Potency diagnostic: is the swap weak, or is the workspace not causally there? Steer along
+    (g_alt - g_correct), normalized, scaled to alpha*||h||, swept, at WS band AND motor band.
+    Also: estimator validity (does g_v . h_final correlate with the model's real logit_v?)."""
+    load_vecs()
+    pool, items = _qa_pool(); tok = S.S["tok"]
+    scales = [0.0, 0.5, 1.0, 2.0, 4.0, 8.0]
+    bands = {"workspace": WS_BAND, "motor": [59, 63]}
+    out = {"scales": scales, "bands": {}}
+    # estimator validity: correlate g_correct . h_final with the real logit at correct token
+    val_g, val_lg = [], []
+    for it in items[:12]:
+        ids = torch.tensor([tok(it["prompt"], add_special_tokens=False).input_ids])
+        _, caps = S._fwd(ids, [63]); h63 = caps[63][0, 0].float()
+        base = _logits_last(ids); cid = pool[it["correct"]]
+        val_g.append(float(G["answers"][it["correct"]][63] @ h63)); val_lg.append(float(base[cid]))
+    vg, vl = np.array(val_g), np.array(val_lg)
+    rho = float(np.corrcoef(vg, vl)[0, 1]) if vg.std() > 0 and vl.std() > 0 else float("nan")
+    out["estimator_validity"] = {"corr_g_dot_h_vs_logit_L63": rho,
+                                 "g_norm_L63_mean": float(np.mean([float(G["answers"][it["correct"]][63].norm()) for it in items[:12]]))}
+    for bname, band in bands.items():
+        per_scale = []
+        for a in scales:
+            flips, dp = 0, []
+            for it in items:
+                ids = torch.tensor([tok(it["prompt"], add_special_tokens=False).input_ids])
+                cid, aid = pool[it["correct"]], pool[it["alt"]]
+                dirs = {L: (G["answers"][it["alt"]][L] - G["answers"][it["correct"]][L]) for L in band}
+                hs = _steer_hooks(dirs, band, a) if a > 0 else []
+                try: lg = _logits_last(ids)
+                finally:
+                    for h in hs: h.remove()
+                flips += int(int(lg.argmax()) == aid)
+                dp.append(float(torch.softmax(lg, -1)[aid] - torch.softmax(lg, -1)[cid]))
+                gc.collect(); torch.cuda.empty_cache()
+            per_scale.append({"alpha": a, "flips_to_alt": flips, "mean_dP_alt_minus_correct": float(np.mean(dp))})
+            log(f"  DIAG {bname} a={a}: flips={flips}/20 dP={np.mean(dp):+.3f}")
+        out["bands"][bname] = per_scale
+    A["g0prime_diag"] = out; save_a()
+    log("G0PRIME_DIAG_OK validity_rho=%.2f" % rho)
+
 def g0prime():
     """THE gate: workspace-band J-lens answer-swap flips >=25% of 20 two-hop answers top-1."""
     if "g0prime" in A: log("G0'_SKIP", A["g0prime"]); return
