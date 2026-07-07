@@ -275,20 +275,22 @@ def _qa_pool():
         if len(ids) == 1: pool[w.strip()] = ids[0]
     words = list(pool)                                           # single-token answers
     rng = random.Random(11)
-    syms = ["A", "B", "C", "D", "E", "F", "G", "H"]
+    syms = ["A", "B", "C", "D", "E", "F", "G", "H", "J", "L", "R", "S"]
+    mids = ["K", "M", "P", "Q", "T", "V", "W", "Z"]
+    # Few-shot 2-hop: two solved demos prime the exact completion pattern so a reasoning model
+    # emits the leaf token greedily; the query has 2 chains (1 asked, 1 distractor) -> genuine routing.
+    def chain(a, m, leaf): return f"{a} -> {m}. {m} -> {leaf}."
     items = []
     for i in range(20):
-        w = rng.sample(words, 4)                                 # 4 leaf answers
-        mids = rng.sample(["K", "M", "P", "Q"], 4)
-        # chain: leftsym -> mid -> answer  (two hops)
-        lefts = syms[:4]; rng.shuffle(lefts)
-        rules_mid = [f"{lefts[j]} maps to {mids[j]}." for j in range(4)]
-        rules_ans = [f"{mids[j]} maps to {w[j]}." for j in range(4)]
-        rng.shuffle(rules_mid); rng.shuffle(rules_ans)
-        qi = rng.randrange(4)
-        correct = w[qi]; alt = w[(qi + 1) % 4]
-        prompt = ("Rules: " + " ".join(rules_mid) + " " + " ".join(rules_ans) +
-                  f" Question: In two steps, {lefts[qi]} maps to? Answer:")
+        w = rng.sample(words, 6); s = rng.sample(syms, 6); md = rng.sample(mids, 6)
+        # demos: A->M->leaf, shown solved
+        d1 = f"{chain(s[0], md[0], w[0])} Two hops: {s[0]} -> {w[0]}."
+        d2 = f"{chain(s[1], md[1], w[1])} Two hops: {s[1]} -> {w[1]}."
+        # query: two chains (asked + distractor), rules interleaved
+        rules = [chain(s[2], md[2], w[2]), chain(s[3], md[3], w[3])]
+        rng.shuffle(rules)
+        prompt = (f"Follow two hops. {d1}\n{d2}\n{' '.join(rules)} Two hops: {s[2]} ->")
+        correct = w[2]; alt = w[3]                                # distractor leaf as the swap alternative
         items.append({"prompt": prompt, "correct": correct, "alt": alt})
     return pool, items
 
@@ -361,8 +363,12 @@ def g0prime():
         top_sw = int(sw.argmax())
         flipped = base_correct and (top_sw == aid)               # correct->alt under swap
         flips += int(flipped); correct_base += int(base_correct); n += 1
+        # diagnosis: what the model actually says at baseline, and where the correct token ranks
+        rank_c = int((base > base[cid]).sum())                   # 0 = top-1
         detail.append({"corr": it["correct"], "alt": it["alt"],
-                       "base_correct": base_correct, "flipped_to_alt": flipped})
+                       "base_correct": base_correct, "flipped_to_alt": flipped,
+                       "base_top1": tok.decode([top_base]).replace("\n", "\\n"),
+                       "correct_rank": rank_c})
         gc.collect(); torch.cuda.empty_cache()
     rate = flips / max(correct_base, 1)
     A["g0prime"] = {"n": n, "base_correct": correct_base, "flips_corr_to_alt": flips,
