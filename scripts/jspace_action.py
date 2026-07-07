@@ -368,7 +368,7 @@ def g0prime_diag():
     val_g, val_lg = [], []
     for it in items[:12]:
         ids = torch.tensor([tok(it["prompt"], add_special_tokens=False).input_ids])
-        _, caps = S._fwd(ids, [63]); h63 = caps[63][0, 0].float()
+        _, caps = S._fwd(ids, [63]); h63 = caps[63][0, 0].float().cpu()   # vectors are on CPU
         base = _logits_last(ids); cid = pool[it["correct"]]
         val_g.append(float(G["answers"][it["correct"]][63] @ h63)); val_lg.append(float(base[cid]))
     vg, vl = np.array(val_g), np.array(val_lg)
