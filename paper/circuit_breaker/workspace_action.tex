@@ -1,0 +1,247 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+\usepackage{xcolor}
+\usepackage{natbib}
+\bibliographystyle{plainnat}
+
+\title{The Action Is Not in the Workspace:\\
+An Agent's Tool Commitment Bypasses the Verbalizable Coordinates\\
+That Causally Reroute Its Answers}
+\author{Caio Vicentino\\
+OpenInterpretability \quad \href{https://orcid.org/0009-0003-4331-6259}{ORCID 0009-0003-4331-6259}}
+\date{July 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+\citet{anthropic2026workspace} show that language models carry an emergent, verbalizable
+\emph{global workspace} (``J-space''): a few dozen concepts, read out by a Jacobian lens, whose
+coordinate interventions causally reroute multi-hop \emph{answers} at mid-network depth. Their study
+contains no agentic content, and the public review of the paper explicitly names as unexamined
+whether an agent's \emph{action} selection routes through this workspace or bypasses it. We test this
+on Qwen3.6-27B, an open-weights reasoning coding agent, using a row-restricted J-lens estimator whose
+readout directions we validate with a specificity control (a steer along the estimated direction
+flips a held answer to a designated alternative $17/20$ at half the residual norm, while random and
+unrelated directions flip $0/20$ and a random push of equal magnitude does not even move the answer).
+With the instrument validated, we find a \textbf{depth dissociation}: at mid-workspace (layers
+27--43, $\sim$42--67\% depth) the verbalizable direction \emph{specifically} reroutes answers
+($11/20$ vs random $0/20$) but does \emph{not} reroute the agent's tool commitment
+(edit vs bash: $0/60$, \emph{worse} than a random-direction control at $21/60$); the action becomes
+specifically steerable only at the workspace$\rightarrow$motor boundary (layers 47+, $\ge$73\% depth,
+$60/60$), and it is linearly readable in the same direction only there (AUROC peaks $0.74$ at layer
+47). Projecting out the top-10 verbalizable directions at the decision point leaves the commitment
+differential intact ($0.174 \rightarrow 0.167$). We do not claim to discover the knowledge--action
+gap \citep{basu2026gap} nor that action is merely later than the answer in depth (both are known);
+the contribution is the \emph{workspace dissociation}---the same intervention that reroutes the
+verbalizable answer in mid-network is bypassed by the action commitment---and the null ablation. The
+scoped implication: a J-lens-style verbalizable monitor reads a reasoning agent's answer but not its
+action commitment. Ledger, vectors, pre-registration, and a recompute-every-number evaluation are
+released; the readout curve recomputes offline to $10^{-6}$ (16/16 layers).
+\end{abstract}
+
+\section{Introduction}
+A reasoning agent that decides to call an irreversible tool has, somewhere in its forward pass,
+committed to that action. Where? \citet{anthropic2026workspace} give a sharp new vocabulary for
+``where'': a Jacobian lens (J-lens) reveals an emergent \emph{global workspace}, a small set of
+verbalizable concepts occupying a middle band of depth, whose coordinates can be swapped to causally
+change a model's multi-hop \emph{answer}. Ablating the top workspace directions destroys multi-hop
+reasoning while sparing surface parsing. The paper studies pretrained-style completions; it contains
+no agent, tool-use, or action content, and the public review of the work notes that whether
+\emph{action selection or tool routing bypasses the workspace} is a significant unexamined question
+for deployed agents.
+
+Our prior arc supplies the exact complementary prior. For a long-horizon coding agent we showed the
+control of an action lives not at the mid-layer ``task is done'' verdict but in a late, task-matched
+commitment band $\sim$30 layers downstream \citep{vicentino2026lever}, that this late lever brakes
+irreversible actions \citep{vicentino2026brake}, and that a reasoning model's chain-of-thought is
+causal for its action only in that same late band \citep{vicentino2026late}. In the workspace
+vocabulary this predicts a specific, falsifiable claim: the agent's action commitment is
+\emph{not} mid-workspace content; the knowledge--action gap is a workspace$\rightarrow$motor
+transition. We test it directly.
+
+\paragraph{Contribution.} On one open-weights reasoning agent we establish a depth dissociation: the
+verbalizable-workspace direction that causally reroutes a held \emph{answer} at mid-depth does
+\emph{not} reroute the agent's \emph{tool commitment} at the same depth (it is worse than a random
+control there), while both converge at the workspace$\rightarrow$motor boundary; and ablating the
+verbalizable subspace at the decision point does not disturb the commitment. We are careful about
+novelty (\S\ref{sec:related}): we neither discover the knowledge--action gap nor claim action is
+merely deeper than the answer---both are known. The new object is the \emph{dissociation plus null
+ablation}, and its scoped monitoring implication.
+
+\section{Related work and novelty}\label{sec:related}
+A post-result literature scan returns no work testing whether an agent's action commitment routes
+through the \emph{emergent} workspace; three neighbors bound our claims and are differentiated here.
+\citet{basu2026gap} document a knowledge--action gap---internal probes separate cases the model
+fails to act on ($98\%$ vs $45\%$)---but treat it as an actionability limit; we do not claim the gap,
+we \emph{localize} it as a workspace$\rightarrow$motor transition and show the mid-workspace direction
+that reroutes the answer is bypassed by the action. \citet{when2tool2026} read \emph{whether} a tool
+is needed with a linear probe; we study \emph{which} tool is committed and its causal routing, and
+show it is dissociated from the workspace direction and survives its ablation. \citet{tooldep2026}
+decode tool-call dependency topology from the residual stream while explicitly disclaiming behavioral
+control, and \citet{planning2026} show semantic direction forms early while deep layers stabilize
+outputs; because tool-related signals are linearly \emph{readable} early, we scope our claim to the
+\emph{specific causal steerability of the which-tool commitment via the verbalizable direction}, not
+readability in general. Global-workspace models of cognition in networks
+\citep{goyal2021gwt,vanrullen2021gwt} \emph{impose} a workspace as an architectural module; we test an
+\emph{emergent} one and ask whether action routes through it.
+
+\section{Method}\label{sec:method}
+\paragraph{Model and decision points.} Qwen3.6-27B (64 layers; depth\% $= \ell/64$). From 99
+SWE-bench Pro trajectories \citep{vicentino2026brake} we take 60 deterministic \texttt{edit}
+(\texttt{str\_replace\_editor}) and 60 \texttt{bash} decision points, prefill-only, following the
+protocol of \citet{vicentino2026lever}. Answers are a constructed 20-item few-shot two-hop QA set
+(single-token answers; $20/20$ baseline accuracy).
+
+\paragraph{Row-restricted J-lens estimator.} For a single-token concept $v$ and layer $\ell$ we
+estimate the readout row $g_{v,\ell} = \partial\,\mathrm{logit}_v(\text{final position})/\partial
+h_{\ell,\text{final}}$ by one backward pass per $(v,\text{prompt})$, parameters frozen and the
+embedding made the sole gradient leaf, averaged over an on-distribution estimation set. This is the
+diagonal (same-position) readout direction, not the full Jacobian matrix; we do not claim a complete
+reproduction of the J-lens.
+
+\paragraph{Instrument validation (specificity control).} The pre-registered coordinate \emph{swap}
+$h \leftarrow h + V(\sigma(c)-c)$ is a near-no-op in this basis (the raw-gradient projections are
+near-equal, $c_{\text{correct}}\approx c_{\text{alt}}$), so we validate and use a \emph{steer} along
+the normalized $(g_{\text{alt}}-g_{\text{correct}})$ direction scaled to $\alpha\lVert h\rVert$---a
+disclosed deviation to a second Anthropic-used intervention on the same directions. Table
+\ref{tab:spec} shows the steer is specific: at $\alpha{=}0.5$ it flips a held answer to the designated
+alternative $17/20$, while unrelated-pair and random directions flip $0/20$ and a random push of
+equal magnitude does not move the answer at all. (A readout-correlation check is uninformative here:
+RMSNorm is degree-0 homogeneous, so by Euler's theorem $g_v\!\cdot h \approx 0$ by construction.)
+
+\begin{table}[h]\centering\small
+\begin{tabular}{lcccc}
+\toprule
+$\alpha$ & contrast$\rightarrow$alt & unrelated$\rightarrow$alt & random$\rightarrow$alt & random moved off correct \\
+\midrule
+0.5 & \textbf{17/20} & 0/20 & 0/20 & 0/20 \\
+1.0 & \textbf{20/20} & 0/20 & 0/20 & 19/20 \\
+\bottomrule
+\end{tabular}
+\caption{Specificity control: the estimated readout direction is causal and specific; equal-magnitude
+random pushes do not reroute (and at $\alpha{=}0.5$ do not even move) the answer.}
+\label{tab:spec}
+\end{table}
+
+\section{Results}
+\paragraph{H1: the action is readable only in the workspace tail.}
+Figure~\ref{fig:h1} plots the AUROC of $(g_{\text{edit}}-g_{\text{bash}})\!\cdot h$ separating edit-
+from bash-decision points by depth. It is at chance through mid-workspace and rises to a peak of
+$0.74$ at layer 47 (73\%), sustaining $0.59$--$0.69$ into the motor band. The action's verbalizable
+readout emerges at the workspace tail, not mid-workspace. (The curve recomputes offline from the
+public vectors and residuals to $10^{-6}$ at all 16 layers.)
+
+\paragraph{H2 and the dissociation: answers reroute in mid-workspace; the action does not.}
+We steer the commitment along $(g_{\text{other}}-g_{\text{taken}})$ at the decision points
+($\alpha{=}0.5$), band-wise, against a random-direction control, and---parallel and apples-to-apples
+---steer the \emph{answer} per band (Figure~\ref{fig:dissoc}, Table~\ref{tab:dissoc}). At mid-workspace
+the verbalizable direction \emph{specifically} reroutes answers ($11/20$ vs random $0$) but the action
+steer is \emph{worse than random} ($0/60$ vs $21/60$): no specific workspace-mediated rerouting of the
+commitment. Specific action control appears at the tail ($60/60$ vs random $23$) and completes at motor.
+Because the identical magnitude at the identical layers reroutes the answer but not the action, the
+midW action result is not a magnitude/disruption artifact.
+
+\begin{table}[h]\centering\small
+\begin{tabular}{lcc}
+\toprule
+band & answer: contrast$\rightarrow$alt (random) & action: edit$\rightarrow$bash (random) \\
+\midrule
+mid-workspace (L27--43) & \textbf{11/20 (0)} & \textbf{0/60 (21)} \\
+tail (L47--55)          & 20/20 (0) & 60/60 (23) \\
+motor (L59--63)         & 20/20 (0) & 60/60 (21) \\
+\bottomrule
+\end{tabular}
+\caption{The dissociation. Same steer, same magnitude, same layers: the verbalizable direction
+reroutes the answer in mid-workspace but not the action.}
+\label{tab:dissoc}
+\end{table}
+
+\paragraph{H3: the commitment survives ablation of the verbalizable subspace.}
+Projecting out the top-10 verbalizable directions (by lens activation on the agent distribution) at
+the decision points leaves the task-appropriate commitment differential essentially unchanged:
+$P(\text{edit})$ at edit points $0.474\rightarrow0.473$, at bash points $0.299\rightarrow0.306$;
+differential $0.174\rightarrow0.167$ (Figure~\ref{fig:abl}). The commitment does not live in the
+verbalizable subspace at the decision position---the load-bearing rebuttal to ``you are re-reading an
+early-decodable tool signal.''
+
+\begin{figure}[t]\centering
+\includegraphics[width=0.86\linewidth]{figures/figJ1_readout_depth.pdf}
+\caption{H1. The action's verbalizable readout (AUROC by depth) is at chance through mid-workspace and
+peaks at the tail (L47, 73\%). Regimes after \citet{anthropic2026workspace}.}
+\label{fig:h1}
+\end{figure}
+
+\begin{figure}[t]\centering
+\includegraphics[width=0.86\linewidth]{figures/figJ2_dissociation.pdf}
+\caption{H2 dissociation. The verbalizable steer reroutes the \emph{answer} in mid-workspace
+($11/20$) but not the \emph{action} ($0/60$, below the random control); both converge at the
+tail/motor. Black ticks: random-direction controls.}
+\label{fig:dissoc}
+\end{figure}
+
+\begin{figure}[t]\centering
+\includegraphics[width=0.52\linewidth]{figures/figJ3_ablation.pdf}
+\caption{H3. Ablating the top-10 verbalizable directions at the decision point leaves the
+commitment differential intact.}
+\label{fig:abl}
+\end{figure}
+
+\section{Discussion}
+The verbalizable workspace that \citet{anthropic2026workspace} steer to change an answer is, in this
+agent, bypassed by the action commitment: the same mid-network intervention that reroutes a held
+answer does not reroute the tool the agent commits to, which becomes causally steerable via the
+verbalizable direction only at the workspace$\rightarrow$motor boundary, and survives ablation of the
+verbalizable subspace. This localizes the knowledge--action gap \citep{basu2026gap} as a
+workspace$\rightarrow$motor depth transition and gives the arc's ``lever is late''
+\citep{vicentino2026lever,vicentino2026late} a mechanistic reading in workspace terms. The scoped
+implication for the workspace paper's own monitoring agenda: a J-lens-style verbalizable monitor
+reads a reasoning agent's answer/reasoning but not its action commitment---the monitor would see the
+model's stated intent and miss the committed act.
+
+\section{Limitations}
+One open-weights model, one behavior family (edit vs bash), $n{=}60$ action / $20$ answer points,
+prefill-only, single magnitude $\alpha{=}0.5$ (controlled within each band by the random baseline).
+The estimator is the row-restricted diagonal, not the full J-lens matrix, and we use a steer in place
+of the pre-registered coordinate swap (disclosed; the swap is a near-no-op in this basis; both are
+Anthropic-used and the steer is specificity-validated). Tool-related signals are linearly readable
+earlier than L47 in general \citep{tooldep2026,when2tool2026}; our claim is about specific causal
+steerability of the commitment via the verbalizable direction, not readability. No claim of
+architecture-generality; the workspace paper's own agent generality is untested.
+
+\section{Reproducibility}
+Public HF ledger (\texttt{results/jspace\_action.json}), estimated vectors, and decision-point
+residuals; harness \texttt{scripts/jspace\_action.py} and pre-registration released. The evaluation
+\texttt{scripts/eval\_jspace.py} recomputes the H1 readout offline from the public vectors and
+residuals (16/16 layers to $10^{-6}$) and audits the dissociation logic (29/29). Steer and ablation
+numbers are model-dependent and were verified present in the public ledger step-by-step.
+
+\small
+\begin{thebibliography}{99}
+\bibitem[Anthropic(2026)]{anthropic2026workspace} Anthropic Interpretability Team. A Global Workspace
+in Language Models. \emph{Transformer Circuits Thread}, 2026. transformer-circuits.pub/2026/workspace.
+\bibitem[Basu et al.(2026)]{basu2026gap} S.~Basu et al. Interpretability Without Actionability: The
+Knowledge--Action Gap in Language Models. \emph{arXiv:2603.18353}, 2026.
+\bibitem[Anonymous(2026a)]{when2tool2026} LLM Agents Already Know When to Call Tools: Probing
+Tool-Necessity in Residual Streams. \emph{arXiv:2605.09252}, 2026.
+\bibitem[Anonymous(2026b)]{tooldep2026} Tool-Call Dependency Structure is Linearly Decodable in LLM
+Agent Residual Streams. \emph{arXiv:2605.25310}, 2026.
+\bibitem[Anonymous(2026c)]{planning2026} Do Agents Think Deeper? Layer-Wise Dynamics in Sequential
+Planning. \emph{arXiv:2605.27935}, 2026.
+\bibitem[Goyal et al.(2021)]{goyal2021gwt} A.~Goyal et al. Coordination Among Neural Modules Through a
+Shared Global Workspace. \emph{arXiv:2103.01197}, 2021.
+\bibitem[VanRullen \& Kanai(2021)]{vanrullen2021gwt} R.~VanRullen and R.~Kanai. Deep Learning and the
+Global Workspace Theory. \emph{Trends in Neurosciences}, 2021. arXiv:2012.10390.
+\bibitem[Vicentino(2026a)]{vicentino2026lever} C.~Vicentino. The Lever Is Late: the Knowledge--Action
+Gap Is a Layer Gap. \emph{Zenodo}, 2026. DOI 10.5281/zenodo.20534219.
+\bibitem[Vicentino(2026b)]{vicentino2026brake} C.~Vicentino. The Commitment Lever Generalizes --- and
+It Brakes. \emph{Zenodo}, 2026. DOI 10.5281/zenodo.20679287.
+\bibitem[Vicentino(2026c)]{vicentino2026late} C.~Vicentino. The Late Channel: Chain-of-Thought Is
+Causal Only When It Changes the Outcome. \emph{Zenodo}, 2026. DOI 10.5281/zenodo.20752895.
+\end{thebibliography}
+
+\end{document}
