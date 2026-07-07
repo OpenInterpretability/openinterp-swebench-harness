@@ -708,6 +708,93 @@ def _abl_hook(Q):
         return (t, *o[1:]) if isinstance(o, tuple) else t
     return h
 
+def verify():
+    """INDEPENDENT recompute of the model-dependent load-bearing numbers, freshly re-implemented
+    (own hooks/loops, not calling h2_steer/answer_bands/h3), compared to the ledger. Targeted flips
+    are deterministic (exact match expected); random baselines are recomputed with a FRESH seed as a
+    robustness check (stronger than reproducing one seed). Writes results['verify']."""
+    load_vecs()
+    pool, items = _qa_pool(); tok = S.S["tok"]
+    gA = G["answers"]; ge = G["actions"]["str_replace_editor"]; gb = G["actions"]["bash"]
+    dev = _dev()
+
+    def steer_last(ids, dirs, band, alpha):
+        hs = []
+        for L in band:
+            u = dirs[L].to(dev).float(); u = u / (u.norm() + 1e-9)
+            def mk(u):
+                def h(m, i, o):
+                    t = o[0] if isinstance(o, tuple) else o; t = t.clone(); hl = t[:, -1, :].float()
+                    t[:, -1, :] = (hl + alpha * hl.norm(dim=-1, keepdim=True) * u).to(t.dtype)
+                    return (t, *o[1:]) if isinstance(o, tuple) else t
+                return h
+            hs.append(S._layer(L).register_forward_hook(mk(u)))
+        try:
+            with torch.no_grad():
+                lg = S.S["model"](input_ids=ids.to(dev), use_cache=False, logits_to_keep=1).logits[0, -1]
+        finally:
+            for h in hs: h.remove()
+        return lg
+
+    BND = {"midW": [27, 31, 35, 39, 43], "tail": [47, 51, 55], "motor": [59, 63]}
+    out = {"answer": {}, "action": {}}
+    rgen = torch.Generator().manual_seed(101)                       # FRESH seed for random robustness
+    # ---- answers (targeted + fresh-random) per band ----
+    for bn, band in BND.items():
+        hit = rnd = 0
+        for it in items:
+            ids = torch.tensor([tok(it["prompt"], add_special_tokens=False).input_ids])
+            aid = pool[it["alt"]]
+            d = {L: (gA[it["alt"]][L] - gA[it["correct"]][L]) for L in band}
+            hit += int(int(steer_last(ids, d, band, 0.5).argmax()) == aid)
+            dr = {L: torch.randn(gA[it["alt"]][L].shape, generator=rgen) for L in band}
+            rnd += int(int(steer_last(ids, dr, band, 0.5).argmax()) == aid)
+            gc.collect(); torch.cuda.empty_cache()
+        out["answer"][bn] = {"contrast_to_alt": hit, "random_freshseed": rnd, "n": len(items)}
+        log(f"  VERIFY answer {bn}: {hit}/{len(items)} (fresh-random {rnd})")
+    # ---- actions (edit->bash, targeted + fresh-random) per band ----
+    for bn, band in BND.items():
+        hit = rnd = 0; bash_id = S.ACTION_TOK["bash"]
+        for r in S.S["EDIT"]:
+            d = {L: (gb[L] - ge[L]) for L in band}
+            hit += int(int(steer_last(r["ids"], d, band, 0.5).argmax()) == bash_id)
+            dr = {L: torch.randn(ge[L].shape, generator=rgen) for L in band}
+            rnd += int(int(steer_last(r["ids"], dr, band, 0.5).argmax()) == bash_id)
+            gc.collect(); torch.cuda.empty_cache()
+        out["action"][bn] = {"edit_to_bash": hit, "random_freshseed": rnd, "n": len(S.S["EDIT"])}
+        log(f"  VERIFY action {bn}: edit->bash {hit}/{len(S.S['EDIT'])} (fresh-random {rnd})")
+    # ---- H3 ablation (independent reimpl of top-10 selection + projection) ----
+    R = _load_resid()
+    allrows = {}
+    for grp in ("actions", "answers"):
+        for name, perL in G.get(grp, {}).items(): allrows[f"{grp}:{name}"] = perL
+    def abl_pe(rows):
+        pe = []
+        for r in rows:
+            hs = []
+            for L in WS_BAND:
+                H = torch.cat([R["E"][L], R["B"][L]], 0)
+                acts = {nm: float((H @ pl[L]).abs().mean()) for nm, pl in allrows.items()}
+                top = sorted(acts, key=acts.get, reverse=True)[:TOPK_ABL]
+                V = torch.stack([allrows[nm][L] for nm in top], 1).float()
+                Q, _ = torch.linalg.qr(V); Qd = Q.to(dev)
+                def mk(Qd):
+                    def h(m, i, o):
+                        t = o[0] if isinstance(o, tuple) else o; t = t.clone(); x = t[:, -1, :].float()
+                        t[:, -1, :] = (x - (x @ Qd) @ Qd.T).to(t.dtype)
+                        return (t, *o[1:]) if isinstance(o, tuple) else t
+                    return h
+                hs.append(S._layer(L).register_forward_hook(mk(Qd)))
+            try: pe.append(S._p_action(_logits_last(r["ids"]), S.TARGET))
+            finally:
+                for h in hs: h.remove()
+            gc.collect(); torch.cuda.empty_cache()
+        return float(np.mean(pe))
+    out["h3"] = {"P_edit_ablated_edit": abl_pe(S.S["EDIT"]), "P_edit_ablated_bash": abl_pe(S.S["BASH"])}
+    out["h3"]["diff"] = out["h3"]["P_edit_ablated_edit"] - out["h3"]["P_edit_ablated_bash"]
+    log(f"  VERIFY h3: diff={out['h3']['diff']:+.3f}")
+    A["verify"] = out; save_a(); log("VERIFY_OK")
+
 def finalize():
     A["finalized"] = True; save_a()
     upload_file(path_or_fileobj="/content/ja.json", path_in_repo="results/jspace_results.json",
