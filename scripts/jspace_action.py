@@ -509,6 +509,7 @@ def _abl_hook(Q):
     return h
 
 def finalize():
+    A["finalized"] = True; save_a()
     upload_file(path_or_fileobj="/content/ja.json", path_in_repo="results/jspace_results.json",
                 repo_id=S.DATA_REPO, repo_type="dataset", token=_tok())
     log("FINALIZED — results/jspace_results.json on HF")
