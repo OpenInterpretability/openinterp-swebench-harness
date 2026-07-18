@@ -25,9 +25,9 @@ import torch, numpy as np
 
 # ---------- config (all env-tunable) ----------
 MODEL_ID = os.environ.get("MODEL", "Qwen/Qwen3.6-27B")
-N_TRAIN  = int(os.environ.get("N_TRAIN", 10))    # scenarios to FIT learned defenses
-N_TEST   = int(os.environ.get("N_TEST", 20))     # scenarios to EVALUATE (held-out)
-STEPS    = int(os.environ.get("STEPS", 80))
+N_TRAIN  = int(os.environ.get("N_TRAIN", 8))     # scenarios to FIT learned defenses
+N_TEST   = int(os.environ.get("N_TEST", 16))     # scenarios to EVALUATE (held-out)
+STEPS    = int(os.environ.get("STEPS", 50))      # attack converges fast; stress-test re-runs at 1.5x
 LR       = float(os.environ.get("LR", 0.05))
 EPS      = [float(x) for x in os.environ.get("EPS", "1,2,4,8,16").split(",")]
 EOT_K    = int(os.environ.get("EOT_K", 3))       # EOT samples for stochastic defenses
@@ -393,17 +393,25 @@ def process_defense(dom, dname, ctx):
     R["domains"][dom]["defenses"][dname].setdefault("attack", {})
     A = R["domains"][dom]["defenses"][dname]["attack"]
     for eps in EPS:
-        if f"eps{eps}" in A: log(f"  SKIP eps{eps}"); continue
+        ekey = f"eps{eps}"
+        slot = A.get(ekey)
+        if slot and slot.get("complete"): log(f"  SKIP {ekey} (complete)"); continue
+        if slot is None:
+            slot = A[ekey] = {"per_scenario": [], "per_scenario_rand": [], "li": [], "lf": [], "done_idx": []}
         cap_norm = eps * float(EMB(ctx["CM"][ctx["TEST"][0]]).norm(dim=-1).mean())
-        asr, rnd, li, lf = [], [], [], []
-        for i in ctx["TEST"]:
+        todo = [i for i in ctx["TEST"] if i not in slot["done_idx"]]
+        if todo != ctx["TEST"]: log(f"  {ekey}: resuming, {len(slot['done_idx'])}/{len(ctx['TEST'])} done")
+        for i in todo:
             a, ar, L0, Lf = attack_scenario(defense, ctx, i, cap_norm, STEPS, EOT_K)
-            asr.append(a); rnd.append(ar); li.append(L0); lf.append(Lf)
-        A[f"eps{eps}"] = {"asr_adaptive": float(np.mean(asr)), "asr_random": float(np.mean(rnd)),
-                          "asr_ci": boot_ci(asr), "rand_ci": boot_ci(rnd),
-                          "per_scenario": asr, "per_scenario_rand": rnd,
-                          "loss_init": float(np.mean(li)), "loss_final": float(np.mean(lf))}
-        log(f"  eps{eps}: ASR {np.mean(asr):.2f} CI{boot_ci(asr)}  rand {np.mean(rnd):.2f}")
+            slot["per_scenario"].append(a); slot["per_scenario_rand"].append(ar)
+            slot["li"].append(L0); slot["lf"].append(Lf); slot["done_idx"].append(i)
+            if len(slot["done_idx"]) % 4 == 0: save_ledger()   # per-scenario checkpoint (any VM lifetime)
+        asr, rnd = slot["per_scenario"], slot["per_scenario_rand"]
+        slot.update({"asr_adaptive": float(np.mean(asr)), "asr_random": float(np.mean(rnd)),
+                     "asr_ci": boot_ci(asr), "rand_ci": boot_ci(rnd),
+                     "loss_init": float(np.mean(slot["li"])), "loss_final": float(np.mean(slot["lf"])),
+                     "complete": True})
+        log(f"  {ekey}: ASR {np.mean(asr):.2f} CI{boot_ci(asr)}  rand {np.mean(rnd):.2f}")
         emit(); save_ledger()
     hi = max(EPS)
     asr_hi = A[f"eps{hi}"]["asr_adaptive"]; rnd_hi = A[f"eps{hi}"]["asr_random"]
