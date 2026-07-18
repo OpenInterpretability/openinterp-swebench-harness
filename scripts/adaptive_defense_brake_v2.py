@@ -199,7 +199,7 @@ def det_score_and_logits(inp_embeds, det_layer, probe_w):
 # ---------- defenses ----------
 class Defense:
     stochastic = False; noise = 0.0; is_detector = False
-    def __init__(self, name): self.name = name
+    def __init__(self, name=None): self.name = name or type(self).__name__
     def fit(self, ctx): raise NotImplementedError
     def brake_hooks(self, i):
         """Deterministic brake hooks for scenario i (used in attack EOT sample k=det)."""
@@ -435,7 +435,10 @@ for dom in DOMAINS:
     for dname in DEFENSES:
         if dname not in DEFENSE_MAP: log(f"SKIP unknown {dname}"); continue
         dslot = R["domains"][dom]["defenses"].get(dname, {})
-        if dslot.get("complete"): log(f"SKIP {dom}/{dname}: done ({dslot.get('verdict')})"); continue
+        if dslot.get("complete") and dslot.get("verdict") != "ERROR":
+            log(f"SKIP {dom}/{dname}: done ({dslot.get('verdict')})"); continue
+        if dslot.get("verdict") == "ERROR":  # retry a previously-errored defense from scratch
+            R["domains"][dom]["defenses"][dname] = {"attack": {}}
         try:
             process_defense(dom, dname, ctx)
         except Exception as e:
