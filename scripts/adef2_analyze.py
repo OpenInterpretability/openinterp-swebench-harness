@@ -40,17 +40,20 @@ for dom, dd in d.get("domains", {}).items():
         rnd = att.get(hi, {}).get("asr_random")
         st = s.get("stress", {}); stf = st.get("flag", "")
         sts = f" | stress@{st.get('asr'):.2f}->{stf}" if st else ""
-        print(f"  {k} {NAME[k]:26s}  {v:14s} ASR@max={asr} CI{ci(rci)} rand={rnd}  [{dr}]{sts}")
+        c1 = s.get("C1_emit")
+        c1s = f" C1={c1}" if c1 is not None else ""
+        print(f"  {k} {NAME[k]:26s}  {v:14s} ASR@max={asr} CI{ci(rci)} rand={rnd}{c1s}  [{dr}]{sts}")
         if v == "ERROR": errored.append((dom, k))
         elif v == "BRITTLE": brittle.append((dom, k))
-        else: survived.append((dom, k, v))
-        if stf == "GRADIENT_MASKING_SUSPECTED": masking.append((dom, k))
+        elif stf == "GRADIENT_MASKING_SUSPECTED": masking.append((dom, k))   # apparent survivor, refuted by stress
+        else: survived.append((dom, k, v))                                    # GENUINE survivor (stress held)
     print()
 
+collapsed = len(brittle) + len(masking)
 print("=== HEADLINE ===")
-print(f"BRITTLE (collapsed under adaptive attack): {len(brittle)}  {brittle}")
-print(f"SURVIVED (ROBUST/LIKELY/PARTIAL):          {len(survived)}  {survived}")
-print(f"GRADIENT-MASKING SUSPECTED (distrust!):    {len(masking)}  {masking}")
+print(f"COLLAPSED under adaptive attack:           {collapsed}  ({len(brittle)} BRITTLE + {len(masking)} masking-refuted)")
+print(f"  masking-refuted (looked robust, stress-test broke them): {masking}")
+print(f"GENUINE survivors (robust AND passed stress):{len(survived)}  {survived}")
 print(f"ERRORED:                                   {len(errored)}  {errored}")
 if survived and not masking:
     print("\n>> A defense appears to resist the adaptive attack AND passes the stress-test.")
