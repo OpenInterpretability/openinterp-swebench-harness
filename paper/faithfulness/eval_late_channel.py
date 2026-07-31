@@ -2,8 +2,10 @@
 """Pre-mint eval for late_channel.tex: recompute EVERY number from data/, compare to the paper's claims.
 A claim passes if recompute is within tol. Run: python eval_late_channel.py"""
 import json, numpy as np, sys
+from pathlib import Path
 rng=np.random.default_rng(0)
-A=json.load(open("data/cot_faithfulness_n60.json")); B=json.load(open("data/cot_faithfulness_agent_n32.json"))
+D=Path(__file__).resolve().parent/"data"   # run from anywhere, not just paper/faithfulness/
+A=json.load(open(D/"cot_faithfulness_n60.json")); B=json.load(open(D/"cot_faithfulness_agent_n32.json"))
 LAYERS=[15,19,23,27,35,39,43,47,51,59,63]
 def boot(v,n=10000):
     v=np.array(v); return float(v.mean()),*[float(x) for x in np.percentile([rng.choice(v,len(v),replace=True).mean() for _ in range(n)],[2.5,97.5])]

@@ -98,10 +98,26 @@ try:
     chk("XM fidelity caveat honest in paper (edit < bash)",
         xf["edit_pts"] < xf["bash_pts"],
         f"edit_pts {xf['edit_pts']:.2f} < bash_pts {xf['bash_pts']:.2f} (weaker probe, disclosed)")
-    # depth-lag invariant: dense answer-band (midW) is SHALLOWER than dense action-band (tail);
-    # MoE answer-band (tail) is SHALLOWER than MoE action-band (motor). Same ordering, shifted.
-    chk("DEPTH-LAG invariant holds in BOTH models (answer band shallower than action band)",
-        True, "dense: answer@midW < action@tail ; MoE: answer@tail < action@motor")
+    # depth-lag invariant, COMPUTED (not asserted): for each model find the SHALLOWEST band where
+    # the targeted steer is specific (targeted > random), for answer and for action; assert the
+    # answer's onset band is strictly shallower than the action's. This can fail.
+    BANDS = ["midW", "tail", "motor"]
+    def _onset(spec_fn):
+        for i, b in enumerate(BANDS):
+            t, r = spec_fn(b)
+            if t > r: return i
+        return None
+    d_ans = _onset(lambda b: (A["answer_bands"][b]["contrast_to_alt"], A["answer_bands"][b]["random_to_alt"]))
+    d_act = _onset(lambda b: (A[f"h2steer_{b}"]["edit_pts"]["flip_to_other"],
+                              A[f"h2steer_{b}"]["edit_pts"]["random_flip_to_other"]))
+    x_ans = _onset(lambda b: (xd["answer"][b]["contrast_to_alt"], xd["answer"][b]["random"]))
+    x_act = _onset(lambda b: (xd["action"][b]["edit_to_bash"], xd["action"][b]["random"]))
+    chk("DEPTH-LAG computed: dense answer onset strictly shallower than action onset",
+        d_ans is not None and d_act is not None and d_ans < d_act,
+        f"dense answer onset={BANDS[d_ans] if d_ans is not None else None} < action onset={BANDS[d_act] if d_act is not None else None}")
+    chk("DEPTH-LAG computed: MoE answer onset strictly shallower than action onset",
+        x_ans is not None and x_act is not None and x_ans < x_act,
+        f"MoE answer onset={BANDS[x_ans] if x_ans is not None else None} < action onset={BANDS[x_act] if x_act is not None else None}")
 except Exception as e:
     chk("XM cross-model ledger present", False, f"could not load/verify: {e}")
 
@@ -135,7 +151,10 @@ try:
     chk("Fisher: action tail dissociation significant", p_atl < 1e-6, f"p={p_atl:.1e}")
     chk("Fisher: action motor dissociation significant", p_amo < 1e-6, f"p={p_amo:.1e}")
 except ImportError:
-    chk("Fisher stats (scipy)", True, "scipy absent; skipped (numbers in paper computed offline)")
+    # scipy is REQUIRED: the paper publishes Fisher exact p-values. If we cannot recompute them,
+    # that is a FAILURE of verification, not a pass. (Was previously recorded as PASS — wrong.)
+    chk("Fisher: scipy available to recompute published p-values", False,
+        "scipy MISSING -> the three Fisher checks could NOT run; install scipy to verify")
 
 # ---- report ----
 npass = sum(1 for _,ok,_ in checks if ok)

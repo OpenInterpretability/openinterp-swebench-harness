@@ -5,7 +5,13 @@ Runnable anytime (shows partial progress) or at completion. Usage: python script
 """
 import json, os, sys
 from huggingface_hub import hf_hub_download
-tok = open(os.path.expanduser("~/.cache/huggingface/token")).read().strip()
+def _tok():
+    """Token is OPTIONAL: the ledger dataset is public. A stranger with no HF credentials
+    must be able to run this (previously this line crashed with FileNotFoundError)."""
+    if os.environ.get("HF_TOKEN"): return os.environ["HF_TOKEN"]
+    p = os.path.expanduser("~/.cache/huggingface/token")
+    return open(p).read().strip() if os.path.exists(p) else None
+tok = _tok()
 REPO = "caiovicentino1/swebench-phase6-verdict-circuit"
 DEFS = ["D0", "D1", "D2", "D3", "D4", "D5", "D6"]
 NAME = {"D0": "single-dir", "D1": "ensemble(real)", "D2": "randomized(EOT)", "D3": "adaptive-steer",
